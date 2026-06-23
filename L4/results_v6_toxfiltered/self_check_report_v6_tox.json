@@ -1,0 +1,369 @@
+{
+  "meta": {
+    "timestamp": "2026-06-24T00:03:32.903166",
+    "severity": "WARNING"
+  },
+  "errors": [],
+  "warnings": [
+    "CPI数据含 185 个无效SMILES（将被图构建跳过）",
+    "CPI数据含 22260 条重复(gene, SMILES)条目",
+    "稀疏靶标 (<10条CPI): 10个 — ['VDAC3', 'TFRC', 'VDAC2', 'SP1', 'LCN2', 'SLC3A2', 'ACSL3', 'FTH1', 'LPCAT3', 'SAT1']",
+    "低样本靶标 (10-49条): 3个",
+    "TCM池与训练集有 3 个重叠化合物（可能数据泄漏）",
+    "缺少蛋白特征的温靶标: 17个 — ['ACSL3', 'ALOX15', 'ALOX5', 'ATG7', 'BECN1', 'CISD1', 'HIF1A', 'KEAP1', 'MAP1LC3B', 'MTOR']",
+    "铁衰老基因在所有数据源中均缺失: 61个 — ['ABCC1', 'ACVR1B', 'ATF3', 'ATG3', 'BAP1', 'BRD7', 'CAVIN1', 'CD82', 'CDO1', 'COX7A1', 'DPEP1', 'DPP4', 'DUOX1', 'E2F1', 'E2F3', 'EBF3', 'EDN1', 'EPHA2', 'ERN1', 'FOSL1', 'HERPUD1', 'HMGB1', 'ICA1', 'IFNG', 'IL6', 'IRF7', 'IRF9', 'LIFR', 'LOX', 'MAP3K14', 'MAPK14', 'MCU', 'MEN1', 'MPO', 'NLRP3', 'NR1D1', 'NR2F2', 'NUAK2', 'PADI4', 'PPP2R2B', 'PRKD1', 'PTBP1', 'RBM3', 'S100A8', 'SETD7', 'SLAMF8', 'SLC1A5', 'SMARCB1', 'SMURF2', 'SNCA', 'SOCS1', 'SOCS2', 'SPATA2', 'TBX2', 'TNFAIP1', 'TNFAIP3', 'TXNIP', 'WNT5A', 'WWTR1', 'YAP1', 'ZEB1']",
+    "缺少蛋白特征的靶标（无法参与训练）: 4个 — ['KEAP1', 'ALOX15', 'NOX4', 'HIF1A']"
+  ],
+  "input_files": {
+    "cpi": "D:\\铁衰老 绝不重蹈覆辙\\L4\\results\\experimental_actives_detail.csv",
+    "ppi": "D:\\铁衰老 绝不重蹈覆辙\\L1\\results\\ppi_network_edges.csv",
+    "kegg_pathways": "D:\\铁衰老 绝不重蹈覆辙\\L1\\results\\string_enrichment.csv",
+    "protein_features": "D:\\铁衰老 绝不重蹈覆辙\\L2\\results\\target_protein_features.csv",
+    "protein_pseaac": "D:\\铁衰老 绝不重蹈覆辙\\L2\\results\\protein_pseaac.csv",
+    "tcm_pool": "D:\\铁衰老 绝不重蹈覆辙\\L3\\results\\tcm_compound_pool_tox_filtered.csv",
+    "ferroaging_genes": "D:\\铁衰老 绝不重蹈覆辙\\L1\\results\\ferroaging_genes_96.csv"
+  },
+  "tcm_pool": {
+    "total": 532,
+    "valid_smiles": 532,
+    "invalid_smiles": 0,
+    "passed": true
+  },
+  "tcm_molecular_props": {
+    "n_mols": 532,
+    "MW": {
+      "min": 190.32999999999996,
+      "max": 619.2060000000002,
+      "mean": 343.69571428571436
+    },
+    "LogP": {
+      "min": -1.6891999999999994,
+      "max": 4.989900000000006,
+      "mean": 2.985935789473686
+    },
+    "TPSA": {
+      "min": 0.0,
+      "max": 119.51999999999998,
+      "mean": 71.53697368421052
+    }
+  },
+  "cpi_data": {
+    "total_records": 86975,
+    "unique_compounds": 62486,
+    "unique_genes": 42,
+    "warm_targets": 23,
+    "invalid_smiles": 185,
+    "duplicate_entries": "22260",
+    "sparse_targets": {
+      "VDAC3": 4,
+      "TFRC": 4,
+      "VDAC2": 4,
+      "SP1": 4,
+      "LCN2": 4,
+      "SLC3A2": 4,
+      "ACSL3": 2,
+      "FTH1": 2,
+      "LPCAT3": 2,
+      "SAT1": 2
+    },
+    "low_count_targets": {
+      "SLC7A11": 46,
+      "CD74": 25,
+      "SQSTM1": 13
+    },
+    "per_target_counts": {
+      "MAPK1": 18128,
+      "MTOR": 13260,
+      "DYRK1A": 11634,
+      "PDE4B": 8893,
+      "ALOX5": 7220,
+      "PTGS2": 5783,
+      "CTSB": 3432,
+      "BCL6": 2489,
+      "STAT3": 2473,
+      "NFE2L2": 1749,
+      "KEAP1": 1711,
+      "ALOX15": 1100,
+      "HIF1A": 1082,
+      "TP53": 1009,
+      "RELA": 957,
+      "IL1B": 943,
+      "ATG7": 846,
+      "KDM6B": 696,
+      "EPHA4": 541,
+      "MAP1LC3B": 490
+    },
+    "passed": true
+  },
+  "tcm_train_overlap": {
+    "n_overlap": 3,
+    "overlap_ratio": 0.005639097744360902,
+    "passed": false
+  },
+  "ppi_network": {
+    "edges": 53,
+    "unique_genes": 22,
+    "passed": true
+  },
+  "protein_features": {
+    "genes": 38,
+    "feat_dim": 70,
+    "nan_genes": [],
+    "passed": true
+  },
+  "kegg_pathways": {
+    "genes_with_pathways": 19,
+    "total_pathways": 156,
+    "passed": true
+  },
+  "target_coverage": {
+    "warm_targets": 23,
+    "with_protein_features": 25,
+    "missing_features": [
+      "ACSL3",
+      "ALOX15",
+      "ALOX5",
+      "ATG7",
+      "BECN1",
+      "CISD1",
+      "HIF1A",
+      "KEAP1",
+      "MAP1LC3B",
+      "MTOR",
+      "NFKB1",
+      "NOX4",
+      "RELA",
+      "SLC3A2",
+      "SQSTM1",
+      "VDAC2",
+      "VDAC3"
+    ],
+    "with_ppi": 16,
+    "with_pathway": 15,
+    "fully_covered": 14,
+    "missing_from_all_sources": [
+      "ABCC1",
+      "ACVR1B",
+      "ATF3",
+      "ATG3",
+      "BAP1",
+      "BRD7",
+      "CAVIN1",
+      "CD82",
+      "CDO1",
+      "COX7A1",
+      "DPEP1",
+      "DPP4",
+      "DUOX1",
+      "E2F1",
+      "E2F3",
+      "EBF3",
+      "EDN1",
+      "EPHA2",
+      "ERN1",
+      "FOSL1",
+      "HERPUD1",
+      "HMGB1",
+      "ICA1",
+      "IFNG",
+      "IL6",
+      "IRF7",
+      "IRF9",
+      "LIFR",
+      "LOX",
+      "MAP3K14",
+      "MAPK14",
+      "MCU",
+      "MEN1",
+      "MPO",
+      "NLRP3",
+      "NR1D1",
+      "NR2F2",
+      "NUAK2",
+      "PADI4",
+      "PPP2R2B",
+      "PRKD1",
+      "PTBP1",
+      "RBM3",
+      "S100A8",
+      "SETD7",
+      "SLAMF8",
+      "SLC1A5",
+      "SMARCB1",
+      "SMURF2",
+      "SNCA",
+      "SOCS1",
+      "SOCS2",
+      "SPATA2",
+      "TBX2",
+      "TNFAIP1",
+      "TNFAIP3",
+      "TXNIP",
+      "WNT5A",
+      "WWTR1",
+      "YAP1",
+      "ZEB1"
+    ],
+    "coverage_detail": {
+      "ALOX15": {
+        "in_cpi": true,
+        "in_prot_feat": false,
+        "in_ppi": false,
+        "in_pathway": false
+      },
+      "BCL6": {
+        "in_cpi": true,
+        "in_prot_feat": true,
+        "in_ppi": true,
+        "in_pathway": true
+      },
+      "CD74": {
+        "in_cpi": true,
+        "in_prot_feat": true,
+        "in_ppi": true,
+        "in_pathway": true
+      },
+      "CTSB": {
+        "in_cpi": true,
+        "in_prot_feat": true,
+        "in_ppi": true,
+        "in_pathway": true
+      },
+      "CXCL10": {
+        "in_cpi": true,
+        "in_prot_feat": true,
+        "in_ppi": true,
+        "in_pathway": true
+      },
+      "DYRK1A": {
+        "in_cpi": true,
+        "in_prot_feat": true,
+        "in_ppi": true,
+        "in_pathway": false
+      },
+      "EPHA4": {
+        "in_cpi": true,
+        "in_prot_feat": true,
+        "in_ppi": false,
+        "in_pathway": true
+      },
+      "HIF1A": {
+        "in_cpi": true,
+        "in_prot_feat": false,
+        "in_ppi": false,
+        "in_pathway": false
+      },
+      "HMOX1": {
+        "in_cpi": true,
+        "in_prot_feat": true,
+        "in_ppi": false,
+        "in_pathway": false
+      },
+      "IL1B": {
+        "in_cpi": true,
+        "in_prot_feat": true,
+        "in_ppi": true,
+        "in_pathway": true
+      },
+      "KDM6B": {
+        "in_cpi": true,
+        "in_prot_feat": true,
+        "in_ppi": true,
+        "in_pathway": false
+      },
+      "KEAP1": {
+        "in_cpi": true,
+        "in_prot_feat": false,
+        "in_ppi": false,
+        "in_pathway": false
+      },
+      "LCN2": {
+        "in_cpi": true,
+        "in_prot_feat": true,
+        "in_ppi": true,
+        "in_pathway": true
+      },
+      "LGMN": {
+        "in_cpi": true,
+        "in_prot_feat": true,
+        "in_ppi": true,
+        "in_pathway": true
+      },
+      "LPCAT3": {
+        "in_cpi": true,
+        "in_prot_feat": true,
+        "in_ppi": true,
+        "in_pathway": true
+      },
+      "MAPK1": {
+        "in_cpi": true,
+        "in_prot_feat": true,
+        "in_ppi": true,
+        "in_pathway": true
+      },
+      "NOX4": {
+        "in_cpi": true,
+        "in_prot_feat": false,
+        "in_ppi": false,
+        "in_pathway": false
+      },
+      "PDE4B": {
+        "in_cpi": true,
+        "in_prot_feat": true,
+        "in_ppi": true,
+        "in_pathway": true
+      },
+      "PTGS2": {
+        "in_cpi": true,
+        "in_prot_feat": true,
+        "in_ppi": true,
+        "in_pathway": true
+      },
+      "SAT1": {
+        "in_cpi": true,
+        "in_prot_feat": true,
+        "in_ppi": true,
+        "in_pathway": true
+      },
+      "SP1": {
+        "in_cpi": true,
+        "in_prot_feat": true,
+        "in_ppi": true,
+        "in_pathway": true
+      },
+      "TFRC": {
+        "in_cpi": true,
+        "in_prot_feat": true,
+        "in_ppi": false,
+        "in_pathway": false
+      },
+      "TLR4": {
+        "in_cpi": true,
+        "in_prot_feat": true,
+        "in_ppi": true,
+        "in_pathway": true
+      }
+    },
+    "passed": true
+  },
+  "feature_dimension": {
+    "passed": true,
+    "tcm_feat_dim": 184,
+    "cpi_feat_dim": 184
+  },
+  "training_readiness": {
+    "n_warm_cpi_edges": 58061,
+    "n_trainable_targets": 19,
+    "n_untrainable_targets": 4,
+    "untrainable_targets": [
+      "KEAP1",
+      "ALOX15",
+      "NOX4",
+      "HIF1A"
+    ],
+    "min_edges_per_target": 2,
+    "max_edges_per_target": 18128,
+    "passed": true
+  },
+  "overall": "PASSED_WITH_WARNINGS"
+}

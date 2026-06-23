@@ -1,0 +1,53 @@
+{
+  "total_targets": 28,
+  "trained_targets": 4,
+  "no_data_targets": 11,
+  "no_match_targets": 13,
+  "per_target": [
+    {
+      "gene": "DYRK1A",
+      "n_positives": 7895,
+      "n_samples": 102,
+      "n_positive_samples": 2,
+      "n_negative_samples": 100,
+      "RF_AUC_mean": 0.77,
+      "RF_AUC_std": 0.09,
+      "XGB_AUC_mean": 0.5,
+      "XGB_AUC_std": 0.0,
+      "LR_AUC_mean": 0.97,
+      "LR_AUC_std": 0.03,
+      "has_model": true,
+      "status": "TRAINED"
+    },
+    {
+      "gene": "MAPK1",
+      "n_positives": 13301,
+      "n_samples": 103,
+      "n_positive_samples": 3,
+      "n_negative_samples": 100,
+      "RF_AUC_mean": 1.0,
+      "RF_AUC_std": 0.0,
+      "XGB_AUC_mean": 0.8283,
+      "XGB_AUC_std": 0.2428,
+      "LR_AUC_mean": 0.9697,
+      "LR_AUC_std": 0.0429,
+      "has_model": true,
+      "status": "TRAINED"
+    },
+    {
+      "gene": "PTGS2",
+      "n_positives": 4088,
+      "n_samples": 117,
+      "n_positive_samples": 17,
+      "n_negative_samples": 100,
+      "RF_AUC_mean": 0.9571,
+      "RF_AUC_std": 0.0323,
+      "XGB_AUC_mean": 0.958,
+      "XGB_AUC_std": 0.0459,
+      "LR_AUC_mean": 0.9854,
+      "LR_AUC_std": 0.0076,
+      "has_model": true,
+      "status": "TRAINED"
+    }
+  ]
+}

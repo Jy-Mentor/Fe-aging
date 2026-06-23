@@ -1,0 +1,52 @@
+======================================================================
+Phase 2: Multi-omics Integration Report
+======================================================================
+Date: 2026-06-22 20:30:24
+Core genes: 28
+Total features: 32
+
+Feature Categories:
+  [PPI Network Topology]: 4 features - ppi_degree, ppi_betweenness_centrality, ppi_closeness_centrality, ppi_hub_rank
+  [RRA Differential Expression]: 5 features - rra_medianrank, rra_n_datasets, rra_up_count, rra_down_count, rra_direction
+  [WGCNA Module Assignment]: 2 features - wgcna_module, wgcna_modulelabel
+  [FerroAging Gene Status]: 1 features - ferroaging
+  [Single-cell RNA-seq]: 7 features - sc_total_cells, sc_total_genes, sc_n_cell_types, sc_n_sham_cells, sc_n_mcao_cells...
+  [Protein Features]: 12 features - protein_sequence_length, protein_mass, protein_n_domains, protein_n_ptms, protein_n_transmembrane...
+
+Data Completeness:
+  ppi_degree: 28/28 (100.0%)
+  ppi_betweenness_centrality: 28/28 (100.0%)
+  ppi_closeness_centrality: 28/28 (100.0%)
+  ppi_hub_rank: 28/28 (100.0%)
+  rra_medianrank: 28/28 (100.0%)
+  rra_n_datasets: 28/28 (100.0%)
+  rra_up_count: 28/28 (100.0%)
+  rra_down_count: 28/28 (100.0%)
+  rra_direction: 28/28 (100.0%)
+  wgcna_module: 28/28 (100.0%)
+  wgcna_modulelabel: 28/28 (100.0%)
+  ferroaging: 28/28 (100.0%)
+  sc_total_cells: 28/28 (100.0%)
+  sc_total_genes: 28/28 (100.0%)
+  sc_n_cell_types: 28/28 (100.0%)
+  sc_n_sham_cells: 28/28 (100.0%)
+  sc_n_mcao_cells: 28/28 (100.0%)
+  sc_ferroaging_score_sham_mean: 28/28 (100.0%)
+  sc_ferroaging_score_mcao_mean: 28/28 (100.0%)
+  protein_sequence_length: 28/28 (100.0%)
+  protein_mass: 28/28 (100.0%)
+  protein_n_domains: 28/28 (100.0%)
+  protein_n_ptms: 28/28 (100.0%)
+  protein_n_transmembrane: 28/28 (100.0%)
+  protein_subcellular_main: 27/28 (96.4%)
+  protein_has_signal_peptide: 28/28 (100.0%)
+  protein_has_transmembrane: 28/28 (100.0%)
+  protein_reviewed: 28/28 (100.0%)
+  protein_aac_hydrophobicity: 28/28 (100.0%)
+  protein_aac_positive_charge: 28/28 (100.0%)
+  protein_aac_negative_charge: 28/28 (100.0%)
+
+======================================================================
+NOTE: All features are for POSTERIOR EXPLANATION only.
+They must NOT be used as input to prediction models.
+======================================================================

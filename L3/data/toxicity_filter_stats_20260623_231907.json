@@ -1,0 +1,12 @@
+{
+  "input_count": 574,
+  "excluded_count": 42,
+  "clean_count": 532,
+  "exclusion_rate": 7.32,
+  "total_alerts": 44,
+  "alert_types": {
+    "Carcinogen alert": 44
+  },
+  "strict_mode": true,
+  "timestamp": "2026-06-23T23:19:07.468860"
+}

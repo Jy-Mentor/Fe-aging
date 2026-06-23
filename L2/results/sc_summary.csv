@@ -1,0 +1,8 @@
+,value
+total_cells,58433.0
+total_genes,19698.0
+n_cell_types,8.0
+n_sham_cells,27249.0
+n_mcao_cells,31184.0
+ferroaging_score_sham_mean,0.20679160361039528
+ferroaging_score_mcao_mean,0.42855473544113626

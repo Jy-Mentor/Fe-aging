@@ -1,0 +1,43 @@
+﻿MOL_ID,molecule_name,SMILES,reasons,alert_count
+MOL000011,"(2R,3R)-3-(4-hydroxy-3-methoxy-phenyl)-5-methoxy-2-methylol-2,3-dihydropyrano[5,6-h][1,4]benzodioxin-9-one",COc1cc2c(cc1OC)CC(=O)N(CCCI)C=C2,Carcinogen alert: Primary alkyl halide (aliphatic) — Potential alkylating agent — direct mutagenicity risk,1
+MOL000028,α-Amyrin,C[C@H](O)C(=O)[C@@H](C)C/C=C/[C@H]1[C@@H]2O[C@]2(C)[C@@H](C)[C@H]2[C@H](Cc3ccccc3)N=C(O)[C@]21O,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL000033,"(3S,8S,9S,10R,13R,14S,17R)-10,13-dimethyl-17-[(2R,5S)-5-propan-2-yloctan-2-yl]-2,3,4,7,8,9,11,12,14,15,16,17-dodecahydro-1H-cyclopenta[a]phenanthren-3-ol",C[C@]12CCC[C@@]3(CO3)[C@@H]1C[C@H]1[C@@H](C2)OC(=O)[C@@H]1CN1CCN(C(=O)c2ccco2)CC1,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL000049,3β-acetoxyatractylone,C=C1C(=O)O[C@H]2C[C@@]3(C)[C@@H]4O[C@@H]4C=C4C(=O)O[C@@H]([C@@H]12)[C@@H]43,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL000318,"(1R,5S,6R,7R,8R)-3-allyl-6-(3,4-dimethoxyphenyl)-8-hydroxy-1-methoxy-7-methyl-4-bicyclo[3.2.1]oct-2-enone",C=C1C(=O)O[C@@H]2[C@H]3C(C)=CC(=O)[C@H]3[C@@]3(CO3)C[C@@H](OC(=O)/C(C)=C/C)[C@@H]12,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL000330,piperlactam S,COc1c(O)cc2c3c(cc4ccccc4c13)N(OC)C2=O,Carcinogen alert: Polycyclic aromatic hydrocarbon (>=3 fused rings) — PAH — metabolic epoxidation → DNA adducts (IARC Group 1/2A/2B),1
+MOL000500,Vestitol,COc1cc(C[N+](=O)[O-])ccc1OCc1ccccc1,Carcinogen alert: Nitro group — Genotoxic carcinogen — nitroreduction to reactive nitrenium ion | Carcinogen alert: N-Nitroso group — Potent genotoxic carcinogen — α-hydroxylation → DNA alkylation,2
+MOL000623,Michelenolide,C=C1C(=O)C[C@H]2[C@@H]1CC[C@@]1(C)O[C@@H]1CC[C@@]1(C)O[C@H]21,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL000787,Fumarine,C[C@@H]1CC[C@]2(C)C(C=O)=CCC[C@H]2[C@]1(C)C[C@@H](O)[C@]1([C@H](O)CO)CO1,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL000796,"(22e,24r)-ergosta-6-en-3beta,5alpha,6beta-triol",COc1ccc(CCNC(=O)c2sc3nc(-c4ccc(OC)cc4)ccc3c2N)cc1,Carcinogen alert: Aromatic amine — Genotoxic carcinogen — N-hydroxylation to reactive nitrenium,1
+MOL000820,polyporusterone E,CC(C)[C@@H](C)[C@@H]1O[C@H]1[C@@H](C)[C@H]1CC[C@@]2(O)C3=CC(=O)[C@@H]4C[C@@H](O)[C@@H](O)C[C@]4(C)[C@H]3CC[C@]12C,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL001439,arachidonic acid,Cc1c2c3c(cc4c(c3c3ccccc13)OCO4)CCN2C=O,Carcinogen alert: Polycyclic aromatic hydrocarbon (>=3 fused rings) — PAH — metabolic epoxidation → DNA adducts (IARC Group 1/2A/2B),1
+MOL001554,Scopolamine,CN1[C@@H]2CC(OC(=O)[C@H](CO)c3ccccc3)C[C@H]1[C@@H]1O[C@H]12,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL001782,(2Z)-2-(2-oxoindolin-3-ylidene)indolin-3-one,C/C=C(/C)C(=O)Oc1ccc(OC)cc1[C@H]1O[C@H]1C,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL002985,isoduartin,CO[C@@H]1C[C@@H]2[C@@](C)(CCc3ccoc3)[C@H](C)CC[C@@]2(C)[C@]2(C)O[C@H]12,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL003187,triptolide,CC(C)[C@]12O[C@H]1[C@@H]1O[C@]13[C@]1(O[C@H]1C[C@H]1C4=C(CC[C@@]13C)C(=O)OC4)[C@@H]2O,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL003188,Tripchlorolide,CC(C)[C@]1(O)[C@H](Cl)[C@@H]2O[C@]23[C@]2(O[C@H]2C[C@H]2C4=C(CC[C@@]23C)C(=O)OC4)[C@@H]1O,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen | Carcinogen alert: Secondary alkyl halide (aliphatic) — Potential alkylating agent — mutagenicity risk,2
+MOL003192,Triptonide,CC(C)[C@]12O[C@H]1[C@@H]1O[C@@]13[C@@]1(C)CCC4=C(COC4=O)[C@@H]1C[C@@H]1O[C@@]13C2=O,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL003206,Canin,C=C1C(=O)O[C@H]2[C@H]1CC[C@@](C)(O)[C@]13O[C@H]1[C@H]1O[C@@]1(C)[C@H]23,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL004025,N-(2-Methylaminobenzoyl)tryptamine,Cc1cc(C)c(CC(=O)c2oc3ccccc3c2N)c(C)c1,Carcinogen alert: Aromatic amine — Genotoxic carcinogen — N-hydroxylation to reactive nitrenium,1
+MOL004311,Zedoarolide A,CC1=C2C[C@@H]3[C@@](C)(O)CC[C@]34O[C@]4(C)[C@H](O)[C@]2(O)OC1=O,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL005088,Nivalenol,CC1=C[C@H]2O[C@@H]3[C@H](O)[C@@H](O)[C@](C)([C@@]2(CO)[C@H](O)C1=O)[C@@]31CO1,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL005635,9-Ethoxyaristolactone,CCOc1c2c3c(cc4c(c3c3cccc(OC)c13)OCO4)C(=O)O2,Carcinogen alert: Polycyclic aromatic hydrocarbon (>=3 fused rings) — PAH — metabolic epoxidation → DNA adducts (IARC Group 1/2A/2B),1
+MOL005636,9-Ethoxyaristololactam,CCOc1c2c3c(cc4c(c3c3cccc(OC)c13)OCO4)C(=O)N2,Carcinogen alert: Polycyclic aromatic hydrocarbon (>=3 fused rings) — PAH — metabolic epoxidation → DNA adducts (IARC Group 1/2A/2B),1
+MOL005756,"2,3,4,7-tetramethoxyphenanthrene",COc1ccc2c(ccc3cc(OC)c(OC)c(OC)c32)c1,Carcinogen alert: Polycyclic aromatic hydrocarbon (>=3 fused rings) — PAH — metabolic epoxidation → DNA adducts (IARC Group 1/2A/2B),1
+MOL005800,Byakangelicol,COc1c2ccoc2c(OC[C@H]2OC2(C)C)c2oc(=O)ccc12,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL006411,obacunone,CC1(C)OC(=O)C=C[C@]2(C)[C@H]3CC[C@@]4(C)[C@H](c5ccoc5)OC(=O)[C@H]5O[C@]54[C@]3(C)C(=O)C[C@@H]12,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL006801,phyllaemblicacid methyl ester,CC(=CCn1c[n+](C)c2ncnc(N)c21)CC[C@]1(C)[C@@H](C)CC[C@@]2(C)C(C)=CC(=O)C[C@@H]12,Carcinogen alert: Aromatic amine — Genotoxic carcinogen — N-hydroxylation to reactive nitrenium,1
+MOL007213,Nuciferin,COc1ccc(CCNc2nc(N)c3ccccc3n2)cc1,Carcinogen alert: Aromatic amine — Genotoxic carcinogen — N-hydroxylation to reactive nitrenium,1
+MOL007218,Remerin,C=C1C(=O)O[C@H]2[C@H]1[C@H](O)CC(CO)=CCC[C@]1(C)O[C@@H]21,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL008146,Riddelline,C=C1C/C(=C/C)C(=O)O[C@@H]2CCN3CC=C(COC(=O)[C@@]1(O)CO)[C@H]23,"Carcinogen alert: 1,2-unsaturated pyrrolizidine core — Pyrrolizidine alkaloid — hepatocarcinogen (IARC Group 2B)",1
+MOL008918,Arteglasin A,C=C1C(=O)O[C@H]2[C@H]1[C@@H](OC(C)=O)CC(C)=C1C[C@H]3O[C@@]3(C)[C@@H]12,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL009030,Dehydrodieugenol,C=CCc1cc(OC)c(O)c(-c2cc(CC=C)cc(OC)c2O)c1,Carcinogen alert: Alkenylbenzene core (allylbenzene) — Alkenylbenzene — hepatocarcinogen via 1'-hydroxylation (IARC Group 2B),1
+MOL009551,isoprincepin,COc1c(Br)cc(/C=C2\O[C@H]3[C@@H](Cl)C[C@H](NC(=N)N)N3C2=O)cc1Br,Carcinogen alert: Secondary alkyl halide (aliphatic) — Potential alkylating agent — mutagenicity risk,1
+MOL010165,Jolkinolide A,CC1=C2C(=C[C@H]3[C@]4(C)CCCC(C)(C)[C@H]4CC[C@]34O[C@H]24)OC1=O,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL010166,Jolkinolide B,CC1=C2[C@H]3O[C@]34CC[C@@H]3C(C)(C)CCC[C@@]3(C)[C@@H]4[C@H]3O[C@@]23OC1=O,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL011092,apohyoscine,C=C(C(=O)O[C@H]1CC2C3O[C@@H]3[C@H](C1)N2C)c1ccccc1,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL011470,12-Deoxywithastramonolide,CC1=C(CO)C(=O)O[C@@H]([C@@H](C)[C@H]2CC[C@H]3[C@@H]4[C@@H]5O[C@@H]5[C@@]5(O)CC=CC(=O)[C@]5(C)[C@H]4CC[C@]23C)C1,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL011519,hyoscine,CN1C2C[C@H](OC(=O)[C@H](CO)c3ccccc3)C[C@H]1[C@H]1OC21,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL011540,withanolide D,CC1=C(C)C(=O)O[C@@H]([C@](C)(O)[C@H]2CC[C@H]3[C@@H]4C[C@H]5O[C@]56[C@@H](O)C=CC(=O)[C@]6(C)[C@H]4CC[C@]23C)C1,Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen,1
+MOL012904,Dauricumine,COC1=CC(=O)[C@]2([C@@H](Cl)C[C@@]34C(OC)=C(OC)C(=O)C[C@@]23CCN4C)[C@H]1O,Carcinogen alert: Secondary alkyl halide (aliphatic) — Potential alkylating agent — mutagenicity risk,1
+MOL012933,Tylophorinidine,COc1ccc2c3c(c4cc(OC)c(O)cc4c2c1)CN1CCC[C@H]1[C@H]3O,Carcinogen alert: Polycyclic aromatic hydrocarbon (>=3 fused rings) — PAH — metabolic epoxidation → DNA adducts (IARC Group 1/2A/2B),1

@@ -1,0 +1,359 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <!--<meta name="description" content="TCMSP (formerly known as http://tcmspnw.com) is a database for providing systems pharmacology analysis of TCM(Traditional Chinese Medicine),including evaluating ADME, potential targets and associated diseases." />
+    <meta name="keywords" content="tcm database,tcmsp,系统药理学,中药系统药理学,计算系统生物学,Systems pharmacology,Network pharmacology,TCM,Systems biology,Traditional Chinese Medicine,Traditional Chinese Medicine Systems Pharmacology Database and Analysis Platform"/> -->
+    <meta http-equiv="X-UA-Compatible" content="IE=10" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LSP - Lab of Systems Pharmacology | CSBL | 计算系统生物学</title>
+    <!--<title>内部测试</title>-->
+    <link rel="shortcut icon" href="img/favicon.png" type="image/vnd.microsoft.icon">
+    <link rel="stylesheet" href="css/style2.css" />
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <script type="text/javascript" src="js/jquery.min1.8.3.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min1.8.24.js"></script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?045f99afbec668d057769af796f1ed4f";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y7GC5FHYTY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-Y7GC5FHYTY');
+</script>
+
+<script>
+(function(){
+  const KEY='tcmsp_daily_popup_date';
+  const today=new Date().toISOString().slice(0,10);
+  if(localStorage.getItem(KEY)===today) return;
+
+  // 主题色：优先读 <html data-dp-primary="#0b5bd3">，否则用站点<a>链接色，最后兜底蓝
+  const htmlPrimary=document.documentElement.getAttribute('data-dp-primary');
+  const anchor = document.querySelector('a');
+  const primary = htmlPrimary || (anchor ? getComputedStyle(anchor).color : '#2b6cb0');
+
+  const css=document.createElement('style');
+  css.textContent = `
+    :root{
+      --dp-primary:${primary};
+      --dp-radius:12px;
+      --dp-border:#e5e7eb;
+      --dp-text:#111827;
+    }
+    #dp{position:fixed;inset:0;z-index:9999;}
+    #dp .b{position:absolute;inset:0;background:rgba(0,0,0,.28);}
+    #dp .m{
+      position:absolute; left:50%; top:10vh; transform:translateX(-50%);
+      width:min(92vw,720px); max-height:80vh;
+      display:grid; grid-template-rows:auto 1fr auto;
+      background:#fff; color:var(--dp-text);
+      border:1px solid var(--dp-border); border-radius:var(--dp-radius);
+      box-shadow:0 12px 30px rgba(0,0,0,.12);
+      opacity:0; transition:opacity .18s ease, transform .18s ease;
+    }
+    #dp.show .m{opacity:1;}
+    #dp .head{padding:16px 20px; border-top:4px solid var(--dp-primary);}
+    #dp .title{margin:0; font-size:20px; line-height:1.4; font-weight:600;}
+    #dp .scroller{padding:0 20px 16px; overflow:auto;}
+    #dp .ct{font-size:14px; line-height:1.75;}
+    #dp .ct h3{margin:14px 0 6px; font-size:15px; color:#111;}
+    #dp .ct p{margin:6px 0;}
+    #dp .qrbox{
+      margin:14px auto 0; padding:10px;
+      border:1px dashed #d1d5db; border-radius:10px;
+      max-width:280px; text-align:center;
+    }
+    #dp .qrbox img{display:block; width:100%; max-width:220px; height:auto; margin:0 auto;}
+    #dp .qrbox .cap{margin-top:6px; font-size:12px; color:#6b7280;}
+    #dc{
+      margin:0 20px 16px; justify-self:end;
+      display:inline-block; padding:10px 16px; font-size:14px;
+      border-radius:10px; border:1px solid var(--dp-primary);
+      background:var(--dp-primary); color:#fff; cursor:pointer;
+    }
+    #dc:active{transform:translateY(1px);}
+    @media (max-width:480px){ #dc{width:calc(100% - 40px); justify-self:stretch; } }
+  `;
+  document.head.appendChild(css);
+
+  const root=document.createElement('div');
+  root.id='dp';
+  root.innerHTML = `
+    <div class="b" aria-hidden="true"></div>
+    <div class="m" role="dialog" aria-modal="true" aria-labelledby="dt">
+      <div class="head"><h2 id="dt" class="title">十年砺剑，助您破局 —— TCMSP 9.01 前沿技术与应用高级研修班 邀请函</h2></div>
+      <div class="scroller">
+        <div class="ct">
+          <p>尊敬的教授/研究员：</p>
+          <p>您好！为助力中医药科研工作者掌握网络药理学前沿技术，突破传统研究瓶颈，提升论文与基金竞争力，特举办“TCMSP 9.01 前沿技术与应用高级研修班”。诚邀拨冗出席。</p>
+
+          <h3>一、组织单位</h3>
+          <p><b>主办单位：</b>陕西秦岭七药协同创新中心有限公司</p>
+          <p><b>协办单位：</b>西北大学、安徽中医药大学、西北工业大学、西安交通大学、西北农林科技大学、南京中医药大学</p>
+
+          <h3>二、报名对象</h3>
+          <p>面向全国开放，诚邀中医药相关领域硕博研究生、临床科研人员、高校教师、药企研发人员及科研管理者参加。</p>
+
+          <h3>三、研讨时间与地点</h3>
+          <p><b>时间：</b>2026年6月底</p>
+          <p><b>地点1：</b>陕西中医药大学实践教学基地（杨凌工业园区高干渠路东段3号工业园区公共服务中心15层）</p>
+
+          <h3>四、会议核心内容与重要性</h3>
+          <p>聚焦复方多成分协同作用及复杂网络机制解析，课程以系统药理学理论与方法为核心主线，系统涵盖中药复方网络分析、系统药理学工具与软件应用、分子对接、分子动力学模拟、转录组学分析及虚拟基因敲除等关键技术模块，并结合典型课题设计与天然产物筛选案例，构建从机制挖掘到功能验证的完整研究路径。通过理论讲解与实操训练相结合，全面提升学员在机制解析、低成本验证、高水平论文发表及基金设计等方面的综合能力。</p>
+
+          <div class="qrbox">
+            <img src="/attachment/tcmsp-invite.png" alt="报名二维码" loading="lazy" decoding="async">
+	    <div>扫码占位 → 立即领取独家预习资料包!</div>
+	    <div>17392526548 (官方电话及微信）</div>
+          </div>
+        </div>
+      </div>
+      <button id="dc" type="button" aria-label="关闭弹窗">我知道了</button>
+    </div>
+  `;
+
+  function mount(){
+    document.body.appendChild(root);
+    requestAnimationFrame(()=>root.classList.add('show'));
+    // 只允许点按钮关闭；如需点遮罩也关闭，解除下一行注释
+    // root.querySelector('.b').addEventListener('click', ()=>document.getElementById('dc').click());
+    document.getElementById('dc').addEventListener('click', function(){
+      try{ localStorage.setItem(KEY, today); }catch(e){}
+      root.remove(); document.documentElement.style.overflow='';
+    });
+    document.documentElement.style.overflow='hidden';
+  }
+  if(document.body){ mount(); } else { document.addEventListener('DOMContentLoaded', mount, {once:true}); }
+})();
+</script>
+
+
+</head>
+<body>
+<!--[if lte IE 8]>
+    <div class="alert alert-block alert-error fade in" id="note">
+        <button type="button" class="close" onclick="closeclick()">×</button>
+        <p style="font-size:18px" class="alert-heading">Sorry, your browser is not supported!!!</p>
+        <p>This website works best with latest version of <a href="https://www.google.com/intl/en/chrome/browser/">Google Chrome</a>, <a href="http://www.mozilla.org/en-US/firefox/">Firefox</a>, <a href="http://www.apple.com/safari/">Safari</a> or IE9+.</p>
+        <p>
+          <a class="btn btn-danger" href="recommended_browsers.html">See details</a>
+        </p>
+    </div>
+<script type="text/javascript">
+$(".alert").alert(close)
+</script>  
+<![endif]-->
+<div id="header">
+    <script>//clickclose();</script>
+    <div id="header_left">
+        <div class="logo">
+            <a href="index.php"><img src="img/lsplogo.png" alt="LSP" /></a>
+        </div>
+    </div>
+	<div id="header_right">
+		<div id="nav_name">
+			<div id="lab_name">
+				计算系统生物学实验室
+			</div>
+		</div>
+        <div id="nav">
+            <ul style="color:#000">
+                <li><a class=bi href="index.php">首页<span>Home</span></a></li>
+                <li><a class=bi href="#">软件<span>Database</span></a>
+                    <ul>
+                        <li><a href="tcmsp.php">TCMSP</a></li>
+			<li><a href="CancerHSP.php">CancerHSP</a></li>
+                        <li><a href="cvdsp.php">CVDSP</a></li>
+						<li><a href="predc.php">PreDC</a></li>
+                    </ul>
+                </li>
+                <!--<li><a class=bi href="members.php">团队风采<span>Members</span></a></li>-->
+                <li><a class=bi href="articles.php?id=15">关于我们<span>About</span></a></li>
+                <li><a class=bi href="articles.php?id=2">发表文章<span>Publications</span></a></li>
+                <li><a class=bi href="reference.php">引用查询<span>Reference</span></a></li>
+                <li><a class=bi href="articles.php?id=52">专利展示<span>Patents</span></a></li>
+<!--                <li><a class=bi href="news.php">团队动态<span>News</span></a></li>-->
+                <li><a class=bi href="articles.php?id=1">工具<span>Tools</span></a></li>
+                <!-- <li><a class=bi href="articles.php?id=30">联系我们<span>Contact</span></a></li>-->
+                <li><a class=bi href="articles.php?id=11">平台应用<span>Platform</span></a></li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<div style="line-height:24px;margin-top:4px"><marquee direction="right" scrollamount="9" scrolldelay="100"><a href="attachment/TCMSP9.01.pdf" target="_blank" style="color:#ff0000;font-size:24px;font-family:'黑体'"><strong>「TCMSP9.01升级版课程，开课了！」历经10年TCMSP原始创新团队，十年砺剑,助您破局！欢迎大家踊跃报名！</strong></a></marquee></div>
+		<!--<div style="line-height:32px;"><marquee direction="right" scrollamount="9" scrolldelay="100"><a href="articles.php?id=65" target="_blank" style="color:#ff0000;font-size:24px;font-family:'黑体'"><strong>重要: TCMSP 更新通知(域名还是tcmspw.com)</strong></a></marquee></div>-->
+<div id="container_lsp"> <!-- container start! close in footer.php -->
+
+<div id="sideNav">
+    <div class="section">
+        <div class="stitle">NEWS</div>
+        <div class="scontent">
+			<li><a href="attachment/TCMSP-Tech-Support.pdf" target="_blank" style="color:#ff0000">TCMSP 技术支持服务</a></li>
+			<!--<li><a href="attachment/ycz/2019_7.pdf" target="_blank" style="color:#ff0000">2019年系统和网络药理学原理、方法及应用研讨班(第7期)即将开课！</a></li>
+			<li><a href="attachment/ycz/2018_6.pdf" target="_blank">2018年系统和网络药理学原理、方法及应用研讨班(第6期)圆满结束！</a></li>
+			<li><a href="attachment/ycz/2018_5.pdf" target="_blank">2018年系统和网络药理学原理、方法及应用研讨班(第5期)圆满结束！</a></li>-->
+			<li><a href="attachment/TCMSP9.01.pdf" target="_blank" style="color:#ff0000">「TCMSP9.01升级版课程，开课了！」历经10年TCMSP原始创新团队，十年砺剑,助您破局！欢迎大家踊跃报名！</a></li>
+            <li><a href="load_intro.php?id=33" style="color:#ff0000">TCMSP update log</a></li>
+			<li><a href="load_intro.php?id=64">《系统药理学》专著出版了！</a></li>
+			<!--<li><a href="articles.php?id=63" style="color:#ff0000">2016年系统药理学原理、方法及应用研讨班(第4期)开课了！</a></li>-->
+            <li><a href="articles.php?id=37">Research Finds Herbal Medicines Can Inhibit Influenza</a></li>
+        </div>
+
+        <div class="stitle">SERVICE</div>
+        <div class="scontent">
+            <li><a href="articles.php?id=1">TCMSP Analysis Platform</a></li>
+        </div>
+
+        <div class="stitle">JOURNALS</div>
+        <div class="scontent">
+            <li><a href="http://www.nature.com/msb/index.html" target="_blank">Molecular Systems Biology</a></li>
+            <li><a href="http://www.nature.com/nature/index.html" target="_blank">Nature</a></li>
+            <li><a href="http://www.nature.com/ncomms/index.html" target="_blank">Nature Communications</a></li>
+            <li><a href="http://www.nature.com/nm/index.html" target="_blank">Nature Medicine</a></li>
+            <li><a href="http://www.naturechina.com.cn/nchina/index.html" target="_blank">Nature China</a></li>
+            <li><a href="http://www.ploscompbiol.org/" target="_blank">PLOS Computational Biology</a></li>
+            <li><a href="http://www.nature.com/psp/index.html" target="_blank">CPT: Pharmacometrics & Systems Pharmacology</a></li>
+            <li><a href="http://bib.oxfordjournals.org/" target="_blank">Briefings in Bioinformatics</a></li>
+            <li><a href="http://www.journals.elsevier.com/journal-of-ethnopharmacology/" target="_blank">Journal of Ethnopharmacology</a></li>
+        </div>
+
+        <div class="stitle">HOT LINKS</div>
+        <div class="scontent">
+            <li><a href="http://www.drugbank.ca/" target="_blank">Drugbank</a></li>
+            <li><a href="http://pubchem.ncbi.nlm.nih.gov/" target="_blank">PubChem</a></li>
+            <li><a href="http://www.pharmgkb.org/" target="_blank">PharmGKB</a></li>
+            <li><a href="http://www.fda.gov/" target="_blank">FDA</a></li>
+            <li><a href="http://www.uniprot.org/" target="_blank">Uniprot</a></li>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    // $(document).ready(function () {
+    //     $("#sideNav").jqxNavigationBar({ width: 225, expandMode: "multiple",theme:"arctic", expandedIndexes: [0,1,2,3]});
+    // });
+</script>
+<div class="right">
+  <div class="normTitleIndex">Latest Research Highlights:</div>
+<div class="innerRight">
+  <!-- slide start -->
+
+<div id="featured" >
+      <ul class="ui-tabs-nav">
+          <li class="ui-tabs-nav-item" id="nav-fragment-1"><a href="#fragment-1"><img src="img/rujinlong_article01.png" alt="" /><span>Journal of Cheminformatics<br/>2014</span></a></li>
+          <li class="ui-tabs-nav-item" id="nav-fragment-2"><a href="#fragment-2"><img src="img/pmj_article01.gif" alt="" /><span>Evidence based complementary and alternative medicine<br/>2013</span></a></li>
+          <li class="ui-tabs-nav-item" id="nav-fragment-3"><a href="#fragment-3"><img src="img/zw_article01.gif" alt="" /><span>Journal of Ethnopharmacology<br/>2013</span></a></li>
+          <li class="ui-tabs-nav-item" id="nav-fragment-4"><a href="#fragment-4"><img src="img/hc_article01.gif" alt="" /><span>Briefings in Bioinformatics<br/>2013</span></a></li>
+        </ul>
+
+      <!-- First Content -->
+      <div id="fragment-1" class="ui-tabs-panel ui-tabs-hide" style="">
+        <a href="/paper/TCMSP - a database of systems pharmacology for drug discovery from herbal medicines_Ru et al_2014.pdf" target="_blank">
+          <img src="img/rujinlong_article01.png" alt="" />
+        </a>
+       <div class="info" >
+        <p>TCMSP: a database of systems pharmacology for drug discovery from herbal medicines</p>
+           </div>
+      </div>
+
+      <div id="fragment-2" class="ui-tabs-panel" style="">
+        <a href="/paper/A Systems-Pharmacology Analysis of Herbal Medicines Used in Health Improvement_Liu et al_2013.pdf" target="_blank">
+          <img src="img/pmj_article01.gif" alt="" />
+        </a>
+       <div class="info" >
+        <p>A systems-pharmacology analysis of herbal medicines used in health improvement treatment: predicting potential new drugs and targets</p>
+       </div>
+      </div>
+
+      <div id="fragment-3" class="ui-tabs-panel ui-tabs-hide" style="">
+        <a href="/paper/A network-based analysis of the types of coronary artery disease from_Zhou et al_2013.pdf" target="_blank">
+          <img src="img/zw_article01.gif" alt="" />
+        </a>
+       <div class="info" >
+        <p>A network-based analysis of the types of coronary artery disease from traditional Chinese medicine perspective: potential for therapeutics and drug discovery</p>
+           </div>
+      </div>
+
+      <!-- Second Content -->
+      <div id="fragment-4" class="ui-tabs-panel ui-tabs-hide" style="">
+        <a href="/paper/Systems pharmacology in drug discovery and therapeutic insight for herbal_Huang et al_2013.pdf" target="_blank">
+          <img src="img/hc_article01.gif" alt="" />
+        </a>
+       <div class="info" >
+        <p>Systems pharmacology in drug discovery and therapeutic insight for herbal medicines</p>
+       </div>
+      </div>
+
+      <!-- Third Content -->
+      
+
+      <!-- Fourth Content -->
+
+    </div>
+  <!-- slide over -->
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#featured").tabs({fx:{opacity: "toggle"}}).tabs("rotate", 5000, true);
+  });
+</script>
+
+<div class="normTitleIndex">Introduction:</div>
+<div class="innerRight">
+    <div class="innerRightText">
+    <p>Recently, computational systems biology, as new emerging discipline, has brought a new combination of computational and experimental tools to bear on the discovery and investigation of drugs.  System-level understanding of pharmacological effects will help to understand how drugs work on specific pathways, on different cell types and in individual patients, thus facilitating drug discovery and development of combination therapies.</p>
+    <p>Using a variety of mathematical approaches combining with experimental validations, the current research topics of Systems Pharmacology Group led by Prof. Yonghua Wang focus on but not limit to:</p>
+    <p><strong>(1)  Computational systems biology theory and methods</strong></p>
+    <p><strong>(2)  Study of Traditional Chinese Medicine by computational systems biology</strong></p>
+    <p><strong>(3)  Cardiovascular computational systems biology</strong></p>
+    </div>
+</div>
+
+
+</div>
+</div> <!-- container over! start in header.php -->
+<div class="returnTop" title="TOP">
+  <span class="s"></span>
+  <span class="b"></span>
+  to top
+</div>
+<div id="footer">
+
+  <p id="funding">
+    Copyright © 2012 - 2023  Lab of Systems Pharmacology. All Rights Reserved.
+  </p>
+  <p id="about">
+	<a href="tcmsp.php">TCMSP</a> Version: <strong>2.3</strong> &#166; <a href="CancerHSP.php">CancerHSP</a> Version: <strong>1.3</strong> &#166; <a href="predc.php">PreDC</a> Version: <strong>1.0</strong></br>  
+<script type="text/javascript" src="//counter.websiteout.net/js/33/0/3267675/0"></script> visits since 2013.11     
+  </p>
+  <p>
+
+  </p>
+</div>
+</body>
+    
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/myjs_CancerHSP.js"></script>
+    <script type="text/javascript" src="js/kendo.web.min.js"></script>
+<script type="text/javascript" src="cytoscape/js/cytoscapeweb.min.js"></script>
+<script type="text/javascript">
+//var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+//document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fbe6af90d9662a084ea4e4ce5b3f0f47b' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+</html>
+

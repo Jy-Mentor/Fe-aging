@@ -1,0 +1,246 @@
+{
+  "filter_stats": {
+    "input_count": 574,
+    "excluded_count": 42,
+    "clean_count": 532,
+    "exclusion_rate": 7.32,
+    "total_alerts": 44,
+    "alert_types": {
+      "Carcinogen alert": 44
+    },
+    "strict_mode": true,
+    "timestamp": "2026-06-23T23:19:07.468860"
+  },
+  "self_check": {
+    "column_integrity": {
+      "original_cols": 35,
+      "clean_cols": 35,
+      "missing_cols": [],
+      "extra_cols": [],
+      "passed": true
+    },
+    "count_consistency": {
+      "original": 574,
+      "clean + excluded": 574,
+      "matched": true,
+      "passed": true
+    },
+    "sample_validation": {
+      "sample_size": 30,
+      "samples": [
+        {
+          "MOL_ID": "MOL005800",
+          "name": "Byakangelicol",
+          "reasons": "Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL001782",
+          "name": "(2Z)-2-(2-oxoindolin-3-ylidene)indolin-3-one",
+          "reasons": "Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL000787",
+          "name": "Fumarine",
+          "reasons": "Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL006411",
+          "name": "obacunone",
+          "reasons": "Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL000318",
+          "name": "(1R,5S,6R,7R,8R)-3-allyl-6-(3,4-dimethoxyphenyl)-8-hydroxy-1-methoxy-7-methyl-4-bicyclo[3.2.1]oct-2-enone",
+          "reasons": "Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL011540",
+          "name": "withanolide D",
+          "reasons": "Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL004025",
+          "name": "N-(2-Methylaminobenzoyl)tryptamine",
+          "reasons": "Carcinogen alert: Aromatic amine — Genotoxic carcinogen — N-hydroxylation to reactive nitrenium",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL007218",
+          "name": "Remerin",
+          "reasons": "Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL008146",
+          "name": "Riddelline",
+          "reasons": "Carcinogen alert: 1,2-unsaturated pyrrolizidine core — Pyrrolizidine alkaloid — hepatocarcinogen (IARC Group 2B)",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL000500",
+          "name": "Vestitol",
+          "reasons": "Carcinogen alert: Nitro group — Genotoxic carcinogen — nitroreduction to reactive nitrenium ion | Carcinogen alert: N-Nitroso group — Potent genotoxic carcinogen — α-hydroxylation → DNA alkylation",
+          "alert_count": 2
+        },
+        {
+          "MOL_ID": "MOL006801",
+          "name": "phyllaemblicacid methyl ester",
+          "reasons": "Carcinogen alert: Aromatic amine — Genotoxic carcinogen — N-hydroxylation to reactive nitrenium",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL001554",
+          "name": "Scopolamine",
+          "reasons": "Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL003192",
+          "name": "Triptonide",
+          "reasons": "Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL000796",
+          "name": "(22e,24r)-ergosta-6-en-3beta,5alpha,6beta-triol",
+          "reasons": "Carcinogen alert: Aromatic amine — Genotoxic carcinogen — N-hydroxylation to reactive nitrenium",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL003187",
+          "name": "triptolide",
+          "reasons": "Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL009551",
+          "name": "isoprincepin",
+          "reasons": "Carcinogen alert: Secondary alkyl halide (aliphatic) — Potential alkylating agent — mutagenicity risk",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL003188",
+          "name": "Tripchlorolide",
+          "reasons": "Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen | Carcinogen alert: Secondary alkyl halide (aliphatic) — Potential alkylating agent — mutagenicity risk",
+          "alert_count": 2
+        },
+        {
+          "MOL_ID": "MOL011092",
+          "name": "apohyoscine",
+          "reasons": "Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL010166",
+          "name": "Jolkinolide B",
+          "reasons": "Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL000011",
+          "name": "(2R,3R)-3-(4-hydroxy-3-methoxy-phenyl)-5-methoxy-2-methylol-2,3-dihydropyrano[5,6-h][1,4]benzodioxin-9-one",
+          "reasons": "Carcinogen alert: Primary alkyl halide (aliphatic) — Potential alkylating agent — direct mutagenicity risk",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL005756",
+          "name": "2,3,4,7-tetramethoxyphenanthrene",
+          "reasons": "Carcinogen alert: Polycyclic aromatic hydrocarbon (>=3 fused rings) — PAH — metabolic epoxidation → DNA adducts (IARC Group 1/2A/2B)",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL000330",
+          "name": "piperlactam S",
+          "reasons": "Carcinogen alert: Polycyclic aromatic hydrocarbon (>=3 fused rings) — PAH — metabolic epoxidation → DNA adducts (IARC Group 1/2A/2B)",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL001439",
+          "name": "arachidonic acid",
+          "reasons": "Carcinogen alert: Polycyclic aromatic hydrocarbon (>=3 fused rings) — PAH — metabolic epoxidation → DNA adducts (IARC Group 1/2A/2B)",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL012904",
+          "name": "Dauricumine",
+          "reasons": "Carcinogen alert: Secondary alkyl halide (aliphatic) — Potential alkylating agent — mutagenicity risk",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL000028",
+          "name": "α-Amyrin",
+          "reasons": "Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL008918",
+          "name": "Arteglasin A",
+          "reasons": "Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL005088",
+          "name": "Nivalenol",
+          "reasons": "Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL000033",
+          "name": "(3S,8S,9S,10R,13R,14S,17R)-10,13-dimethyl-17-[(2R,5S)-5-propan-2-yloctan-2-yl]-2,3,4,7,8,9,11,12,14,15,16,17-dodecahydro-1H-cyclopenta[a]phenanthren-3-ol",
+          "reasons": "Carcinogen alert: Epoxide — DNA alkylating agent — direct-acting mutagen/carcinogen",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL009030",
+          "name": "Dehydrodieugenol",
+          "reasons": "Carcinogen alert: Alkenylbenzene core (allylbenzene) — Alkenylbenzene — hepatocarcinogen via 1'-hydroxylation (IARC Group 2B)",
+          "alert_count": 1
+        },
+        {
+          "MOL_ID": "MOL012933",
+          "name": "Tylophorinidine",
+          "reasons": "Carcinogen alert: Polycyclic aromatic hydrocarbon (>=3 fused rings) — PAH — metabolic epoxidation → DNA adducts (IARC Group 1/2A/2B)",
+          "alert_count": 1
+        }
+      ]
+    },
+    "exclusion_rate_check": {
+      "rate": 7.32,
+      "total_excluded": 42,
+      "total_original": 574,
+      "note": "天然产物中低毒性化合物比例高，剔除率 <5% 属正常；若含大量PA/烯基苯类成分，剔除率可达30%以上"
+    },
+    "nan_check": {
+      "columns_with_nan": [],
+      "known_nullable_ignored": [
+        "MW_DIFF",
+        "MW_REL_DIFF",
+        "PAINS_Matches",
+        "bbb",
+        "caco2",
+        "dl",
+        "ob"
+      ],
+      "passed": true
+    },
+    "smiles_validity": {
+      "invalid_count": 0,
+      "passed": true
+    },
+    "overall": "PASSED"
+  },
+  "output_paths": {
+    "exclusion_log": "D:\\铁衰老 绝不重蹈覆辙\\L3\\data\\toxicity_exclusion_log_20260623_231907.csv",
+    "clean_pool": "D:\\铁衰老 绝不重蹈覆辙\\L3\\results\\tcm_compound_pool_tox_filtered.csv",
+    "stats": "D:\\铁衰老 绝不重蹈覆辙\\L3\\data\\toxicity_filter_stats_20260623_231907.json"
+  },
+  "known_carcinogen_count": 18,
+  "carcinogen_filter_count": 19,
+  "timestamp": "2026-06-23T23:19:07.538116"
+}

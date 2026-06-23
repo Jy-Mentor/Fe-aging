@@ -1,0 +1,16 @@
+sample,group,species,platform,data_type,time,tissue
+Sham_1,Sham,Rat,GPL1355,Affymetrix_microarray,7d,Brain_right_hemisphere
+Sham_2,Sham,Rat,GPL1355,Affymetrix_microarray,7d,Brain_right_hemisphere
+Sham_3,Sham,Rat,GPL1355,Affymetrix_microarray,7d,Brain_right_hemisphere
+Sham_4,Sham,Rat,GPL1355,Affymetrix_microarray,7d,Brain_right_hemisphere
+Sham_5,Sham,Rat,GPL1355,Affymetrix_microarray,7d,Brain_right_hemisphere
+Model_1,MCAO,Rat,GPL1355,Affymetrix_microarray,7d,Brain_right_hemisphere
+Model_2,MCAO,Rat,GPL1355,Affymetrix_microarray,7d,Brain_right_hemisphere
+Model_3,MCAO,Rat,GPL1355,Affymetrix_microarray,7d,Brain_right_hemisphere
+Model_4,MCAO,Rat,GPL1355,Affymetrix_microarray,7d,Brain_right_hemisphere
+Model_5,MCAO,Rat,GPL1355,Affymetrix_microarray,7d,Brain_right_hemisphere
+XST_1,XST_treatment,Rat,GPL1355,Affymetrix_microarray,7d,Brain_right_hemisphere
+XST_2,XST_treatment,Rat,GPL1355,Affymetrix_microarray,7d,Brain_right_hemisphere
+XST_3,XST_treatment,Rat,GPL1355,Affymetrix_microarray,7d,Brain_right_hemisphere
+XST_4,XST_treatment,Rat,GPL1355,Affymetrix_microarray,7d,Brain_right_hemisphere
+XST_5,XST_treatment,Rat,GPL1355,Affymetrix_microarray,7d,Brain_right_hemisphere
