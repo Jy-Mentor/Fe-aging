@@ -1,0 +1,74 @@
+﻿random_seed: 42
+model:
+  hidden_dim: 128
+  out_dim: 128
+  num_layers: 2
+  dropout: 0.4
+  num_heads: 2
+  prot_proj_dropout: 0.3
+  prot_proj_inner_dropout: 0.25
+  pathway_proj_dropout: 0.25
+  pheno_head_dropout: 0.3
+  score_clamp: 10.0
+  temperature: 5.0          # v31: 温度参数
+  decoder_type: bilinear
+sage:
+  epochs: 20
+  lr: 0.0003
+  patience: 5
+  batch_size: 256
+  num_neighbors:
+  - 32
+  - 16
+  two_stage: true
+  pretrain_epochs: 10
+  pretrain_lr: 0.00045
+hgt:
+  epochs: 20
+  lr: 0.0006
+  patience: 5
+  batch_size: 128
+  num_neighbors:
+  - 32
+  - 16
+  two_stage: true
+  pretrain_epochs: 10
+  pretrain_lr: 0.0009
+two_stage:
+  head_ratio: 0.2
+  lambda_hhi: 1.0
+  head_undersample_ratio: 0.6
+  infonce_warmup_ratio: 0.15
+  pretrain_lr_multiplier: 1.5
+  pretrain_lr_decay: 0.5
+curriculum:
+  random_ratio: 0.3
+  moderate_ratio: 0.4
+  hard_ratio: 0.3
+  moderate_pathway_weight: 0.3
+  medium_neg_ratio: 0.3
+  hard_neg_ratio: 0.1
+loss:
+  focal_gamma: 2.0
+  focal_alpha: 0.75
+  label_smoothing_pos: 0.9
+  label_smoothing_neg: 0.1
+  bpr_weight: 0.6
+  bce_weight: 0.4
+  infonce_weight: 0.1
+  infonce_temperature: 0.07
+training:
+  weight_decay: 5.0e-05
+  grad_clip_norm: 1.0
+  warmup_ratio: 0.15
+  pheno_lambda: 0.05
+  dropedge_ppi: 0.15
+  dropedge_pathway: 0.1
+  flag_step: 0.01
+validation:
+  val_freq: 5
+  pretrain_val_freq: 5  # v33-diag: 临时恢复为5，快速获取HGT诊断日志
+  mem_refresh_freq: 5
+memory_bank:
+  memory_bank_size: 8192
+  infonce_mem_sample: 256

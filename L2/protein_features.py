@@ -148,7 +148,12 @@ def fetch_uniprot_annotations(uniprot_id):
 
 
 def parse_uniprot_features(uniprot_id, data):
-    """Parse UniProt JSON to extract key features."""
+    """Parse UniProt JSON to extract key features.
+
+    注意：UniProt REST API 返回的 feature type 是 Title Case
+    （如 Domain, Signal, Transmembrane, Modified residue），
+    因此比较时使用 .lower() 进行不区分大小写的匹配。
+    """
     features = {
         'uniprot_id': uniprot_id,
         'protein_name': '',
@@ -180,18 +185,20 @@ def parse_uniprot_features(uniprot_id, data):
         # Comments
         comments = data.get('comments', [])
         for comment in comments:
-            if comment.get('commentType') == 'SUBCELLULAR LOCATION':
+            if comment.get('commentType', '').upper() == 'SUBCELLULAR LOCATION':
                 locations = comment.get('subcellularLocations', [])
                 if locations:
                     features['subcellular_main'] = locations[0].get('location', {}).get('value', '')
 
-        # Features (domains, PTMs)
+        # Features (domains, PTMs, signal peptide, transmembrane)
         feat_list = data.get('features', [])
         for feat in feat_list:
-            ftype = feat.get('type', '')
-            if ftype == 'DOMAIN' or ftype == 'ZN_FING':
+            ftype = feat.get('type', '').lower()
+            if ftype in ('domain', 'zinc finger', 'repeat'):
                 features['n_domains'] += 1
-            elif ftype == 'MOD_RES' or ftype == 'CROSSLNK':
+            elif ftype in ('mod_res', 'crosslnk', 'modified residue', 'cross-link',
+                           'glycosylation', 'disulfide bond', 'lipidation',
+                           'propeptide', 'initiator methionine'):
                 features['n_ptms'] += 1
                 desc = feat.get('description', '')
                 if 'phospho' in desc.lower():
@@ -200,9 +207,9 @@ def parse_uniprot_features(uniprot_id, data):
                     features['n_ubiquitination'] += 1
                 elif 'acetyl' in desc.lower():
                     features['n_acetylation'] += 1
-            elif ftype == 'SIGNAL':
+            elif ftype in ('signal', 'signal peptide'):
                 features['has_signal_peptide'] = True
-            elif ftype == 'TRANSMEM':
+            elif ftype in ('transmem', 'transmembrane'):
                 features['has_transmembrane'] = True
                 features['n_transmembrane'] += 1
 

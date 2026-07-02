@@ -186,6 +186,10 @@ def merge_gsva_summary(explanation):
     gsva_summary.to_csv(os.path.join(RESULTS_DIR, 'gsva_summary_stats.csv'), index=False)
     logger.info("GSVA summary stats saved: %d metrics", len(gsva_summary))
 
+    # Merge GSVA summary stats into explanation (global features, same value for all genes)
+    for _, row in gsva_summary.iterrows():
+        explanation[row['metric']] = row['value']
+
     return explanation
 
 

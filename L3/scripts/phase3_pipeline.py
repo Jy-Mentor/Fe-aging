@@ -120,6 +120,8 @@ for d in [L3_DATA, L3_RESULTS, L3_RESULTS_FIGURES, L3_RESULTS_CONFORMERS, L3_LOG
 TCMSP_INGREDIENTS = TCMSP_DIR / "ingredients_data.xlsx"
 COCONUT_CSV = L3_DATA / "coconut_csv" / "coconut_csv_lite-05-2026.csv"
 SMILES_CACHE = L3_DATA / "pubchem_smiles_cache.json"
+FIXED_SMILES_CSV = L3_RESULTS / "tcmsp_smiles_fixed_v4.csv"
+HERB_MAP_FILE = L3_RESULTS / "herb_ingredient_mapping.xlsx"
 
 # 输出文件
 COMPOUND_POOL = L3_RESULTS / "tcm_compound_pool_filtered.csv"
@@ -402,120 +404,136 @@ def generate_conformers(mol, mol_id, max_confs=50, output_dir=None):
         return False, 0
 
 # ============================================================
-# 主流程
+# 数据加载层
 # ============================================================
-def main():
-    t_start = time.time()
-    logger.info("=" * 70)
-    logger.info("Phase 3 - 中药单体数据库构建 (v3 完整版)")
-    logger.info(f"启动: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    logger.info(f"RDKit: {rdkit.__version__}")
-    logger.info("=" * 70)
+def load_tcmsp_data(file_path):
+    """
+    加载 TCMSP 化合物数据。
 
-    # ================================================================
-    # [53-54] 步骤1: 加载 TCMSP 数据
-    # ================================================================
-    logger.info("[Step 1/10] 加载 TCMSP 化合物数据...")
-    if not TCMSP_INGREDIENTS.exists():
-        logger.error(f"TCMSP 数据文件不存在: {TCMSP_INGREDIENTS}")
-        return False
-    raw = pd.read_excel(TCMSP_INGREDIENTS)
+    Args:
+        file_path: TCMSP 数据文件路径（Path 对象）
+
+    Returns:
+        pd.DataFrame: 原始化合物数据
+
+    Raises:
+        FileNotFoundError: 当数据文件不存在时
+    """
+    if not file_path.exists():
+        raise FileNotFoundError(f"TCMSP 数据文件不存在: {file_path}")
+    raw = pd.read_excel(file_path)
     logger.info(f"  TCMSP 化合物总数: {len(raw):,}")
     logger.info(f"  MW 范围: {raw['mw'].min():.1f} - {raw['mw'].max():.1f}")
     logger.info(f"  OB 范围: {raw['ob'].min():.1f} - {raw['ob'].max():.1f}%")
     logger.info(f"  DL 范围: {raw['dl'].min():.3f} - {raw['dl'].max():.3f}")
+    return raw
 
-    # ================================================================
-    # [54] 步骤2: OB/DL 过滤活性化合物
-    # ================================================================
-    logger.info("[Step 2/10] 过滤活性化合物 (OB >= 30%, DL >= 0.18)...")
-    active = raw[(raw["ob"] >= 30) & (raw["dl"] >= 0.18)].copy()
-    active["orig_idx"] = active.index  # 保留原始索引
+
+# ============================================================
+# 数据处理层
+# ============================================================
+def filter_active_compounds(df, ob_threshold=30.0, dl_threshold=0.18):
+    """
+    基于 OB 和 DL 值过滤活性化合物。
+
+    Args:
+        df: 原始化合物数据 DataFrame
+        ob_threshold: 口服生物利用度阈值
+        dl_threshold: 类药性阈值
+
+    Returns:
+        pd.DataFrame: 过滤后的活性化合物
+    """
+    active = df[(df["ob"] >= ob_threshold) & (df["dl"] >= dl_threshold)].copy()
+    active["orig_idx"] = active.index
     active = active.reset_index(drop=True)
-    n_after_obdl = len(active)
-    logger.info(f"  过滤前: {len(raw):,} -> 过滤后: {n_after_obdl:,} ({n_after_obdl/len(raw)*100:.1f}%)")
+    n_after = len(active)
+    logger.info(f"  过滤前: {len(df):,} -> 过滤后: {n_after:,} ({n_after/len(df)*100:.1f}%)")
     logger.info(f"  MW: {active['mw'].mean():.1f} ± {active['mw'].std():.1f}")
     logger.info(f"  OB: {active['ob'].mean():.1f} ± {active['ob'].std():.1f}%")
     logger.info(f"  DL: {active['dl'].mean():.3f} ± {active['dl'].std():.3f}")
+    return active
 
-    if len(active) == 0:
-        logger.error("无活性化合物，终止")
-        return False
 
-    # ================================================================
-    # [58] 步骤3: 获取 SMILES（PubChem + COCONUT）
-    # ================================================================
-    logger.info("[Step 3/10] 获取 SMILES (PubChem + COCONUT)...")
-    cache = load_cache()
-    logger.info(f"  SMILES 缓存: {len(cache)} 条")
-    names = active["molecule_name"].dropna().unique().tolist()
+def acquire_smiles(active_df):
+    """
+    从修复后的 SMILES 文件加载化合物的 SMILES（v4 修正版：MW 校验通过）。
+
+    数据来源：fix_smiles_v4.py 产出的 tcmsp_smiles_fixed_v4.csv，
+    已通过 COCONUT 精确名称匹配 + PubChem API + MW 三重验证。
+
+    Args:
+        active_df: 活性化合物 DataFrame（须含 molecule_name 列）
+
+    Returns:
+        tuple: (smiles_map dict, hit_rate float)
+    """
+    names = active_df["molecule_name"].dropna().unique().tolist()
     logger.info(f"  待查询: {len(names)} 个唯一名称")
 
+    # 加载修复后的 SMILES
+    if not FIXED_SMILES_CSV.exists():
+        logger.error(f"修复后的 SMILES 文件不存在: {FIXED_SMILES_CSV}")
+        logger.error("请先运行 fix_smiles_v4.py 生成修正后的 SMILES 文件")
+        return {}, 0.0
+
+    fixed_df = pd.read_csv(FIXED_SMILES_CSV)
+    fixed_map = dict(zip(fixed_df["molecule_name"], fixed_df["SMILES"]))
+    logger.info(f"  修复后 SMILES 映射: {len(fixed_map)} 条 (MW 校验通过)")
+
     smiles_map = {}
-    new_pubchem = 0
-    new_coconut = 0
     fail_count = 0
-
-    for i, name in enumerate(names):
-        if name in cache:
-            smiles_map[name] = cache[name]
-            continue
-
-        # 先查 COCONUT（本地，快）
-        row = active[active["molecule_name"] == name].iloc[0]
-        smiles = search_coconut(name, row.get("mw"))
-        if smiles:
-            smiles_map[name] = smiles
-            cache[name] = smiles
-            new_coconut += 1
+    for name in names:
+        if name in fixed_map and isinstance(fixed_map[name], str) and len(fixed_map[name]) > 3:
+            smiles_map[name] = fixed_map[name]
         else:
-            # PubChem 回退
-            smiles = get_smiles_from_pubchem(name, timeout_sec=3)
-            if smiles:
-                smiles_map[name] = smiles
-                cache[name] = smiles
-                new_pubchem += 1
-            else:
-                fail_count += 1
+            fail_count += 1
 
-        if (i + 1) % 200 == 0:
-            save_cache(cache)
-            logger.info(f"  进度: {i+1}/{len(names)} (COCONUT: {new_coconut}, PubChem: {new_pubchem}, 失败: {fail_count})")
-
-    save_cache(cache)
-    hit_rate = len(smiles_map) / len(names) * 100
+    hit_rate = len(smiles_map) / len(names) * 100 if names else 0
     logger.info(f"  SMILES 获取: {len(smiles_map)}/{len(names)} ({hit_rate:.1f}%)")
-    logger.info(f"    PubChem 新增: {new_pubchem}, COCONUT 新增: {new_coconut}, 失败: {fail_count}")
+    logger.info(f"  失败: {fail_count} 个（不在修复文件中或无有效 SMILES）")
+    return smiles_map, hit_rate
 
-    # ================================================================
-    # [59] 步骤4: RDKit SMILES 规范化
-    # ================================================================
-    logger.info("[Step 4/10] RDKit SMILES 规范化...")
-    active["SMILES"] = active["molecule_name"].map(smiles_map)
-    active["SMILES_std"] = active["SMILES"].apply(standardize_smiles)
-    valid_mask = active["SMILES_std"].notna()
-    logger.info(f"  规范化成功: {valid_mask.sum()}/{len(active)}")
-    failed_names = active.loc[~valid_mask, "molecule_name"].tolist()
+
+def standardize_smiles_batch(df):
+    """
+    RDKit SMILES 规范化：映射 SMILES → 标准化 SMILES → 过滤无效。
+
+    Args:
+        df: 含 "SMILES" 列和 "molecule_name" 列的 DataFrame
+
+    Returns:
+        pd.DataFrame: 仅保留规范化成功的行
+    """
+    df["SMILES_std"] = df["SMILES"].apply(standardize_smiles)
+    valid_mask = df["SMILES_std"].notna()
+    logger.info(f"  规范化成功: {valid_mask.sum()}/{len(df)}")
+    failed_names = df.loc[~valid_mask, "molecule_name"].tolist()
     if failed_names and len(failed_names) <= 20:
         logger.warning(f"  规范化失败: {failed_names}")
 
-    active = active[valid_mask].copy()
-    active = active.reset_index(drop=True)
-    if len(active) == 0:
-        logger.error("无有效化合物，终止")
-        return False
+    df = df[valid_mask].copy().reset_index(drop=True)
+    return df
 
-    # ================================================================
-    # [60-64] 步骤5: 分子指纹 + 描述符 + 类药性过滤
-    # ================================================================
-    logger.info("[Step 5/10] 分子指纹 + 描述符 + 类药性过滤...")
 
-    # 初始化 PAINS 过滤器
+def compute_fingerprints_batch(df, smiles_col="SMILES_std"):
+    """
+    批量计算分子指纹、描述符和类药性过滤标记。
+
+    Args:
+        df: 含 SMILES 列的化合物 DataFrame
+        smiles_col: SMILES 列名
+
+    Returns:
+        dict: {
+            'ecfp4': list, 'maccs': list, 'descriptors': list,
+            'properties': list, 'filters': list, 'valid_indices': list
+        }
+    """
     pains_params = FilterCatalogParams()
     pains_params.AddCatalog(FilterCatalogParams.FilterCatalogs.PAINS)
     pains_catalog = FilterCatalog(pains_params)
 
-    mol_list = []
     ecfp4_list = []
     maccs_list = []
     desc_list = []
@@ -523,32 +541,26 @@ def main():
     filter_list = []
     valid_indices = []
 
-    for i, (_, row) in enumerate(active.iterrows()):
+    for i, (_, row) in enumerate(df.iterrows()):
         try:
-            mol = Chem.MolFromSmiles(row["SMILES_std"])
+            mol = Chem.MolFromSmiles(row[smiles_col])
             if mol is None:
                 continue
 
-            mol_list.append(mol)
             valid_indices.append(i)
 
-            # ECFP4 (2048位)
             ecfp4 = AllChem.GetMorganFingerprintAsBitVect(mol, radius=2, nBits=2048)
             ecfp4_list.append(ecfp4)
 
-            # MACCS (166位)
             maccs = MACCSkeys.GenMACCSKeys(mol)
             maccs_list.append(maccs)
 
-            # RDKit 2D 描述符
             desc = compute_rdkit_descriptors(mol)
             desc_list.append(desc)
 
-            # 分子性质
             props = compute_molecular_properties(mol)
             prop_list.append(props)
 
-            # 类药性过滤
             lip_pass, lip_viol = filter_lipinski(props["MW"], props["LogP"], props["HBD"], props["HBA"])
             bbb = filter_bbb(props["TPSA"], props["LogP"])
             pains_pass, pains_matches = filter_pains(mol, pains_catalog)
@@ -563,119 +575,213 @@ def main():
         except Exception as e:
             logger.warning(f"  处理失败 [idx={i}, name={row.get('molecule_name', '?')}]: {e}")
 
-    # 只保留成功处理的化合物
-    active = active.iloc[valid_indices].copy().reset_index(drop=True)
-    logger.info(f"  成功处理: {len(active)}/{len(valid_indices)} 个化合物")
+    logger.info(f"  成功处理: {len(valid_indices)}/{len(df)} 个化合物")
+    return {
+        "ecfp4": ecfp4_list,
+        "maccs": maccs_list,
+        "descriptors": desc_list,
+        "properties": prop_list,
+        "filters": filter_list,
+        "valid_indices": valid_indices,
+    }
 
-    # 合并过滤结果
-    filter_df = pd.DataFrame(filter_list)
+
+def merge_fingerprint_results(df, fp_results):
+    """
+    将指纹计算结果（过滤标记、分子性质）合并回 DataFrame。
+
+    Args:
+        df: 原始化合物 DataFrame
+        fp_results: compute_fingerprints_batch 的返回字典
+
+    Returns:
+        pd.DataFrame: 合并了过滤标记和分子性质的 DataFrame
+    """
+    df = df.iloc[fp_results["valid_indices"]].copy().reset_index(drop=True)
+
+    filter_df = pd.DataFrame(fp_results["filters"])
     for col in filter_df.columns:
-        active[col] = filter_df[col].values
+        df[col] = filter_df[col].values
 
-    # 合并分子性质
-    prop_df = pd.DataFrame(prop_list)
+    prop_df = pd.DataFrame(fp_results["properties"])
     for col in prop_df.columns:
-        active[col] = prop_df[col].values
+        df[col] = prop_df[col].values
 
-    logger.info(f"  Lipinski 通过: {active['Lipinski_Pass'].sum()}/{len(active)}")
-    logger.info(f"  BBB+ 或 BBB+/-: {active['BBB_Prediction'].isin(['BBB+', 'BBB+/-']).sum()}/{len(active)}")
-    logger.info(f"  PAINS 通过: {active['PAINS_Pass'].sum()}/{len(active)}")
+    logger.info(f"  Lipinski 通过: {df['Lipinski_Pass'].sum()}/{len(df)}")
+    logger.info(f"  BBB+ 或 BBB+/-: {df['BBB_Prediction'].isin(['BBB+', 'BBB+/-']).sum()}/{len(df)}")
+    logger.info(f"  PAINS 通过: {df['PAINS_Pass'].sum()}/{len(df)}")
+    return df
 
-    # ================================================================
-    # [新增] 步骤5b: 名称-SMILES 一致性校验（基于原始 mw 与 RDKit 计算 MW）
-    # ================================================================
-    logger.info("[Step 5b/10] 名称-SMILES 一致性校验...")
-    active, n_uncertain = validate_name_smiles_match(active)
-    logger.info(f"  MW 一致条目: {(active['SMILES_MATCH_STATUS'] == 'MATCH_OK').sum()}/{len(active)}")
-    logger.info(f"  MW 不确定条目: {n_uncertain}/{len(active)}")
+
+def validate_name_smiles_batch(df):
+    """
+    名称-SMILES 一致性校验：基于原始 MW 与 RDKit 计算 MW 比较。
+
+    Args:
+        df: 含 "SMILES_std", "mw", "MW" 列的 DataFrame
+
+    Returns:
+        tuple: (过滤后的 DataFrame, n_uncertain int)
+    """
+    df, n_uncertain = validate_name_smiles_match(df)
+    logger.info(f"  MW 一致条目: {(df['SMILES_MATCH_STATUS'] == 'MATCH_OK').sum()}/{len(df)}")
+    logger.info(f"  MW 不确定条目: {n_uncertain}/{len(df)}")
     if n_uncertain > 0:
         uncertain_path = L3_RESULTS / "smiles_match_uncertain.csv"
-        active[active["SMILES_MATCH_STATUS"] == "UNCERTAIN"][
+        df[df["SMILES_MATCH_STATUS"] == "UNCERTAIN"][
             ["MOL_ID", "molecule_name", "SMILES_std", "mw", "MW", "MW_DIFF", "MW_REL_DIFF"]
         ].to_csv(uncertain_path, index=False, float_format="%.4f")
         logger.warning(f"  {n_uncertain} 个化合物名称-SMILES 匹配不确定，已保存到 {uncertain_path}")
-        # 默认剔除不确定匹配，避免错误结构进入候选池
-        active = active[active["SMILES_MATCH_STATUS"] == "MATCH_OK"].copy().reset_index(drop=True)
-        logger.info(f"  剔除后剩余: {len(active)}")
+        df = df[df["SMILES_MATCH_STATUS"] == "MATCH_OK"].copy().reset_index(drop=True)
+        logger.info(f"  剔除后剩余: {len(df)}")
+    return df, n_uncertain
 
-    # ================================================================
-    # [61-64] 步骤6: 综合过滤
-    # ================================================================
-    logger.info("[Step 6/10] 综合类药性过滤...")
-    final = active[
-        active["Lipinski_Pass"] &
-        active["BBB_Prediction"].isin(["BBB+", "BBB+/-"]) &
-        active["PAINS_Pass"]
+
+def apply_druglikeness_filters(df):
+    """
+    综合类药性过滤：Lipinski + BBB + PAINS 三项全部通过。
+
+    Args:
+        df: 含 "Lipinski_Pass", "BBB_Prediction", "PAINS_Pass" 列的 DataFrame
+
+    Returns:
+        pd.DataFrame: 过滤后的候选化合物
+    """
+    final = df[
+        df["Lipinski_Pass"] &
+        df["BBB_Prediction"].isin(["BBB+", "BBB+/-"]) &
+        df["PAINS_Pass"]
     ].copy().reset_index(drop=True)
-    logger.info(f"  综合过滤后: {len(final)}/{len(active)} ({len(final)/len(active)*100:.1f}%)")
+    logger.info(f"  综合过滤后: {len(final)}/{len(df)} ({len(final)/len(df)*100:.1f}%)")
 
     if len(final) == 0:
         logger.error("无候选化合物通过过滤，终止")
-        # 放宽过滤条件
         logger.warning("尝试放宽过滤条件...")
-        final = active[active["Lipinski_Pass"]].copy().reset_index(drop=True)
+        final = df[df["Lipinski_Pass"]].copy().reset_index(drop=True)
         logger.info(f"  仅保留 Lipinski 通过: {len(final)} 个")
-        if len(final) == 0:
-            return False
+    return final
 
-    # ================================================================
-    # [新增] 步骤6b: 基于规范 SMILES 去重
-    # ================================================================
-    logger.info("[Step 6b/10] 基于 SMILES_std 去重...")
-    n_before_dedup = len(final)
-    # 保留原索引以便与 ecfp4_list/maccs_list/desc_list 对齐
-    final = final.drop_duplicates(subset=["SMILES_std"], keep="first").copy()
-    n_dropped = n_before_dedup - len(final)
-    n_unique = final["SMILES_std"].nunique()
-    logger.info(f"  去重前: {n_before_dedup}, 去重后: {len(final)}, 剔除重复: {n_dropped}")
+
+def deduplicate_compounds(df):
+    """
+    基于 SMILES_std 去重。
+
+    Args:
+        df: 含 "SMILES_std" 列的 DataFrame
+
+    Returns:
+        tuple: (去重后的 DataFrame, final_indices, n_before_dedup, n_dropped, n_unique)
+    """
+    n_before = len(df)
+    df = df.drop_duplicates(subset=["SMILES_std"], keep="first").copy()
+    n_dropped = n_before - len(df)
+    n_unique = df["SMILES_std"].nunique()
+    logger.info(f"  去重前: {n_before}, 去重后: {len(df)}, 剔除重复: {n_dropped}")
     logger.info(f"  唯一 SMILES: {n_unique}")
     if n_dropped > 0:
         logger.warning(f"  发现 {n_dropped} 行重复 SMILES，已保留首次出现记录")
 
-    # 确定 final 中每个化合物在原始 active 中的索引
-    final_indices = final.index.tolist()
-    final = final.reset_index(drop=True)
+    final_indices = df.index.tolist()
+    df = df.reset_index(drop=True)
+    return df, final_indices, n_before, n_dropped, n_unique
 
-    # ================================================================
-    # [60] 步骤7: 导出分子指纹和描述符
-    # ================================================================
-    logger.info("[Step 7/10] 导出分子指纹和描述符...")
 
-    final_ecfp4 = [ecfp4_list[i] for i in final_indices]
-    fp_array = np.array([list(fp) for fp in final_ecfp4], dtype=np.int8)
-    np.save(ECFP4_NPY, fp_array)
-    logger.info(f"  ECFP4 指纹: {fp_array.shape} -> {ECFP4_NPY}")
+def build_herb_origin_map():
+    """
+    从 herb_ingredient_mapping.xlsx 构建 MOL_ID -> 中药来源列表 的映射。
 
-    final_maccs = [maccs_list[i] for i in final_indices]
-    maccs_array = np.array([list(fp) for fp in final_maccs], dtype=np.int8)
-    np.save(MACCS_NPY, maccs_array)
-    logger.info(f"  MACCS 指纹: {maccs_array.shape} -> {MACCS_NPY}")
+    Returns:
+        dict: {MOL_ID: [herb_cn_name1, herb_cn_name2, ...]}
+    """
+    if not HERB_MAP_FILE.exists():
+        logger.warning(f"草药-成分映射文件不存在: {HERB_MAP_FILE}")
+        logger.warning("  请先运行 batch_scrape_herbs.py 爬取药味成分数据")
+        return {}
 
-    final_desc = [desc_list[i] for i in final_indices]
-    desc_df = pd.DataFrame(final_desc)
-    desc_df.insert(0, "MOL_ID", final["MOL_ID"].values)
-    desc_df.insert(1, "molecule_name", final["molecule_name"].values)
-    desc_df.to_csv(DESCRIPTORS_CSV, index=False)
-    logger.info(f"  RDKit 描述符: {desc_df.shape} -> {DESCRIPTORS_CSV}")
+    herb_df = pd.read_excel(HERB_MAP_FILE)
+    logger.info(f"  草药映射记录: {len(herb_df)} 条")
 
-    # ================================================================
-    # [66] 步骤8: 化合物相似性网络
-    # ================================================================
-    logger.info("[Step 8/10] 构建化合物相似性网络...")
-    n = len(final_ecfp4)
+    # 按 MOL_ID 聚合草药来源
+    herb_map = {}
+    for _, row in herb_df.iterrows():
+        mol_id = row.get("MOL_ID", "")
+        herb = row.get("herb_cn_name", "")
+        if pd.isna(mol_id) or pd.isna(herb):
+            continue
+        mol_id = str(mol_id).strip()
+        herb = str(herb).strip()
+        if not mol_id or not herb:
+            continue
+        if mol_id not in herb_map:
+            herb_map[mol_id] = []
+        if herb not in herb_map[mol_id]:
+            herb_map[mol_id].append(herb)
+
+    logger.info(f"  有草药来源的 MOL_ID: {len(herb_map)} 个")
+    return herb_map
+
+
+def add_herb_origin_column(df, herb_map):
+    """
+    为 DataFrame 添加中药来源列。
+
+    Args:
+        df: 含 MOL_ID 列的 DataFrame
+        herb_map: MOL_ID -> [herb_names] 映射
+
+    Returns:
+        DataFrame: 增加 herb_origins, n_herb_origins 列
+    """
+    if not herb_map:
+        df["herb_origins"] = ""
+        df["n_herb_origins"] = 0
+        return df
+
+    df = df.copy()
+    origins = []
+    n_origins = []
+    for _, row in df.iterrows():
+        mol_id = str(row.get("MOL_ID", "")).strip()
+        herbs = herb_map.get(mol_id, [])
+        origins.append("; ".join(herbs))
+        n_origins.append(len(herbs))
+
+    df["herb_origins"] = origins
+    df["n_herb_origins"] = n_origins
+    n_with_origin = (df["n_herb_origins"] > 0).sum()
+    logger.info(f"  有中药来源的化合物: {n_with_origin}/{len(df)} ({n_with_origin/len(df)*100:.1f}%)")
+    return df
+
+
+# ============================================================
+# 分析计算层
+# ============================================================
+def build_similarity_network(fingerprints, compound_df, threshold=0.7):
+    """
+    构建化合物相似性网络（Tanimoto 相似性）。
+
+    Args:
+        fingerprints: ECFP4 指纹列表
+        compound_df: 化合物信息 DataFrame
+        threshold: Tanimoto 相似性阈值
+
+    Returns:
+        tuple: (edges_df pd.DataFrame, total_pairs int)
+    """
+    n = len(fingerprints)
     edges = []
     total_pairs = n * (n - 1) // 2
     processed = 0
 
     for i in range(n):
         for j in range(i + 1, n):
-            tanimoto = DataStructs.TanimotoSimilarity(final_ecfp4[i], final_ecfp4[j])
-            if tanimoto > 0.7:
+            tanimoto = DataStructs.TanimotoSimilarity(fingerprints[i], fingerprints[j])
+            if tanimoto > threshold:
                 edges.append({
-                    "mol_i": final.iloc[i]["MOL_ID"],
-                    "mol_j": final.iloc[j]["MOL_ID"],
-                    "name_i": final.iloc[i]["molecule_name"],
-                    "name_j": final.iloc[j]["molecule_name"],
+                    "mol_i": compound_df.iloc[i]["MOL_ID"],
+                    "mol_j": compound_df.iloc[j]["MOL_ID"],
+                    "name_i": compound_df.iloc[i]["molecule_name"],
+                    "name_j": compound_df.iloc[j]["molecule_name"],
                     "tanimoto": round(tanimoto, 4)
                 })
             processed += 1
@@ -684,58 +790,35 @@ def main():
 
     edges_df = pd.DataFrame(edges)
     edges_df.to_csv(SIMILARITY_NETWORK, index=False)
-    logger.info(f"  相似性网络: {len(edges_df)} 条边 (Tanimoto > 0.7) -> {SIMILARITY_NETWORK}")
+    logger.info(f"  相似性网络: {len(edges_df)} 条边 (Tanimoto > {threshold}) -> {SIMILARITY_NETWORK}")
+    return edges_df, total_pairs
 
-    # ================================================================
-    # [69] 步骤9: 导出候选化合物池
-    # ================================================================
-    logger.info("[Step 9/10] 导出候选化合物池...")
 
-    # CSV 导出
-    export_cols = [
-        "MOL_ID", "molecule_name", "SMILES_std", "mw", "ob", "dl",
-        "alogp", "bbb", "tpsa", "caco2", "hdon", "hacc", "rbn",
-        "MW", "LogP", "TPSA", "HBD", "HBA", "RotBonds", "QED",
-        "Lipinski_Pass", "Lipinski_Violations", "BBB_Prediction",
-        "PAINS_Pass", "PAINS_Matches",
-        "RingCount", "AromaticRings", "HeavyAtoms", "FractionCsp3",
-        "MolarRefractivity", "NumSaturatedRings", "NumAliphaticRings",
-        "SMILES_MATCH_STATUS", "MW_DIFF", "MW_REL_DIFF",
-    ]
-    available = [c for c in export_cols if c in final.columns]
-    final[available].to_csv(COMPOUND_POOL, index=False, float_format="%.4f")
-    logger.info(f"  候选池 CSV: {len(final)} 化合物 -> {COMPOUND_POOL}")
-    logger.info(f"  文件大小: {COMPOUND_POOL.stat().st_size:,} bytes")
+def generate_report_and_visualizations(final, stats):
+    """
+    生成统计报告和可视化图表。
 
-    # Pickle 导出（含分子对象）
-    pool_data = {
-        "compound_df": final,
-        "ecfp4_fingerprints": fp_array,
-        "maccs_fingerprints": maccs_array,
-        "descriptors": desc_df,
-        "similarity_network": edges_df,
-        "mol_objects": [final_ecfp4[i] for i in range(len(final_ecfp4))],
-        "metadata": {
-            "date": datetime.now().isoformat(),
-            "rdkit_version": rdkit.__version__,
-            "total_from_tcmsp": len(raw),
-            "active_compounds": len(active),
-            "final_candidates": len(final),
-            "sources": ["TCMSP", "COCONUT", "PubChem"],
-        }
-    }
-    with gzip.open(POOL_PICKLE, "wb") as f:
-        pickle.dump(pool_data, f, protocol=pickle.HIGHEST_PROTOCOL)
-    logger.info(f"  Pickle: {POOL_PICKLE}")
-
-    # ================================================================
-    # [67-68] 步骤10: 统计报告与可视化
-    # ================================================================
+    Args:
+        final: 最终候选化合物 DataFrame
+        stats: dict，包含以下键：
+            raw, active, n_after_obdl, hit_rate, n_uncertain,
+            n_before_dedup, n_dropped, n_unique, n_nodes, edges_df, total_pairs
+    """
     logger.info("[Step 10/10] 统计报告与可视化...")
 
-    # BBB 分布
+    raw = stats["raw"]
+    active = stats["active"]
+    n_after_obdl = stats["n_after_obdl"]
+    hit_rate = stats["hit_rate"]
+    n_uncertain = stats["n_uncertain"]
+    n_before_dedup = stats["n_before_dedup"]
+    n_dropped = stats["n_dropped"]
+    n_unique = stats["n_unique"]
+    n_nodes = stats["n_nodes"]
+    edges_df = stats["edges_df"]
+    total_pairs = stats["total_pairs"]
+
     bbb_counts = final["BBB_Prediction"].value_counts().to_dict()
-    # MW 分布
     mw_vals = final["MW"].dropna()
 
     # 生成统计报告
@@ -789,7 +872,7 @@ def main():
     stats_lines.append("- 建议：后续可进一步通过 InChIKey 校验名称-结构一致性，并引入 TCMSP 官方或 TCMSID 的结构源进行交叉验证")
 
     stats_lines.append("\n## 相似性网络")
-    stats_lines.append(f"- 节点数: {n}")
+    stats_lines.append(f"- 节点数: {n_nodes}")
     stats_lines.append(f"- 边数 (Tanimoto > 0.7): {len(edges_df)}")
     stats_lines.append(f"- 网络密度: {len(edges_df)/total_pairs*100:.2f}%")
 
@@ -838,9 +921,7 @@ def main():
         f.write(stats_text)
     logger.info(f"  统计报告: {STATISTICS_MD}")
 
-    # ================================================================
-    # 可视化（使用 matplotlib，如果可用）
-    # ================================================================
+    # 可视化
     try:
         import matplotlib
         matplotlib.use("Agg")
@@ -869,7 +950,6 @@ def main():
                 final.loc[mask, "LogP"], final.loc[mask, "TPSA"],
                 c=color, label=bbb_type, alpha=0.6, s=30, edgecolors="none"
             )
-        # BBB+ 区域
         ax.axvspan(1, 4, alpha=0.08, color="green")
         ax.axhspan(0, 90, alpha=0.08, color="green")
         ax.axhline(y=90, color="green", linestyle="--", alpha=0.5, label="TPSA=90")
@@ -885,7 +965,7 @@ def main():
         plt.close(fig)
         logger.info(f"  可视化: {L3_RESULTS_FIGURES / 'logp_tpsa_bbb.png'}")
 
-        # 图3: 类药性过滤韦恩图风格统计
+        # 图3: 类药性过滤统计
         fig, ax = plt.subplots(figsize=(8, 6))
         categories = ["Lipinski", "BBB", "PAINS"]
         values = [
@@ -928,12 +1008,19 @@ def main():
         logger.error(f"可视化生成失败: {e}")
         traceback.print_exc()
 
-    # ================================================================
-    # [72] 3D 构象生成（仅生成 Top 50 个高 OB、MW<=600 化合物，减少计算量）
-    # ================================================================
+
+def generate_3d_conformers_batch(compound_df, top_n=50, max_mw=600):
+    """
+    批量生成 3D 构象（ETKDGv3 + MMFF94）。
+
+    Args:
+        compound_df: 候选化合物 DataFrame（须含 MW, ob, SMILES_std, MOL_ID 列）
+        top_n: 选取 Top N 个高 OB 化合物
+        max_mw: 分子量上限
+    """
     logger.info("=" * 70)
     logger.info("3D 构象生成 (ETKDGv3 + MMFF94)...")
-    top_ob = final[final["MW"] <= 600].nlargest(50, "ob")
+    top_ob = compound_df[compound_df["MW"] <= max_mw].nlargest(top_n, "ob")
     success_3d = 0
     timeout_count = 0
     for _, row in top_ob.iterrows():
@@ -961,19 +1048,205 @@ def main():
             success_3d += 1
     logger.info(f"  3D构象生成: {success_3d}/{len(top_ob)} 成功, {timeout_count} 超时 -> {L3_RESULTS_CONFORMERS}")
 
-    # ================================================================
-    # 完成
-    # ================================================================
-    elapsed = time.time() - t_start
+
+# ============================================================
+# 结果导出层
+# ============================================================
+def export_fingerprints_and_descriptors(fp_results, final_indices, compound_df):
+    """
+    导出分子指纹（ECFP4、MACCS）和 RDKit 描述符。
+
+    Args:
+        fp_results: compute_fingerprints_batch 的返回字典
+        final_indices: 最终化合物在原始 active 中的索引列表
+        compound_df: 最终候选化合物 DataFrame
+
+    Returns:
+        tuple: (fp_array, maccs_array, desc_df, final_ecfp4)
+    """
+    final_ecfp4 = [fp_results["ecfp4"][i] for i in final_indices]
+    fp_array = np.array([list(fp) for fp in final_ecfp4], dtype=np.int8)
+    np.save(ECFP4_NPY, fp_array)
+    logger.info(f"  ECFP4 指纹: {fp_array.shape} -> {ECFP4_NPY}")
+
+    final_maccs = [fp_results["maccs"][i] for i in final_indices]
+    maccs_array = np.array([list(fp) for fp in final_maccs], dtype=np.int8)
+    np.save(MACCS_NPY, maccs_array)
+    logger.info(f"  MACCS 指纹: {maccs_array.shape} -> {MACCS_NPY}")
+
+    final_desc = [fp_results["descriptors"][i] for i in final_indices]
+    desc_df = pd.DataFrame(final_desc)
+    desc_df.insert(0, "MOL_ID", compound_df["MOL_ID"].values)
+    desc_df.insert(1, "molecule_name", compound_df["molecule_name"].values)
+    desc_df.to_csv(DESCRIPTORS_CSV, index=False)
+    logger.info(f"  RDKit 描述符: {desc_df.shape} -> {DESCRIPTORS_CSV}")
+
+    return fp_array, maccs_array, desc_df, final_ecfp4
+
+
+def export_compound_pool(final, fp_array, maccs_array, desc_df, edges_df, final_ecfp4, raw_len, active_len):
+    """
+    导出候选化合物池（CSV + Pickle）。
+
+    Args:
+        final: 最终候选化合物 DataFrame
+        fp_array: ECFP4 指纹矩阵
+        maccs_array: MACCS 指纹矩阵
+        desc_df: 描述符 DataFrame
+        edges_df: 相似性网络边列表
+        final_ecfp4: ECFP4 指纹列表（用于 Pickle）
+        raw_len: TCMSP 原始化合物总数
+        active_len: 活性化合物总数
+    """
+    export_cols = [
+        "MOL_ID", "molecule_name", "SMILES_std", "herb_origins", "n_herb_origins",
+        "mw", "ob", "dl",
+        "alogp", "bbb", "tpsa", "caco2", "hdon", "hacc", "rbn",
+        "MW", "LogP", "TPSA", "HBD", "HBA", "RotBonds", "QED",
+        "Lipinski_Pass", "Lipinski_Violations", "BBB_Prediction",
+        "PAINS_Pass", "PAINS_Matches",
+        "RingCount", "AromaticRings", "HeavyAtoms", "FractionCsp3",
+        "MolarRefractivity", "NumSaturatedRings", "NumAliphaticRings",
+        "SMILES_MATCH_STATUS", "MW_DIFF", "MW_REL_DIFF",
+    ]
+    available = [c for c in export_cols if c in final.columns]
+    final[available].to_csv(COMPOUND_POOL, index=False, float_format="%.4f")
+    logger.info(f"  候选池 CSV: {len(final)} 化合物 -> {COMPOUND_POOL}")
+    logger.info(f"  文件大小: {COMPOUND_POOL.stat().st_size:,} bytes")
+
+    pool_data = {
+        "compound_df": final,
+        "ecfp4_fingerprints": fp_array,
+        "maccs_fingerprints": maccs_array,
+        "descriptors": desc_df,
+        "similarity_network": edges_df,
+        "mol_objects": [final_ecfp4[i] for i in range(len(final_ecfp4))],
+        "metadata": {
+            "date": datetime.now().isoformat(),
+            "rdkit_version": rdkit.__version__,
+            "total_from_tcmsp": raw_len,
+            "active_compounds": active_len,
+            "final_candidates": len(final),
+            "sources": ["TCMSP", "fix_smiles_v4 (COCONUT exact + PubChem API + MW validation)"],
+        }
+    }
+    with gzip.open(POOL_PICKLE, "wb") as f:
+        pickle.dump(pool_data, f, protocol=pickle.HIGHEST_PROTOCOL)
+    logger.info(f"  Pickle: {POOL_PICKLE}")
+
+
+# ============================================================
+# 流程编排层
+# ============================================================
+def main():
+    """主流程：编排中药单体数据库构建的各个处理步骤"""
+    t_start = time.time()
     logger.info("=" * 70)
-    logger.info("Phase 3 完成!")
-    logger.info(f"  最终候选: {len(final)} 个中药单体")
-    logger.info(f"  总耗时: {elapsed/60:.1f} 分钟")
-    logger.info(f"  Hash: {hashlib.md5(COMPOUND_POOL.read_bytes()).hexdigest()}")
-    logger.info(f"  结束: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    logger.info("Phase 3 - 中药单体数据库构建 (v3 完整版)")
+    logger.info(f"启动: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    logger.info(f"RDKit: {rdkit.__version__}")
     logger.info("=" * 70)
 
-    return True
+    try:
+        # [53-54] 步骤1: 加载 TCMSP 数据
+        logger.info("[Step 1/10] 加载 TCMSP 化合物数据...")
+        raw = load_tcmsp_data(TCMSP_INGREDIENTS)
+
+        # [54] 步骤2: OB/DL 过滤活性化合物
+        logger.info("[Step 2/10] 过滤活性化合物 (OB >= 30%, DL >= 0.18)...")
+        active = filter_active_compounds(raw)
+        n_after_obdl = len(active)
+        if len(active) == 0:
+            logger.error("无活性化合物，终止")
+            return False
+
+        # [58] 步骤3: 获取 SMILES（使用 fix_smiles_v4.py 修正后的 MW 校验 SMILES）
+        logger.info("[Step 3/10] 获取 SMILES (fix_smiles_v4.py 修正版, MW 校验通过)...")
+        smiles_map, hit_rate = acquire_smiles(active)
+        active["SMILES"] = active["molecule_name"].map(smiles_map)
+
+        # [59] 步骤4: RDKit SMILES 规范化
+        logger.info("[Step 4/10] RDKit SMILES 规范化...")
+        active = standardize_smiles_batch(active)
+        if len(active) == 0:
+            logger.error("无有效化合物，终止")
+            return False
+
+        # [60-64] 步骤5: 分子指纹 + 描述符 + 类药性过滤
+        logger.info("[Step 5/10] 分子指纹 + 描述符 + 类药性过滤...")
+        fp_results = compute_fingerprints_batch(active)
+        active = merge_fingerprint_results(active, fp_results)
+
+        # 步骤5b: 名称-SMILES 一致性校验
+        logger.info("[Step 5b/10] 名称-SMILES 一致性校验...")
+        active, n_uncertain = validate_name_smiles_batch(active)
+
+        # [61-64] 步骤6: 综合过滤
+        logger.info("[Step 6/10] 综合类药性过滤...")
+        final = apply_druglikeness_filters(active)
+        if len(final) == 0:
+            return False
+
+        # 步骤6b: 基于规范 SMILES 去重
+        logger.info("[Step 6b/11] 基于 SMILES_std 去重...")
+        final, final_indices, n_before_dedup, n_dropped, n_unique = deduplicate_compounds(final)
+
+        # 步骤6c: 添加中药来源信息
+        logger.info("[Step 6c/11] 添加中药来源信息...")
+        herb_map = build_herb_origin_map()
+        final = add_herb_origin_column(final, herb_map)
+
+        # [60] 步骤7: 导出分子指纹和描述符
+        logger.info("[Step 7/10] 导出分子指纹和描述符...")
+        fp_array, maccs_array, desc_df, final_ecfp4 = export_fingerprints_and_descriptors(
+            fp_results, final_indices, final
+        )
+
+        # [66] 步骤8: 化合物相似性网络
+        logger.info("[Step 8/10] 构建化合物相似性网络...")
+        edges_df, total_pairs = build_similarity_network(final_ecfp4, final)
+
+        # [69] 步骤9: 导出候选化合物池
+        logger.info("[Step 9/10] 导出候选化合物池...")
+        export_compound_pool(final, fp_array, maccs_array, desc_df, edges_df, final_ecfp4, len(raw), len(active))
+
+        # [67-68] 步骤10: 统计报告与可视化
+        stats = {
+            "raw": raw,
+            "active": active,
+            "n_after_obdl": n_after_obdl,
+            "hit_rate": hit_rate,
+            "n_uncertain": n_uncertain,
+            "n_before_dedup": n_before_dedup,
+            "n_dropped": n_dropped,
+            "n_unique": n_unique,
+            "n_nodes": len(final_ecfp4),
+            "edges_df": edges_df,
+            "total_pairs": total_pairs,
+        }
+        generate_report_and_visualizations(final, stats)
+
+        # [72] 3D 构象生成
+        generate_3d_conformers_batch(final)
+
+        elapsed = time.time() - t_start
+        logger.info("=" * 70)
+        logger.info("Phase 3 完成!")
+        logger.info(f"  最终候选: {len(final)} 个中药单体")
+        logger.info(f"  总耗时: {elapsed/60:.1f} 分钟")
+        logger.info(f"  Hash: {hashlib.md5(COMPOUND_POOL.read_bytes()).hexdigest()}")
+        logger.info(f"  结束: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        logger.info("=" * 70)
+
+        return True
+
+    except FileNotFoundError as e:
+        logger.error(str(e))
+        return False
+    except Exception as e:
+        logger.error(f"流程执行失败: {e}")
+        traceback.print_exc()
+        return False
 
 if __name__ == "__main__":
     try:

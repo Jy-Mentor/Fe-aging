@@ -1,0 +1,68 @@
+# Ruff 静态检查配置
+# 与 pyproject.toml [tool.ruff] 保持同步
+
+target-version = "py310"
+line-length = 120
+
+extend-exclude = [
+    "L3/TCMSP-Spider",
+    "L4/papers",
+    "L4/results*",
+    "L4/logs",
+    "L1/results",
+    "L2/results",
+    "L3/results",
+    "__pycache__",
+    "*.egg-info",
+    ".git",
+]
+
+[lint]
+select = [
+    "E",
+    "W",
+    "F",
+    "I",
+    "N",
+    "D",
+    "UP",
+    "B",
+    "C4",
+    "SIM",
+    "PTH",
+]
+ignore = [
+    "D100",
+    "D103",  # 项目函数 docstring 策略：核心函数有文档，工具脚本从简
+    "D104",
+    "D203",
+    "D205",  # 项目使用中文标题+下划线分隔的 docstring 风格
+    "D212",  # 同上，多行 docstring 标题位于第一行与此风格冲突
+    "D213",
+    "D415",  # 中文 docstring 以。结尾，Ruff 无法识别
+    "D417",  # Google docstring 参数描述从简
+    "E401",  # 允许单行多 import
+    "E402",  # 允许动态 path 插入后导入
+    "E501",  # 行宽 120 对中文日志/长路径过于严格
+    "F401",  # 保留未使用 import 供扩展
+    "F541",  # 允许无占位符 f-string，便于统一格式
+    "F841",  # 允许临时变量提升可读性
+    "I001",  # import 排序由开发者控制
+    "N806",  # 允许局部大写变量（如 T, sage_T）
+    "N812",  # `import torch.nn.functional as F` 为 PyTorch 社区惯例
+    "PTH",   # pathlib 迁移保留，不强制
+    "SIM102",  # 允许清晰的双层 if
+    "SIM105",  # 允许 try-except-pass 模式
+    "SIM114",  # 允许重复 elif 分支保持可读性
+    "SIM118",  # 允许显式 dict.keys()/values()
+    "UP015",  # 允许显式 mode 参数
+    "UP035",  # 允许 typing.Dict/List/Tuple
+    "W292",  # 允许文件末尾无换行
+    "W293",  # 允许含空格的空行
+    "D209",  # 允许多行 docstring 结尾与内容同行
+    "B007",  # 允许未使用循环变量
+    "B023",  # 允许 lambda 引用循环变量（实际立即调用）
+]
+
+[lint.pydocstyle]
+convention = "google"

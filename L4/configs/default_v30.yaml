@@ -1,0 +1,72 @@
+random_seed: 42
+model:
+  hidden_dim: 96
+  out_dim: 96
+  num_layers: 2
+  dropout: 0.5
+  num_heads: 2
+  prot_proj_dropout: 0.4
+  prot_proj_inner_dropout: 0.3
+  pathway_proj_dropout: 0.3
+  pheno_head_dropout: 0.3
+  score_clamp: 10.0
+sage:
+  epochs: 20
+  lr: 0.0005
+  patience: 8
+  batch_size: 256
+  num_neighbors:
+  - 32
+  - 16
+  two_stage: true
+  pretrain_epochs: 12
+  pretrain_lr: 0.00075
+hgt:
+  epochs: 20
+  lr: 0.001
+  patience: 8
+  batch_size: 128
+  num_neighbors:
+  - 32
+  - 16
+  two_stage: true
+  pretrain_epochs: 12
+  pretrain_lr: 0.0015
+two_stage:
+  head_ratio: 0.2
+  lambda_hhi: 1.0
+  head_undersample_ratio: 0.6
+  infonce_warmup_ratio: 0.15
+  pretrain_lr_multiplier: 1.5
+  pretrain_lr_decay: 0.5
+curriculum:
+  random_ratio: 0.3
+  moderate_ratio: 0.4
+  hard_ratio: 0.3
+  moderate_pathway_weight: 0.3
+  medium_neg_ratio: 0.3
+  hard_neg_ratio: 0.1
+loss:
+  focal_gamma: 2.0
+  focal_alpha: 0.75
+  label_smoothing_pos: 0.9
+  label_smoothing_neg: 0.1
+  bpr_weight: 0.5
+  bce_weight: 0.5
+  infonce_weight: 0.1
+  infonce_temperature: 0.07
+training:
+  weight_decay: 0.0001
+  grad_clip_norm: 1.0
+  warmup_ratio: 0.1
+  pheno_lambda: 0.05
+  dropedge_ppi: 0.15
+  dropedge_pathway: 0.1
+  flag_step: 0.01
+validation:
+  val_freq: 2
+  pretrain_val_freq: 5
+  mem_refresh_freq: 5
+memory_bank:
+  memory_bank_size: 8192
+  infonce_mem_sample: 256

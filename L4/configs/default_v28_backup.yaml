@@ -1,0 +1,150 @@
+# ============================================================
+# 铁衰老 GNN 项目默认配置
+# ============================================================
+# 此文件包含所有可配置参数及其默认值。
+# 所有默认值均来自 phase4_v10_minibatch.py 中的硬编码常量。
+#
+# 使用方式：
+#   config = load_config("configs/default.yaml")
+#
+# 可覆盖任意字段，未覆盖的字段保持默认值。
+# ============================================================
+
+# 全局随机种子
+random_seed: 42
+
+# 铁衰老靶标基因（来自 ferroaging_genes_96.csv 的硬编码后备列表）
+# 可在运行时从 L1/results/ferroaging_genes_96.csv 动态加载
+ferrogenesis_genes_csv: "L1/results/ferroaging_genes_96.csv"
+
+# ---- 路径配置 ----
+paths:
+  # project_root: 自动推断，无需手动设置
+  l1_results: "L1/results"
+  l2_results: "L2/results"
+  l3_results: "L3/results"
+  l4_root: "L4"
+  l4_results: "L4/results_v10_minibatch"
+  l4_logs: "L4/logs"
+
+# ---- 模型架构参数 ----
+model:
+  hidden_dim: 64
+  out_dim: 64
+  num_layers: 2
+  dropout: 0.5
+  num_heads: 2
+  prot_proj_dropout: 0.4
+  prot_proj_inner_dropout: 0.3
+  pathway_proj_dropout: 0.3
+  pheno_head_dropout: 0.3
+  score_clamp: 10.0
+
+# ---- SAGE 分支训练超参数 ----
+sage:
+  epochs: 15
+  lr: 0.0005          # 5e-4
+  patience: 5
+  batch_size: 256
+  num_neighbors: [32, 16]
+  two_stage: true
+  pretrain_epochs: 10
+  pretrain_lr: 0.00075  # 7.5e-4
+
+# ---- HGT 分支训练超参数 ----
+hgt:
+  epochs: 15
+  lr: 0.001           # 1e-3
+  patience: 5
+  batch_size: 128
+  num_neighbors: [32, 16]
+  two_stage: true
+  pretrain_epochs: 10
+  pretrain_lr: 0.0015   # 1.5e-3
+
+# ---- 两阶段迁移学习 ----
+two_stage:
+  head_ratio: 0.2
+  lambda_hhi: 1.0
+  head_undersample_ratio: 0.6
+  infonce_warmup_ratio: 0.15
+  pretrain_lr_multiplier: 1.5
+  pretrain_lr_decay: 0.5
+
+# ---- 课程负采样 ----
+curriculum:
+  random_ratio: 0.3
+  moderate_ratio: 0.4
+  hard_ratio: 0.3
+  moderate_pathway_weight: 0.3
+  medium_neg_ratio: 0.3
+  hard_neg_ratio: 0.1
+
+# ---- 损失函数 ----
+loss:
+  focal_alpha: 0.75
+  focal_gamma: 2.0
+  label_smoothing: 0.0
+  label_smoothing_pos: 0.9
+  label_smoothing_neg: 0.1
+  bce_weight: 0.6
+  bpr_weight: 0.4
+  infonce_weight: 0.1
+  temperature: 5.0
+  infonce_temperature: 0.07
+
+# ---- 验证与预测 ----
+validation:
+  compound_split_ratio: 0.85
+  protein_cold_split_ratio: 0.50
+  mc_samples: 30
+  diversity_penalty: 0.3
+  hard_neg_top_k: 5
+  rand_neg_top_k: 5
+  prot_cold_neg_ratio: 10
+  val_batch_size: 512
+  hgt_val_batch_size: 64
+  hgt_val_num_neighbors: [64, 32]
+  val_freq: 2
+  pretrain_val_freq: 5
+  mem_refresh_freq: 5
+  default_aupr: 0.5
+
+# ---- ESM-2 蛋白质语言模型 ----
+esm2:
+  use_esm2: true
+  model_name: "facebook/esm2_t30_150M_UR50D"
+  esm_batch_size: 4
+  esm_max_len: 1022
+
+# ---- 共享训练超参数 ----
+training:
+  weight_decay: 0.0001    # 1e-4
+  grad_clip_norm: 1.0
+  warmup_ratio: 0.05
+  pheno_lambda: 0.05
+  dropedge_ppi: 0.15
+  dropedge_pathway: 0.10
+  flag_step: 0.01
+
+# ---- Memory Bank ----
+memory_bank:
+  memory_bank_size: 8192
+  infonce_mem_sample: 256
+
+# ---- 预测与排序 ----
+prediction:
+  top_n_candidates: 500
+  warm_targets_top_n: 5
+  zs_targets_top_n: 3
+  composite_avg_weight: 0.4
+  composite_max_weight: 0.3
+  composite_hits_weight: 0.3
+  ferro_factor_base: 0.7
+  zs_bonus_max: 0.05
+
+# ---- 数值常量 ----
+numerical:
+  mask_val: -1.0e9
+  eps: 1.0e-8
+  eps_small: 1.0e-10
