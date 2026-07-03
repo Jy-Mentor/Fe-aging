@@ -1,8 +1,5 @@
 """预测模块：SAGE + HGT 集成预测 — 动态权重 + 多样性约束 + MC Dropout
 
-v25: 从 phase4_v10_minibatch.py 提取 predict_tcm 函数
-v26-fix: HGT MC Dropout 预准备 — 将 hetero_data.to(DEVICE) 和 pathway_embed 移出循环
-
 参考:
   - Zhou et al. (2021) "Diver"
   - Gal & Ghahramani (2016) "Dropout as a Bayesian Approximation"
@@ -21,7 +18,6 @@ from ..models import HGTLinkPredictor, SAGELinkPredictor
 
 logger = logging.getLogger(__name__)
 
-# ---- v25 模块级常量（与主脚本 phase4_v10_minibatch.py 保持一致） ----
 DEFAULT_AUPR = 0.5
 DIVERSITY_PENALTY = 0.1
 
@@ -42,15 +38,12 @@ def predict_tcm(
     # 外部注入的化合物特征构建函数
     build_compound_features_fn=None,
 ) -> pd.DataFrame:
-    """v17: SAGE + HGT 集成预测 — 动态权重 + 多样性约束 + MC Dropout
+    """SAGE + HGT 集成预测 — 动态权重 + 多样性约束 + MC Dropout
 
-    v17 改进:
-      - 基于蛋白冷启动 AUPR 动态调整 SAGE/HGT 权重
-      - 余弦相似度多样性惩罚：鼓励两个分支利用不同信号
-      - MC Dropout 不确定性估计：mc_samples>0 时保持 Dropout 开启，
-        重复 mc_samples 次前向，输出均值 + 标准差
-      - 参考: Zhou et al. (2021) "Diver";
-              Gal & Ghahramani (2016) "Dropout as a Bayesian Approximation"
+    基于蛋白冷启动 AUPR 动态调整 SAGE/HGT 权重。
+    余弦相似度多样性惩罚：鼓励两个分支利用不同信号。
+    MC Dropout 不确定性估计：mc_samples>0 时保持 Dropout 开启，
+    重复 mc_samples 次前向，输出均值 + 标准差。
 
     Args:
         sage_model: SAGE 链接预测模型
@@ -100,7 +93,7 @@ def predict_tcm(
     gene_to_idx = graphs["gene_to_idx"]
     homo_edge_index = graphs["homo_edge_index"]
 
-    # v17: 动态集成权重 — 基于蛋白冷启动 AUPR
+    # 动态集成权重 — 基于蛋白冷启动 AUPR
     total_aupr = sage_prot_aupr + hgt_prot_aupr
     if total_aupr > 0:
         sage_w = sage_prot_aupr / total_aupr
@@ -126,7 +119,7 @@ def predict_tcm(
     all_sage_scores_mc = []
     all_hgt_scores_mc = []
 
-    # v26-fix: HGT MC Dropout 预准备
+    # HGT MC Dropout 预准备 — 将 hetero_data.to(DEVICE) 和 pathway_embed 移出循环
     hgt_data_dev = None
     hgt_x_dict_full = None
     if hgt_model is not None:
@@ -194,13 +187,13 @@ def predict_tcm(
         hgt_mean = all_hgt_scores_mc[0]
         sage_std = hgt_std = None
 
-    # v19-fix: 多样性约束
+    # 多样性约束
     delta = torch.abs(sage_mean - hgt_mean)
     diversity_factor = 1.0 - DIVERSITY_PENALTY * delta
     weighted_scores = sage_w * sage_mean + hgt_w * hgt_mean
     final_scores = weighted_scores * diversity_factor + 0.5 * (1.0 - diversity_factor)
 
-    # v26-fix: 按基因维度计算余弦相似度
+    # 按基因维度计算余弦相似度
     per_gene_cos = []
     for g in range(sage_mean.shape[1]):
         sg = sage_mean[:, g]

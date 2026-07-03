@@ -407,5 +407,3 @@ def _deep_merge_defaults(raw: dict) -> dict:
             merged[key] = value
 
     return merged
-    return merged
-    return merged

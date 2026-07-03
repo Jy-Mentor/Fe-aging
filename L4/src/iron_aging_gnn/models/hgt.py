@@ -1,10 +1,10 @@
 """HGT 异质图编码器 + 可插拔解码器
 
-v11: 节点自适应门控，缓解过平滑
-v23: 添加 pheno_head（铁死亡表型分类头），多任务联合训练
-v24: 添加 disease_embed（疾病节点嵌入），支持四模态异质图
-v28: 支持 MLP / Dot / Bilinear 解码器切换
-v33: 支持 ResidueAwareBilinearDecoder（残基级 ESM-2 交互）
+特性:
+  - 节点自适应门控，缓解过平滑
+  - 多任务联合训练（铁死亡表型分类头）
+  - 支持疾病节点嵌入（四模态异质图）
+  - 支持 MLP / Dot / Bilinear / ResidueAwareBilinear 解码器切换
 
 参考:
   - Hu et al. (2020) "Heterogeneous Graph Transformer", WWW
@@ -23,20 +23,12 @@ from .decoders import MLPDecoder, DotProductDecoder, BilinearDecoder, ResidueAwa
 
 logger = logging.getLogger(__name__)
 
-# ---- v25 模块级常量（与主脚本 phase4_v10_minibatch.py 保持一致） ----
 _PHENO_HEAD_DROPOUT = 0.3         # 表型分类头 Dropout
 _TEMPERATURE = 5.0                # 温度参数 T（固定，不参与梯度更新）
 
 
 class HGTLinkPredictor(nn.Module):
-    """HGT 异质图编码器 + 可插拔解码器 + 表型分类头
-
-    v11: 节点自适应门控，缓解过平滑
-    v23: 添加 pheno_head（铁死亡表型二分类），多任务联合训练
-    v24: 添加 disease_embed，支持四模态异质图
-    v28: 支持 MLP / Dot / Bilinear 解码器切换
-    v33: 支持 ResidueAwareBilinearDecoder
-    """
+    """HGT 异质图编码器 + 可插拔解码器 + 表型分类头"""
 
     def __init__(self, hidden_dim: int = 64, out_dim: int = 64,
                  num_heads: int = 2, num_layers: int = 2, dropout: float = 0.5,
@@ -65,13 +57,12 @@ class HGTLinkPredictor(nn.Module):
         self.hidden_dim = hidden_dim
         self.decoder_type = decoder_type
 
-        # v17: 固定温度 T
         self.temperature = temperature
 
         n_pathways = node_feat_dims.get("pathway_count", 1) if node_feat_dims else 1
         self.pathway_embed = nn.Embedding(max(n_pathways, 1), hidden_dim)
 
-        # v24: 疾病节点嵌入
+        # 疾病节点嵌入
         n_diseases = node_feat_dims.get("disease_count", 0) if node_feat_dims else 0
         self.n_diseases = n_diseases
         self.disease_embed = nn.Embedding(max(n_diseases, 1), hidden_dim) if n_diseases > 0 else None
@@ -93,7 +84,6 @@ class HGTLinkPredictor(nn.Module):
         )
 
         self.convs = nn.ModuleList()
-        # v12: 节点自适应门控（初始偏置1.0，前期更倾向于接收新信息）
         self.gates = nn.ModuleList()
         if metadata:
             node_types, edge_types = metadata
@@ -109,7 +99,7 @@ class HGTLinkPredictor(nn.Module):
 
         self.out_proj = nn.Linear(hidden_dim, out_dim)
 
-        # ---- v28/v33: 可插拔解码器 ----
+        # 可插拔解码器
         if decoder_type == "mlp":
             self.decoder = MLPDecoder(out_dim, hidden_dim=64, dropout=pheno_head_dropout)
         elif decoder_type == "dot":
@@ -125,7 +115,7 @@ class HGTLinkPredictor(nn.Module):
 
         self.dropout = nn.Dropout(dropout)
 
-        # ---- v23: 铁死亡表型分类头 ----
+        # 铁死亡表型分类头
         self.pheno_head = nn.Sequential(
             nn.Linear(out_dim, 64),
             nn.ReLU(),
@@ -141,28 +131,16 @@ class HGTLinkPredictor(nn.Module):
     def forward(self, x_dict, edge_index_dict, use_pathway: bool = True):
         """前向传播：执行 HGT 卷积、门控聚合与输出投影。
 
-        v24: 支持 disease 节点初始嵌入
-        v25: 仅在 "compound" 和 "protein" 节点上执行 out_proj
-
-        Args:
-            x_dict: 节点类型到特征张量的映射。
-            edge_index_dict: 边类型到边索引张量的映射。
-            use_pathway: 是否使用通路嵌入
-
-        Returns:
-            更新后的节点嵌入字典。
+        仅在 compound 和 protein 节点上执行 out_proj。
         """
         x_dict = {k: v.clone() for k, v in x_dict.items()}
 
         if "compound" in x_dict:
             x_dict["compound"] = self.comp_proj(x_dict["compound"])
         if "protein" in x_dict:
-            # v17-ESM2: 提取实际蛋白特征维度（排除 padding 零），避免 Linear 维度不匹配
             x_dict["protein"] = self.prot_proj(x_dict["protein"][:, :self.prot_in_dim])
-        # v24: disease节点初始嵌入
         if "disease" in x_dict and self.disease_embed is not None:
             x_dict["disease"] = self.disease_embed(x_dict["disease"].squeeze(-1).long())
-        # v27-fix: pathway节点投影
         if "pathway" in x_dict:
             if not use_pathway:
                 x_dict["pathway"] = torch.zeros(x_dict["pathway"].shape[0], self.hidden_dim,
@@ -176,7 +154,7 @@ class HGTLinkPredictor(nn.Module):
             for nt in x_dict:
                 if nt not in out:
                     out[nt] = x_dict[nt]
-            # v11: 节点自适应门控，缓解过平滑
+            # 节点自适应门控，缓解过平滑
             gate = self.gates[layer_idx]
             for nt in out:
                 if nt in x_dict and x_dict[nt].shape == out[nt].shape:
@@ -185,7 +163,7 @@ class HGTLinkPredictor(nn.Module):
             x_dict = out
             x_dict = {k: self.dropout(v) for k, v in x_dict.items()}
 
-        # v25: 仅对 compound 和 protein 执行 out_proj
+        # 仅对 compound 和 protein 执行 out_proj
         for nt in ["compound", "protein"]:
             if nt in x_dict:
                 x_dict[nt] = self.out_proj(x_dict[nt])
@@ -236,8 +214,8 @@ class HGTLinkPredictor(nn.Module):
     def free_residue_features(self) -> None:
         """释放 decoder 中的残基级 ESM-2 特征内存。
 
-        v37-fix: 训练主流程在 SAGE 训练结束后、HGT 训练初始化前调用，
-        避免两份 ~8.86GB 残基张量同时驻留导致 CPU OOM。
+        训练主流程在 SAGE 训练结束后、HGT 训练初始化前调用，
+        避免两份残基张量同时驻留导致 CPU OOM。
         """
         if isinstance(self.decoder, ResidueAwareBilinearDecoder):
             self.decoder.free_residue_features()

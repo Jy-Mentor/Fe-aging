@@ -15,7 +15,7 @@ def build_val_safe_homo_edge_index(
     homo_edge_index: torch.Tensor,
     n_compounds: int,
     val_comp_set: set,
-    val_prot_set: set = None,
+    val_prot_set: set | None = None,
 ) -> torch.Tensor:
     """v18: 构建严格验证安全的同质图边索引
 
@@ -62,9 +62,9 @@ def build_val_safe_homo_edge_index(
 
 
 def build_val_safe_hetero_data(
-    hetero_data,
+    hetero_data: HeteroData,
     val_comp_set: set,
-    val_prot_set: set = None,
+    val_prot_set: set | None = None,
 ) -> HeteroData:
     """v18: 构建严格验证安全的异质图
 
@@ -79,7 +79,6 @@ def build_val_safe_hetero_data(
         过滤后的异质图数据
     """
     hetero_data_val = HeteroData()
-    # 复制节点特征
     for node_type in hetero_data.node_types:
         hetero_data_val[node_type].x = hetero_data[node_type].x.clone()
         if node_type == "pathway" and hasattr(hetero_data["pathway"], "n_pathways"):
@@ -170,11 +169,11 @@ def build_val_comp_cold_hetero_data(
 
 
 def build_train_safe_homo_adj(
-    homo_adj,
+    homo_adj: dict,
     n_compounds: int,
     val_comp_set: set,
-    val_prot_set: set = None,
-):
+    val_prot_set: set | None = None,
+) -> dict:
     """v18: 构建训练安全同质邻接表
 
     为真实蛋白冷启动评估，训练图必须对验证蛋白完全不可见：
@@ -197,11 +196,11 @@ def build_train_safe_homo_adj(
 
 
 def build_train_safe_hetero_adj(
-    hetero_adj,
+    hetero_adj: dict,
     n_compounds: int,
     val_comp_set: set,
-    val_prot_set: set = None,
-):
+    val_prot_set: set | None = None,
+) -> dict:
     """v18: 构建训练安全异质邻接表
 
     从训练图中彻底移除验证集化合物/蛋白相关的所有异质边。
@@ -250,11 +249,11 @@ def build_train_safe_hetero_adj(
 
 
 def build_val_safe_hetero_adj(
-    hetero_adj,
+    hetero_adj: dict,
     n_compounds: int,
     val_comp_set: set,
-    val_prot_set: set = None,
-):
+    val_prot_set: set | None = None,
+) -> dict:
     """v18: 构建验证安全异质邻接表
 
     用于 HGT OOM 降级时的 mini-batch 验证，确保子图采样不引入验证蛋白边。

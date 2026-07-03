@@ -1,12 +1,9 @@
 """GraphSAGE 编码器 + 可插拔解码器 — 同构图链接预测模型
 
-v17-ESM2: 添加化合物/蛋白特征投影器，解耦高维特征与图卷积
-v18: MLP 解码器替换点积
-v22: 添加 pheno_head（铁死亡表型分类头），多任务联合训练
-v23: 新增 predict_phenotype 方法
-v25: prot_feat_proj 内部 Dropout 从 0.4 降至 0.3，避免双重 Dropout 过强
-v28: 支持 MLP / Dot / Bilinear 解码器切换
-v33: 支持 ResidueAwareBilinearDecoder（残基级 ESM-2 交互）
+特性:
+  - 化合物/蛋白特征投影器，解耦高维特征与图卷积
+  - 支持 MLP / Dot / Bilinear / ResidueAwareBilinear 解码器切换
+  - 多任务联合训练（铁死亡表型分类头）
 
 参考:
   - Hamilton et al. (2017) "GraphSAGE", NeurIPS
@@ -28,8 +25,7 @@ from .decoders import MLPDecoder, DotProductDecoder, BilinearDecoder, ResidueAwa
 
 logger = logging.getLogger(__name__)
 
-# ---- v25 模块级常量（与主脚本 phase4_v10_minibatch.py 保持一致） ----
-_PROT_PROJ_DROPOUT = 0.4          # 蛋白特征投影器外部 Dropout（高正则化）
+_PROT_PROJ_DROPOUT = 0.4          # 蛋白特征投影器外部 Dropout
 _PROT_PROJ_INNER_DROPOUT = 0.3    # 蛋白特征投影器内部 Dropout
 _PATHWAY_PROJ_DROPOUT = 0.3       # 通路投影器 Dropout
 _PHENO_HEAD_DROPOUT = 0.3         # 表型分类头 Dropout
@@ -37,13 +33,7 @@ _TEMPERATURE = 5.0                # 温度参数 T（固定，不参与梯度更
 
 
 class SAGELinkPredictor(nn.Module):
-    """GraphSAGE 编码器 + 可插拔解码器 + 表型分类头
-
-    v11: SAGEConv + 残差连接 + 手动邻居采样
-    v17-ESM2: 添加化合物/蛋白特征投影器
-    v28: 支持 MLP / Dot / Bilinear 解码器切换
-    v33: 支持 ResidueAwareBilinearDecoder
-    """
+    """GraphSAGE 编码器 + 可插拔解码器 + 表型分类头"""
 
     def __init__(self, comp_feat_dim: int, prot_feat_dim: int, n_compounds: int,
                  hidden_dim: int = 64, out_dim: int = 64,
@@ -81,10 +71,9 @@ class SAGELinkPredictor(nn.Module):
         self.n_pathways = n_pathways
         self.decoder_type = decoder_type
 
-        # v17: 固定温度 T，不再参与梯度更新
         self.temperature = temperature
 
-        # ---- v17-ESM2: 化合物特征投影器 ----
+        # 化合物特征投影器
         self.comp_proj = nn.Sequential(
             nn.Linear(comp_feat_dim, 256),
             nn.LayerNorm(256),
@@ -93,7 +82,7 @@ class SAGELinkPredictor(nn.Module):
             nn.Linear(256, hidden_dim),
         )
 
-        # ---- v17-ESM2: 蛋白特征投影器 ----
+        # 蛋白特征投影器
         self.prot_feat_proj = nn.Sequential(
             nn.Linear(prot_feat_dim, 256),
             nn.LayerNorm(256),
@@ -102,7 +91,7 @@ class SAGELinkPredictor(nn.Module):
             nn.Linear(256, hidden_dim),
         )
 
-        # ---- v17-ESM2: 通路特征独立投影器 ----
+        # 通路特征独立投影器
         if n_pathways > 0:
             self.pathway_proj = nn.Sequential(
                 nn.Linear(n_pathways, 128),
@@ -116,7 +105,7 @@ class SAGELinkPredictor(nn.Module):
 
         self.prot_dropout = nn.Dropout(prot_proj_dropout)
 
-        # ---- SAGEConv 层 ----
+        # SAGEConv 层
         self.convs = nn.ModuleList()
         self.norms = nn.ModuleList()
         self.dropouts = nn.ModuleList()
@@ -134,7 +123,7 @@ class SAGELinkPredictor(nn.Module):
         self.norms.append(nn.Identity())
         self.dropouts.append(nn.Dropout(dropout))
 
-        # ---- v28/v33: 可插拔解码器 ----
+        # 可插拔解码器
         if decoder_type == "mlp":
             self.decoder = MLPDecoder(out_dim, hidden_dim=64, dropout=pheno_head_dropout)
         elif decoder_type == "dot":
@@ -148,7 +137,7 @@ class SAGELinkPredictor(nn.Module):
         else:
             raise ValueError(f"不支持的 decoder_type: {decoder_type}")
 
-        # ---- v22/v23: 铁死亡表型分类头 ----
+        # 铁死亡表型分类头
         self.pheno_head = nn.Sequential(
             nn.Linear(out_dim, 64),
             nn.ReLU(),
@@ -255,8 +244,8 @@ class SAGELinkPredictor(nn.Module):
     def free_residue_features(self) -> None:
         """释放 decoder 中的残基级 ESM-2 特征内存。
 
-        v37-fix: 训练主流程在 SAGE 训练结束后、HGT 训练初始化前调用，
-        避免两份 ~8.86GB 残基张量同时驻留导致 CPU OOM。
+        训练主流程在 SAGE 训练结束后、HGT 训练初始化前调用，
+        避免两份残基张量同时驻留导致 CPU OOM。
         """
         if isinstance(self.decoder, ResidueAwareBilinearDecoder):
             self.decoder.free_residue_features()

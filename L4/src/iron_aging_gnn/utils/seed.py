@@ -49,7 +49,6 @@ def set_seed(seed: int = 42, deterministic: bool = True) -> None:
             try:
                 torch.use_deterministic_algorithms(True, warn_only=True)
             except TypeError:
-                # 旧版本 PyTorch 不支持 warn_only 参数
                 torch.use_deterministic_algorithms(True)
 
 

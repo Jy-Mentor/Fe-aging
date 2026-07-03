@@ -58,23 +58,10 @@ def build_graphs_and_adj(
     use_topology_neg: bool = False,
     topo_neighbors_top_k: int = 50,
 ):
-    """构建同质图 + 异质图 + 邻接表（v24: 可选疾病节点；v23-topo: 可选拓扑负样本）
+    """构建同质图 + 异质图 + 邻接表（可选疾病节点和拓扑负样本）
 
-    v24: 加载铁衰老96基因集，确保所有核心基因作为蛋白节点（用于zero-shot预测）
-    v23-topo: 预计算基于PPI拓扑的负样本邻居（可选，默认关闭以避免训练启动开销）
-
-    Args:
-        cpi_df: CPI 数据框
-        ppi_df: PPI 数据框
-        gene_to_pathways: 基因到通路映射
-        prot_feat: 蛋白特征字典
-        disease_df: 疾病数据框（可选，v24）
-        ferro96_genes_file: 铁衰老96基因CSV文件路径（可选，v24）
-        use_topology_neg: 是否预计算PPI拓扑负样本（v23-topo）
-        topo_neighbors_top_k: 拓扑负样本邻居top-k（v23-topo）
-
-    Returns:
-        dict: 图数据字典
+    加载铁衰老96基因集，确保所有核心基因作为蛋白节点（用于zero-shot预测）。
+    预计算基于PPI拓扑的负样本邻居（可选，默认关闭以避免训练启动开销）。
     """
     # 化合物索引
     all_smiles = sorted(cpi_df["canonical_smiles"].unique())
@@ -86,17 +73,17 @@ def build_graphs_and_adj(
     for _, row in ppi_df.iterrows():
         ppi_genes.add(str(row["source"]).strip().upper())
         ppi_genes.add(str(row["target"]).strip().upper())
-    # v24: 确保铁衰老96基因全部作为蛋白节点，即使无CPI/PPI数据（用于zero-shot预测）
+    # 确保铁衰老96基因全部作为蛋白节点，即使无CPI/PPI数据（用于zero-shot预测）
     ferro96_genes = set()
     if ferro96_genes_file is not None:
         ferro96_path = Path(ferro96_genes_file)
         if ferro96_path.exists():
             ferro96_genes = set(pd.read_csv(ferro96_path)["gene_symbol"].dropna().astype(str).str.upper().unique())
-            logger.info(f"v25: 铁衰老96基因集加载: {len(ferro96_genes)} 个")
+            logger.info(f"铁衰老96基因集加载: {len(ferro96_genes)} 个")
     all_genes = sorted(set(cpi_df["gene"].unique()) | set(prot_feat.keys()) | ppi_genes | ferro96_genes)
     gene_to_idx = {g: i + n_compounds for i, g in enumerate(all_genes)}
     n_proteins = len(all_genes)
-    logger.info(f"v25: 总蛋白节点 = {n_proteins} (CPI={cpi_df['gene'].nunique()}, "
+    logger.info(f"总蛋白节点 = {n_proteins} (CPI={cpi_df['gene'].nunique()}, "
                 f"PPI网络={len(ppi_genes)}, 铁衰老96={len(ferro96_genes)})")
 
     # 化合物特征
@@ -105,7 +92,7 @@ def build_graphs_and_adj(
 
     # 蛋白特征
     prot_feat_dim = next(iter(prot_feat.values())).shape[0] if prot_feat else 20
-    prot_esm_dim = prot_feat_dim  # v17-ESM2: 保存原始 ESM-2 维度（通路拼接前），供独立投影器使用
+    prot_esm_dim = prot_feat_dim  # 原始 ESM-2 维度，供独立投影器使用
     prot_matrix = np.zeros((n_proteins, prot_feat_dim), dtype=np.float32)
     n_no_feat = 0
     for gene, idx_offset in gene_to_idx.items():
@@ -120,8 +107,7 @@ def build_graphs_and_adj(
     if n_no_feat > 0:
         logger.info(f"  无蛋白特征基因（随机初始化）: {n_no_feat}")
 
-    # ---- v17-ESM2: 通路隶属关系特征 ----
-    # 为 SAGE 模型添加通路信息，弥补蛋白冷启动场景下拓扑缺失的不足
+    # 通路隶属关系特征 — 为 SAGE 模型添加通路信息，弥补蛋白冷启动场景下拓扑缺失
     # 将每个蛋白的 KEGG 通路隶属关系编码为 one-hot 向量，拼接到 ESM-2 嵌入后
     all_pathways = sorted({pid for paths in gene_to_pathways.values() for pid in paths})
     pathway_to_idx = {p: i for i, p in enumerate(all_pathways)}
@@ -193,7 +179,7 @@ def build_graphs_and_adj(
         ("disease", "involves", "protein"): defaultdict(list),
     }
 
-    # v24: 疾病节点（GSE61616 Ferroaging DEGs）
+    # 疾病节点（GSE61616 Ferroaging DEGs）
     disease_names = []
     disease_to_idx = {}
     n_diseases = 0
@@ -223,7 +209,7 @@ def build_graphs_and_adj(
             for pid in paths:
                 hetero_adj[("protein", "belongs_to", "pathway")][p_idx].append(pid)
 
-    # v24: 疾病-蛋白边构建（蛋白局部索引 <-> 疾病整数索引）
+    # 疾病-蛋白边构建（蛋白局部索引 <-> 疾病整数索引）
     if disease_df is not None and not disease_df.empty:
         for _, row in disease_df.iterrows():
             gene = str(row["gene_symbol"]).strip().upper()
@@ -237,7 +223,7 @@ def build_graphs_and_adj(
     # 通路索引（已在特征构建阶段计算，此处复用）
     n_pathways = n_pathways_feat
 
-    # v12: 通路ID完全数值化 — 将邻接表中的字符串通路ID转为整数索引，消除字符串匹配开销
+    # 通路ID完全数值化 — 将邻接表中的字符串通路ID转为整数索引，消除字符串匹配开销
     new_pt_adj = defaultdict(list)
     for prot_idx, path_list in hetero_adj[("protein", "belongs_to", "pathway")].items():
         for pid in path_list:
@@ -246,7 +232,7 @@ def build_graphs_and_adj(
     hetero_adj[("protein", "belongs_to", "pathway")] = new_pt_adj
     logger.info(f"  通路ID数值化完成: {len(new_pt_adj)} 蛋白 → {n_pathways} 通路")
 
-    # v12: 预计算同通路蛋白邻居（用于中度负样本采样）
+    # 预计算同通路蛋白邻居（用于中度负样本采样）
     prot_to_path_neighbors = build_pathway_neighbors(gene_to_pathways, gene_to_idx, n_compounds)
     logger.info(f"  同通路蛋白邻居: {len(prot_to_path_neighbors)} 蛋白")
 
@@ -273,7 +259,7 @@ def build_graphs_and_adj(
             ppi_edges[1].append(dst)
     hetero_data["protein", "ppi", "protein"].edge_index = torch.tensor(ppi_edges, dtype=torch.long)
 
-    # 通路边（v12: 通路ID已数值化，dst 已是整数，无需再次转换）
+    # 通路边（通路ID已数值化，dst 已是整数，无需再次转换）
     pt_edges = [[], []]
     for src, dsts in hetero_adj[("protein", "belongs_to", "pathway")].items():
         for dst in dsts:
@@ -283,7 +269,7 @@ def build_graphs_and_adj(
     rev_pt = [pt_edges[1][:], pt_edges[0][:]]
     hetero_data["pathway", "includes", "protein"].edge_index = torch.tensor(rev_pt, dtype=torch.long)
 
-    # v24: 疾病边加入异质图
+    # 疾病边加入异质图
     if n_diseases > 0:
         pd_edges = [[], []]
         for src, dsts in hetero_adj[("protein", "associated_with", "disease")].items():
@@ -294,7 +280,7 @@ def build_graphs_and_adj(
         rev_pd = [pd_edges[1][:], pd_edges[0][:]]
         hetero_data["disease", "involves", "protein"].edge_index = torch.tensor(rev_pd, dtype=torch.long)
         hetero_data["disease"].x = torch.zeros(n_diseases, 1, dtype=torch.float32)
-        logger.info(f"v25: disease edges = {len(pd_edges[0])}")
+        logger.info(f"disease edges = {len(pd_edges[0])}")
 
     logger.info(f"异质图: compound({n_compounds}) protein({n_proteins}) pathway({n_pathways}) disease({n_diseases}) | "
                 f"CPI={len(cpi_edges[0])} PPI={len(ppi_edges[0])} Pathway={len(pt_edges[0])}")
@@ -310,13 +296,13 @@ def build_graphs_and_adj(
         homo_edge_index = torch.zeros((2, 0), dtype=torch.long)
     logger.info(f"预计算全图边索引: {homo_edge_index.shape[1]} 条边")
 
-    # v23-topo: 预计算基于PPI拓扑的负样本邻居（可选，默认关闭以避免训练启动开销）
+    # 预计算基于PPI拓扑的负样本邻居（可选，默认关闭以避免训练启动开销）
     prot_to_topo_medium_neighbors: dict[int, set] | None = None
     prot_to_topo_hard_neighbors: dict[int, set] | None = None
     if use_topology_neg:
         active_genes = {str(g).strip().upper() for g in cpi_df["gene"].dropna().unique()}
         logger.info(
-            f"v23-topo: 预计算PPI拓扑负样本 (active_genes={len(active_genes)}, top_k={topo_neighbors_top_k}) ..."
+            f"预计算PPI拓扑负样本 (active_genes={len(active_genes)}, top_k={topo_neighbors_top_k}) ..."
         )
         try:
             from .topology_negative_sampling import (
@@ -341,14 +327,16 @@ def build_graphs_and_adj(
                 top_k=topo_neighbors_top_k,
                 sampler=sampler,
             )
+        except ImportError as e:
+            logger.warning("初始化 TopologyNegativeSampler 失败，回退到无拓扑负样本: %s", e)
         except Exception:
-            logger.exception("v23-topo: 初始化 TopologyNegativeSampler 失败，回退到无拓扑负样本")
+            logger.exception("初始化 TopologyNegativeSampler 失败，回退到无拓扑负样本")
 
     return {
         "x": x,
         "feat_dim": feat_dim,
-        "prot_feat_dim": prot_feat_dim,  # v17: 蛋白特征总维度（ESM2 + 通路 one-hot），供 padding 计算
-        "prot_esm_dim": prot_esm_dim,  # v17-ESM2: 原始 ESM-2 维度（640），供独立投影器使用
+        "prot_feat_dim": prot_feat_dim,
+        "prot_esm_dim": prot_esm_dim,
         "n_compounds": n_compounds,
         "n_proteins": n_proteins,
         "smi_to_idx": smi_to_idx,
@@ -360,7 +348,7 @@ def build_graphs_and_adj(
         "n_pathways": n_pathways,
         "n_diseases": n_diseases,
         "disease_to_idx": disease_to_idx,
-        "prot_to_path_neighbors": prot_to_path_neighbors,  # v12: 同通路蛋白邻居（中度负样本）
-        "prot_to_topo_medium_neighbors": prot_to_topo_medium_neighbors,  # v23-topo
-        "prot_to_topo_hard_neighbors": prot_to_topo_hard_neighbors,  # v23-topo
+        "prot_to_path_neighbors": prot_to_path_neighbors,
+        "prot_to_topo_medium_neighbors": prot_to_topo_medium_neighbors,
+        "prot_to_topo_hard_neighbors": prot_to_topo_hard_neighbors,
     }

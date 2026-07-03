@@ -23,10 +23,6 @@ RDLogger.DisableLog("rdApp.warning")
 logger = logging.getLogger(__name__)
 
 
-# ============================================================
-# 化合物特征工程
-# ============================================================
-
 def _compute_ecfp4(smiles_iter: list[str]) -> np.ndarray:
     fps = np.zeros((len(smiles_iter), ECFP4_NBITS), dtype=np.float32)
     for i, smi in enumerate(smiles_iter):
@@ -136,10 +132,6 @@ def build_compound_features(
     return features, mean, std, col_mean
 
 
-# ============================================================
-# 蛋白特征工程
-# ============================================================
-
 def compute_aac(sequences: list[str]) -> np.ndarray:
     """计算氨基酸组成（Amino Acid Composition, AAC）。
 
@@ -220,7 +212,7 @@ def compute_esm2_embeddings(
             batch_genes = genes[i:i + batch_size]
             batch_seqs = [gene_to_seq[g] for g in batch_genes]
 
-            # 截断过长序列（ESM-2 最大 1024 tokens，含特殊 token 则为 1022 aa）
+            # 截断过长序列
             max_len = 1022
             truncated_seqs = [s[:max_len] for s in batch_seqs]
 

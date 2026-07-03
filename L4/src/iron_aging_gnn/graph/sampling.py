@@ -27,8 +27,8 @@ def sample_homo_subgraph(
     homo_adj: dict[int, list[int]],
     num_neighbors: list[int] | None = None,
     seed: int | None = None,
-):
-    """GraphSAGE 风格邻居采样：固定每层邻居数，避免邻居爆炸（v12: 支持种子固定可复现）"""
+) -> tuple[list[int], dict[int, int], torch.Tensor]:
+    """GraphSAGE 风格邻居采样：固定每层邻居数，避免邻居爆炸"""
     if num_neighbors is None:
         num_neighbors = [32, 16]
     if seed is not None:
@@ -49,8 +49,7 @@ def sample_homo_subgraph(
     node_list = sorted(nodes)
     node_to_local = {n: i for i, n in enumerate(node_list)}
 
-    # v27: 向量化边构建 — 替换双重 Python 循环
-    # 构建 node_to_local 张量
+    # 向量化边构建，替换双重 Python 循环
     _max_node = max(node_list)
     ntl = torch.full((_max_node + 1,), -1, dtype=torch.long)
     for n, l in node_to_local.items():
@@ -83,11 +82,11 @@ def sample_hetero_subgraph(
     num_neighbors: list[int] | None = None,
     seed: int | None = None,
     seed_proteins: list[int] | None = None,
-):
-    """异质图手动邻居采样（v15: 通路ID已数值化，移除冗余 pathway_to_idx 参数）
+) -> tuple[HeteroData, list[int], list[int], list[int], list[int], dict[int, int], dict[int, int], dict[int, int]]:
+    """异质图手动邻居采样。
 
-    v18: 新增 seed_proteins 参数，允许将指定蛋白（如验证蛋白）作为孤立节点纳入子图，
-    用于蛋白冷启动 OOM 降级 mini-batch 验证。
+    seed_proteins 参数允许将指定蛋白（如验证蛋白）作为孤立节点纳入子图，
+    用于 OOM 降级 mini-batch 验证。
     """
     if num_neighbors is None:
         num_neighbors = [32, 16]
@@ -130,22 +129,19 @@ def sample_hetero_subgraph(
 
     comp_sorted = sorted(compounds)
     prot_sorted = sorted(proteins)
-    path_sorted = sorted(pathways)  # v12: 已是整数通路ID
+    path_sorted = sorted(pathways)
     disease_sorted = sorted(diseases)
-
     comp_map = {c: i for i, c in enumerate(comp_sorted)}
     prot_map = {p: i for i, p in enumerate(prot_sorted)}
     path_map = {p: i for i, p in enumerate(path_sorted)}
     disease_map = {d: i for i, d in enumerate(disease_sorted)}
-
-    # v12: 通路ID已数值化，直接使用（无需 pathway_to_idx 转换）
     path_global = list(path_sorted)
     disease_global = list(disease_sorted)
 
     sg = HeteroData()
     sg._comp_sorted = comp_sorted
     sg._prot_map = prot_map
-    sg._path_global = path_global  # v11: 存储全局通路索引
+    sg._path_global = path_global
     sg._disease_global = disease_global
 
     def _build_edges(et, src_map, dst_map):
@@ -169,7 +165,7 @@ def sample_hetero_subgraph(
     sg["protein", "associated_with", "disease"].edge_index = _build_edges(
         ("protein", "associated_with", "disease"), prot_map, disease_map)
 
-    # Bug1 修复: 手动构建反向边（通路→蛋白），_build_edges 无法处理反向映射
+    # 手动构建反向边（通路→蛋白），_build_edges 无法处理反向映射
     sl_rev, dl_rev = [], []
     for p_global, pathway_ids in hetero_adj.get(("protein", "belongs_to", "pathway"), {}).items():
         if p_global in prot_map:

@@ -45,6 +45,10 @@ CURRICULUM_PHASE2 = 0.7          # 阶段2（中度负样本）开始的比例
 MEDIUM_NEG_RATIO = 0.3           # 中度负样本占 unique 化合物的比例
 HARD_NEG_RATIO = 0.1             # 极硬负样本占 unique 化合物的比例
 
+# NaN/Inf 批次计数器（模块级，避免函数属性污染）
+_nan_batch_count: int = 0
+_MAX_NAN_BATCHES = 5
+
 
 def focal_loss_with_logits(
     logits: torch.Tensor,
@@ -361,16 +365,17 @@ def compute_cpi_loss(
             loss = loss + INFONCE_WEIGHT * infonce
 
     if torch.isnan(loss) or torch.isinf(loss):
-        compute_cpi_loss._nan_batch_count = getattr(compute_cpi_loss, "_nan_batch_count", 0) + 1
-        if compute_cpi_loss._nan_batch_count >= 5:
+        global _nan_batch_count
+        _nan_batch_count += 1
+        if _nan_batch_count >= _MAX_NAN_BATCHES:
             raise RuntimeError(
-                f"compute_cpi_loss 连续 {compute_cpi_loss._nan_batch_count} 个 batch 产生 NaN/Inf loss，"
+                f"compute_cpi_loss 连续 {_nan_batch_count} 个 batch 产生 NaN/Inf loss，"
                 f"可能是梯度爆炸或数据异常，请检查学习率、模型初始化或输入数据")
         logger.warning(
-            f"compute_cpi_loss 产生 NaN/Inf loss（连续 {compute_cpi_loss._nan_batch_count}/5），"
+            f"compute_cpi_loss 产生 NaN/Inf loss（连续 {_nan_batch_count}/{_MAX_NAN_BATCHES}），"
             f"返回零损失以保护训练")
         return torch.tensor(0.0, device=loss.device, requires_grad=False)
     else:
-        compute_cpi_loss._nan_batch_count = 0  # 正常 batch 重置计数器
+        _nan_batch_count = 0  # 正常 batch 重置计数器
 
     return loss

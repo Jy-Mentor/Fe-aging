@@ -1,9 +1,6 @@
 """铁衰老项目常量定义"""
 
-# ============================================================
-# 铁衰老靶标列表（来自 ferroaging_genes_supplemented_v25.csv, Ferroaging96 原始基因）
-# 来源: L4/results_v10_minibatch/ferroaging_genes_supplemented_v25.csv
-# 基因数: 96
+# 铁衰老靶标列表
 ALL_FERRORAGING_GENES = sorted([
     "ABCC1", "ACSL4", "ACVR1B", "ALOX15", "ATF3", "ATG3", "BAP1", "BCL6",
     "BRD7", "CAVIN1", "CD74", "CD82", "CDO1", "COX7A1", "CTSB", "CXCL10",
@@ -19,9 +16,7 @@ ALL_FERRORAGING_GENES = sorted([
     "TLR4", "TNFAIP1", "TNFAIP3", "TXNIP", "WNT5A", "WWTR1", "YAP1", "ZEB1",
 ])
 
-# ============================================================
 # RDKit 描述符名称列表
-# ============================================================
 RDKIT_DESCRIPTOR_NAMES = [
     "MolWt", "MolLogP", "MolMR", "TPSA",
     "NumHAcceptors", "NumHDonors", "NumRotatableBonds",
