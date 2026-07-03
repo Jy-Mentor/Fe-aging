@@ -474,6 +474,8 @@ WARM_TARGETS_TOP_N = _cfg.prediction.warm_targets_top_n if _cfg else 5
 ZS_TARGETS_TOP_N = _cfg.prediction.zs_targets_top_n if _cfg else 3
 COMPOSITE_AVG_WEIGHT = _cfg.prediction.composite_avg_weight if _cfg else 0.4
 COMPOSITE_MAX_WEIGHT = _cfg.prediction.composite_max_weight if _cfg else 0.3
+# v39: 树模型集成权重（树模型 AUC~0.99, AUPR~0.97, 70基因）
+TREE_ENSEMBLE_WEIGHT = _cfg.prediction.tree_ensemble_weight if _cfg else 0.6
 COMPOSITE_HITS_WEIGHT = _cfg.prediction.composite_hits_weight if _cfg else 0.3
 FERRO_FACTOR_BASE = _cfg.prediction.ferro_factor_base if _cfg else 0.7
 ZS_BONUS_MAX = _cfg.prediction.zs_bonus_max if _cfg else 0.05
@@ -794,7 +796,8 @@ def compute_esm2_embeddings(
 # [Ref: 12] BindingDB: Liu et al. (2007) Nucleic Acids Research
 # ============================================================
 def load_cpi_data() -> pd.DataFrame:
-    cpi_path = L4_ROOT / "results" / "experimental_actives_detail_cleaned.csv"
+    # v39: 使用树模型 v6.4 扩展版本（70基因 / 48K条），替代原42基因版本
+    cpi_path = L4_ROOT / "results" / "experimental_actives_detail_cleaned_combined.csv"
     if not cpi_path.exists():
         logger.error(f"CPI 数据文件不存在: {cpi_path}")
         sys.exit(1)
@@ -3375,20 +3378,26 @@ def predict_tcm(
     diversity_penalty: float = 0.3,  # v27-fix: 默认值 0.1→0.3 与全局 DIVERSITY_PENALTY 一致
     mc_samples: int = 0,
     tcm_feat_precomputed: torch.Tensor | None = None,
+    tree_predictions: pd.DataFrame | None = None,  # v39: 树模型预测分数
+    tree_weight: float = 0.6,  # v39: 树模型集成权重
 ) -> pd.DataFrame:
-    """v38: SAGE + HGT 集成预测 — 等权集成 + 多样性约束 + MC Dropout
+    """v39: SAGE + HGT + 树模型三方集成预测 — 等权集成 + 多样性约束 + MC Dropout
+
+    v39 改进:
+      - 新增树模型 v6.4 预测集成（XGBoost，70基因，AUC~0.99）
+      - 三方加权融合: GNN集成分数 × (1-tree_weight) + 树模型分数 × tree_weight
 
     v38 改进:
       - 移除蛋白冷启动 AUPR 动态权重，改为等权集成
       - 余弦相似度多样性惩罚：鼓励两个分支利用不同信号
       - MC Dropout 不确定性估计：mc_samples>0 时保持 Dropout 开启，
         重复 mc_samples 次前向，输出均值 + 标准差
-      - 参考: Zhou et al. (2021) "Diver";
-              Gal & Ghahramani (2016) "Dropout as a Bayesian Approximation"
 
     Args:
         diversity_penalty: 余弦相似度惩罚系数（0~1，越大越惩罚相似预测）
         mc_samples: MC Dropout 采样次数（0=禁用，推荐30）
+        tree_predictions: 树模型预测 DataFrame (MOL_ID, SMILES, gene, score)
+        tree_weight: 树模型在最终集成中的权重（0~1）
     """
     n_iterations = max(1, mc_samples)
     use_mc = mc_samples > 0
@@ -3535,6 +3544,27 @@ def predict_tcm(
     diversity_factor = 1.0 - diversity_penalty * delta
     weighted_scores = sage_w * sage_mean + hgt_w * hgt_mean
     final_scores = weighted_scores * diversity_factor + 0.5 * (1.0 - diversity_factor)
+
+    # v39: 树模型集成 — 将树模型预测与 GNN 集成分数加权融合
+    tree_scores_tensor = None
+    if tree_predictions is not None and len(tree_predictions) > 0:
+        # 构建 (SMILES, gene) → score 的查找表
+        tree_lookup = {}
+        for _, row in tree_predictions.iterrows():
+            tree_lookup[(str(row["SMILES"]), str(row["gene"]))] = float(row["score"])
+        # 构建与 final_scores 同形状的张量
+        tree_scores_tensor = torch.full_like(final_scores, 0.5)
+        tree_matched = 0
+        for i, smi in enumerate(tcm_smiles):
+            for j, (gene, _) in enumerate(gene_index_map):
+                key = (smi, gene)
+                if key in tree_lookup:
+                    tree_scores_tensor[i, j] = tree_lookup[key]
+                    tree_matched += 1
+        logger.info(f"  树模型集成: 匹配 {tree_matched}/{final_scores.numel()} 对, "
+                    f"权重 tree={tree_weight:.2f} GNN={1-tree_weight:.2f}")
+        # 三方融合: GNN 集成分数 × (1-tree_weight) + 树模型分数 × tree_weight
+        final_scores = (1 - tree_weight) * final_scores + tree_weight * tree_scores_tensor
 
     # v26-fix: 按基因维度计算余弦相似度并取均值，避免全局展平丢失基因特异性信息
     # sage_mean/hgt_mean: (n_tcm, n_genes)
@@ -3685,11 +3715,13 @@ def main(decoder_type: str | None = None):
     logger.info("v27: 模型定义迁移至模块化文件 / warmup最小值2 / TCM重叠标记 / 代码注释完善")
     logger.info("v28: 配置系统集成 / tqdm进度条 / GPU显存监控 / 类型注解 / 前置断言 / OOM降级")
     logger.info("v37: HGT 蛋白冷启动验证负采样与 SAGE 对齐 (仅 CPI 蛋白) + 化合物冷启动验证 prot_residue_indices 改用全局索引")
+    logger.info("v38: 彻底移除蛋白冷启动验证 / 早停仅基于 val_aupr / 等权集成 / 清理未定义变量")
+    logger.info("v39: 集成树模型 v6.4 扩展CPI数据 (70基因/48K条) + 树模型预测集成")
     logger.info("=" * 60)
 
     # ── 加固: 关键数据文件存在性检查 ──
     critical_files = {
-        "CPI数据": L4_ROOT / "results" / "experimental_actives_detail_cleaned.csv",
+        "CPI数据": L4_ROOT / "results" / "experimental_actives_detail_cleaned_combined.csv",
         "铁衰老基因列表": FERRORAGING_GENES_CSV,
         "ESM-2缓存": L4_RESULTS / "esm2_protein_embeddings.npz",
         "目标蛋白特征": L2_RESULTS / "target_protein_features.csv",
@@ -3723,12 +3755,11 @@ def main(decoder_type: str | None = None):
     else:
         logger.warning(f">>> 铁死亡表型数据集不存在: {pheno_file}，跳过表型辅助任务")
 
-    # v23: warm_targets 扩展为所有有 CPI 数据的铁衰老相关基因（42个）
-    # 原 v21 仅用 96列表 ∩ CPI = 23个，漏掉了 GPX4、STAT3、NFE2L2、MTOR、TP53 等核心靶标
+    # v39: warm_targets 扩展为所有有 CPI 数据的基因（树模型 v6.4 扩展至 70基因）
     all_cpi_genes = sorted(set(cpi_df["gene"].unique()))
     warm_in_96 = sorted(set(all_cpi_genes) & set(ALL_FERRORAGING_GENES))
     warm_extra = sorted(set(all_cpi_genes) - set(ALL_FERRORAGING_GENES))
-    warm_targets = all_cpi_genes  # 训练用全部 42 个
+    warm_targets = all_cpi_genes  # v39: 训练用全部 CPI 基因（70个）
     logger.info(f"温靶标: {len(warm_targets)} 个 (96列表内={len(warm_in_96)}, 额外核心={len(warm_extra)})")
     logger.info(f"  96列表内warm: {warm_in_96}")
     logger.info(f"  额外warm靶标: {warm_extra}")
@@ -3761,10 +3792,10 @@ def main(decoder_type: str | None = None):
     if missing_ferro_in_prot_feat:
         logger.warning(f">>> 以下铁衰老96基因缺少ESM-2特征: {missing_ferro_in_prot_feat}")
 
-    # v31: 图数据缓存路径与缓存键
-    GRAPH_CACHE_PATH = L4_RESULTS / "graph_cache_v31.pkl"
+    # v39: 图数据缓存路径与缓存键（扩展至70基因，强制重建图）
+    GRAPH_CACHE_PATH = L4_RESULTS / "graph_cache_v39.pkl"
     _graph_cache_key = {
-        "version": "v31",
+        "version": "v39",
         "random_seed": RANDOM_SEED,
         "compound_val_split": COMPOUND_VAL_SPLIT,
         "protein_val_split": PROTEIN_VAL_SPLIT,
@@ -4038,8 +4069,8 @@ def main(decoder_type: str | None = None):
         pheno_lambda=PHENO_LAMBDA)  # v33-fix: 移除 train_sage 不接受的参数
 
     try:
-        torch.save({"state_dict": sage_model.state_dict(), "version": "v38", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "sage_best_v38.pt")
-        logger.info("  SAGE 模型已保存到 sage_best_v38.pt")
+        torch.save({"state_dict": sage_model.state_dict(), "version": "v39", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "sage_best_v39.pt")
+        logger.info("  SAGE 模型已保存到 sage_best_v39.pt")
     except Exception:
         logger.error("  SAGE 模型保存失败", exc_info=True)
         raise
@@ -4097,8 +4128,8 @@ def main(decoder_type: str | None = None):
         pheno_lambda=PHENO_LAMBDA)  # v33-fix: 移除 train_hgt 不接受的参数
 
     try:
-        torch.save({"state_dict": hgt_model.state_dict(), "version": "v38", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "hgt_best_v38.pt")
-        logger.info("  HGT 模型已保存到 hgt_best_v38.pt")
+        torch.save({"state_dict": hgt_model.state_dict(), "version": "v39", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "hgt_best_v39.pt")
+        logger.info("  HGT 模型已保存到 hgt_best_v39.pt")
     except Exception:
         logger.error("  HGT 模型保存失败", exc_info=True)
         raise
@@ -4114,8 +4145,18 @@ def main(decoder_type: str | None = None):
     hgt_best_prot_aupr = 0.5
     logger.info("  v38: 跳过蛋白冷启动最终评估，集成权重设为等权 (0.5/0.5)")
 
+    # v39: 加载树模型 v6.4 TCM 预测用于集成
+    tree_pred_df = None
+    tree_pred_path = L4_RESULTS / "tree_v6_tcm_predictions.csv"
+    if tree_pred_path.exists():
+        tree_pred_df = pd.read_csv(tree_pred_path, low_memory=False)
+        logger.info(f"v39: 树模型预测加载: {len(tree_pred_df)} 条 "
+                    f"({tree_pred_df['MOL_ID'].nunique()} 化合物 × {tree_pred_df['gene'].nunique()} 基因)")
+    else:
+        logger.warning(f"v39: 树模型预测文件不存在: {tree_pred_path}，跳过树模型集成")
+
     # ======== 预测 TCM ========
-    logger.info(">>> 预测 TCM 化合物（v25: 全96铁衰老基因 + 靶标优先级加权 + 铁死亡表型融合）")
+    logger.info(">>> 预测 TCM 化合物（v39: 70基因 + 树模型集成 + 铁死亡表型融合）")
     # v25: 检查SMILES列
     tcm_smiles_col = "SMILES_std" if "SMILES_std" in tcm_df.columns else (
         "SMILES" if "SMILES" in tcm_df.columns else "canonical_smiles")
@@ -4144,7 +4185,9 @@ def main(decoder_type: str | None = None):
         sage_model, hgt_model, graphs, tcm_smiles, all_target_genes,
         compound_stats,
         mc_samples=MC_SAMPLES,
-        tcm_feat_precomputed=tcm_feat_precomputed)
+        tcm_feat_precomputed=tcm_feat_precomputed,
+        tree_predictions=tree_pred_df,  # v39: 树模型预测集成
+        tree_weight=TREE_ENSEMBLE_WEIGHT)  # v39: 树模型权重
 
     # v23: 铁死亡概率预测 — SAGE + HGT 双分支平均
     final_ferroptosis_prob = None
@@ -4311,10 +4354,10 @@ def main(decoder_type: str | None = None):
     top_df = pred_df.head(TOP_N_CANDIDATES).copy()
 
     try:
-        pred_df.to_csv(L4_RESULTS / "tcm_predictions_full_v38.csv", index=False)
-        top_df.to_csv(L4_RESULTS / "tcm_top_candidates_v38.csv", index=False)
-        logger.info(f"  预测结果已保存: tcm_predictions_full_v38.csv ({len(pred_df)} 行), "
-                    f"tcm_top_candidates_v38.csv ({len(top_df)} 行)")
+        pred_df.to_csv(L4_RESULTS / "tcm_predictions_full_v39.csv", index=False)
+        top_df.to_csv(L4_RESULTS / "tcm_top_candidates_v39.csv", index=False)
+        logger.info(f"  预测结果已保存: tcm_predictions_full_v39.csv ({len(pred_df)} 行), "
+                    f"tcm_top_candidates_v39.csv ({len(top_df)} 行)")
     except Exception:
         logger.error("  预测结果 CSV 保存失败", exc_info=True)
         raise
@@ -4344,15 +4387,15 @@ def main(decoder_type: str | None = None):
         perf_rows.append(hgt_row)
     if perf_rows:
         try:
-            pd.DataFrame(perf_rows).to_csv(L4_RESULTS / "model_performance_v38.csv", index=False)
-            logger.info(f"  模型性能报告已保存: model_performance_v38.csv (训练时间={train_time_min:.1f}min, GPU峰值={gpu_mem_peak_gb:.2f}GB)")
+            pd.DataFrame(perf_rows).to_csv(L4_RESULTS / "model_performance_v39.csv", index=False)
+            logger.info(f"  模型性能报告已保存: model_performance_v39.csv (训练时间={train_time_min:.1f}min, GPU峰值={gpu_mem_peak_gb:.2f}GB)")
         except Exception:
             logger.error("  模型性能 CSV 保存失败", exc_info=True)
             raise
 
     total_time = time.time() - start_time
     logger.info("=" * 60)
-    logger.info(f"Phase 4 v38 完成！总耗时 {total_time / 60:.1f} 分钟")
+    logger.info(f"Phase 4 v39 完成！总耗时 {total_time / 60:.1f} 分钟")
     if sage_history:
         logger.info(f"  SAGE best val_auc: {max(h['auc'] for h in sage_history):.4f}  val_aupr: {max(h.get('aupr', 0) for h in sage_history):.4f}")
     if hgt_history:
@@ -4361,7 +4404,7 @@ def main(decoder_type: str | None = None):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Phase 4 v33: SAGE + HGT 双分支训练与 TCM 预测")
+    parser = argparse.ArgumentParser(description="Phase 4 v39: SAGE + HGT + 树模型集成训练与 TCM 预测")
     parser.add_argument(
         "--decoder_type",
         type=str,
