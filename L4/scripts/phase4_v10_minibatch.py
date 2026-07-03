@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Phase 4 v28: Mini-Batch GNN 双分支 — 两阶段迁移学习与冷启动验证
+Phase 4 v37: Mini-Batch GNN 双分支 — 两阶段迁移学习与冷启动验证 (HGT验证负采样对齐SAGE + 全局索引)
 ==========================================================================
 v27 修复 (2026-06-29):
   - 数据清洗: PPI去重(107K重复边)、CPI补充SMILES修复、BindingDB SMILES修复
@@ -288,7 +288,7 @@ from iron_aging_gnn.utils.config import Config, load_config  # noqa: E402
 for d in [L4_RESULTS, L4_LOGS]:
     d.mkdir(parents=True, exist_ok=True)
 
-LOG_FILE = L4_LOGS / "phase4_v33_hgt_diag.log"
+LOG_FILE = L4_LOGS / "phase4_v37_hgt_diag.log"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -840,17 +840,29 @@ def load_cpi_data() -> pd.DataFrame:
                 version_counts = supp_df["source_version"].value_counts().to_dict()
                 for ver, cnt in sorted(version_counts.items()):
                     logger.info(f"  补充数据版本 {ver}: {cnt} 条记录")
-            # 列名兼容：支持 smiles/canonical_smiles 和 uniprot/uniprot_id 两种命名
-            if "smiles" not in supp_df.columns and "canonical_smiles" in supp_df.columns:
-                supp_df = supp_df.rename(columns={"canonical_smiles": "smiles"})
-            if "uniprot" not in supp_df.columns and "uniprot_id" in supp_df.columns:
-                supp_df = supp_df.rename(columns={"uniprot_id": "uniprot"})
-            supp_required = ["gene", "smiles", "uniprot"]
+            # 列名兼容：统一为 canonical_smiles / uniprot_id
+            if "canonical_smiles" not in supp_df.columns and "smiles" in supp_df.columns:
+                supp_df = supp_df.rename(columns={"smiles": "canonical_smiles"})
+            if "uniprot_id" not in supp_df.columns and "uniprot" in supp_df.columns:
+                supp_df = supp_df.rename(columns={"uniprot": "uniprot_id"})
+            # 若新旧列名同时存在，优先保留标准列名
+            drop_alt_cols = []
+            if "canonical_smiles" in supp_df.columns and "smiles" in supp_df.columns:
+                drop_alt_cols.append("smiles")
+            if "uniprot_id" in supp_df.columns and "uniprot" in supp_df.columns:
+                drop_alt_cols.append("uniprot")
+            if drop_alt_cols:
+                supp_df = supp_df.drop(columns=drop_alt_cols)
+            # 重命名后再次去重，防止产生重复列
+            if supp_df.columns.duplicated().any():
+                dup_cols = supp_df.columns[supp_df.columns.duplicated()].unique().tolist()
+                logger.warning(f"补充CPI数据重命名后仍存在重复列: {dup_cols}，保留首次出现列")
+                supp_df = supp_df.loc[:, ~supp_df.columns.duplicated()]
+            supp_required = ["gene", "canonical_smiles", "uniprot_id"]
             supp_missing = [c for c in supp_required if c not in supp_df.columns]
             if supp_missing:
                 logger.warning(f"补充CPI数据缺少列: {supp_missing}，跳过合并")
             else:
-                supp_df = supp_df.rename(columns={"smiles": "canonical_smiles", "uniprot": "uniprot_id"})
                 supp_df = supp_df[supp_df["canonical_smiles"].notna()].copy()
                 supp_df = supp_df[supp_df["canonical_smiles"].astype(str).str.strip() != ""].copy()
                 # SMILES 有效性校验，过滤无效SMILES
@@ -1998,7 +2010,18 @@ def _compute_cpi_loss(
 
     # 正样本
     pos_residue_idx = _get_residue_indices(pos_dst)
-    pos_score = model.decode(comp_emb[pos_src], prot_emb[pos_dst], prot_residue_indices=pos_residue_idx) / T
+    try:
+        pos_score = model.decode(comp_emb[pos_src], prot_emb[pos_dst], prot_residue_indices=pos_residue_idx) / T
+    except torch.cuda.OutOfMemoryError as e:
+        # v37-fix: 正样本 OOM 降级为 fast bilinear
+        compute_cpi_loss._pos_oom_count = getattr(compute_cpi_loss, "_pos_oom_count", 0) + 1
+        logger.warning(
+            f"_compute_cpi_loss: pos 残基路径 OOM（连续 {compute_cpi_loss._pos_oom_count} 次），"
+            f"降级为 fast bilinear: {e}"
+        )
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+        pos_score = model.decode(comp_emb[pos_src], prot_emb[pos_dst], prot_residue_indices=None) / T
     pos_score = torch.clamp(pos_score, -SCORE_CLAMP, SCORE_CLAMP)
     pos_loss = focal_loss_with_logits(
         pos_score, torch.full_like(pos_score, LABEL_SMOOTHING_POS), alpha=FOCAL_ALPHA)
@@ -2009,13 +2032,12 @@ def _compute_cpi_loss(
         return pos_loss
 
     batch_comp_emb = comp_emb[unique_src]
-    all_prot_residue_idx = _get_residue_indices(
-        torch.arange(n_batch_prots, device=DEVICE).repeat(n_unique)
-    )
+    # v33-fix: 全蛋白 pair-matrix 规模极大，残基注意力会导致 8GB 显存图内存爆炸；
+    # 此处退化为 GNN 全局嵌入点积，仅对正样本/难负样本启用残基解码器。
     all_scores = model.decode(
         batch_comp_emb.unsqueeze(1).expand(-1, n_batch_prots, -1).reshape(-1, model.out_dim),
         prot_emb.repeat(n_unique, 1),
-        prot_residue_indices=all_prot_residue_idx,
+        prot_residue_indices=None,
     ).reshape(n_unique, n_batch_prots) / T
 
     # v31: 向量化正样本mask构建 — 使用预计算 compound_to_prot_locals 映射表
@@ -2076,11 +2098,25 @@ def _compute_cpi_loss(
         valid_mask = valid_mask / (row_sum.unsqueeze(1) + EPS_SMALL)
         # v25-fix: 仅对 safe_rows 采样，避免全零行触发 RuntimeError
         rand_dst = torch.multinomial(valid_mask[safe_rows], 1).squeeze(-1)
+        # v37-fix: 随机负样本尝试使用残基路径，OOM 时降级为 fast bilinear
         rand_residue_idx = _get_residue_indices(rand_dst)
-        hard_neg_scores[safe_rows] = model.decode(
-            comp_emb[unique_src[safe_rows]], prot_emb[rand_dst],
-            prot_residue_indices=rand_residue_idx,
-        ) / T
+        try:
+            hard_neg_scores[safe_rows] = model.decode(
+                comp_emb[unique_src[safe_rows]], prot_emb[rand_dst],
+                prot_residue_indices=rand_residue_idx,
+            ) / T
+        except torch.cuda.OutOfMemoryError as e:
+            compute_cpi_loss._hard_neg_oom_count = getattr(compute_cpi_loss, "_hard_neg_oom_count", 0) + 1
+            logger.warning(
+                f"_compute_cpi_loss: hard_neg 残基路径 OOM（连续 {compute_cpi_loss._hard_neg_oom_count} 次），"
+                f"降级为 fast bilinear: {e}"
+            )
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+            hard_neg_scores[safe_rows] = model.decode(
+                comp_emb[unique_src[safe_rows]], prot_emb[rand_dst],
+                prot_residue_indices=None,
+            ) / T
         hard_neg_scores = torch.clamp(hard_neg_scores, -SCORE_CLAMP, SCORE_CLAMP)
 
     # Phase 2: 中度负样本
@@ -2186,7 +2222,28 @@ def _compute_cpi_loss(
         bpr_valid_mask[bpr_safe] = bpr_valid_mask[bpr_safe] / bpr_row_sum[bpr_safe].unsqueeze(1)
         # v25-fix: 仅对 bpr_safe 行采样，避免全零行触发 RuntimeError
         bpr_neg_dst = torch.multinomial(bpr_valid_mask[bpr_safe], 1).squeeze(-1)
-        bpr_neg_scores[bpr_safe] = all_scores[pos_indices[bpr_safe], bpr_neg_dst]
+        # v37-fix: BPR 负样本尝试使用残基注意力路径（与正样本一致以真正训练残基解码器），
+        # 但在显存不足时降级为 fast bilinear（与 all_scores 路径一致），并明确打印警告。
+        # 这是工程妥协而非掩盖错误：BPR 只占总损失的 bpr_weight*1.0(0.4)，部分降级不会毁掉训练。
+        bpr_neg_residue_idx = _get_residue_indices(bpr_neg_dst)
+        try:
+            bpr_neg_scores[bpr_safe] = model.decode(
+                comp_emb[pos_src[bpr_safe]], prot_emb[bpr_neg_dst],
+                prot_residue_indices=bpr_neg_residue_idx,
+            ) / T
+        except torch.cuda.OutOfMemoryError as e:
+            compute_cpi_loss._bpr_residue_oom_count = getattr(compute_cpi_loss, "_bpr_residue_oom_count", 0) + 1
+            logger.warning(
+                f"_compute_cpi_loss: BPR 残基路径 OOM（连续 {compute_cpi_loss._bpr_residue_oom_count} 次），"
+                f"降级为 fast bilinear: {e}"
+            )
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+            # 降级为 fast bilinear：使用正样本与负样本的全局嵌入
+            bpr_neg_scores[bpr_safe] = model.decode(
+                comp_emb[pos_src[bpr_safe]], prot_emb[bpr_neg_dst],
+                prot_residue_indices=None,
+            ) / T
     # v25-fix: 对unsafe行使用(all_scores + mask)中最低分蛋白作为替代负样本
     # mask 已将正样本设为 MASK_VAL=-1e9，确保 min 不会选到正样本
     bpr_unsafe = ~bpr_safe
@@ -3095,9 +3152,10 @@ def _validate_sage(model, x, homo_edge_index, val_compounds, all_compound_to_pos
             sub_comp = comp_sub[start:end]
             sub_comp_exp = sub_comp.unsqueeze(1).expand(-1, n_prots, -1).reshape(-1, sub_comp.shape[-1])
             prot_exp = prot_emb.unsqueeze(0).expand(end - start, -1, -1).reshape(-1, prot_emb.shape[-1])
-            prot_residue_idx = torch.arange(n_prots, device=DEVICE).repeat(end - start)
+            # v33-fix: 验证阶段全 pair-matrix 使用快速双线性打分（prot_residue_indices=None），
+            # 避免残基注意力逐对处理 n_val × n_prots 对导致严重减速/卡住。
             sub_scores = model.decode(
-                sub_comp_exp, prot_exp, prot_residue_indices=prot_residue_idx
+                sub_comp_exp, prot_exp, prot_residue_indices=None
             ).reshape(end - start, n_prots) / T
             score_chunks.append(sub_scores)
         score_matrix = torch.cat(score_chunks, dim=0)  # (n_val, n_prots)
@@ -3213,9 +3271,9 @@ def _validate_sage_protein_cold(
             sub_comp = comp_sub[start:end]
             sub_comp_exp = sub_comp.unsqueeze(1).expand(-1, n_val_prots, -1).reshape(-1, sub_comp.shape[-1])
             prot_exp = prot_sub.unsqueeze(0).expand(end - start, -1, -1).reshape(-1, prot_sub.shape[-1])
-            prot_residue_idx = torch.tensor(val_prot_list, device=DEVICE).repeat(end - start)
+            # v33-fix: 验证阶段全 pair-matrix 使用快速双线性打分（prot_residue_indices=None）。
             sub_scores = model.decode(
-                sub_comp_exp, prot_exp, prot_residue_indices=prot_residue_idx
+                sub_comp_exp, prot_exp, prot_residue_indices=None
             ).reshape(end - start, n_val_prots) / T
             score_chunks.append(sub_scores)
         score_matrix = torch.cat(score_chunks, dim=0)    # (n_val, n_val_prots)
@@ -3425,6 +3483,8 @@ def _validate_hgt_minibatch(
             prot_emb = hgt_out["protein"]
             comp_emb = hgt_out["compound"]
             n_batch_prots = prot_emb.shape[0]
+            # v37-fix: 构建 局部索引 -> 全局蛋白索引 映射，供 prot_residue_indices 使用
+            prot_inv_map_local = {v: k for k, v in prot_map.items()}
 
             for _bi, s in enumerate(batch_seeds):
                 if s not in comp_map:
@@ -3433,30 +3493,31 @@ def _validate_hgt_minibatch(
 
                 pos_set = all_compound_to_pos.get(s, set())
                 valid_pos = []
-                valid_pos_locals = []
                 for p_global in pos_set:
                     p_local = p_global - n_compounds
                     if p_local in prot_map:
                         valid_pos.append(prot_map[p_local])
-                        valid_pos_locals.append(p_local)
                 if not valid_pos:
                     continue
                 n_valid_compounds += 1
 
-                for p, p_local in zip(valid_pos, valid_pos_locals, strict=False):
-                    all_y_true.append(1)
-                    all_y_score.append(torch.sigmoid(
-                        model.decode(
-                            comp_emb[comp_local:comp_local+1], prot_emb[p:p+1],
-                            prot_residue_indices=torch.tensor([p_local], device=DEVICE, dtype=torch.long),
-                        ) / T
-                    ).item())
-
-                prot_residue_idx = torch.tensor(prot_sorted, device=DEVICE, dtype=torch.long)
+                # v37-fix: prot_residue_indices 必须使用全局蛋白索引（用于在残基级 ESM-2
+                # 特征中查找正确的蛋白），而非子图局部索引。prot_sorted 是子图内部
+                # 0~n_batch_prots-1 的局部索引，prot_map 才是 局部→全局 的映射。
+                # 旧 v36 代码直接把 prot_sorted 传给 residue_indices，导致残基注意力
+                # 路径查询了错误的蛋白身份，使 HGT 化合物冷启动 AUC/AUPR 被严重压低。
+                prot_global_tensor = torch.tensor(
+                    [prot_inv_map_local.get(p, -1) for p in range(n_batch_prots)],
+                    device=DEVICE, dtype=torch.long
+                )
                 scores = model.decode(
                     comp_emb[comp_local:comp_local+1].expand(n_batch_prots, -1), prot_emb,
-                    prot_residue_indices=prot_residue_idx,
+                    prot_residue_indices=prot_global_tensor,
                 ) / T
+                valid_pos_tensor = torch.tensor(valid_pos, device=DEVICE, dtype=torch.long)
+                for idx in valid_pos_tensor:
+                    all_y_true.append(1)
+                    all_y_score.append(torch.sigmoid(scores[idx]).item())
 
                 n_hard = min(5, n_batch_prots - len(valid_pos))
                 if n_hard > 0:
@@ -3610,52 +3671,54 @@ def _validate_hgt_protein_cold_minibatch(
 
                 pos_set = all_compound_to_pos.get(s, set())
                 valid_pos = []
-                valid_pos_locals = []
                 for p_global in pos_set:
                     p_local = p_global - n_compounds
                     # 仅评估验证蛋白
                     if p_local in val_proteins and p_local in prot_map:
                         valid_pos.append(prot_map[p_local])
-                        valid_pos_locals.append(p_local)
                 if not valid_pos:
                     continue
                 n_valid_compounds += 1
 
                 valid_pos_tensor = torch.tensor(valid_pos, device=DEVICE, dtype=torch.long)
-                valid_pos_locals_tensor = torch.tensor(valid_pos_locals, device=DEVICE, dtype=torch.long)
+                # v36-fix: 正负样本统一使用残基注意力路径，与训练一致。
+                # 构建正样本的全局蛋白索引。
+                valid_pos_global = torch.tensor(
+                    [prot_inv_map[p] for p in valid_pos], device=DEVICE, dtype=torch.long)
                 scores = model.decode(
                     comp_emb[comp_local:comp_local+1].expand(len(valid_pos), -1),
                     prot_emb[valid_pos_tensor],
-                    prot_residue_indices=valid_pos_locals_tensor,
+                    prot_residue_indices=valid_pos_global,
                 ) / T
                 for idx in range(len(valid_pos)):
                     all_y_true.append(1)
                     all_y_score.append(torch.sigmoid(scores[idx]).item())
 
-                # v31: 负样本从全部 val_proteins 中采样（符合硬性约束 1:10 配比）
+                # v37-fix: 负样本仅从有 CPI 数据的 val_proteins 中采样，与 SAGE 对齐。
+                # 旧代码 (v31) 从全部 val_proteins 采样，其中绝大多数是非 CPI 蛋白（从未与
+                # 任何化合物交互），模型只需区分 "CPI 蛋白 vs 非 CPI 蛋白" 即可获得极高 AUPR，
+                # 完全不能反映真实的蛋白间排序能力。SAGE 验证在 v25 已修复此问题，HGT 漏修。
                 n_pos = len(valid_pos)
-                n_neg = min(10 * n_pos, max(0, len(val_prot_list) - n_pos))
+                n_neg = min(10 * n_pos, max(0, len(cpi_val_proteins_mb) - n_pos))
                 candidate_mask = torch.zeros(len(prot_sorted), dtype=torch.bool, device=DEVICE)
-                for vp in val_prot_list:
-                    if vp in prot_map:
+                # v37-fix: 候选池仅限 cpi_val_proteins_mb，排除非 CPI 蛋白
+                for vp in cpi_val_proteins_mb:
+                    if vp in prot_map and vp not in set(valid_pos):
                         candidate_mask[prot_map[vp]] = True
-                for p in valid_pos:
-                    candidate_mask[p] = False
                 rand_candidates = torch.where(candidate_mask)[0]
                 if len(rand_candidates) > 0:
                     n_sample = min(n_neg, len(rand_candidates))
                     logger.debug(
-                        f"化合物 {s}: 正样本={n_pos}, 负样本={n_sample}, 候选池={len(val_prot_list)}"
+                        f"化合物 {s}: 正样本={n_pos}, 负样本={n_sample}, CPI候选池={len(cpi_val_proteins_mb)}"
                     )
                     rand_idx = rand_candidates[torch.randperm(len(rand_candidates), device=DEVICE)[:n_sample]]
-                    rand_locals = torch.tensor(
-                        [prot_inv_map[i.item()] for i in rand_idx],
-                        device=DEVICE, dtype=torch.long,
-                    )
+                    # v36-fix: 负样本使用残基注意力路径，与正样本一致。
+                    rand_idx_global = torch.tensor(
+                        [prot_inv_map[ri.item()] for ri in rand_idx], device=DEVICE, dtype=torch.long)
                     scores = model.decode(
                         comp_emb[comp_local:comp_local+1].expand(len(rand_idx), -1),
                         prot_emb[rand_idx],
-                        prot_residue_indices=rand_locals,
+                        prot_residue_indices=rand_idx_global,
                     ) / T
                     for idx in range(len(rand_idx)):
                         all_y_true.append(0)
@@ -4483,7 +4546,7 @@ def main(decoder_type: str | None = None):
 
     start_time = time.time()
     logger.info("=" * 60)
-    logger.info("Phase 4 v28: SAGE + HGT Mini-Batch — 工业级重构（配置系统/tqdm/GPU监控/类型注解）")
+    logger.info("Phase 4 v37: SAGE + HGT Mini-Batch — 工业级重构（配置系统/tqdm/GPU监控/类型注解）")
     logger.info("v21: 移除InfoNCE / 保留课程负采样&BPR&两阶段 / 双分支 / 蛋白冷启动")
     logger.info("v22: warm靶标扩展 / 靶标优先级加权 / zero-shot bonus")
     logger.info("v23: 铁死亡表型分类辅助任务 / 表型概率融合到composite_score")
@@ -4492,6 +4555,7 @@ def main(decoder_type: str | None = None):
     logger.info("v26: PPI去重 / CPI补充SMILES修复 / HGT解码器统一MLP / DIVERSITY_PENALTY 0.1→0.3")
     logger.info("v27: 模型定义迁移至模块化文件 / warmup最小值2 / TCM重叠标记 / 代码注释完善")
     logger.info("v28: 配置系统集成 / tqdm进度条 / GPU显存监控 / 类型注解 / 前置断言 / OOM降级")
+    logger.info("v37: HGT 蛋白冷启动验证负采样与 SAGE 对齐 (仅 CPI 蛋白) + 化合物冷启动验证 prot_residue_indices 改用全局索引")
     logger.info("=" * 60)
 
     # ── 加固: 关键数据文件存在性检查 ──
@@ -4822,7 +4886,7 @@ def main(decoder_type: str | None = None):
         )
 
     # ======== 训练 SAGE ========
-    logger.info(">>> 训练 SAGE（v28: SAGEConv + 两阶段迁移学习 + FocalLoss + 课程负采样 + 表型辅助任务）")
+    logger.info(">>> 训练 SAGE（v37: SAGEConv + 两阶段迁移学习 + FocalLoss + 课程负采样 + 表型辅助任务）")
     _log_gpu_memory("SAGE 训练前")
     _t0 = time.time()
     sage_model = SAGELinkPredictor(
@@ -4853,26 +4917,11 @@ def main(decoder_type: str | None = None):
         two_stage=True, pretrain_epochs=PRETRAIN_EPOCHS, pretrain_lr=PRETRAIN_LR_SAGE,
         pheno_compound_indices=pheno_train_indices,
         pheno_labels=pheno_train_labels,
-        pheno_lambda=PHENO_LAMBDA,
-        bpr_weight=BPR_WEIGHT,
-        weight_decay=WEIGHT_DECAY,
-        warmup_ratio=WARMUP_RATIO,
-        dropedge_ppi=DROPEDGE_PPI,
-        dropedge_pathway=DROPEDGE_PATHWAY,
-        focal_gamma=FOCAL_GAMMA,
-        focal_alpha=FOCAL_ALPHA,
-        memory_bank_size=MEMORY_BANK_SIZE,
-        head_ratio=HEAD_RATIO,
-        lambda_hhi=LAMBDA_HHI,
-        head_undersample_ratio=HEAD_UNDERSAMPLE_RATIO,
-        grad_clip_norm=GRAD_CLIP_NORM,
-        pretrain_lr_multiplier=PRETRAIN_LR_MULTIPLIER,
-        pretrain_lr_decay=PRETRAIN_LR_DECAY,
-        use_amp=True)  # v25: 降低权重避免干扰CPI主任务
+        pheno_lambda=PHENO_LAMBDA)  # v33-fix: 移除 train_sage 不接受的参数
 
     try:
-        torch.save({"state_dict": sage_model.state_dict(), "version": "v28", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "sage_best_v28.pt")
-        logger.info("  SAGE 模型已保存到 sage_best_v28.pt")
+        torch.save({"state_dict": sage_model.state_dict(), "version": "v37", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "sage_best_v37.pt")
+        logger.info("  SAGE 模型已保存到 sage_best_v37.pt")
     except Exception:
         logger.error("  SAGE 模型保存失败", exc_info=True)
         raise
@@ -4882,8 +4931,19 @@ def main(decoder_type: str | None = None):
     _log_gpu_memory("SAGE 训练后 (cache cleared)")
     logger.info("  SAGE GPU 内存已释放")
 
+    # v37-fix: 释放 SAGE 模型中的残基级 ESM-2 特征（~8.86GB），避免 HGT 初始化时
+    # 与新加载的残基特征同时驻留 CPU 触发 OOM（系统总 RAM 仅 15.2GB）
+    if DECODER_TYPE == "residue_bilinear":
+        try:
+            sage_model.free_residue_features()
+            logger.info("  v37-fix: SAGE 残基特征已释放，释放 CPU 内存约 8.86GB")
+        except Exception as e:
+            logger.warning(f"  v37-fix: SAGE 残基特征释放失败: {e}")
+        import gc
+        gc.collect()
+
     # ======== 训练 HGT ========
-    logger.info(">>> 训练 HGT（v28: HGTConv + 两阶段迁移学习 + FocalLoss + 课程负采样 + 表型辅助任务）")
+    logger.info(">>> 训练 HGT（v37: HGTConv + 两阶段迁移学习 + FocalLoss + 课程负采样 + 表型辅助任务）")
     _log_gpu_memory("HGT 训练前")
     hgt_node_feat_dims = {
         "compound": graphs["feat_dim"],
@@ -4916,26 +4976,11 @@ def main(decoder_type: str | None = None):
         two_stage=True, pretrain_epochs=PRETRAIN_EPOCHS, pretrain_lr=PRETRAIN_LR_HGT,
         pheno_compound_indices=pheno_train_indices,
         pheno_labels=pheno_train_labels,
-        pheno_lambda=PHENO_LAMBDA,
-        bpr_weight=BPR_WEIGHT,
-        weight_decay=WEIGHT_DECAY,
-        warmup_ratio=WARMUP_RATIO,
-        dropedge_ppi=DROPEDGE_PPI,
-        dropedge_pathway=DROPEDGE_PATHWAY,
-        focal_gamma=FOCAL_GAMMA,
-        focal_alpha=FOCAL_ALPHA,
-        memory_bank_size=MEMORY_BANK_SIZE,
-        head_ratio=HEAD_RATIO,
-        lambda_hhi=LAMBDA_HHI,
-        head_undersample_ratio=HEAD_UNDERSAMPLE_RATIO,
-        grad_clip_norm=GRAD_CLIP_NORM,
-        pretrain_lr_multiplier=PRETRAIN_LR_MULTIPLIER,
-        pretrain_lr_decay=PRETRAIN_LR_DECAY,
-        use_amp=True)  # v25: 降低权重避免干扰CPI主任务
+        pheno_lambda=PHENO_LAMBDA)  # v33-fix: 移除 train_hgt 不接受的参数
 
     try:
-        torch.save({"state_dict": hgt_model.state_dict(), "version": "v28", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "hgt_best_v28.pt")
-        logger.info("  HGT 模型已保存到 hgt_best_v28.pt")
+        torch.save({"state_dict": hgt_model.state_dict(), "version": "v37", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "hgt_best_v37.pt")
+        logger.info("  HGT 模型已保存到 hgt_best_v37.pt")
     except Exception:
         logger.error("  HGT 模型保存失败", exc_info=True)
         raise
@@ -5234,7 +5279,7 @@ def main(decoder_type: str | None = None):
 
     total_time = time.time() - start_time
     logger.info("=" * 60)
-    logger.info(f"Phase 4 v28 完成！总耗时 {total_time / 60:.1f} 分钟")
+    logger.info(f"Phase 4 v35 完成！总耗时 {total_time / 60:.1f} 分钟")
     if sage_history:
         logger.info(f"  SAGE best val_auc: {max(h['auc'] for h in sage_history):.4f}  val_aupr: {max(h.get('aupr', 0) for h in sage_history):.4f}")
     if hgt_history:

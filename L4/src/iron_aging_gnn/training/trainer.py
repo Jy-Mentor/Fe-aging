@@ -363,6 +363,9 @@ def train_sage(
                 model.train()
             elif epoch % 5 == 0:
                 logger.info(f"  SAGE pretrain epoch {epoch:3d} | loss={avg_loss:.4f}")
+            else:
+                # v33-monitor: 每个 epoch 都记录 loss，便于通过日志文件监控进度
+                logger.info(f"  SAGE pretrain epoch {epoch:3d} | loss={avg_loss:.4f}")
 
             pretrain_scheduler.step()
 

@@ -251,3 +251,12 @@ class SAGELinkPredictor(nn.Module):
     def predict_phenotype(self, compound_embeds: torch.Tensor) -> torch.Tensor:
         """预测化合物的铁死亡表型"""
         return self.pheno_head(compound_embeds)
+
+    def free_residue_features(self) -> None:
+        """释放 decoder 中的残基级 ESM-2 特征内存。
+
+        v37-fix: 训练主流程在 SAGE 训练结束后、HGT 训练初始化前调用，
+        避免两份 ~8.86GB 残基张量同时驻留导致 CPU OOM。
+        """
+        if isinstance(self.decoder, ResidueAwareBilinearDecoder):
+            self.decoder.free_residue_features()

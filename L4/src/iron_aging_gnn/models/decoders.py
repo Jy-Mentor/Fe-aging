@@ -87,18 +87,23 @@ class ResidueAwareBilinearDecoder(nn.Module):
     """
 
     def __init__(self, comp_dim: int, residue_dim: int = 640, rank: int = 64,
-                 hidden_dim: int = 128, dropout: float = 0.3, max_len: int = 1024):
+                 hidden_dim: int = 128, dropout: float = 0.3, max_len: int = 1024,
+                 max_residue_batch: int = 8):
         super().__init__()
         self.comp_dim = comp_dim
         self.residue_dim = residue_dim
         self.rank = rank
         self.hidden_dim = hidden_dim
         self.max_len = max_len
+        # v33-fix: 8GB 显存下训练阶段 pair-matrix 极大，max_residue_batch 必须足够小
+        self.max_residue_batch = max_residue_batch
 
         # 化合物 query 投影到双线性秩空间
         self.U = nn.Linear(comp_dim, rank, bias=False)
         # 残基 key/value 投影到双线性秩空间
         self.V = nn.Linear(residue_dim, rank, bias=False)
+        # v33-fix: 蛋白全局嵌入（GNN 输出）的投影，用于无残基索引时的快速双线性打分
+        self.W = nn.Linear(comp_dim, rank, bias=False)
 
         # 残基聚合后非线性变换
         self.residue_agg = nn.Sequential(
@@ -170,6 +175,21 @@ class ResidueAwareBilinearDecoder(nn.Module):
             self._prot_to_residue_idx.device
         )
 
+    def free_residue_features(self) -> None:
+        """释放残基级 ESM-2 特征占用的 CPU 内存。
+
+        在 SAGE 训练完成后、HGT 训练初始化前调用，避免两份 ~8.86GB 残基
+        张量同时驻留导致 CPU OOM。
+        """
+        if hasattr(self, "_residue_embeddings"):
+            self._residue_embeddings = torch.zeros(1, self.residue_dim)
+        if hasattr(self, "_residue_offsets"):
+            self._residue_offsets = torch.zeros(2, dtype=torch.long)
+        if hasattr(self, "_residue_lengths"):
+            self._residue_lengths = torch.zeros(1, dtype=torch.long)
+        import gc
+        gc.collect()
+
     def _gather_residues(self, prot_indices: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         """根据蛋白全局索引收集残基特征并填充到 [N, L, d]。
 
@@ -209,22 +229,9 @@ class ResidueAwareBilinearDecoder(nn.Module):
             residue_mask[i, :length] = True
         return residue_feats, residue_mask
 
-    def forward(self, comp_emb: torch.Tensor, prot_emb: torch.Tensor,
-                prot_indices: torch.Tensor | None = None) -> torch.Tensor:
-        """前向传播。
-
-        Args:
-            comp_emb: (N, d_comp) 化合物嵌入
-            prot_emb: (N, d_prot) 蛋白全局嵌入（作为辅助，可取自 GNN）
-            prot_indices: (N,) 蛋白全局索引，必须提供以查找残基特征
-
-        Returns:
-            (N,) 预测 logits
-        """
-        if prot_indices is None:
-            # 无残基索引时退化为可学习的点积（保留训练稳定性）
-            return (comp_emb * prot_emb).sum(dim=-1)
-
+    def _forward_chunk(self, comp_emb: torch.Tensor, prot_emb: torch.Tensor,
+                       prot_indices: torch.Tensor) -> torch.Tensor:
+        """对单个小批量残基样本执行前向（被 chunked forward 调用）。"""
         # 收集残基特征 [N, L, d_residue]
         residue_feats, residue_mask = self._gather_residues(prot_indices)
 
@@ -249,3 +256,42 @@ class ResidueAwareBilinearDecoder(nn.Module):
 
         score = self.score_mlp(torch.cat([agg_h, max_score], dim=-1)).squeeze(-1)
         return score
+
+    def forward(self, comp_emb: torch.Tensor, prot_emb: torch.Tensor,
+                prot_indices: torch.Tensor | None = None) -> torch.Tensor:
+        """前向传播。
+
+        Args:
+            comp_emb: (N, d_comp) 化合物嵌入
+            prot_emb: (N, d_prot) 蛋白全局嵌入（作为辅助，可取自 GNN）
+            prot_indices: (N,) 蛋白全局索引，必须提供以查找残基特征
+
+        Returns:
+            (N,) 预测 logits
+        """
+        if prot_indices is None:
+            # v33-fix: 无残基索引时使用低秩双线性打分（共享 U 投影），
+            # 比简单点积表达能力更强，且避免全 pair-matrix 残基注意力导致验证/训练卡住。
+            cu = self.U(comp_emb)  # (N, rank)
+            pw = self.W(prot_emb)  # (N, rank)
+            return (cu * pw).sum(dim=-1)
+
+        n = comp_emb.shape[0]
+        if n == 0:
+            return torch.zeros(0, device=comp_emb.device, dtype=comp_emb.dtype)
+
+        # v33-fix: 按 max_residue_batch 分块前向，避免验证阶段 N 过大导致 OOM
+        if n <= self.max_residue_batch:
+            return self._forward_chunk(comp_emb, prot_emb, prot_indices)
+
+        outputs = []
+        for i in range(0, n, self.max_residue_batch):
+            outputs.append(self._forward_chunk(
+                comp_emb[i:i + self.max_residue_batch],
+                prot_emb[i:i + self.max_residue_batch],
+                prot_indices[i:i + self.max_residue_batch],
+            ))
+            # v33-fix: 主动释放缓存，降低多 chunk 图反向传播时的碎片化 OOM 风险
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+        return torch.cat(outputs, dim=0)
