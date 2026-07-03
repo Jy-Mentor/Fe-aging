@@ -95,23 +95,25 @@ def train_sage(
     grad_clip_norm: float = 1.0,
     pretrain_lr_multiplier: float = 1.5,
     pretrain_lr_decay: float = 0.5,
-    # v27-cleanup: pheno_pretrain_epochs 参数已移除（默认0，表型预训练阶段已删除）
-    # 外部注入的验证函数（从主脚本导入，后续统一迁移）
+    # v38: 移除了蛋白冷启动验证（_validate_sage_protein_cold_fn），
+    # 早停仅依赖 val_aupr（化合物冷启动），集成权重基于 val_aupr 而非 prot_aupr。
+    # 蛋白冷启动验证已被独立评估脚本 tree_model_cpi_v6_tabpfn.py 替代。
     _validate_sage_fn=None,
-    _validate_sage_protein_cold_fn=None,
     _compute_cpi_loss_fn=None,
     use_amp: bool = True,
 ) -> tuple[SAGELinkPredictor, list[dict]]:
-    """v25: GraphSAGE mini-batch 训练 — 支持两阶段迁移学习，InfoNCE 默认关闭
-    v27-cleanup: 移除表型预训练阶段（pheno_pretrain_epochs 默认 0，多任务联合训练已足够）
+    """v38: GraphSAGE mini-batch 训练 — 移除了蛋白冷启动验证
+    v38 变更:
+      - 移除 _validate_sage_protein_cold_fn 参数及其所有调用
+      - 早停基于 val_aupr（化合物冷启动），不再由蛋白冷启动 AUPR 驱动
+      - 预训练 checkpoint 基于 val_aupr 保存
 
     阶段1 (可选, two_stage): 在尾节点平衡子图上预训练，学习稀疏靶标表示
     阶段2: 在完整训练图上微调（CPI + 表型多任务联合训练）
     """
-    if _validate_sage_fn is None or _validate_sage_protein_cold_fn is None or _compute_cpi_loss_fn is None:
+    if _validate_sage_fn is None or _compute_cpi_loss_fn is None:
         raise ValueError(
-            "train_sage 需要注入 _validate_sage_fn, _validate_sage_protein_cold_fn, "
-            "_compute_cpi_loss_fn 参数。请从主脚本导入这些函数。"
+            "train_sage 需要注入 _validate_sage_fn, _compute_cpi_loss_fn 参数。"
         )
 
     if num_neighbors is None:
@@ -134,7 +136,6 @@ def train_sage(
     all_compound_to_pos = compound_to_pos
 
     _homo_edge_index_val = graphs.get("homo_edge_index_val", graphs["homo_edge_index"]).to(device)
-    _homo_edge_index_prot_cold = graphs.get("homo_edge_index_prot_cold", graphs["homo_edge_index"]).to(device)
     _homo_edge_index_train = graphs.get("homo_edge_index_train", graphs["homo_edge_index"]).to(device)
 
     precomputed_pos = {src: sorted(pos_set) for src, pos_set in compound_to_pos.items() if pos_set}
@@ -171,7 +172,6 @@ def train_sage(
     memory_bank = MemoryBank(max_size=memory_bank_size, out_dim=model.out_dim, device=str(device))
     best_val_auc = 0.0
     best_val_aupr = 0.0
-    best_prot_aupr = 0.0
     best_state = None
     patience_counter = 0
     history = []
@@ -348,17 +348,11 @@ def train_sage(
                     val_metrics = _validate_sage_fn(
                         model, x, _homo_edge_index_val,
                         val_compounds, all_compound_to_pos, n_compounds)
-                    prot_cold = _validate_sage_protein_cold_fn(
-                        model, x, _homo_edge_index_prot_cold,
-                        val_compounds, all_compound_to_pos, n_compounds, graphs["n_proteins"],
-                        val_proteins, prot_esm_dim=graphs.get("prot_esm_dim", 0),
-                        n_pathways=graphs.get("n_pathways", 0))
                 logger.info(
                     f"  SAGE pretrain epoch {epoch:3d} | loss={avg_loss:.4f} | "
-                    f"val_auc={val_metrics['auc']:.4f} | val_aupr={val_metrics['aupr']:.4f} | "
-                    f"prot_auc={prot_cold['auc']:.4f} | prot_aupr={prot_cold['aupr']:.4f}")
-                if prot_cold["aupr"] > best_pretrain_aupr:
-                    best_pretrain_aupr = prot_cold["aupr"]
+                    f"val_auc={val_metrics['auc']:.4f} | val_aupr={val_metrics['aupr']:.4f}")
+                if val_metrics["aupr"] > best_pretrain_aupr:
+                    best_pretrain_aupr = val_metrics["aupr"]
                     best_pretrain_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
                 model.train()
             elif epoch % 5 == 0:
@@ -371,7 +365,7 @@ def train_sage(
 
         if best_pretrain_state is not None:
             model.load_state_dict(best_pretrain_state)
-            logger.info(f"  v25 SAGE 预训练完成，加载最优 checkpoint (prot_aupr={best_pretrain_aupr:.4f}) 进入微调阶段")
+            logger.info(f"  v38 SAGE 预训练完成，加载最优 checkpoint (val_aupr={best_pretrain_aupr:.4f}) 进入微调阶段")
         else:
             logger.info("  v25 SAGE 预训练完成，加载最终参数进入微调阶段")
 
@@ -396,12 +390,6 @@ def train_sage(
                                          n_compounds)
             m = val_metrics
 
-            prot_cold = _validate_sage_protein_cold_fn(
-                model, x, _homo_edge_index_prot_cold, val_compounds, all_compound_to_pos,
-                n_compounds, graphs["n_proteins"], val_proteins,
-                prot_esm_dim=graphs.get("prot_esm_dim", 0), n_pathways=graphs.get("n_pathways", 0),
-            )
-
             pheno_auc = None
             if use_pheno:
                 val_pheno_indices = [c for c in val_compounds if c in pheno_comp_set]
@@ -420,27 +408,24 @@ def train_sage(
                         except ValueError:
                             pheno_auc = 0.5
 
-            hist_entry = {"epoch": epoch, "loss": avg_loss, **m,
-                          "prot_auc": prot_cold["auc"], "prot_aupr": prot_cold["aupr"]}
+            hist_entry = {"epoch": epoch, "loss": avg_loss, **m}
             if pheno_auc is not None:
                 hist_entry["pheno_auc"] = pheno_auc
             history.append(hist_entry)
 
-            log_str = (f"  SAGE epoch {epoch:3d} | loss={avg_loss:.4f} | val_auc={m['auc']:.4f} | val_aupr={m['aupr']:.4f} | "
-                       f"prot_auc={prot_cold['auc']:.4f} | prot_aupr={prot_cold['aupr']:.4f}")
+            log_str = (f"  SAGE epoch {epoch:3d} | loss={avg_loss:.4f} | val_auc={m['auc']:.4f} | val_aupr={m['aupr']:.4f}")
             if pheno_auc is not None:
                 log_str += f" | pheno_auc={pheno_auc:.4f}"
             logger.info(log_str)
 
-            if prot_cold["aupr"] > best_prot_aupr:
-                best_prot_aupr = prot_cold["aupr"]
+            # v38: 早停基于 val_aupr（化合物冷启动），替代原蛋白冷启动 AUPR
+            if m["aupr"] > best_val_aupr:
+                best_val_aupr = m["aupr"]
                 best_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
                 patience_counter = 0
             else:
                 patience_counter += 1
 
-            if m["aupr"] > best_val_aupr:
-                best_val_aupr = m["aupr"]
             if m["auc"] > best_val_auc:
                 best_val_auc = m["auc"]
 
@@ -469,8 +454,8 @@ def train_sage(
 
     if best_state is not None:
         model.load_state_dict(best_state)
-    best_entry = max(history, key=lambda x: x.get("prot_aupr", 0)) if history else {"auc": 0.0, "prot_aupr": 0.0}
-    logger.info(f"  SAGE best prot_aupr={best_entry.get('prot_aupr', 0):.4f}, val_auc={best_entry.get('auc', 0):.4f}")
+    best_entry = max(history, key=lambda x: x.get("aupr", 0)) if history else {"auc": 0.0, "aupr": 0.0}
+    logger.info(f"  SAGE best val_aupr={best_entry.get('aupr', 0):.4f}, val_auc={best_entry.get('auc', 0):.4f}")
     return model, history
 
 
@@ -515,21 +500,20 @@ def train_hgt(
     grad_clip_norm: float = 1.0,
     pretrain_lr_multiplier: float = 1.5,
     pretrain_lr_decay: float = 0.5,
-    # 外部注入的验证函数
+    # v38: 移除了蛋白冷启动验证（_validate_hgt_protein_cold_fn），
+    # 早停仅依赖 val_aupr（化合物冷启动）。
     _validate_hgt_fn=None,
-    _validate_hgt_protein_cold_fn=None,
     _compute_cpi_loss_fn=None,
     use_amp: bool = True,
 ) -> tuple[HGTLinkPredictor, list[dict]]:
-    """v25: HGT mini-batch 训练 — 支持两阶段迁移学习，InfoNCE 默认关闭
+    """v38: HGT mini-batch 训练 — 移除了蛋白冷启动验证
 
     阶段1 (可选): 在尾节点平衡子图上预训练，学习稀疏靶标表示
     阶段2: 在完整训练图上微调
     """
-    if _validate_hgt_fn is None or _validate_hgt_protein_cold_fn is None or _compute_cpi_loss_fn is None:
+    if _validate_hgt_fn is None or _compute_cpi_loss_fn is None:
         raise ValueError(
-            "train_hgt 需要注入 _validate_hgt_fn, _validate_hgt_protein_cold_fn, "
-            "_compute_cpi_loss_fn 参数。"
+            "train_hgt 需要注入 _validate_hgt_fn, _compute_cpi_loss_fn 参数。"
         )
 
     if num_neighbors is None:
@@ -575,7 +559,6 @@ def train_hgt(
     memory_bank = MemoryBank(max_size=memory_bank_size, out_dim=model.out_dim, device=str(device))
     best_val_auc = 0.0
     best_val_aupr = 0.0
-    best_prot_aupr = 0.0
     best_state = None
     patience_counter = 0
     history = []
@@ -756,21 +739,11 @@ def train_hgt(
                     val_metrics = _validate_hgt_fn(
                         model, vh, val_compounds, all_compound_to_pos,
                         n_compounds, n_proteins, hetero_adj=val_hetero_adj)
-                    prot_cold = {"auc": 0.5, "aupr": 0.5}
-                    if val_proteins is not None and len(val_proteins) > 0:
-                        prot_hetero = graphs.get("hetero_data_prot_cold", vh).to(device)
-                        prot_cold = _validate_hgt_protein_cold_fn(
-                            model, prot_hetero, val_compounds, all_compound_to_pos,
-                            n_compounds, n_proteins, val_proteins,
-                            hetero_adj=graphs.get("hetero_adj_prot_cold", val_hetero_adj),
-                            prot_esm_dim=graphs.get("prot_esm_dim", 0),
-                            pathway_dim=graphs.get("n_pathways", 0))
                 logger.info(
                     f"  HGT pretrain epoch {epoch:3d} | loss={avg_loss:.4f} | "
-                    f"val_auc={val_metrics['auc']:.4f} | val_aupr={val_metrics['aupr']:.4f} | "
-                    f"prot_auc={prot_cold['auc']:.4f} | prot_aupr={prot_cold['aupr']:.4f}")
-                if prot_cold["aupr"] > best_pretrain_aupr:
-                    best_pretrain_aupr = prot_cold["aupr"]
+                    f"val_auc={val_metrics['auc']:.4f} | val_aupr={val_metrics['aupr']:.4f}")
+                if val_metrics["aupr"] > best_pretrain_aupr:
+                    best_pretrain_aupr = val_metrics["aupr"]
                     best_pretrain_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
                 model.train()
             elif epoch % 5 == 0:
@@ -780,7 +753,7 @@ def train_hgt(
 
         if best_pretrain_state is not None:
             model.load_state_dict(best_pretrain_state)
-            logger.info(f"  v25 HGT 预训练完成，加载最优 checkpoint (prot_aupr={best_pretrain_aupr:.4f}) 进入微调阶段")
+            logger.info(f"  v38 HGT 预训练完成，加载最优 checkpoint (val_aupr={best_pretrain_aupr:.4f}) 进入微调阶段")
         else:
             logger.info("  v25 HGT 预训练完成，加载最终参数进入微调阶段")
 
@@ -808,35 +781,17 @@ def train_hgt(
             val_auc = val_metrics["auc"]
             val_aupr = val_metrics["aupr"]
 
-            if val_proteins is not None and len(val_proteins) > 0:
-                prot_hetero = graphs.get("hetero_data_prot_cold", val_hetero_dev).to(device)
-                prot_cold = _validate_hgt_protein_cold_fn(
-                    model, prot_hetero, val_compounds, all_compound_to_pos,
-                    n_compounds, n_proteins, val_proteins,
-                    hetero_adj=graphs.get("hetero_adj_prot_cold", val_hetero_adj),
-                    prot_esm_dim=graphs.get("prot_esm_dim", 0), pathway_dim=graphs.get("n_pathways", 0),
-                )
-                prot_auc = prot_cold["auc"]
-                prot_aupr = prot_cold["aupr"]
-            else:
-                prot_auc = prot_aupr = 0.5
-
             if val_auc > best_val_auc:
                 best_val_auc = val_auc
             if val_aupr > best_val_aupr:
                 best_val_aupr = val_aupr
-
-            if prot_aupr > best_prot_aupr:
-                best_prot_aupr = prot_aupr
                 best_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
                 patience_counter = 0
             else:
                 patience_counter += 1
 
-            history.append({"epoch": epoch, "loss": avg_loss, "auc": val_auc, "aupr": val_aupr,
-                         "prot_auc": prot_auc, "prot_aupr": prot_aupr})
-            logger.info(f"  HGT epoch {epoch:3d} | loss={avg_loss:.4f} | val_auc={val_auc:.4f} | val_aupr={val_aupr:.4f} | "
-                        f"prot_auc={prot_auc:.4f} | prot_aupr={prot_aupr:.4f}")
+            history.append({"epoch": epoch, "loss": avg_loss, "auc": val_auc, "aupr": val_aupr})
+            logger.info(f"  HGT epoch {epoch:3d} | loss={avg_loss:.4f} | val_auc={val_auc:.4f} | val_aupr={val_aupr:.4f}")
 
             if patience_counter >= patience:
                 logger.info(f"  HGT 早停 (epoch {epoch}, patience_counter={patience_counter})")
@@ -867,8 +822,8 @@ def train_hgt(
 
     if best_state is not None:
         model.load_state_dict(best_state)
-    best_entry = max(history, key=lambda x: x.get("prot_aupr", 0)) if history else {"auc": 0.0, "prot_aupr": 0.0}
-    logger.info(f"  HGT best prot_aupr={best_entry.get('prot_aupr', 0):.4f}, val_auc={best_entry.get('auc', 0):.4f}")
+    best_entry = max(history, key=lambda x: x.get("aupr", 0)) if history else {"auc": 0.0, "aupr": 0.0}
+    logger.info(f"  HGT best val_aupr={best_entry.get('aupr', 0):.4f}, val_auc={best_entry.get('auc', 0):.4f}")
     return model, history
 
 

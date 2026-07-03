@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Phase 4 v37: Mini-Batch GNN 双分支 — 两阶段迁移学习与冷启动验证 (HGT验证负采样对齐SAGE + 全局索引)
+Phase 4 v38: Mini-Batch GNN 双分支 — 两阶段迁移学习与化合物冷启动验证 (移除蛋白冷启动)
 ==========================================================================
 v27 修复 (2026-06-29):
   - 数据清洗: PPI去重(107K重复边)、CPI补充SMILES修复、BindingDB SMILES修复
@@ -92,7 +92,7 @@ v18 关键修复（基于 v17 评估与代码审查）:
   - ESM-2 预训练蛋白嵌入 (facebook/esm2_t30_150M_UR50D, 640维)
   - SAGE + HGT 双分支：拓扑 (SAGEConv) + 语义 (HGTConv)
   - DropEdge / Focal Loss / 标签平滑 / AdamW / 课程负采样 / Memory Bank
-  - 蛋白冷启动拆分 + MC Dropout 不确定性估计 + 动态集成权重
+  - 化合物冷启动验证 + MC Dropout 不确定性估计 + 等权集成
   - BCE + BPR 排序损失联合优化（6:4 加权）
 
 ╔══════════════════════════════════════════════════════════════════════════════╗
@@ -456,12 +456,11 @@ HEAD_UNDERSAMPLE_RATIO = _cfg.two_stage.head_undersample_ratio if _cfg else 0.6
 
 # ---- 数据拆分 ----
 COMPOUND_VAL_SPLIT = _cfg.validation.compound_split_ratio if _cfg else 0.85
-PROTEIN_VAL_SPLIT = _cfg.validation.protein_cold_split_ratio if _cfg else 0.50
+PROTEIN_VAL_SPLIT = _cfg.validation.protein_cold_split_ratio if _cfg else 0.50  # v38: 仅用于构建训练/验证蛋白集
 
 # ---- 验证 ----
 HARD_NEG_TOP_K = _cfg.validation.hard_neg_top_k if _cfg else 5
 RAND_NEG_TOP_K = _cfg.validation.rand_neg_top_k if _cfg else 5
-PROT_COLD_NEG_RATIO = _cfg.validation.prot_cold_neg_ratio if _cfg else 10
 VAL_BATCH_SIZE = _cfg.validation.val_batch_size if _cfg else 512
 HGT_VAL_BATCH_SIZE = _cfg.validation.hgt_val_batch_size if _cfg else 64
 HGT_VAL_NUM_NEIGHBORS = _cfg.validation.hgt_val_num_neighbors if _cfg else [64, 32]
@@ -2335,451 +2334,6 @@ def _split_head_tail_nodes(
     return pretrain_compounds, tail_compounds
 
 
-# [Ref: 1,3,5,6,7] GraphSAGE[1] + Focal Loss[3] + BPR[5] + CTCL-DPI[6] + 课程采样[7]
-def train_sage(
-    model: SAGELinkPredictor,
-    graphs: dict,
-    train_compounds: list[int],
-    val_compounds: list[int],
-    compound_to_pos: dict[int, set],
-    val_proteins: set | None = None,
-    epochs: int = 100,
-    lr: float = 1e-3,
-    patience: int = 15,
-    batch_size: int = 256,
-    num_neighbors: list[int] | None = None,
-    prot_to_path_neighbors: dict[int, set] | None = None,
-    flag_step: float = 0.01,
-    two_stage: bool = False,
-    pretrain_epochs: int = 0,
-    pretrain_lr: float | None = None,
-    use_infonce: bool = False,    # v21: 消融实验结论 — 移除 InfoNCE
-    use_bpr: bool = True,         # v20: 消融实验开关
-    use_curriculum: bool = True,  # v20: 消融实验开关
-    use_topology_neg: bool = False,  # v23-topo: 启用PPI拓扑负样本
-    pheno_compound_indices: list[int] | None = None,  # 表型训练用化合物全局索引
-    pheno_labels: list[int] | None = None,            # 对应表型标签(0/1)
-    pheno_lambda: float = 0.3,                 # 表型损失权重
-) -> tuple[SAGELinkPredictor, list[dict]]:
-    """v21: GraphSAGE mini-batch 训练 — 支持两阶段迁移学习，InfoNCE 默认关闭
-    v22: 新增表型分类辅助任务，多任务联合训练
-    v27-cleanup: 移除表型预训练阶段（pheno_pretrain_epochs 默认 0，多任务联合训练已足够）
-
-    阶段1 (可选, two_stage): 在尾节点平衡子图上预训练，学习稀疏靶标表示
-    阶段2: 在完整训练图上微调（CPI + 表型多任务联合训练）
-    """
-    if num_neighbors is None:
-        num_neighbors = [32, 16]
-    model = model.to(DEVICE)
-    for p in model.parameters():
-        if p.dim() >= 2:
-            nn.init.xavier_uniform_(p)
-
-    x = graphs["x"].to(DEVICE)
-    # v18: 使用训练安全邻接表，验证蛋白在训练阶段完全不可见
-    homo_adj = graphs.get("homo_adj_train", graphs["homo_adj"])
-    n_compounds = graphs["n_compounds"]
-    all_compound_to_pos = compound_to_pos
-
-    # v25-fix: 预缓存验证用边索引到 GPU，避免每个验证 epoch 重复 .to(DEVICE)
-    _homo_edge_index_val = graphs.get("homo_edge_index_val", graphs["homo_edge_index"]).to(DEVICE)
-    _homo_edge_index_prot_cold = graphs.get("homo_edge_index_prot_cold", graphs["homo_edge_index"]).to(DEVICE)
-    _homo_edge_index_train = graphs.get("homo_edge_index_train", graphs["homo_edge_index"]).to(DEVICE)
-
-    precomputed_pos = {src: sorted(pos_set) for src, pos_set in compound_to_pos.items() if pos_set}
-
-    # v31: 预计算 compound_to_prot_locals — 向量化mask构建
-    compound_to_prot_locals = {}
-    for src_global, pos_set in precomputed_pos.items():
-        compound_to_prot_locals[src_global] = [p_global - n_compounds for p_global in pos_set]
-
-    # v23-topo: 从 graphs 中提取预计算的拓扑负样本邻居
-    prot_to_topo_medium_neighbors = graphs.get("prot_to_topo_medium_neighbors")
-    prot_to_topo_hard_neighbors = graphs.get("prot_to_topo_hard_neighbors")
-
-    # v22: 表型分类辅助任务 — 构建化合物索引到标签的映射
-    use_pheno = (pheno_compound_indices is not None and pheno_labels is not None
-                 and len(pheno_compound_indices) > 0 and len(pheno_labels) > 0)
-    pheno_comp_set = set()
-    pheno_idx_to_label = {}
-    bce_loss_fn = None
-    if use_pheno:
-        pheno_comp_set = set(pheno_compound_indices)
-        pheno_idx_to_label = dict(zip(pheno_compound_indices, pheno_labels, strict=False))
-        torch.tensor(pheno_labels, dtype=torch.float32, device=DEVICE)
-        # v25-fix: 添加pos_weight平衡正负样本（44正 vs 1849负 ≈ 42:1）
-        n_pos_pheno = sum(pheno_labels)
-        n_neg_pheno = len(pheno_labels) - n_pos_pheno
-        pos_weight = n_neg_pheno / max(n_pos_pheno, 1)
-        pheno_pos_weight = torch.tensor([pos_weight], device=DEVICE)
-        bce_loss_fn = nn.BCEWithLogitsLoss(pos_weight=pheno_pos_weight)
-        logger.info(f"  v25 表型分类任务: {len(pheno_compound_indices)} 个化合物, "
-                    f"正样本={n_pos_pheno}, 负样本={n_neg_pheno}, "
-                    f"pos_weight={pos_weight:.1f}, lambda={pheno_lambda}")
-
-    # v17: AdamW 解耦权重衰减与自适应学习率
-    optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=WEIGHT_DECAY)
-    # v27-fix: LR Warmup + Cosine Annealing（前5%线性预热，后95%余弦退火至1e-6）
-    # 最小2个epoch预热，确保短训练周期（15 epochs）有足够预热时间
-    warmup_epochs = max(2, int(epochs * WARMUP_RATIO))
-    def lr_lambda(e):
-        if e < warmup_epochs:
-            return e / warmup_epochs
-        progress = (e - warmup_epochs) / (epochs - warmup_epochs)
-        return 0.5 * (1 + np.cos(np.pi * progress)) * 1.0 + 1e-6
-    scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda)
-    # v17: Memory Bank — 存储跨 batch 蛋白嵌入，供全局困难负样本采样
-    memory_bank = MemoryBank(max_size=MEMORY_BANK_SIZE, out_dim=model.out_dim, device=DEVICE)
-    # v17: 多指标联合早停（同时检查prot_aupr无提升且prot_auc下降）
-    best_val_auc = 0.0
-    best_val_aupr = 0.0
-    best_prot_aupr = 0.0  # v18: 蛋白冷启动 AUPR 用于早停
-    best_prot_auc = 0.0   # v18-hotfix: 蛋白冷启动 AUC 辅助早停判断
-    best_state = None
-    patience_counter = 0
-    history = []
-
-    # v19: 内层训练循环 — 被预训练/微调两个阶段复用
-    def _train_one_epoch(
-        epoch: int,
-        active_compounds: list[int],
-        stage_optimizer: torch.optim.Optimizer,
-        stage_memory_bank: MemoryBank,
-        stage_epochs: int,
-    ) -> tuple[float, int]:
-        model.train()
-        total_loss = 0.0
-        n_batches = 0
-
-        shuffled_compounds = list(active_compounds)
-        random.shuffle(shuffled_compounds)
-        for batch_start in range(0, len(shuffled_compounds), batch_size):
-            batch_seeds = shuffled_compounds[batch_start:batch_start + batch_size]
-
-            # 邻居采样 (v12: epoch+batch固定种子，保证可复现)
-            node_list, node_to_local, edge_index = sample_homo_subgraph(
-                batch_seeds, homo_adj, num_neighbors,
-                seed=epoch * 10000 + batch_start)
-            edge_index = edge_index.to(DEVICE)
-            # v17: DropEdge — 随机丢弃 15% 边，缓解图稠密区域过拟合
-            edge_index = drop_edge(edge_index, p=DROPEDGE_PPI)
-
-            sub_x = x[torch.tensor(node_list, device=DEVICE)]
-            # v17: Gaussian Feature Augmentation — 对化合物特征嵌入施加随机扰动
-            if flag_step > 0:
-                sub_x = sub_x + FLAG_STEP * torch.randn_like(sub_x)
-                sub_x = sub_x.detach()
-            # v17-ESM2: 计算子图中化合物节点数，供投影器拆分化合物/蛋白特征
-            n_compounds_in_sub = sum(1 for n in node_list if n < n_compounds)
-            node_emb = model(sub_x, edge_index, n_compounds=n_compounds_in_sub)
-
-            if _check_tensor_nan(node_emb, "SAGE node_emb"):
-                logger.warning("SAGE 前向传播产生 NaN 嵌入，跳过当前 batch")
-                continue
-
-            # 局部索引映射
-            seed_local = []
-            batch_idx_to_comp_idx = {}  # batch_seeds 位置 → comp_emb 位置
-            for bi, s in enumerate(batch_seeds):
-                if s in node_to_local:
-                    batch_idx_to_comp_idx[bi] = len(seed_local)
-                    seed_local.append(node_to_local[s])
-            if not seed_local:
-                continue
-
-            # 实际蛋白在子图中的位置
-            prot_local_indices = [i for i, n in enumerate(node_list) if n >= n_compounds]
-
-            comp_emb = node_emb[torch.tensor(seed_local, device=DEVICE)]
-            if not prot_local_indices:
-                continue
-
-            prot_emb = node_emb[torch.tensor(prot_local_indices, device=DEVICE)]
-            n_batch_prots = len(prot_local_indices)
-
-            # 构建 local_pos_in_node_list -> prot_emb 中的位置映射
-            local_to_prot_pos = {local_pos: i for i, local_pos in enumerate(prot_local_indices)}
-
-            # ---- v13: 向量化正样本损失（precomputed_pos 存全局索引，直接用 node_to_local 查找） ----
-            pos_src, pos_dst = [], []
-            for bi, s in enumerate(batch_seeds):
-                ci = batch_idx_to_comp_idx.get(bi)
-                if ci is None or s not in precomputed_pos:
-                    continue
-                for p_global in precomputed_pos[s]:  # v13: p_global 是真正的全局蛋白索引
-                    if p_global in node_to_local:  # v13: 直接查找，无需 + n_compounds
-                        local_pos = node_to_local[p_global]
-                        if local_pos in local_to_prot_pos:
-                            prot_pos = local_to_prot_pos[local_pos]
-                            if 0 <= prot_pos < n_batch_prots:
-                                pos_src.append(ci)
-                                pos_dst.append(prot_pos)
-
-            if not pos_src:
-                continue
-
-            pos_src_t = torch.tensor(pos_src, device=DEVICE)
-            pos_dst_t = torch.tensor(pos_dst, device=DEVICE)
-
-            # v19: 共享 CPI 损失计算 — 统一 Focal + BPR + 课程负采样 + InfoNCE
-            prot_map = {}
-            for j, local_pos in enumerate(prot_local_indices):
-                n = node_list[local_pos]
-                if n >= n_compounds:
-                    prot_map[n - n_compounds] = j
-            comp_sorted_batch = [s for s in batch_seeds if s in node_to_local]
-
-            loss = _compute_cpi_loss(
-                model=model,
-                comp_emb=comp_emb,
-                prot_emb=prot_emb,
-                pos_src=pos_src_t,
-                pos_dst=pos_dst_t,
-                comp_sorted=comp_sorted_batch,
-                prot_map=prot_map,
-                precomputed_pos=precomputed_pos,
-                n_compounds=n_compounds,
-                prot_to_path_neighbors=prot_to_path_neighbors,
-                compound_to_prot_locals=compound_to_prot_locals,
-                epoch=epoch,
-                stage_epochs=stage_epochs,
-                memory_bank=stage_memory_bank,
-                use_infonce=use_infonce,
-                bpr_weight=BPR_WEIGHT if use_bpr else 0.0,
-                use_curriculum=use_curriculum,
-                use_topology_neg=use_topology_neg,
-                prot_to_topo_medium_neighbors=prot_to_topo_medium_neighbors,
-                prot_to_topo_hard_neighbors=prot_to_topo_hard_neighbors,
-            )
-
-            # v22: 表型分类辅助损失 — 只对有表型标签的化合物计算
-            if use_pheno:
-                pheno_local_indices = []
-                pheno_batch_labels = []
-                for global_idx in pheno_compound_indices:
-                    if global_idx in node_to_local:
-                        local_idx = node_to_local[global_idx]
-                        if local_idx < n_compounds_in_sub:
-                            pheno_local_indices.append(local_idx)
-                            pheno_batch_labels.append(pheno_idx_to_label[global_idx])
-                if len(pheno_local_indices) > 0:
-                    pheno_emb = node_emb[torch.tensor(pheno_local_indices, device=DEVICE)]
-                    pheno_logits = model.predict_phenotype(pheno_emb).squeeze(-1)
-                    pheno_target = torch.tensor(pheno_batch_labels, dtype=torch.float32, device=DEVICE)
-                    pheno_loss = bce_loss_fn(pheno_logits, pheno_target)
-                    loss = loss + pheno_lambda * pheno_loss
-
-            stage_optimizer.zero_grad()
-            loss.backward()
-            _check_gradient_norm(model, warn_threshold=100.0)
-            torch.nn.utils.clip_grad_norm_(model.parameters(), GRAD_CLIP_NORM)
-            stage_optimizer.step()
-
-            # v17: 更新 Memory Bank
-            stage_memory_bank.update(prot_emb.detach())
-
-            total_loss += loss.item()
-            n_batches += 1
-
-        return total_loss, n_batches
-
-    # ============================================================
-    # v19: 阶段1 — 尾节点平衡子图预训练
-    # ============================================================
-    if two_stage and pretrain_epochs > 0:
-        pretrain_compounds, tail_compounds = _split_head_tail_nodes(
-            train_compounds, compound_to_pos, head_ratio=HEAD_RATIO, lambda_hhi=LAMBDA_HHI, seed=RANDOM_SEED)
-        n_head_kept = len(pretrain_compounds) - len(tail_compounds)
-        logger.info(f"  v25 两阶段预训练: tail={len(tail_compounds)}, head_kept={n_head_kept}, "
-                    f"total_pretrain={len(pretrain_compounds)}")
-
-        # v20: 预训练学习率默认与主学习率持平或略高，避免高 LR 破坏随机初始化权重
-        pretrain_lr_actual = pretrain_lr if pretrain_lr is not None else lr * PRETRAIN_LR_MULTIPLIER
-        pretrain_optimizer = torch.optim.AdamW(model.parameters(), lr=pretrain_lr_actual, weight_decay=WEIGHT_DECAY)
-        def pretrain_lr_lambda(e):
-            return 1.0 - PRETRAIN_LR_DECAY * (e / pretrain_epochs)
-        pretrain_scheduler = torch.optim.lr_scheduler.LambdaLR(pretrain_optimizer, pretrain_lr_lambda)
-        pretrain_memory_bank = MemoryBank(max_size=MEMORY_BANK_SIZE, out_dim=model.out_dim, device=DEVICE)
-
-        best_pretrain_aupr = 0.0
-        best_pretrain_state = None
-
-        # v28: 预训练阶段 tqdm 进度条 + 计时
-        pretrain_start = time.time()
-        pretrain_pbar = tqdm(range(1, pretrain_epochs + 1), desc="SAGE pretrain", unit="epoch")
-        for epoch in pretrain_pbar:
-            epoch_start = time.time()
-            total_loss, n_batches = _train_one_epoch(
-                epoch, pretrain_compounds, pretrain_optimizer, pretrain_memory_bank, pretrain_epochs)
-            epoch_time = time.time() - epoch_start
-            if n_batches == 0:
-                pretrain_pbar.set_postfix({"loss": "N/A", "time": f"{epoch_time:.1f}s"})
-                continue
-            avg_loss = total_loss / n_batches
-            pretrain_pbar.set_postfix({"loss": f"{avg_loss:.4f}", "time": f"{epoch_time:.1f}s"})
-
-            if epoch % PRETRAIN_VAL_FREQ == 0 and val_compounds:
-                model.eval()
-                with torch.no_grad():
-                    val_metrics = _validate_sage(
-                        model, x, graphs.get("homo_edge_index_val", graphs["homo_edge_index"]),
-                        val_compounds, all_compound_to_pos, n_compounds)
-                    prot_cold = _validate_sage_protein_cold(
-                        model, x, graphs.get("homo_edge_index_prot_cold", graphs["homo_edge_index"]),
-                        val_compounds, all_compound_to_pos, n_compounds, graphs["n_proteins"],
-                        val_proteins, prot_esm_dim=graphs.get("prot_esm_dim", 0),
-                        n_pathways=graphs.get("n_pathways", 0))
-                logger.info(
-                    f"  SAGE pretrain epoch {epoch:3d} | loss={avg_loss:.4f} | "
-                    f"val_auc={val_metrics['auc']:.4f} | val_aupr={val_metrics['aupr']:.4f} | "
-                    f"prot_auc={prot_cold['auc']:.4f} | prot_aupr={prot_cold['aupr']:.4f}")
-                if prot_cold["aupr"] > best_pretrain_aupr:
-                    best_pretrain_aupr = prot_cold["aupr"]
-                    best_pretrain_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
-                model.train()
-            elif epoch % PRETRAIN_VAL_FREQ == 0:
-                logger.info(f"  SAGE pretrain epoch {epoch:3d} | loss={avg_loss:.4f}")
-
-            pretrain_scheduler.step()
-
-        pretrain_pbar.close()
-        pretrain_elapsed = time.time() - pretrain_start
-        logger.info(f"  SAGE 预训练完成，耗时 {pretrain_elapsed / 60:.1f} 分钟")
-        if best_pretrain_state is not None:
-            model.load_state_dict(best_pretrain_state)
-            logger.info(f"  v25 SAGE 预训练完成，加载最优 checkpoint (prot_aupr={best_pretrain_aupr:.4f}) 进入微调阶段")
-        else:
-            logger.info("  v25 SAGE 预训练完成，加载最终参数进入微调阶段")
-        # 不保留预训练 Memory Bank，避免子图分布偏差传入微调
-
-    # v27-cleanup: 表型预训练阶段已移除（pheno_pretrain_epochs 默认 0，多任务联合训练已足够）
-    # 消融实验如需启用，设置 pheno_pretrain_epochs > 0 即可恢复此代码块
-
-    # ============================================================
-    # v19: 阶段2 — 完整训练图微调
-    # ============================================================
-    # v28: 训练阶段 tqdm 进度条 + 计时 + GPU 显存监控
-    fine_tune_start = time.time()
-    sage_pbar = tqdm(range(1, epochs + 1), desc="SAGE fine-tune", unit="epoch")
-    for epoch in sage_pbar:
-        epoch_start = time.time()
-        total_loss, n_batches = _train_one_epoch(
-            epoch, train_compounds, optimizer, memory_bank, epochs)
-        epoch_time = time.time() - epoch_start
-
-        if n_batches == 0:
-            sage_pbar.set_postfix({"loss": "N/A", "time": f"{epoch_time:.1f}s"})
-            continue
-
-        avg_loss = total_loss / n_batches
-        sage_pbar.set_postfix({"loss": f"{avg_loss:.4f}", "time": f"{epoch_time:.1f}s"})
-
-        if epoch % VAL_FREQ == 0 and val_compounds:
-            model.eval()
-            val_metrics = _validate_sage(model, x, _homo_edge_index_val, val_compounds, all_compound_to_pos,
-                                         n_compounds)
-            m = val_metrics
-
-            # v17: 蛋白冷启动验证
-            prot_cold = _validate_sage_protein_cold(
-                model, x, _homo_edge_index_prot_cold, val_compounds, all_compound_to_pos,
-                n_compounds, graphs["n_proteins"], val_proteins,
-                prot_esm_dim=graphs.get("prot_esm_dim", 0), n_pathways=graphs.get("n_pathways", 0),
-            )
-
-            # v22: 表型分类验证 — 计算验证集中有表型标签的化合物的 AUC
-            pheno_auc = None
-            if use_pheno:
-                val_pheno_indices = [c for c in val_compounds if c in pheno_comp_set]
-                if len(val_pheno_indices) > 5:
-                    with torch.no_grad():
-                        full_node_emb_val = model(x, _homo_edge_index_val,
-                                                  n_compounds=n_compounds)
-                        val_pheno_emb = full_node_emb_val[torch.tensor(val_pheno_indices, device=DEVICE)]
-                        val_pheno_logits = model.predict_phenotype(val_pheno_emb).squeeze(-1)
-                        val_pheno_labels = [pheno_idx_to_label[c] for c in val_pheno_indices]
-                        val_pheno_labels_t = torch.tensor(val_pheno_labels, dtype=torch.float32, device=DEVICE)
-                        try:
-                            pheno_auc = roc_auc_score(val_pheno_labels_t.cpu().numpy(),
-                                                      torch.sigmoid(val_pheno_logits).cpu().numpy())
-                        except ValueError:
-                            logger.warning("  SAGE 表型AUC计算失败（可能仅含单一类别），设为0.5")
-                            pheno_auc = 0.5
-
-            hist_entry = {"epoch": epoch, "loss": avg_loss, **m,
-                          "prot_auc": prot_cold["auc"], "prot_aupr": prot_cold["aupr"]}
-            if pheno_auc is not None:
-                hist_entry["pheno_auc"] = pheno_auc
-            history.append(hist_entry)
-
-            log_str = (f"  SAGE epoch {epoch:3d} | loss={avg_loss:.4f} | val_auc={m['auc']:.4f} | val_aupr={m['aupr']:.4f} | "
-                       f"prot_auc={prot_cold['auc']:.4f} | prot_aupr={prot_cold['aupr']:.4f}")
-            if pheno_auc is not None:
-                log_str += f" | pheno_auc={pheno_auc:.4f}"
-            logger.info(log_str)
-
-            # v18: 蛋白冷启动早停 — 同时检查prot_aupr无提升且prot_auc下降
-            # val_aupr 和 val_auc 仅记录参考，不参与早停决策
-            prot_aupr_improved = prot_cold["aupr"] > best_prot_aupr
-            prot_auc_declined = prot_cold.get("auc", 0.5) < best_prot_auc  # 使用get防止缺少auc键
-
-            if prot_aupr_improved:
-                best_prot_aupr = prot_cold["aupr"]
-                best_prot_auc = prot_cold.get("auc", 0.5)
-                best_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
-                patience_counter = 0
-            elif prot_auc_declined:
-                # AUPR未提升 且 AUC下降 → 明确的退化信号
-                patience_counter += 1
-            else:
-                # AUPR未提升 但 AUC也未下降 → 可能是平台期，不急于早停
-                patience_counter += 0.5  # 温和惩罚
-
-            if m["aupr"] > best_val_aupr:
-                best_val_aupr = m["aupr"]
-            if m["auc"] > best_val_auc:
-                best_val_auc = m["auc"]
-
-            # v18: 早停 — 连续 patience 次验证 prot_aupr 无提升且prot_auc下降 → 触发
-            if patience_counter >= patience:
-                logger.info(f"  SAGE 早停 (epoch {epoch}, patience_counter={patience_counter})")
-                break
-
-            # v17: Memory Bank 全局刷新 — 每5 epoch 全图前向，填充完整蛋白嵌入
-            # v18: 使用训练安全图，并过滤掉验证蛋白，避免验证信息进入 bank
-            # v25-fix: try/finally 防御 — 确保 model.train() 不会被提前 return/break/continue 跳过
-            if epoch % 5 == 0:
-                model.eval()
-                try:
-                    with torch.no_grad():
-                        full_node_emb = model(x, _homo_edge_index_train,
-                                              n_compounds=n_compounds)
-                        full_prot_emb = full_node_emb[n_compounds:]
-                        # 排除验证蛋白嵌入
-                        if val_proteins is not None and len(val_proteins) > 0:
-                            train_prot_mask = torch.ones(full_prot_emb.shape[0], dtype=torch.bool, device=DEVICE)
-                            train_prot_mask[list(val_proteins)] = False
-                            full_prot_emb = full_prot_emb[train_prot_mask]
-                        memory_bank = MemoryBank(max_size=MEMORY_BANK_SIZE, out_dim=model.out_dim, device=DEVICE)
-                        memory_bank.update(full_prot_emb)
-                    logger.info(f"  SAGE Memory Bank 全局刷新: {memory_bank.size()} 训练蛋白嵌入")
-                finally:
-                    model.train()
-
-        scheduler.step()
-
-    sage_pbar.close()
-    fine_tune_elapsed = time.time() - fine_tune_start
-    logger.info(f"  SAGE 微调训练完成，耗时 {fine_tune_elapsed / 60:.1f} 分钟")
-    _log_gpu_memory("SAGE 训练结束")
-
-    if best_state is not None:
-        model.load_state_dict(best_state)
-    best_entry = max(history, key=lambda x: x.get("prot_aupr", 0)) if history else {"auc": 0.0, "prot_aupr": 0.0}
-    logger.info(f"  SAGE best prot_aupr={best_entry.get('prot_aupr', 0):.4f}, val_auc={best_entry.get('auc', 0):.4f}")
-    return model, history
-
-
 # ============================================================
 # 验证安全图构建（v17 冷启动数据泄露修复）
 # ============================================================
@@ -3228,161 +2782,6 @@ def _validate_sage(model, x, homo_edge_index, val_compounds, all_compound_to_pos
         }
 
 
-# [Ref: 17,18,19] 评估指标: Precision@K[17] + EF[18] + AUPR[19]
-def _validate_sage_protein_cold(
-    model, x, homo_edge_index, val_compounds, all_compound_to_pos,
-    n_compounds, n_proteins, val_proteins: set,
-    prot_esm_dim: int = 0, n_pathways: int = 0,
-):
-    """v18: SAGE 蛋白冷启动验证 — 批量 MLP 解码器评分
-
-    仅评估对未见蛋白的预测能力。
-    v18-fix3: 屏蔽通路 one-hot，仅使用 ESM-2 嵌入测试纯序列/结构泛化能力。
-    参考: DrugBAN (2023), DeepPurpose (2020)
-    """
-    with torch.no_grad():
-        x_dev = x.to(DEVICE)
-        # v18-fix3: 蛋白冷启动验证时屏蔽 KEGG 通路 one-hot，避免通路不平衡导致 AUPR 虚高
-        if prot_esm_dim > 0 and n_pathways > 0:
-            x_dev[n_compounds:, prot_esm_dim:prot_esm_dim + n_pathways] = 0.0
-        edge_index = homo_edge_index.to(DEVICE)
-        # v19-fix: 蛋白冷启动验证彻底禁用通路投影器，避免偏置导致非零通路信号泄漏
-        node_emb = model(x_dev, edge_index, use_pathway=False)  # n_compounds=None 使用 self.n_compounds
-        prot_emb = node_emb[n_compounds:]
-        comp_emb = node_emb[:n_compounds]
-        T = model.temperature
-        n_prots_actual = prot_emb.shape[0]
-
-        val_compounds_list = list(val_compounds)
-        val_prot_list = sorted(val_proteins)
-        n_val_prots = len(val_prot_list)
-
-        if len(val_compounds_list) == 0 or n_val_prots == 0:
-            return {"auc": 0.5, "aupr": 0.5, "n_valid_compounds": 0}
-
-        # v18: 批量预计算 (n_val, n_val_prots) 得分矩阵
-        # v31-fix: batch_size 512->128 降低显存峰值，避免 RTX 5060 8GB OOM 卡住
-        comp_sub = comp_emb[val_compounds_list]          # (n_val, d)
-        prot_sub = prot_emb[val_prot_list]               # (n_val_prots, d)
-        batch_size = 128
-        score_chunks = []
-        for start in range(0, len(val_compounds_list), batch_size):
-            end = min(start + batch_size, len(val_compounds_list))
-            sub_comp = comp_sub[start:end]
-            sub_comp_exp = sub_comp.unsqueeze(1).expand(-1, n_val_prots, -1).reshape(-1, sub_comp.shape[-1])
-            prot_exp = prot_sub.unsqueeze(0).expand(end - start, -1, -1).reshape(-1, prot_sub.shape[-1])
-            # v33-fix: 验证阶段全 pair-matrix 使用快速双线性打分（prot_residue_indices=None）。
-            sub_scores = model.decode(
-                sub_comp_exp, prot_exp, prot_residue_indices=None
-            ).reshape(end - start, n_val_prots) / T
-            score_chunks.append(sub_scores)
-        score_matrix = torch.cat(score_chunks, dim=0)    # (n_val, n_val_prots)
-
-        # val_proteins 局部索引 → 子矩阵列索引
-        val_prot_to_local = {p: i for i, p in enumerate(val_prot_list)}
-
-        y_true, y_score = [], []
-        valid_pos_list = []  # v27: 收集每个化合物的正样本局部列索引，用于排名指标
-        n_valid = 0
-
-        # v25-fix: 将 cpi_val_proteins 构建移到循环外，避免 O(n_val × |edges|) 重复计算
-        cpi_val_proteins = set()
-        for _src, _pos_set in all_compound_to_pos.items():
-            for _p in _pos_set:
-                _pl = _p - n_compounds
-                if 0 <= _pl < n_prots_actual and _pl in val_proteins:
-                    cpi_val_proteins.add(_pl)
-
-        # v31-fix: 诊断断言 — 负样本候选池必须是有 CPI 交互的验证蛋白子集
-        if cpi_val_proteins:
-            assert cpi_val_proteins.issubset(val_proteins), (
-                "_validate_sage_protein_cold: cpi_val_proteins 必须是 val_proteins 的子集"
-            )
-            assert all(0 <= p < n_prots_actual for p in cpi_val_proteins), (
-                "_validate_sage_protein_cold: cpi_val_proteins 蛋白索引越界"
-            )
-            logger.info(
-                f"  SAGE protein-cold: 有 CPI 数据的验证蛋白池大小 = {len(cpi_val_proteins)}"
-            )
-
-        for idx, src in enumerate(val_compounds_list):
-            pos_set = all_compound_to_pos.get(src, set())
-            # 仅保留蛋白冷启动验证集中的蛋白（unseen proteins）
-            valid_pos = [p - n_compounds for p in pos_set
-                         if n_compounds <= p < n_compounds + n_proteins
-                         and 0 <= (p - n_compounds) < n_prots_actual
-                         and (p - n_compounds) in val_proteins]
-            if not valid_pos:
-                valid_pos_list.append([])  # v27: 保持索引对齐
-                continue
-            n_valid += 1
-
-            scores = score_matrix[idx]
-
-            # v27: 记录该化合物正样本在子矩阵中的局部列索引
-            valid_pos_local = [val_prot_to_local[p] for p in valid_pos]
-            valid_pos_list.append(valid_pos_local)
-
-            for p in valid_pos:
-                local_p = val_prot_to_local[p]
-                y_true.append(1)
-                y_score.append(torch.sigmoid(scores[local_p]).item())
-
-            # v25-fix: 负样本仅从有CPI数据的val_proteins中采样
-            # 旧代码从全部598个val_proteins采样，其中590个是非CPI蛋白（从未与任何化合物交互）
-            # → 模型只需区分"CPI蛋白 vs 非CPI蛋白"，导致prot_aupr虚高至0.87-0.96
-            # 修复：仅从有CPI交互记录的蛋白中采样负样本，真实评估蛋白间排序能力
-            n_pos = len(valid_pos)
-            # v25-fix: cpi_val_proteins 已在循环外预计算，此处直接使用
-            n_cpi_val = len(cpi_val_proteins)
-            if n_cpi_val > n_pos:
-                n_neg = min(10 * n_pos, n_cpi_val - n_pos)
-                neg_candidates = [val_prot_to_local[p] for p in val_prot_list
-                                  if p not in valid_pos and p in cpi_val_proteins]
-                # v31-fix: 诊断断言 — 负样本候选必须来自有 CPI 数据的验证蛋白，且不能包含正样本
-                assert all(val_prot_list[i] in cpi_val_proteins for i in neg_candidates),                     f"化合物 {src}: 负样本候选包含无 CPI 数据的蛋白"
-                assert all(val_prot_list[i] not in valid_pos for i in neg_candidates),                     f"化合物 {src}: 负样本候选包含正样本蛋白"
-                n_sample = min(n_neg, len(neg_candidates))
-                logger.debug(
-                    f"化合物 {src}: 正样本={n_pos}, 负样本={n_sample}, 候选池={n_cpi_val}"
-                )
-                rand_idx = torch.tensor(neg_candidates, device=DEVICE)[
-                    torch.randperm(len(neg_candidates), device=DEVICE)[:n_sample]]
-                for ri in rand_idx:
-                    y_true.append(0)
-                    y_score.append(torch.sigmoid(scores[ri]).item())
-
-        n_pos_total = sum(1 for t in y_true if t == 1)
-        n_neg_total = len(y_true) - n_pos_total
-        ratio_str = f"1:{n_neg_total/max(1,n_pos_total):.1f}" if n_pos_total > 0 else "N/A"
-        logger.info(f"  SAGE protein-cold: {n_valid} valid compounds, pos={n_pos_total}, neg={n_neg_total}, ratio={ratio_str}")
-
-        if len(y_true) < 2 or len(set(y_true)) < 2:
-            return {"auc": 0.5, "aupr": 0.5, "n_valid_compounds": n_valid}
-
-        y_true_arr = np.array(y_true)
-        y_score_arr = np.array(y_score)
-        nan_mask = np.isnan(y_score_arr) | np.isinf(y_score_arr)
-        if nan_mask.any():
-            logger.warning(f"_validate_sage_protein_cold: 验证分数含 {nan_mask.sum()} 个 NaN/Inf，已过滤")
-            valid_idx = ~nan_mask
-            y_true_arr = y_true_arr[valid_idx]
-            y_score_arr = y_score_arr[valid_idx]
-            if len(y_true_arr) < 2 or len(set(y_true_arr)) < 2:
-                return {"auc": 0.5, "aupr": 0.5, "n_valid_compounds": n_valid}
-
-        # v27: 计算排名指标 (Precision@K, Enrichment Factor)
-        ranking_metrics = _compute_ranking_metrics(score_matrix, valid_pos_list)
-
-        result = {
-            "auc": float(roc_auc_score(y_true_arr, y_score_arr)),
-            "aupr": float(average_precision_score(y_true_arr, y_score_arr)),
-            "n_valid_compounds": n_valid,
-        }
-        result.update(ranking_metrics)  # v27: 附加排名指标
-        return result
-
-
 # ============================================================
 # 10. HGT 分支训练（mini-batch 邻居采样）
 # ============================================================
@@ -3579,223 +2978,6 @@ def _validate_hgt_minibatch(
         }
 
 
-def _validate_hgt_protein_cold_minibatch(
-    model: HGTLinkPredictor,
-    hetero_data,
-    hetero_adj: dict,
-    val_compounds: list[int],
-    all_compound_to_pos: dict[int, set],
-    n_compounds: int,
-    n_proteins: int,
-    val_proteins: set,
-    num_neighbors: list[int] = None,
-    val_batch_size: int = 64,
-    prot_esm_dim: int = 0,
-    n_pathways: int = 0,
-) -> dict[str, float]:
-    """v18: HGT 蛋白冷启动 OOM 降级 mini-batch 验证
-
-    将验证蛋白作为孤立种子节点强制纳入子图，确保在严格隔离的蛋白冷启动图下
-    仍能评估模型对未见蛋白的预测能力。
-    v18-fix3: 屏蔽蛋白节点上的通路 one-hot，仅使用 ESM-2 嵌入评估纯序列泛化。
-    """
-    if num_neighbors is None:
-        num_neighbors = [64, 32]
-    model.eval()
-    val_prot_list = sorted(val_proteins)
-    with torch.no_grad():
-        T = model.temperature
-        all_y_true, all_y_score = [], []
-        n_valid_compounds = 0
-
-        # v25-fix: 将 cpi_val_proteins 构建移到循环外，避免 O(n_val × |edges|) 重复计算
-        cpi_val_proteins_mb = set()
-        for _src, _pos_set in all_compound_to_pos.items():
-            for _p in _pos_set:
-                _pl = _p - n_compounds
-                if 0 <= _pl < n_proteins and _pl in val_proteins:
-                    cpi_val_proteins_mb.add(_pl)
-
-        # v31-fix: 诊断断言 — 负样本候选池必须是有 CPI 交互的验证蛋白子集
-        if cpi_val_proteins_mb:
-            assert cpi_val_proteins_mb.issubset(val_proteins), (
-                "_validate_hgt_protein_cold_minibatch: cpi_val_proteins_mb 必须是 val_proteins 的子集"
-            )
-            assert all(0 <= p < n_proteins for p in cpi_val_proteins_mb), (
-                "_validate_hgt_protein_cold_minibatch: cpi_val_proteins_mb 蛋白索引越界"
-            )
-            logger.info(
-                f"  HGT protein-cold (minibatch): 有 CPI 数据的验证蛋白池大小 = {len(cpi_val_proteins_mb)}"
-            )
-
-        for batch_start in range(0, len(val_compounds), val_batch_size):
-            batch_seeds = val_compounds[batch_start:batch_start + val_batch_size]
-
-            sg, comp_sorted, prot_sorted, path_sorted, disease_sorted, comp_map, prot_map, disease_map = sample_hetero_subgraph(
-                batch_seeds, hetero_adj, num_neighbors, seed=42,
-                seed_proteins=val_prot_list)
-
-            if not prot_sorted or not comp_sorted:
-                continue
-
-            sg["compound"].x = hetero_data["compound"].x[torch.tensor(comp_sorted, device=DEVICE)]
-            sg["protein"].x = hetero_data["protein"].x[torch.tensor(prot_sorted, device=DEVICE)]
-            # v18-fix3: 蛋白冷启动 mini-batch 验证中屏蔽蛋白节点的通路 one-hot
-            if prot_esm_dim > 0 and n_pathways > 0:
-                sg["protein"].x[:, prot_esm_dim:prot_esm_dim + n_pathways] = 0.0
-            if path_sorted:
-                # v18-fix3: 蛋白冷启动 mini-batch 验证中屏蔽通路嵌入
-                n_path = len(sg._path_global)
-                sg["pathway"].x = torch.zeros(
-                    n_path, model.pathway_embed.embedding_dim, device=DEVICE)
-            else:
-                sg["pathway"].x = torch.zeros(0, model.pathway_embed.embedding_dim, device=DEVICE)
-            # v24: 疾病节点嵌入
-            if disease_sorted:
-                disease_global_tensor = torch.tensor(sg._disease_global, device=DEVICE).unsqueeze(-1)
-                sg["disease"].x = disease_global_tensor
-            else:
-                sg["disease"].x = torch.zeros(0, 1, device=DEVICE)
-
-            sg = sg.to(DEVICE)
-            hgt_out = model(sg.x_dict, sg.edge_index_dict)
-            prot_emb = hgt_out["protein"]
-            comp_emb = hgt_out["compound"]
-            # v33: batch 蛋白位置 -> 图蛋白局部索引
-            prot_inv_map = {v: k for k, v in prot_map.items()}
-
-            for s in batch_seeds:
-                if s not in comp_map:
-                    continue
-                comp_local = comp_map[s]
-
-                pos_set = all_compound_to_pos.get(s, set())
-                valid_pos = []
-                for p_global in pos_set:
-                    p_local = p_global - n_compounds
-                    # 仅评估验证蛋白
-                    if p_local in val_proteins and p_local in prot_map:
-                        valid_pos.append(prot_map[p_local])
-                if not valid_pos:
-                    continue
-                n_valid_compounds += 1
-
-                valid_pos_tensor = torch.tensor(valid_pos, device=DEVICE, dtype=torch.long)
-                # v36-fix: 正负样本统一使用残基注意力路径，与训练一致。
-                # 构建正样本的全局蛋白索引。
-                valid_pos_global = torch.tensor(
-                    [prot_inv_map[p] for p in valid_pos], device=DEVICE, dtype=torch.long)
-                scores = model.decode(
-                    comp_emb[comp_local:comp_local+1].expand(len(valid_pos), -1),
-                    prot_emb[valid_pos_tensor],
-                    prot_residue_indices=valid_pos_global,
-                ) / T
-                for idx in range(len(valid_pos)):
-                    all_y_true.append(1)
-                    all_y_score.append(torch.sigmoid(scores[idx]).item())
-
-                # v37-fix: 负样本仅从有 CPI 数据的 val_proteins 中采样，与 SAGE 对齐。
-                # 旧代码 (v31) 从全部 val_proteins 采样，其中绝大多数是非 CPI 蛋白（从未与
-                # 任何化合物交互），模型只需区分 "CPI 蛋白 vs 非 CPI 蛋白" 即可获得极高 AUPR，
-                # 完全不能反映真实的蛋白间排序能力。SAGE 验证在 v25 已修复此问题，HGT 漏修。
-                n_pos = len(valid_pos)
-                n_neg = min(10 * n_pos, max(0, len(cpi_val_proteins_mb) - n_pos))
-                candidate_mask = torch.zeros(len(prot_sorted), dtype=torch.bool, device=DEVICE)
-                # v37-fix: 候选池仅限 cpi_val_proteins_mb，排除非 CPI 蛋白
-                for vp in cpi_val_proteins_mb:
-                    if vp in prot_map and vp not in set(valid_pos):
-                        candidate_mask[prot_map[vp]] = True
-                rand_candidates = torch.where(candidate_mask)[0]
-                if len(rand_candidates) > 0:
-                    n_sample = min(n_neg, len(rand_candidates))
-                    logger.debug(
-                        f"化合物 {s}: 正样本={n_pos}, 负样本={n_sample}, CPI候选池={len(cpi_val_proteins_mb)}"
-                    )
-                    rand_idx = rand_candidates[torch.randperm(len(rand_candidates), device=DEVICE)[:n_sample]]
-                    # v36-fix: 负样本使用残基注意力路径，与正样本一致。
-                    rand_idx_global = torch.tensor(
-                        [prot_inv_map[ri.item()] for ri in rand_idx], device=DEVICE, dtype=torch.long)
-                    scores = model.decode(
-                        comp_emb[comp_local:comp_local+1].expand(len(rand_idx), -1),
-                        prot_emb[rand_idx],
-                        prot_residue_indices=rand_idx_global,
-                    ) / T
-                    for idx in range(len(rand_idx)):
-                        all_y_true.append(0)
-                        all_y_score.append(torch.sigmoid(scores[idx]).item())
-
-        n_pos_total = sum(1 for t in all_y_true if t == 1)
-        n_neg_total = len(all_y_true) - n_pos_total
-        ratio_str = f"1:{n_neg_total/max(1,n_pos_total):.1f}" if n_pos_total > 0 else "N/A"
-        logger.info(f"  HGT protein-cold (minibatch): {n_valid_compounds} valid compounds, pos={n_pos_total}, neg={n_neg_total}, ratio={ratio_str}")
-
-        if len(all_y_true) < 2 or len(set(all_y_true)) < 2:
-            return {"auc": 0.5, "aupr": 0.5, "n_valid_compounds": n_valid_compounds}
-
-        y_true_arr = np.array(all_y_true)
-        y_score_arr = np.array(all_y_score)
-        nan_mask = np.isnan(y_score_arr) | np.isinf(y_score_arr)
-        if nan_mask.any():
-            logger.warning(f"_validate_hgt_protein_cold_minibatch: 验证分数含 {nan_mask.sum()} 个 NaN/Inf，已过滤")
-            valid_idx = ~nan_mask
-            y_true_arr = y_true_arr[valid_idx]
-            y_score_arr = y_score_arr[valid_idx]
-            if len(y_true_arr) < 2 or len(set(y_true_arr)) < 2:
-                return {"auc": 0.5, "aupr": 0.5, "n_valid_compounds": n_valid_compounds}
-
-        # v33-diag: HGT 蛋白冷启动验证 logit 分布诊断
-        try:
-            pos_scores = y_score_arr[y_true_arr == 1]
-            neg_scores = y_score_arr[y_true_arr == 0]
-            if pos_scores.size and neg_scores.size:
-                logger.info(
-                    f"  [HGT prot-cold diag] n_pos={len(pos_scores)} n_neg={len(neg_scores)} "
-                    f"pos={pos_scores.mean():.4f}±{pos_scores.std():.4f} "
-                    f"neg={neg_scores.mean():.4f}±{neg_scores.std():.4f} "
-                    f"gap={(pos_scores.mean() - neg_scores.mean()):.4f}"
-                )
-            else:
-                logger.info(
-                    f"  [HGT prot-cold diag] 样本缺失: n_pos={len(pos_scores)} n_neg={len(neg_scores)}"
-                )
-        except Exception as e:
-            logger.warning(f"  [HGT prot-cold diag] 诊断打印异常: {e}")
-
-        return {
-            "auc": float(roc_auc_score(y_true_arr, y_score_arr)),
-            "aupr": float(average_precision_score(y_true_arr, y_score_arr)),
-            "n_valid_compounds": n_valid_compounds,
-        }
-
-
-# [Ref: 17,18,19] 评估指标: Precision@K[17] + EF[18] + AUPR[19]
-def _validate_hgt_protein_cold(
-    model: HGTLinkPredictor,
-    hetero_data,
-    val_compounds: list[int],
-    all_compound_to_pos: dict[int, set],
-    n_compounds: int,
-    n_proteins: int,
-    val_proteins: set,
-    hetero_adj: dict | None = None,
-    prot_esm_dim: int = 0,
-    pathway_dim: int = 0,
-) -> dict[str, float]:
-    """v31: HGT 蛋白冷启动强制 mini-batch 验证（禁止完整异质图全图推理）
-
-    硬性约束: HGT 验证必须采用 mini-batch 子图采样。该函数直接委托给
-    _validate_hgt_protein_cold_minibatch，确保验证蛋白作为孤立节点纳入子图。
-    """
-    if hetero_adj is None:
-        logger.error("  HGT protein-cold mini-batch 验证失败: hetero_adj 未传入")
-        return {"auc": 0.5, "aupr": 0.5, "n_valid_compounds": 0}
-
-    return _validate_hgt_protein_cold_minibatch(
-        model, hetero_data, hetero_adj, val_compounds,
-        all_compound_to_pos, n_compounds, n_proteins, val_proteins,
-        prot_esm_dim=prot_esm_dim, n_pathways=pathway_dim)
-
-
 # [Ref: 2,3,5,6,7] HGT[2] + Focal Loss[3] + BPR[5] + CTCL-DPI[6] + 课程采样[7]
 def train_hgt(
     model: HGTLinkPredictor,
@@ -3869,11 +3051,9 @@ def train_hgt(
     scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda)
     # v17: Memory Bank — 存储跨 batch 蛋白嵌入，供全局困难负样本采样
     memory_bank = MemoryBank(max_size=MEMORY_BANK_SIZE, out_dim=model.out_dim, device=DEVICE)
-    # v17: 多指标联合早停（同时检查prot_aupr无提升且prot_auc下降）
+    # v38: 早停基于 val_aupr（化合物冷启动），移除蛋白冷启动相关指标
     best_val_auc = 0.0
     best_val_aupr = 0.0
-    best_prot_aupr = 0.0  # v20: 蛋白冷启动 AUPR 用于早停（与 SAGE 统一）
-    best_prot_auc = 0.0   # v20-hotfix: 蛋白冷启动 AUC 辅助早停判断
     best_state = None
     patience_counter = 0
     history = []
@@ -4071,23 +3251,12 @@ def train_hgt(
                     val_metrics = _validate_hgt(
                         model, vh, val_compounds, all_compound_to_pos,
                         n_compounds, n_proteins, hetero_adj=val_hetero_adj)
-                    prot_cold = {"auc": 0.5, "aupr": 0.5}
-                    if val_proteins is not None and len(val_proteins) > 0:
-                        prot_hetero = graphs.get("hetero_data_prot_cold", vh).to(DEVICE)
-                        prot_cold = _validate_hgt_protein_cold(
-                            model, prot_hetero, val_compounds, all_compound_to_pos,
-                            n_compounds, n_proteins, val_proteins,
-                            hetero_adj=graphs.get("hetero_adj_prot_cold", val_hetero_adj),
-                            prot_esm_dim=graphs.get("prot_esm_dim", 0),
-                            pathway_dim=graphs.get("n_pathways", 0))
+                # v38: 移除蛋白冷启动验证，预训练 checkpoint 基于 val_aupr 保存
                 logger.info(
                     f"  HGT pretrain epoch {epoch:3d} | loss={avg_loss:.4f} | "
-                    f"val_auc={val_metrics['auc']:.4f} | val_aupr={val_metrics['aupr']:.4f} | "
-                    f"prot_auc={prot_cold['auc']:.4f} | prot_aupr={prot_cold['aupr']:.4f}")
-                # v25-fix: 预训练checkpoint基于prot_aupr保存（蛋白冷启动是最终目标）
-                # 旧代码基于val_aupr，导致选择了prot_aupr更差的checkpoint进入微调
-                if prot_cold["aupr"] > best_pretrain_aupr:
-                    best_pretrain_aupr = prot_cold["aupr"]
+                    f"val_auc={val_metrics['auc']:.4f} | val_aupr={val_metrics['aupr']:.4f}")
+                if val_metrics["aupr"] > best_pretrain_aupr:
+                    best_pretrain_aupr = val_metrics["aupr"]
                     best_pretrain_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
                 model.train()
             elif epoch % 5 == 0:
@@ -4097,9 +3266,9 @@ def train_hgt(
 
         if best_pretrain_state is not None:
             model.load_state_dict(best_pretrain_state)
-            logger.info(f"  v25 HGT 预训练完成，加载最优 checkpoint (prot_aupr={best_pretrain_aupr:.4f}) 进入微调阶段")
+            logger.info(f"  v38 HGT 预训练完成，加载最优 checkpoint (val_aupr={best_pretrain_aupr:.4f}) 进入微调阶段")
         else:
-            logger.info("  v25 HGT 预训练完成，加载最终参数进入微调阶段")
+            logger.info("  v38 HGT 预训练完成，加载最终参数进入微调阶段")
         pretrain_pbar.close()
         pretrain_elapsed = time.time() - pretrain_start
         logger.info(f"  HGT 预训练完成，耗时 {pretrain_elapsed / 60:.1f} 分钟")
@@ -4139,47 +3308,16 @@ def train_hgt(
             val_auc = val_metrics["auc"]
             val_aupr = val_metrics["aupr"]
 
-            # v17: 蛋白冷启动验证
-            if val_proteins is not None and len(val_proteins) > 0:
-                # v18: 蛋白冷启动使用严格隔离图
-                prot_hetero = graphs.get("hetero_data_prot_cold", val_hetero).to(DEVICE)
-                prot_cold = _validate_hgt_protein_cold(
-                    model, prot_hetero, val_compounds, all_compound_to_pos,
-                    n_compounds, n_proteins, val_proteins,
-                    hetero_adj=graphs.get("hetero_adj_prot_cold", val_hetero_adj),
-                    prot_esm_dim=graphs.get("prot_esm_dim", 0), pathway_dim=graphs.get("n_pathways", 0),
-                )
-                prot_auc = prot_cold["auc"]
-                prot_aupr = prot_cold["aupr"]
-            else:
-                prot_auc = prot_aupr = 0.5
-
-            if val_auc > best_val_auc:
-                best_val_auc = val_auc
+            # v38: 移除蛋白冷启动验证，早停基于 val_aupr（化合物冷启动）
             if val_aupr > best_val_aupr:
                 best_val_aupr = val_aupr
-
-            # v20: 统一早停指标 — 同时检查prot_aupr无提升且prot_auc下降
-            # 蛋白冷启动是最终目标，其泛化能力比常规验证更有意义
-            prot_aupr_improved = prot_aupr > best_prot_aupr
-            prot_auc_declined = prot_auc < best_prot_auc
-
-            if prot_aupr_improved:
-                best_prot_aupr = prot_aupr
-                best_prot_auc = prot_auc
                 best_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
                 patience_counter = 0
-            elif prot_auc_declined:
-                # AUPR未提升 且 AUC下降 → 明确的退化信号
-                patience_counter += 1
             else:
-                # AUPR未提升 但 AUC也未下降 → 可能是平台期，不急于早停
-                patience_counter += 0.5  # 温和惩罚
+                patience_counter += 1
 
-            history.append({"epoch": epoch, "loss": avg_loss, "auc": val_auc, "aupr": val_aupr,
-                         "prot_auc": prot_auc, "prot_aupr": prot_aupr})
-            logger.info(f"  HGT epoch {epoch:3d} | loss={avg_loss:.4f} | val_auc={val_auc:.4f} | val_aupr={val_aupr:.4f} | "
-                        f"prot_auc={prot_auc:.4f} | prot_aupr={prot_aupr:.4f}")
+            history.append({"epoch": epoch, "loss": avg_loss, "auc": val_auc, "aupr": val_aupr})
+            logger.info(f"  HGT epoch {epoch:3d} | loss={avg_loss:.4f} | val_auc={val_auc:.4f} | val_aupr={val_aupr:.4f}")
 
             if patience_counter >= patience:
                 logger.info(f"  HGT 早停 (epoch {epoch}, patience_counter={patience_counter})")
@@ -4219,8 +3357,8 @@ def train_hgt(
 
     if best_state is not None:
         model.load_state_dict(best_state)
-    best_entry = max(history, key=lambda x: x.get("prot_aupr", 0)) if history else {"auc": 0.0, "prot_aupr": 0.0}
-    logger.info(f"  HGT best prot_aupr={best_entry.get('prot_aupr', 0):.4f}, val_auc={best_entry.get('auc', 0):.4f}")
+    best_entry = max(history, key=lambda x: x.get("aupr", 0)) if history else {"auc": 0.0, "aupr": 0.0}
+    logger.info(f"  HGT best val_aupr={best_entry.get('aupr', 0):.4f}, val_auc={best_entry.get('auc', 0):.4f}")
     return model, history
 
 
@@ -4234,16 +3372,14 @@ def predict_tcm(
     tcm_smiles: list[str],
     target_genes: list[str],
     compound_stats: tuple,
-    sage_prot_aupr: float = 0.5,
-    hgt_prot_aupr: float = 0.5,
     diversity_penalty: float = 0.3,  # v27-fix: 默认值 0.1→0.3 与全局 DIVERSITY_PENALTY 一致
     mc_samples: int = 0,
     tcm_feat_precomputed: torch.Tensor | None = None,
 ) -> pd.DataFrame:
-    """v17: SAGE + HGT 集成预测 — 动态权重 + 多样性约束 + MC Dropout
+    """v38: SAGE + HGT 集成预测 — 等权集成 + 多样性约束 + MC Dropout
 
-    v17 改进:
-      - 基于蛋白冷启动 AUPR 动态调整 SAGE/HGT 权重
+    v38 改进:
+      - 移除蛋白冷启动 AUPR 动态权重，改为等权集成
       - 余弦相似度多样性惩罚：鼓励两个分支利用不同信号
       - MC Dropout 不确定性估计：mc_samples>0 时保持 Dropout 开启，
         重复 mc_samples 次前向，输出均值 + 标准差
@@ -4251,8 +3387,6 @@ def predict_tcm(
               Gal & Ghahramani (2016) "Dropout as a Bayesian Approximation"
 
     Args:
-        sage_prot_aupr: SAGE 蛋白冷启动 AUPR（v17: 来自最终模型重新评估）
-        hgt_prot_aupr: HGT 蛋白冷启动 AUPR（v17: 来自最终模型重新评估）
         diversity_penalty: 余弦相似度惩罚系数（0~1，越大越惩罚相似预测）
         mc_samples: MC Dropout 采样次数（0=禁用，推荐30）
     """
@@ -4283,15 +3417,10 @@ def predict_tcm(
     gene_to_idx = graphs["gene_to_idx"]
     homo_edge_index = graphs["homo_edge_index"]
 
-    # v17: 动态集成权重 — 基于蛋白冷启动 AUPR
-    total_aupr = sage_prot_aupr + hgt_prot_aupr
-    if total_aupr > 0:
-        sage_w = sage_prot_aupr / total_aupr
-        hgt_w = hgt_prot_aupr / total_aupr
-    else:
-        sage_w = hgt_w = 0.5
-    logger.info(f"  集成权重: SAGE={sage_w:.3f} (prot_aupr={sage_prot_aupr:.3f}), "
-                f"HGT={hgt_w:.3f} (prot_aupr={hgt_prot_aupr:.3f})")
+    # v38: 等权集成 — 不依赖蛋白冷启动 AUPR
+    sage_w = 0.5
+    hgt_w = 0.5
+    logger.info(f"  集成权重: SAGE={sage_w:.3f}, HGT={hgt_w:.3f}（等权集成）")
 
     # 预构建基因→蛋白局部索引映射
     gene_index_map = []  # [(gene, local_p_idx), ...]
@@ -4817,21 +3946,10 @@ def main(decoder_type: str | None = None):
         graphs["hetero_data"], val_comp_set)
     graphs["hetero_adj_val"] = _build_val_comp_cold_hetero_adj(
         graphs["hetero_adj"], graphs["n_compounds"], val_comp_set)
-    # 蛋白冷启动验证图：严格移除验证集化合物 + 验证集蛋白的所有边
-    graphs["homo_edge_index_prot_cold"] = _build_val_safe_homo_edge_index(
-        graphs["homo_edge_index"], graphs["n_compounds"], val_comp_set, val_proteins)
-    graphs["hetero_data_prot_cold"] = _build_val_safe_hetero_data(
-        graphs["hetero_data"], val_comp_set, val_proteins)
-
     # v18: 构建训练安全邻接表 — 训练阶段完全隐藏验证蛋白，杜绝 PPI 网络信息泄露
     graphs["homo_adj_train"] = _build_train_safe_homo_adj(
         graphs["homo_adj"], graphs["n_compounds"], val_comp_set, val_proteins)
     graphs["hetero_adj_train"] = _build_train_safe_hetero_adj(
-        graphs["hetero_adj"], graphs["n_compounds"], val_comp_set, val_proteins)
-    # v31: hetero_adj_val 已在上文用 _build_val_comp_cold_hetero_adj 构建
-    # 蛋白冷启动专用异质邻接表继续使用 _build_val_safe_hetero_adj（严格隔离）
-    # v18: 蛋白冷启动专用异质邻接表（最终重新评估与 OOM 降级均使用严格隔离图）
-    graphs["hetero_adj_prot_cold"] = _build_val_safe_hetero_adj(
         graphs["hetero_adj"], graphs["n_compounds"], val_comp_set, val_proteins)
     # v18: Memory Bank 全局刷新也使用训练安全图，避免验证蛋白嵌入进入 bank
     graphs["homo_edge_index_train"] = _build_val_safe_homo_edge_index(
@@ -4920,8 +4038,8 @@ def main(decoder_type: str | None = None):
         pheno_lambda=PHENO_LAMBDA)  # v33-fix: 移除 train_sage 不接受的参数
 
     try:
-        torch.save({"state_dict": sage_model.state_dict(), "version": "v37", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "sage_best_v37.pt")
-        logger.info("  SAGE 模型已保存到 sage_best_v37.pt")
+        torch.save({"state_dict": sage_model.state_dict(), "version": "v38", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "sage_best_v38.pt")
+        logger.info("  SAGE 模型已保存到 sage_best_v38.pt")
     except Exception:
         logger.error("  SAGE 模型保存失败", exc_info=True)
         raise
@@ -4979,8 +4097,8 @@ def main(decoder_type: str | None = None):
         pheno_lambda=PHENO_LAMBDA)  # v33-fix: 移除 train_hgt 不接受的参数
 
     try:
-        torch.save({"state_dict": hgt_model.state_dict(), "version": "v37", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "hgt_best_v37.pt")
-        logger.info("  HGT 模型已保存到 hgt_best_v37.pt")
+        torch.save({"state_dict": hgt_model.state_dict(), "version": "v38", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "hgt_best_v38.pt")
+        logger.info("  HGT 模型已保存到 hgt_best_v38.pt")
     except Exception:
         logger.error("  HGT 模型保存失败", exc_info=True)
         raise
@@ -4990,45 +4108,11 @@ def main(decoder_type: str | None = None):
     _log_gpu_memory("HGT 训练后 (cache cleared)")
     logger.info("  HGT GPU 内存已释放")
 
-    # v17: 动态集成权重 — 用最终 best_state 模型重新评估蛋白冷启动 AUPR
-    # 而非从历史记录中取最大值，确保权重与最终模型状态对齐
-    sage_best_prot_aupr = DEFAULT_AUPR
-    hgt_best_prot_aupr = DEFAULT_AUPR
-    sage_final_prot = {"auc": 0.5, "aupr": 0.5, "n_valid_compounds": 0}  # v27: 默认值
-    hgt_final_prot = {"auc": 0.5, "aupr": 0.5, "n_valid_compounds": 0}   # v27: 默认值
-    sage_ranking_keys = ["precision@10", "precision@20", "precision@50", "ef@1%", "ef@5%"]  # v27: 排名指标键名
-
-    if val_proteins and len(val_proteins) > 0:
-        logger.info(">>> 重新评估蛋白冷启动 AUPR（最终 best_state 模型）")
-        sage_model.eval()
-        sage_final_prot = _validate_sage_protein_cold(
-            sage_model, graphs["x"], graphs.get("homo_edge_index_prot_cold", graphs["homo_edge_index"]),
-            val_compounds, compound_to_pos,
-            graphs["n_compounds"], graphs["n_proteins"], val_proteins,
-            prot_esm_dim=graphs.get("prot_esm_dim", 0), n_pathways=graphs.get("n_pathways", 0))
-        sage_best_prot_aupr = sage_final_prot["aupr"]
-        logger.info(f"  SAGE 最终蛋白冷启动 AUPR: {sage_best_prot_aupr:.4f} "
-                    f"(n_valid={sage_final_prot['n_valid_compounds']})")
-        # v27: 记录排名指标
-        for k in sage_ranking_keys:
-            if k in sage_final_prot:
-                logger.info(f"    SAGE prot-cold {k}: {sage_final_prot[k]:.4f}")
-
-        hgt_model.eval()
-        hgt_final_prot = _validate_hgt_protein_cold(
-            hgt_model, graphs.get("hetero_data_prot_cold", graphs["hetero_data"]), val_compounds, compound_to_pos,
-            graphs["n_compounds"], graphs["n_proteins"], val_proteins,
-            hetero_adj=graphs.get("hetero_adj_prot_cold", graphs.get("hetero_adj")),
-            prot_esm_dim=graphs.get("prot_esm_dim", 0), pathway_dim=graphs.get("n_pathways", 0))
-        hgt_best_prot_aupr = hgt_final_prot["aupr"]
-        logger.info(f"  HGT 最终蛋白冷启动 AUPR: {hgt_best_prot_aupr:.4f} "
-                    f"(n_valid={hgt_final_prot['n_valid_compounds']})")
-        # v27: 记录排名指标
-        for k in sage_ranking_keys:
-            if k in hgt_final_prot:
-                logger.info(f"    HGT prot-cold {k}: {hgt_final_prot[k]:.4f}")
-
-    logger.info(f"动态集成权重 AUPR: SAGE={sage_best_prot_aupr:.4f}, HGT={hgt_best_prot_aupr:.4f}")
+    # v38: 移除蛋白冷启动最终评估（已被独立评估脚本替代）
+    # 集成权重固定为等权
+    sage_best_prot_aupr = 0.5
+    hgt_best_prot_aupr = 0.5
+    logger.info("  v38: 跳过蛋白冷启动最终评估，集成权重设为等权 (0.5/0.5)")
 
     # ======== 预测 TCM ========
     logger.info(">>> 预测 TCM 化合物（v25: 全96铁衰老基因 + 靶标优先级加权 + 铁死亡表型融合）")
@@ -5059,7 +4143,6 @@ def main(decoder_type: str | None = None):
     pred_df = predict_tcm(
         sage_model, hgt_model, graphs, tcm_smiles, all_target_genes,
         compound_stats,
-        sage_prot_aupr=sage_best_prot_aupr, hgt_prot_aupr=hgt_best_prot_aupr,
         mc_samples=MC_SAMPLES,
         tcm_feat_precomputed=tcm_feat_precomputed)
 
@@ -5228,10 +4311,10 @@ def main(decoder_type: str | None = None):
     top_df = pred_df.head(TOP_N_CANDIDATES).copy()
 
     try:
-        pred_df.to_csv(L4_RESULTS / "tcm_predictions_full_v28.csv", index=False)
-        top_df.to_csv(L4_RESULTS / "tcm_top_candidates_v28.csv", index=False)
-        logger.info(f"  预测结果已保存: tcm_predictions_full_v28.csv ({len(pred_df)} 行), "
-                    f"tcm_top_candidates_v28.csv ({len(top_df)} 行)")
+        pred_df.to_csv(L4_RESULTS / "tcm_predictions_full_v38.csv", index=False)
+        top_df.to_csv(L4_RESULTS / "tcm_top_candidates_v38.csv", index=False)
+        logger.info(f"  预测结果已保存: tcm_predictions_full_v38.csv ({len(pred_df)} 行), "
+                    f"tcm_top_candidates_v38.csv ({len(top_df)} 行)")
     except Exception:
         logger.error("  预测结果 CSV 保存失败", exc_info=True)
         raise
@@ -5248,52 +4331,32 @@ def main(decoder_type: str | None = None):
     if sage_history:
         sage_best_auc = max(h["auc"] for h in sage_history)
         sage_best_aupr = max(h.get("aupr", 0) for h in sage_history)
-        sage_row = {"model": "SAGE", "best_auc": sage_best_auc, "best_aupr": sage_best_aupr,
-                     "prot_auc": sage_final_prot.get("auc", 0.5),
-                     "prot_aupr": sage_best_prot_aupr}
-        # v27: 附加排名指标
-        for k in sage_ranking_keys:
-            sage_row[k] = sage_final_prot.get(k, 0.0)
+        sage_row = {"model": "SAGE", "best_auc": sage_best_auc, "best_aupr": sage_best_aupr}
         sage_row["train_time_min"] = round(train_time_min, 1)
         sage_row["gpu_mem_peak_gb"] = round(gpu_mem_peak_gb, 2)
         perf_rows.append(sage_row)
     if hgt_history:
         hgt_best_auc = max(h["auc"] for h in hgt_history)
         hgt_best_aupr = max(h.get("aupr", 0) for h in hgt_history)
-        hgt_row = {"model": "HGT", "best_auc": hgt_best_auc, "best_aupr": hgt_best_aupr,
-                    "prot_auc": hgt_final_prot.get("auc", 0.5),
-                    "prot_aupr": hgt_best_prot_aupr}
-        # v27: 附加排名指标
-        for k in sage_ranking_keys:
-            hgt_row[k] = hgt_final_prot.get(k, 0.0)
+        hgt_row = {"model": "HGT", "best_auc": hgt_best_auc, "best_aupr": hgt_best_aupr}
         hgt_row["train_time_min"] = round(train_time_min, 1)
         hgt_row["gpu_mem_peak_gb"] = round(gpu_mem_peak_gb, 2)
         perf_rows.append(hgt_row)
     if perf_rows:
         try:
-            pd.DataFrame(perf_rows).to_csv(L4_RESULTS / "model_performance_v28.csv", index=False)
-            logger.info(f"  模型性能报告已保存: model_performance_v28.csv (训练时间={train_time_min:.1f}min, GPU峰值={gpu_mem_peak_gb:.2f}GB)")
+            pd.DataFrame(perf_rows).to_csv(L4_RESULTS / "model_performance_v38.csv", index=False)
+            logger.info(f"  模型性能报告已保存: model_performance_v38.csv (训练时间={train_time_min:.1f}min, GPU峰值={gpu_mem_peak_gb:.2f}GB)")
         except Exception:
             logger.error("  模型性能 CSV 保存失败", exc_info=True)
             raise
 
     total_time = time.time() - start_time
     logger.info("=" * 60)
-    logger.info(f"Phase 4 v35 完成！总耗时 {total_time / 60:.1f} 分钟")
+    logger.info(f"Phase 4 v38 完成！总耗时 {total_time / 60:.1f} 分钟")
     if sage_history:
         logger.info(f"  SAGE best val_auc: {max(h['auc'] for h in sage_history):.4f}  val_aupr: {max(h.get('aupr', 0) for h in sage_history):.4f}")
     if hgt_history:
         logger.info(f"  HGT best val_auc: {max(h['auc'] for h in hgt_history):.4f}  val_aupr: {max(h.get('aupr', 0) for h in hgt_history):.4f}")
-    # v27: 输出排名指标摘要
-    if perf_rows:
-        for row in perf_rows:
-            model_name = row["model"]
-            logger.info(f"  {model_name} 排名指标: "
-                        f"P@10={row.get('precision@10', 'N/A'):.4f} "
-                        f"P@20={row.get('precision@20', 'N/A'):.4f} "
-                        f"P@50={row.get('precision@50', 'N/A'):.4f} "
-                        f"EF@1%={row.get('ef@1%', 'N/A'):.2f} "
-                        f"EF@5%={row.get('ef@5%', 'N/A'):.2f}")
     logger.info("=" * 60)
 
 
