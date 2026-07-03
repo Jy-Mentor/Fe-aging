@@ -1,10 +1,23 @@
 #!/usr/bin/env python
 """
-树模型 CPI 筛选 v6.3 — 无数据泄露版 + TabPFN 集成 + 残基级 ESM-2 消融
+树模型 CPI 筛选 v6.4 — 扩展铁衰老基因版 + 无数据泄露 + TabPFN 集成
 ================================================================
-基于 v6.2 架构，彻底修复预处理阶段的数据泄露问题。
+基于 v6.3 架构，补充 28 个新铁衰老基因的 CPI 数据，显著扩展靶点覆盖。
 
-核心修复（v6.3）：
+核心更新（v6.4）：
+  1. 【P0 基因覆盖扩展】合并 ChEMBL API 补充数据：
+     - 新增 28 个铁衰老基因的 CPI 数据（4868 条记录）
+     - 铁衰老基因覆盖：23 → 51 个（提升 122%）
+     - 总基因数：42 → 70 个
+     - 总数据量：43238 → 48106 条
+  2. 【P1 最佳模式选择策略优化】：
+     - 优先选择基因覆盖度更高的蛋白嵌入模式（生物学意义更大）
+     - 基因覆盖度相同时，选 AUPR 更高的
+  3. 【P1 数据质量保证】：
+     - 补充数据 SMILES 有效性验证（100% 通过）
+     - 统一 pchembl_value 计算（9 - log10(activity_nM)）
+
+核心修复（v6.3 继承）：
   1. 【P0 数据泄露修复】RDKit 2D 描述符标准化：
      - 不再用全部化合物（含测试集+TCM池）拟合 StandardScaler
      - 改为在每个 CV 折内仅用训练集化合物拟合 scaler，再分别变换
@@ -14,7 +27,7 @@
   3. 【P0 缓存一致性】特征缓存新增 X_rdkit_raw 字段，
      确保旧缓存不会导致"双重标准化"
   4. 【性能优化】蛋白 PCA 只变换 pair_genes 中实际出现的蛋白
-     （从 6847 个降至约 42 个，每折节省数秒）
+     （从 6847 个降至约 70 个，每折节省数秒）
   5. 【性能优化】残基统计特征缓存：residue_meanmaxstd 模式
      首次计算后保存为 NPZ，后续秒级加载
 
@@ -67,7 +80,8 @@
        Nature 637(8045), 2025. https://github.com/PriorLabs/TabPFN
 
 数据来源（全部真实，不模拟）：
-  - CPI: L4/results/experimental_actives_detail_cleaned.csv
+  - CPI: L4/results/experimental_actives_detail_cleaned_combined.csv
+    (合并 ChEMBL/BindingDB 补充数据，70 个基因，51 个铁衰老基因)
   - 蛋白嵌入: L4/results_v10_minibatch/esm2_protein_embeddings.npz (全局 CLS, 103 蛋白)
   - 蛋白嵌入: L4/results_v10_minibatch/esm2_residue_pooled_embeddings.npz (残基池化, 6847 蛋白)
   - 蛋白嵌入: L4/results_v10_minibatch/esm2_150M_residue_features.pt (残基级, 6864 蛋白)
@@ -1847,13 +1861,14 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
 
 def main():
     logger.info("=" * 60)
-    logger.info("树模型 CPI v6.3 — 无数据泄露版 + TabPFN 集成 + 残基级 ESM-2 消融实验")
+    logger.info("树模型 CPI v6.4 — 扩展铁衰老基因版 + 无数据泄露 + TabPFN 集成")
+    logger.info("  v6.4 更新: 合并 28 个新铁衰老基因数据，51/96 铁衰老基因有 CPI 数据")
     logger.info("  v6.3 修复: RDKit 标准化和蛋白 PCA 均在 CV fold 内仅用训练集拟合")
     logger.info("=" * 60)
 
     # ---- 1. 加载数据 ----
     logger.info("\n[1/8] 加载原始数据...")
-    cpi_df = pd.read_csv(L4_RESULTS / "experimental_actives_detail_cleaned.csv", low_memory=False)
+    cpi_df = pd.read_csv(L4_RESULTS / "experimental_actives_detail_cleaned_combined.csv", low_memory=False)
     tcm_df = pd.read_csv(L3_RESULTS / "tcm_compound_pool_tox_filtered_noleak.csv",
                          low_memory=False)
     logger.info(f"  CPI 记录: {len(cpi_df)}, TCM 化合物: {len(tcm_df)}")
@@ -1876,10 +1891,11 @@ def main():
     logger.info(f"  注意: RDKit 标准化参数仅用于预览，实际 CV 内每折独立拟合")
 
     # ---- 2.5. 蛋白嵌入消融实验 (4 modes x 5-fold CV, XGBoost 基线, 无泄露) ----
-    logger.info("\n[2.5/8] 蛋白嵌入消融实验 (4 种模式 x 5-fold CV, XGBoost 基线, 无泄露 v6.3)...")
+    logger.info("\n[2.5/8] 蛋白嵌入消融实验 (4 种模式 x 5-fold CV, XGBoost 基线, 无泄露 v6.4)...")
     ablation_results = []
     best_mode = None
     best_aupr = -1.0
+    best_n_genes = -1
 
     for mode in PROTEIN_EMB_MODES:
         try:
@@ -1895,8 +1911,12 @@ def main():
             n_pos = int(df_mode["n_pos_samples"].iloc[0])
             logger.info(f"  {mode:22s}: AUC={mean_auc:.4f}, AUPR={mean_aupr:.4f}, "
                         f"BEDROC={mean_bedroc:.4f} | genes={n_genes}, pos={n_pos}")
-            if mean_aupr > best_aupr:
+            # 最佳模式选择策略：
+            # 1. 优先选择基因覆盖度更高的模式（生物学意义更大，覆盖更多铁衰老靶点）
+            # 2. 基因覆盖度相同时，选 AUPR 更高的
+            if n_genes > best_n_genes or (n_genes == best_n_genes and mean_aupr > best_aupr):
                 best_aupr = mean_aupr
+                best_n_genes = n_genes
                 best_mode = mode
         except Exception as e:
             logger.error(f"  {mode} 消融实验失败: {e}")
