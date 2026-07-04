@@ -71,6 +71,8 @@ validation:
   val_freq: 5            # v31-review: 2→5, HGT验证是主要瓶颈，降低频率可节省约40%总时间
   pretrain_val_freq: 10  # v32-fast: 5→10, 降低预训练验证开销
   mem_refresh_freq: 5
+prediction:
+  tree_ensemble_weight: 0.6  # v40: 树模型 v7 (86基因) 集成权重
 memory_bank:
   memory_bank_size: 8192
   infonce_mem_sample: 256

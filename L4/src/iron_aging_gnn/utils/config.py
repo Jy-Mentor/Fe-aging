@@ -260,6 +260,7 @@ class PredictionConfig(BaseModel):
     composite_hits_weight: float = Field(default=0.3, ge=0.0, le=1.0, description="composite_score 中加权命中数权重")
     ferro_factor_base: float = Field(default=0.7, ge=0.0, le=1.0, description="铁死亡概率融合因子基数")
     zs_bonus_max: float = Field(default=0.05, ge=0.0, le=1.0, description="zero-shot bonus 上限")
+    tree_ensemble_weight: float = Field(default=0.6, ge=0.0, le=1.0, description="树模型集成权重")
 
 
 class NumericalConfig(BaseModel):
