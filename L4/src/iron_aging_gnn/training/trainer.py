@@ -3,11 +3,13 @@
 v25: 从 phase4_v10_minibatch.py 提取 train_sage 和 train_hgt 函数
 支持两阶段迁移学习、表型分类辅助任务、课程负采样、Memory Bank 等。
 
-注意：以下辅助函数仍从主脚本中导入，后续统一迁移至独立模块：
-  - _compute_cpi_loss, focal_loss_with_logits, infonce_loss (losses)
-  - _validate_sage, _validate_sage_protein_cold, _validate_hgt, _validate_hgt_protein_cold (validation)
-  - _check_tensor_nan, _check_gradient_norm, _check_gpu_memory (utils)
-  - build_compound_features (data/features)
+v39-refactor: 引入 TrainingConfig 数据类封装 30+ 参数，提取 Validator、
+  MemoryBankManager、GradientMonitor、LRSchedulerFactory 组件类，
+  消除 train_sage / train_hgt 中的重复代码。
+
+注意：以下辅助函数仍从主脚本中注入：
+  - _compute_cpi_loss (losses)
+  - _validate_sage, _validate_hgt (validation)
 """
 
 from __future__ import annotations
@@ -27,6 +29,13 @@ from ..graph import (
     split_head_tail_nodes,
 )
 from ..models import HGTLinkPredictor, MemoryBank, SAGELinkPredictor
+from .training_components import (
+    GradientMonitor,
+    LRSchedulerFactory,
+    MemoryBankManager,
+    Validator,
+)
+from .training_config import TrainingConfig
 
 logger = logging.getLogger(__name__)
 
@@ -161,19 +170,15 @@ def train_sage(
                     f"pos_weight={pos_weight:.1f}, lambda={pheno_lambda}")
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
+    scheduler = LRSchedulerFactory.create_cosine_warmup(optimizer, epochs, warmup_ratio)
     scaler = GradScaler(enabled=use_amp)
-    warmup_epochs = max(1, int(epochs * warmup_ratio))
-    def lr_lambda(e):
-        if e < warmup_epochs:
-            return e / warmup_epochs
-        progress = (e - warmup_epochs) / (epochs - warmup_epochs)
-        return 0.5 * (1 + np.cos(np.pi * progress)) * 1.0 + 1e-6
-    scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda)
-    memory_bank = MemoryBank(max_size=memory_bank_size, out_dim=model.out_dim, device=str(device))
-    best_val_auc = 0.0
-    best_val_aupr = 0.0
-    best_state = None
-    patience_counter = 0
+
+    # v39-refactor: 使用组件类替代内联逻辑
+    memory_bank_mgr = MemoryBankManager(memory_bank_size, model.out_dim, str(device))
+    memory_bank = memory_bank_mgr.memory_bank
+    gradient_monitor = GradientMonitor(grad_clip_norm)
+    validator = Validator(_validate_sage_fn, patience=patience)
+
     history = []
 
     def _train_one_epoch(
@@ -300,9 +305,7 @@ def train_sage(
 
             stage_optimizer.zero_grad()
             stage_scaler.scale(loss).backward()
-            stage_scaler.unscale_(stage_optimizer)
-            _check_gradient_norm(model, warn_threshold=100.0)
-            torch.nn.utils.clip_grad_norm_(model.parameters(), grad_clip_norm)
+            gradient_monitor.check_and_clip(model, scaler=stage_scaler)
             stage_scaler.step(stage_optimizer)
             stage_scaler.update()
 
@@ -331,8 +334,7 @@ def train_sage(
         pretrain_scheduler = torch.optim.lr_scheduler.LambdaLR(pretrain_optimizer, pretrain_lr_lambda)
         pretrain_memory_bank = MemoryBank(max_size=memory_bank_size, out_dim=model.out_dim, device=str(device))
 
-        best_pretrain_aupr = 0.0
-        best_pretrain_state = None
+        validator.reset()
 
         for epoch in range(1, pretrain_epochs + 1):
             total_loss, n_batches = _train_one_epoch(
@@ -342,7 +344,7 @@ def train_sage(
                 continue
             avg_loss = total_loss / n_batches
 
-            if epoch % 5 == 0 and val_compounds:
+            if validator.should_validate(epoch, is_pretrain=True) and val_compounds:
                 model.eval()
                 with torch.no_grad(), autocast(enabled=use_amp):
                     val_metrics = _validate_sage_fn(
@@ -351,21 +353,19 @@ def train_sage(
                 logger.info(
                     f"  SAGE pretrain epoch {epoch:3d} | loss={avg_loss:.4f} | "
                     f"val_auc={val_metrics['auc']:.4f} | val_aupr={val_metrics['aupr']:.4f}")
-                if val_metrics["aupr"] > best_pretrain_aupr:
-                    best_pretrain_aupr = val_metrics["aupr"]
-                    best_pretrain_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
+                if val_metrics["aupr"] > validator.best_val_aupr:
+                    validator.best_val_aupr = val_metrics["aupr"]
+                    validator.capture_best_state(model)
                 model.train()
             elif epoch % 5 == 0:
                 logger.info(f"  SAGE pretrain epoch {epoch:3d} | loss={avg_loss:.4f}")
             else:
-                # v33-monitor: 每个 epoch 都记录 loss，便于通过日志文件监控进度
                 logger.info(f"  SAGE pretrain epoch {epoch:3d} | loss={avg_loss:.4f}")
 
             pretrain_scheduler.step()
 
-        if best_pretrain_state is not None:
-            model.load_state_dict(best_pretrain_state)
-            logger.info(f"  v38 SAGE 预训练完成，加载最优 checkpoint (val_aupr={best_pretrain_aupr:.4f}) 进入微调阶段")
+        if validator.load_best_state(model):
+            logger.info(f"  v38 SAGE 预训练完成，加载最优 checkpoint (val_aupr={validator.best_val_aupr:.4f}) 进入微调阶段")
         else:
             logger.info("  v25 SAGE 预训练完成，加载最终参数进入微调阶段")
 
@@ -419,43 +419,28 @@ def train_sage(
             logger.info(log_str)
 
             # v38: 早停基于 val_aupr（化合物冷启动），替代原蛋白冷启动 AUPR
-            if m["aupr"] > best_val_aupr:
-                best_val_aupr = m["aupr"]
-                best_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
-                patience_counter = 0
-            else:
-                patience_counter += 1
+            is_new_best = validator.update_best(m["aupr"], m["auc"])
+            if is_new_best:
+                validator.capture_best_state(model)
 
-            if m["auc"] > best_val_auc:
-                best_val_auc = m["auc"]
-
-            if patience_counter >= patience:
-                logger.info(f"  SAGE 早停 (epoch {epoch}, patience_counter={patience_counter})")
+            if validator.should_stop_early():
+                logger.info(f"  SAGE 早停 (epoch {epoch}, patience_counter={validator.patience_counter})")
                 break
 
             if epoch % 5 == 0:
-                model.eval()
-                try:
-                    with torch.no_grad(), autocast(enabled=use_amp):
-                        full_node_emb = model(x, _homo_edge_index_train,
-                                              n_compounds=n_compounds)
-                        full_prot_emb = full_node_emb[n_compounds:]
-                        if val_proteins is not None and len(val_proteins) > 0:
-                            train_prot_mask = torch.ones(full_prot_emb.shape[0], dtype=torch.bool, device=device)
-                            train_prot_mask[list(val_proteins)] = False
-                            full_prot_emb = full_prot_emb[train_prot_mask]
-                        memory_bank = MemoryBank(max_size=memory_bank_size, out_dim=model.out_dim, device=str(device))
-                        memory_bank.update(full_prot_emb)
-                    logger.info(f"  SAGE Memory Bank 全局刷新: {memory_bank.size()} 训练蛋白嵌入")
-                finally:
-                    model.train()
+                memory_bank_mgr.refresh_global_sage(
+                    model, x, _homo_edge_index_train, n_compounds,
+                    val_proteins=val_proteins, use_amp=use_amp,
+                )
 
         scheduler.step()
 
-    if best_state is not None:
-        model.load_state_dict(best_state)
-    best_entry = max(history, key=lambda x: x.get("aupr", 0)) if history else {"auc": 0.0, "aupr": 0.0}
-    logger.info(f"  SAGE best val_aupr={best_entry.get('aupr', 0):.4f}, val_auc={best_entry.get('auc', 0):.4f}")
+    if validator.load_best_state(model):
+        best_entry = validator.get_best_entry(history)
+        logger.info(f"  SAGE best val_aupr={best_entry.get('aupr', 0):.4f}, val_auc={best_entry.get('auc', 0):.4f}")
+        return model, history
+
+    model = model.to("cpu")
     return model, history
 
 
@@ -548,19 +533,15 @@ def train_hgt(
     prot_to_topo_hard_neighbors = graphs.get("prot_to_topo_hard_neighbors")
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
+    scheduler = LRSchedulerFactory.create_cosine_warmup(optimizer, epochs, warmup_ratio)
     scaler = GradScaler(enabled=use_amp)
-    warmup_epochs = max(1, int(epochs * warmup_ratio))
-    def lr_lambda(e):
-        if e < warmup_epochs:
-            return e / warmup_epochs
-        progress = (e - warmup_epochs) / (epochs - warmup_epochs)
-        return 0.5 * (1 + np.cos(np.pi * progress)) * 1.0 + 1e-6
-    scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda)
-    memory_bank = MemoryBank(max_size=memory_bank_size, out_dim=model.out_dim, device=str(device))
-    best_val_auc = 0.0
-    best_val_aupr = 0.0
-    best_state = None
-    patience_counter = 0
+
+    # v39-refactor: 使用组件类替代内联逻辑
+    memory_bank_mgr = MemoryBankManager(memory_bank_size, model.out_dim, str(device))
+    memory_bank = memory_bank_mgr.memory_bank
+    gradient_monitor = GradientMonitor(grad_clip_norm)
+    validator = Validator(_validate_hgt_fn, patience=patience)
+
     history = []
 
     use_pheno = pheno_compound_indices is not None and pheno_labels is not None
@@ -686,9 +667,7 @@ def train_hgt(
                     loss = loss + pheno_lambda * pheno_loss
 
             stage_scaler.scale(loss).backward()
-            stage_scaler.unscale_(stage_optimizer)
-            _check_gradient_norm(model, warn_threshold=100.0)
-            torch.nn.utils.clip_grad_norm_(model.parameters(), grad_clip_norm)
+            gradient_monitor.check_and_clip(model, scaler=stage_scaler)
             stage_scaler.step(stage_optimizer)
             stage_scaler.update()
 
@@ -700,7 +679,7 @@ def train_hgt(
         return total_loss, n_batches
 
     # ============================================================
-    # 阶段1 — 尾节点平衡子图预训练
+    # 阶段1 — 尾节点平衡子图预训练 (HGT)
     # ============================================================
     if two_stage and pretrain_epochs > 0:
         pretrain_compounds, tail_compounds = split_head_tail_nodes(
@@ -717,8 +696,7 @@ def train_hgt(
         pretrain_scheduler = torch.optim.lr_scheduler.LambdaLR(pretrain_optimizer, pretrain_lr_lambda)
         pretrain_memory_bank = MemoryBank(max_size=memory_bank_size, out_dim=model.out_dim, device=str(device))
 
-        best_pretrain_aupr = 0.0
-        best_pretrain_state = None
+        validator.reset()
 
         for epoch in range(1, pretrain_epochs + 1):
             total_loss, n_batches = _train_one_epoch(
@@ -728,7 +706,7 @@ def train_hgt(
                 continue
             avg_loss = total_loss / n_batches
 
-            if epoch % 5 == 0 and val_compounds:
+            if validator.should_validate(epoch, is_pretrain=True) and val_compounds:
                 model.eval()
                 torch.cuda.empty_cache()
                 with torch.no_grad(), autocast(enabled=use_amp):
@@ -742,18 +720,17 @@ def train_hgt(
                 logger.info(
                     f"  HGT pretrain epoch {epoch:3d} | loss={avg_loss:.4f} | "
                     f"val_auc={val_metrics['auc']:.4f} | val_aupr={val_metrics['aupr']:.4f}")
-                if val_metrics["aupr"] > best_pretrain_aupr:
-                    best_pretrain_aupr = val_metrics["aupr"]
-                    best_pretrain_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
+                if val_metrics["aupr"] > validator.best_val_aupr:
+                    validator.best_val_aupr = val_metrics["aupr"]
+                    validator.capture_best_state(model)
                 model.train()
             elif epoch % 5 == 0:
                 logger.info(f"  HGT pretrain epoch {epoch:3d} | loss={avg_loss:.4f}")
 
             pretrain_scheduler.step()
 
-        if best_pretrain_state is not None:
-            model.load_state_dict(best_pretrain_state)
-            logger.info(f"  v38 HGT 预训练完成，加载最优 checkpoint (val_aupr={best_pretrain_aupr:.4f}) 进入微调阶段")
+        if validator.load_best_state(model):
+            logger.info(f"  v38 HGT 预训练完成，加载最优 checkpoint (val_aupr={validator.best_val_aupr:.4f}) 进入微调阶段")
         else:
             logger.info("  v25 HGT 预训练完成，加载最终参数进入微调阶段")
 
@@ -781,53 +758,44 @@ def train_hgt(
             val_auc = val_metrics["auc"]
             val_aupr = val_metrics["aupr"]
 
-            if val_auc > best_val_auc:
-                best_val_auc = val_auc
-            if val_aupr > best_val_aupr:
-                best_val_aupr = val_aupr
-                best_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
-                patience_counter = 0
-            else:
-                patience_counter += 1
+            is_new_best = validator.update_best(val_aupr, val_auc)
+            if is_new_best:
+                validator.capture_best_state(model)
 
             history.append({"epoch": epoch, "loss": avg_loss, "auc": val_auc, "aupr": val_aupr})
             logger.info(f"  HGT epoch {epoch:3d} | loss={avg_loss:.4f} | val_auc={val_auc:.4f} | val_aupr={val_aupr:.4f}")
 
-            if patience_counter >= patience:
-                logger.info(f"  HGT 早停 (epoch {epoch}, patience_counter={patience_counter})")
+            if validator.should_stop_early():
+                logger.info(f"  HGT 早停 (epoch {epoch}, patience_counter={validator.patience_counter})")
                 break
 
-            if epoch % 5 == 0:
-                model.eval()
-                try:
-                    with torch.no_grad(), autocast(enabled=use_amp):
-                        hetero_data_dev = hetero_data.to(device)
-                        n_path = hetero_data_dev["pathway"].n_pathways
-                        hetero_data_dev["pathway"].x = model.pathway_embed(
-                            torch.arange(max(n_path, 1), device=device))
-                        x_dict_full = {k: v.clone() for k, v in hetero_data_dev.x_dict.items()}
-                        hgt_out = model(x_dict_full, hetero_data_dev.edge_index_dict)
-                        full_prot_emb = hgt_out["protein"]
-                        if val_proteins is not None and len(val_proteins) > 0:
-                            train_prot_mask = torch.ones(full_prot_emb.shape[0], dtype=torch.bool, device=device)
-                            train_prot_mask[list(val_proteins)] = False
-                            full_prot_emb = full_prot_emb[train_prot_mask]
-                        memory_bank = MemoryBank(max_size=memory_bank_size, out_dim=model.out_dim, device=str(device))
-                        memory_bank.update(full_prot_emb)
-                    logger.info(f"  HGT Memory Bank 全局刷新: {memory_bank.size()} 训练蛋白嵌入")
-                finally:
-                    model.train()
+            if memory_bank_mgr.should_refresh(epoch):
+                hetero_data_dev = hetero_data.to(device)
+                n_path = hetero_data_dev["pathway"].n_pathways
+                hetero_data_dev["pathway"].x = model.pathway_embed(
+                    torch.arange(max(n_path, 1), device=device))
+                memory_bank_mgr.refresh_global_hgt(
+                    model, hetero_data_dev,
+                    val_proteins=val_proteins, use_amp=use_amp,
+                )
 
         scheduler.step()
 
-    if best_state is not None:
-        model.load_state_dict(best_state)
-    best_entry = max(history, key=lambda x: x.get("aupr", 0)) if history else {"auc": 0.0, "aupr": 0.0}
-    logger.info(f"  HGT best val_aupr={best_entry.get('aupr', 0):.4f}, val_auc={best_entry.get('auc', 0):.4f}")
+    if validator.load_best_state(model):
+        best_entry = validator.get_best_entry(history)
+        logger.info(f"  HGT best val_aupr={best_entry.get('aupr', 0):.4f}, val_auc={best_entry.get('auc', 0):.4f}")
+        return model, history
+
+    model = model.to("cpu")
     return model, history
 
 
 __all__ = [
     "train_sage",
     "train_hgt",
+    "TrainingConfig",
+    "Validator",
+    "MemoryBankManager",
+    "GradientMonitor",
+    "LRSchedulerFactory",
 ]
