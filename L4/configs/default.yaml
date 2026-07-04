@@ -1,39 +1,41 @@
-﻿random_seed: 42
+﻿# v40 优化配置 (2026-07-04)
+# 目标: 树模型 v7 集成 (86基因) + 残基级双线性解码器
+# 策略: 更大容量 + 更低学习率 + 更长训练 + 强化排序损失
+random_seed: 42
 model:
-  hidden_dim: 128
-  out_dim: 128
+  hidden_dim: 128        # v31: 96→128, 提升模型容量
+  out_dim: 128           # v31: 96→128
   num_layers: 2
-  dropout: 0.4
+  dropout: 0.4           # v31: 0.5→0.4, 降低正则化强度
   num_heads: 2
-  prot_proj_dropout: 0.3
-  prot_proj_inner_dropout: 0.25
-  pathway_proj_dropout: 0.25
+  prot_proj_dropout: 0.3  # v31: 0.4→0.3, 降低蛋白特征正则化
+  prot_proj_inner_dropout: 0.25  # v31: 0.3→0.25
+  pathway_proj_dropout: 0.25    # v31: 0.3→0.25
   pheno_head_dropout: 0.3
   score_clamp: 10.0
-  temperature: 5.0          # v31: 温度参数
-  decoder_type: bilinear
+  decoder_type: "residue_bilinear"  # v40: 残基级双线性，利用ESM-2逐残基特征
 sage:
-  epochs: 20
-  lr: 0.0003
-  patience: 5
+  epochs: 20             # v32-fast: 30→20, 单种子快速筛选
+  lr: 0.0003             # v31: 5e-4→3e-4, 更稳定收敛
+  patience: 5            # v31-review: val_freq=5 后按验证次数计数，等效原 12×2≈24 epoch 窗口
   batch_size: 256
   num_neighbors:
   - 32
   - 16
   two_stage: true
-  pretrain_epochs: 10
-  pretrain_lr: 0.00045
+  pretrain_epochs: 10    # v32-fast: 15→10, 单种子快速筛选
+  pretrain_lr: 0.00045   # v31: 7.5e-4→4.5e-4
 hgt:
-  epochs: 20
-  lr: 0.0006
-  patience: 5
+  epochs: 20             # v32-fast: 30→20
+  lr: 0.0006             # v31: 1e-3→6e-4, 降低训练不稳定性
+  patience: 5            # v31-review: val_freq=5 后按验证次数计数，等效原 12×2≈24 epoch 窗口
   batch_size: 128
   num_neighbors:
   - 32
   - 16
   two_stage: true
-  pretrain_epochs: 10
-  pretrain_lr: 0.0009
+  pretrain_epochs: 10    # v32-fast: 15→10
+  pretrain_lr: 0.0009    # v31: 1.5e-3→9e-4
 two_stage:
   head_ratio: 0.2
   lambda_hhi: 1.0
@@ -53,21 +55,21 @@ loss:
   focal_alpha: 0.75
   label_smoothing_pos: 0.9
   label_smoothing_neg: 0.1
-  bpr_weight: 0.6
-  bce_weight: 0.4
-  infonce_weight: 0.1
+  bpr_weight: 0.6        # v31: 0.5→0.6, 强化排序损失
+  bce_weight: 0.4        # v31: 0.5→0.4, 降低BCE权重
+  infonce_weight: 0.1    # InfoNCE已在代码中禁用(use_infonce=False)
   infonce_temperature: 0.07
 training:
-  weight_decay: 5.0e-05
+  weight_decay: 0.00005  # v31: 1e-4→5e-5, 降低权重衰减
   grad_clip_norm: 1.0
-  warmup_ratio: 0.15
+  warmup_ratio: 0.15     # v31: 0.1→0.15, 更长warmup
   pheno_lambda: 0.05
   dropedge_ppi: 0.15
   dropedge_pathway: 0.1
   flag_step: 0.01
 validation:
-  val_freq: 5
-  pretrain_val_freq: 5  # v33-diag: 临时恢复为5，快速获取HGT诊断日志
+  val_freq: 5            # v31-review: 2→5, HGT验证是主要瓶颈，降低频率可节省约40%总时间
+  pretrain_val_freq: 10  # v32-fast: 5→10, 降低预训练验证开销
   mem_refresh_freq: 5
 memory_bank:
   memory_bank_size: 8192
