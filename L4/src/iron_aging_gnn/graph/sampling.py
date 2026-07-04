@@ -49,8 +49,6 @@ def sample_homo_subgraph(
     node_list = sorted(nodes)
     node_to_local = {n: i for i, n in enumerate(node_list)}
 
-    # 向量化边构建，替换双重 Python 循环
-    # 仅保留两端点都在 node_list 中的边
     src_list, dst_list = [], []
     for node in node_list:
         nbrs = homo_adj.get(node, [])
@@ -160,7 +158,7 @@ def sample_hetero_subgraph(
     sg["compound", "interacts", "protein"].edge_index = _build_edges(
         ("compound", "interacts", "protein"), comp_map, prot_map)
 
-    # v40-fix: 冷启动化合物在 hetero_adj 中无 CPI 出边，验证时临时添加 seed -> candidate 蛋白边，
+    # 冷启动化合物在 hetero_adj 中无 CPI 出边，验证时临时添加 seed -> candidate 蛋白边，
     # 仅用于 HGT 消息传递，不用于标签构造。
     if add_seed_cpi_edges and seed_proteins:
         extra_sl, extra_dl = [], []
@@ -178,7 +176,6 @@ def sample_hetero_subgraph(
             extra = torch.tensor([extra_sl, extra_dl], dtype=torch.long)
             sg["compound", "interacts", "protein"].edge_index = torch.cat([existing, extra], dim=1)
 
-    # v40-fix: HGTConv 需要双向消息传递，手动构建 CPI 反向边
     cpi_sl, cpi_dl = sg["compound", "interacts", "protein"].edge_index.tolist()
     if cpi_sl:
         sg["protein", "rev_interacts", "compound"].edge_index = torch.tensor(
@@ -188,7 +185,6 @@ def sample_hetero_subgraph(
 
     sg["protein", "ppi", "protein"].edge_index = _build_edges(
         ("protein", "ppi", "protein"), prot_map, prot_map)
-    # v40-fix: 无向 PPI 需要双向边
     ppi_sl, ppi_dl = sg["protein", "ppi", "protein"].edge_index.tolist()
     if ppi_sl:
         sg["protein", "rev_ppi", "protein"].edge_index = torch.tensor(
@@ -215,7 +211,7 @@ def sample_hetero_subgraph(
     else:
         sg["pathway", "includes", "protein"].edge_index = torch.zeros((2, 0), dtype=torch.long)
 
-    # v24: 手动构建疾病→蛋白反向边
+    # 手动构建疾病→蛋白反向边
     sl_rev_d, dl_rev_d = [], []
     for p_global, disease_ids in hetero_adj.get(("protein", "associated_with", "disease"), {}).items():
         if p_global in prot_map:
@@ -229,7 +225,7 @@ def sample_hetero_subgraph(
     else:
         sg["disease", "involves", "protein"].edge_index = torch.zeros((2, 0), dtype=torch.long)
 
-    # v24: disease节点特征（无原始特征，用零向量，模型内disease_embed生成嵌入）
+    # disease节点特征（无原始特征，用零向量，模型内disease_embed生成嵌入）
     sg["disease"].x = torch.zeros(len(disease_sorted), 1, dtype=torch.float32)
 
     return sg, comp_sorted, prot_sorted, path_sorted, disease_sorted, comp_map, prot_map, disease_map

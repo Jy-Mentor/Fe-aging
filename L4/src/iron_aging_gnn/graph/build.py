@@ -57,11 +57,13 @@ def build_graphs_and_adj(
     ferro96_genes_file: str | Path | None = None,
     use_topology_neg: bool = False,
     topo_neighbors_top_k: int = 50,
+    use_esm_similarity_neg: bool = False,
+    esm_similarity_top_k: int = 50,
 ):
-    """构建同质图 + 异质图 + 邻接表（可选疾病节点和拓扑负样本）
+    """构建同质图 + 异质图 + 邻接表（可选疾病节点和拓扑/ESM-2负样本）
 
     加载铁衰老96基因集，确保所有核心基因作为蛋白节点（用于zero-shot预测）。
-    预计算基于PPI拓扑的负样本邻居（可选，默认关闭以避免训练启动开销）。
+    预计算基于PPI拓扑和ESM-2余弦相似度的负样本邻居（可选，默认关闭）。
     """
     # 化合物索引
     all_smiles = sorted(cpi_df["canonical_smiles"].unique())
@@ -332,6 +334,36 @@ def build_graphs_and_adj(
         except Exception:
             logger.exception("初始化 TopologyNegativeSampler 失败，回退到无拓扑负样本")
 
+    # v41: 预计算基于 ESM-2 余弦相似度的难负样本邻居（可选，默认关闭）
+    prot_to_esm_hard_neighbors: dict[int, set] | None = None
+    if use_esm_similarity_neg:
+        # 使用 prot_feat 中的 ESM-2 嵌入（已由 load_protein_features 加载）
+        active_genes = {str(g).strip().upper() for g in cpi_df["gene"].dropna().unique()}
+        logger.info(
+            f"v41: 预计算ESM-2余弦相似度难负样本 "
+            f"(active_genes={len(active_genes)}, top_k={esm_similarity_top_k}) ..."
+        )
+        try:
+            from .esm_similarity_negative_sampling import (
+                build_esm_similarity_hard_neighbors,
+            )
+            prot_to_esm_hard_neighbors = build_esm_similarity_hard_neighbors(
+                esm2_embeddings=prot_feat,
+                gene_to_idx=gene_to_idx,
+                n_compounds=n_compounds,
+                ppi_df=ppi_df,
+                active_genes=active_genes,
+                top_k=esm_similarity_top_k,
+            )
+        except ImportError as e:
+            logger.warning(
+                "v41: 初始化 ESM-2 相似度负样本失败，回退到无此负样本: %s", e
+            )
+        except Exception:
+            logger.exception(
+                "v41: 初始化 ESM-2 相似度负样本失败，回退到无此负样本"
+            )
+
     return {
         "x": x,
         "feat_dim": feat_dim,
@@ -351,4 +383,5 @@ def build_graphs_and_adj(
         "prot_to_path_neighbors": prot_to_path_neighbors,
         "prot_to_topo_medium_neighbors": prot_to_topo_medium_neighbors,
         "prot_to_topo_hard_neighbors": prot_to_topo_hard_neighbors,
+        "prot_to_esm_hard_neighbors": prot_to_esm_hard_neighbors,  # v41: ESM-2余弦相似度难负样本
     }

@@ -1,41 +1,40 @@
 #!/usr/bin/env python
 """
-树模型 CPI 筛选 v6.5 — 仅 XGBoost，加速 CPI 扩展迭代
+树模型 CPI 筛选 — 仅 XGBoost，加速 CPI 扩展迭代
 ================================================================
-基于 v6.4 架构，精简模型集成为仅 XGBoost，加速 CPI 数据扩展迭代。
+基于 v6 架构，精简模型集成为仅 XGBoost，加速 CPI 数据扩展迭代。
 
-核心更新（v6.5）：
-  1. 仅 XGBoost：移除 RF / LightGBM / CatBoost / TabPFN 训练和推理逻辑
-  2. 加速 CPI 扩展迭代：精简后训练和预测速度显著提升
+架构设计：
+  1. 仅 XGBoost：精简模型集成，加速 CPI 扩展迭代训练和预测
 
-核心更新（v6.4）：
-  1. 【P0 基因覆盖扩展】合并 ChEMBL API 补充数据：
+核心更新（ChEMBL 扩展）：
+  1. 合并 ChEMBL API 补充数据：
      - 新增 28 个铁衰老基因的 CPI 数据（4868 条记录）
      - 铁衰老基因覆盖：23 → 51 个（提升 122%）
      - 总基因数：42 → 70 个
      - 总数据量：43238 → 48106 条
-  2. 【P1 最佳模式选择策略优化】：
+  2. 最佳模式选择策略优化：
      - 优先选择基因覆盖度更高的蛋白嵌入模式（生物学意义更大）
      - 基因覆盖度相同时，选 AUPR 更高的
-  3. 【P1 数据质量保证】：
+  3. 数据质量保证：
      - 补充数据 SMILES 有效性验证（100% 通过）
      - 统一 pchembl_value 计算（9 - log10(activity_nM)）
 
-核心修复（v6.3 继承）：
-  1. 【P0 数据泄露修复】RDKit 2D 描述符标准化：
+核心修复（数据泄露）：
+  1. RDKit 2D 描述符标准化：
      - 不再用全部化合物（含测试集+TCM池）拟合 StandardScaler
      - 改为在每个 CV 折内仅用训练集化合物拟合 scaler，再分别变换
-  2. 【P0 数据泄露修复】蛋白嵌入 PCA 降维：
+  2. 蛋白嵌入 PCA 降维：
      - 不再用全部蛋白（含测试集蛋白）拟合 PCA 和 StandardScaler
      - 改为在每个 CV 折内仅用训练集出现的蛋白拟合 PCA+scaler
-  3. 【P0 缓存一致性】特征缓存新增 X_rdkit_raw 字段，
+  3. 缓存一致性：特征缓存新增 X_rdkit_raw 字段，
      确保旧缓存不会导致"双重标准化"
-  4. 【性能优化】蛋白 PCA 只变换 pair_genes 中实际出现的蛋白
+  4. 性能优化：蛋白 PCA 只变换 pair_genes 中实际出现的蛋白
      （从 6847 个降至约 70 个，每折节省数秒）
-  5. 【性能优化】残基统计特征缓存：residue_meanmaxstd 模式
+  5. 性能优化：残基统计特征缓存：residue_meanmaxstd 模式
      首次计算后保存为 NPZ，后续秒级加载
 
-新增内容（v6.2 继承，v6.5 精简）：
+新增内容（特征选择 + 消融实验）：
   1. 特征选择适配：原始 ~6650 维 → 互信息降维至 ≤500 维（全矩阵一次性计算）
   2. 5-fold Scaffold Split 评估（XGBoost）
   3. 残基级 ESM-2 蛋白嵌入消融实验（4 种模式: global / residue_pooled /
@@ -43,7 +42,7 @@
      - residue_meanmaxstd: 残基 mean/max/std 聚合 → 3×640 → PCA 128 维
      - combined: 全局 CLS + 残基 mean 拼接 → PCA 降维
 
-修复记录 v6 → v6.1：
+修复记录：
     - 移除 CascadeForestFixed 空壳模型（fit 不保存模型，predict 用全零标签训练）
     - BEDROC 直接委托给 RDKit CalcBEDROC（Truchon & Bayly 2007 的事实标准实现），
       避免任何手写公式偏差；异常直接上抛，不准静默吞错
@@ -56,30 +55,23 @@
     - 不确定性估计：删除永不调用的虚假循环，改为 NaN 占位 + 文档说明
     - 清理进度日志编号、移除未使用导入
 
-修复记录 v6.1 → v6.2：
-    - 【P0 数据泄露】集成评估使用独立随机种子（seed+1000）的 Scaffold Split，
+修复记录（数据完整性）：
+    - 集成评估使用独立随机种子（seed+1000）的 Scaffold Split，
       与模型选择阶段的折完全独立，避免测试集重复使用导致的指标高估
-    - 【P1 可比性】消融实验新增有效基因数、正样本数、总样本数记录，
+    - 消融实验新增有效基因数、正样本数、总样本数记录，
       不同蛋白嵌入模式的结果可评估可比性
-    - 【P1 数据完整性】NPZ 蛋白嵌入加载中，跳过高比例（>10%）非数值键时
+    - NPZ 蛋白嵌入加载中，跳过高比例（>10%）非数值键时
       发出警告，避免隐蔽数据损坏
-    - 【P2 文档完善】train_ensemble 明确标注为"模型选择用"，其指标不代表
-      最终泛化性能；集成评估使用独立折，结果可信
-    - 【P1 Bug修复】修复 residue_pooled NPZ 加载变量名错误（v for k, v in d.items()）
-    - 【P1 参数统一】CatBoost 统一使用 auto_class_weights="Balanced"
+    - 修复 residue_pooled NPZ 加载变量名错误（v for k, v in d.items()）
+    - CatBoost 统一使用 auto_class_weights="Balanced"
 
-修复记录 v6.3 → v6.5：
-    - 【P0 数据泄露】RDKit 标准化移至 CV 折内，仅用训练集拟合 scaler
-    - 【P0 数据泄露】蛋白 PCA 移至 CV 折内，仅用训练集蛋白拟合 PCA+scaler
-    - 【P0 缓存安全】特征缓存新增 X_rdkit_raw，旧缓存自动兼容处理
-    - 【性能】蛋白 PCA 仅变换 pair_genes 中出现的蛋白（6847 → ~42）
-    - 【性能】残基统计特征缓存，避免重复计算
-    - v6.5: 仅 XGBoost，移除 RF / LGB / CatBoost / TabPFN，加速 CPI 扩展迭代
-
-引用：Hollmann et al., "Accurate predictions on small data with a tabular foundation model",
-       Nature 637(8045), 2025. https://github.com/PriorLabs/TabPFN
-
-数据来源（全部真实，不模拟）：
+修复记录（数据泄露 + 性能）：
+    - RDKit 标准化移至 CV 折内，仅用训练集拟合 scaler
+    - 蛋白 PCA 移至 CV 折内，仅用训练集蛋白拟合 PCA+scaler
+    - 缓存安全：特征缓存新增 X_rdkit_raw，旧缓存自动兼容处理
+    - 性能：蛋白 PCA 仅变换 pair_genes 中出现的蛋白（6847 → ~42）
+    - 性能：残基统计特征缓存，避免重复计算
+    数据来源（全部真实，不模拟）：
   - CPI: L4/results/experimental_actives_detail_cleaned_combined.csv
     (合并 ChEMBL/BindingDB 补充数据，70 个基因，51 个铁衰老基因)
   - 蛋白嵌入: L4/results_v10_minibatch/esm2_protein_embeddings.npz (全局 CLS, 103 蛋白)
@@ -97,7 +89,6 @@
 """
 
 import logging
-import os
 import sys
 import time
 import traceback
@@ -109,10 +100,9 @@ import pandas as pd
 from rdkit import Chem, RDLogger
 from rdkit.Chem import AllChem, Descriptors, MACCSkeys, rdMolDescriptors
 
-from sklearn.base import BaseEstimator, ClassifierMixin, clone
+from sklearn.base import clone
 from sklearn.decomposition import PCA
-from sklearn.feature_selection import mutual_info_classif
-from sklearn.model_selection import KFold, StratifiedKFold
+from sklearn.model_selection import train_test_split
 from sklearn.metrics import (
     average_precision_score,
     f1_score,
@@ -122,7 +112,8 @@ from sklearn.metrics import (
 )
 from sklearn.preprocessing import StandardScaler
 
-warnings.filterwarnings("ignore")
+warnings.filterwarnings("ignore", category=FutureWarning)
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 RDLogger.DisableLog("rdApp.error")
 RDLogger.DisableLog("rdApp.warning")
 
@@ -141,7 +132,7 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[
         logging.StreamHandler(sys.stdout),
-        logging.FileHandler(L4_LOGS / "tree_v6_5.log", mode="w", encoding="utf-8"),
+        logging.FileHandler(L4_LOGS / "tree_v6.log", mode="w", encoding="utf-8"),
     ],
 )
 logger = logging.getLogger(__name__)
@@ -248,8 +239,9 @@ def compute_rdkit_2d(smiles_list):
         for name, func in Descriptors._descList:
             try:
                 vals.append(float(func(mol)))
-            except Exception:
+            except Exception as e:
                 vals.append(np.nan)
+                logger.debug(f"RDKit 2D 描述符计算失败: {e}")
         rows.append(vals)
     return np.array(rows, dtype=np.float32), desc_names
 
@@ -269,7 +261,6 @@ def build_multifingerprint_features(smiles_list, rdkit_scaler=None, use_cache=Tr
 
     cache_path = _get_feature_cache_path()
 
-    # 尝试加载缓存
     if use_cache and cache_path.exists() and rdkit_scaler is None:
         try:
             logger.info(f"  尝试加载特征缓存: {cache_path}")
@@ -566,7 +557,8 @@ def get_scaffold(smiles):
         scaffold_mol = MurckoScaffold.GetScaffoldForMol(mol)
         scaffold = Chem.MolToSmiles(scaffold_mol) if scaffold_mol else ""
         return scaffold if scaffold else "NO_SCAFFOLD"
-    except Exception:
+    except Exception as e:
+        logger.debug(f"Scaffold 计算失败 (SMILES: {str(smiles)[:30]}...): {e}")
         return "INVALID"
 
 
@@ -594,7 +586,6 @@ def scaffold_split(pair_smiles, y, test_size=0.2, random_state=42):
 
     if len(train_idx) == 0 or len(test_idx) == 0:
         logger.warning("Scaffold Split 导致空集，回退到随机拆分")
-        from sklearn.model_selection import train_test_split
         train_idx, test_idx = train_test_split(
             np.arange(len(pair_smiles)), test_size=test_size,
             random_state=random_state, stratify=y,
@@ -688,6 +679,13 @@ def compute_metrics(y_true, y_prob):
         expected = n_pos * pct / 100
         metrics[f"EF@{pct}%"] = found / expected if expected > 0 else 0.0
 
+    # Precision@K: 药物筛选场景核心指标，衡量Top-K推荐中真阳性比例
+    for k in [10, 20, 50]:
+        k_actual = min(k, n_total)
+        top_k_idx = np.argsort(y_prob)[-k_actual:]
+        hits = y_true[top_k_idx].sum()
+        metrics[f"Precision@{k}"] = hits / k_actual
+
     metrics["BEDROC"] = compute_bedroc_standard(y_true, y_prob, alpha=20.0)
 
     fpr, tpr, _ = roc_curve(y_true, y_prob)
@@ -730,191 +728,7 @@ def compute_bedroc_standard(y_true, y_prob, alpha=20.0):
 
 
 # ============================================================
-# 6. 特征选择适配器（原始 ~6650 维 → 适配 TabPFN 上限）
-# ============================================================
-
-class TabPFNFeatureSelector:
-    """特征选择适配器：将高维特征降到 TabPFN 支持的范围
-
-    TabPFN v2 支持 ≤500 特征，v2.5 支持 ≤2000 特征。
-    使用互信息特征选择，保留最重要的特征。
-
-    注意：
-      - 互信息一次性计算于全特征矩阵，保证所有特征的得分在同一分布下可比
-      - 自动过滤零方差特征，防止 mutual_info_classif 报错
-    """
-
-    def __init__(self, max_features=500):
-        self.max_features = max_features
-        self.selected_indices = None
-        self._valid_feature_mask = None
-
-    def _remove_zero_variance(self, X):
-        """移除零方差特征"""
-        variances = np.var(X, axis=0)
-        valid_mask = variances > 1e-10
-        n_removed = (~valid_mask).sum()
-        if n_removed > 0:
-            logger.info(f"  TabPFN 特征过滤: 移除 {n_removed} 个零方差特征")
-        return valid_mask
-
-    def fit(self, X, y):
-        n_features = X.shape[1]
-        if n_features <= self.max_features:
-            logger.info(f"  TabPFN 特征选择: 特征数 {n_features} ≤ {self.max_features}，无需降维")
-            self._valid_feature_mask = np.ones(n_features, dtype=bool)
-            self.selected_indices = np.arange(n_features)
-            return self
-
-        t0 = time.time()
-
-        # 第一步: 过滤零方差特征
-        valid_mask = self._remove_zero_variance(X)
-        if valid_mask.sum() < 2:
-            logger.error(f"  方差检验后有效特征仅 {valid_mask.sum()} 个，无法进行特征选择")
-            self._valid_feature_mask = valid_mask
-            self.selected_indices = np.where(valid_mask)[0]
-            return self
-
-        X_valid = X[:, valid_mask]
-        n_valid = X_valid.shape[1]
-        k = min(self.max_features, n_valid - 1)
-        logger.info(f"  TabPFN 特征选择: {n_valid} (有效) → {k} (互信息排序)...")
-
-        # 第二步: 全矩阵一次性计算互信息
-        mi_scores = mutual_info_classif(X_valid, y, random_state=42)
-
-        top_k_indices = np.argsort(mi_scores)[-k:]
-
-        # 映射回原始特征索引
-        valid_feat_indices = np.where(valid_mask)[0]
-        self.selected_indices = valid_feat_indices[top_k_indices]
-        self._valid_feature_mask = valid_mask
-
-        logger.info(f"  TabPFN 特征选择完成: -> {k} 维, 耗时: {time.time()-t0:.1f}s")
-        return self
-
-    def transform(self, X):
-        return X[:, self.selected_indices]
-
-    def fit_transform(self, X, y):
-        self.fit(X, y)
-        return self.transform(X)
-
-
-# ============================================================
-# 7. TabPFN 模型封装（确保兼容 sklearn API）
-# ============================================================
-
-class TabPFNWrapper(BaseEstimator, ClassifierMixin):
-    """TabPFN sklearn 兼容封装
-
-    使用 Nature 2025 的 TabPFN 基础模型进行零样本表格预测。
-    无需调参，自动处理缺失值、类别特征。
-
-    引用：Hollmann et al., Nature 2025
-    """
-
-    _availability_checked = False
-    _is_available = False
-    _availability_error = None
-
-    def __init__(self, device="auto", random_state=42, max_features=500,
-                 max_train_samples=8000):
-        self.device = device
-        self.random_state = random_state
-        self.max_features = max_features
-        self.max_train_samples = max_train_samples
-        self._model = None
-        self._feature_selector = None
-
-    @classmethod
-    def check_available(cls):
-        if cls._availability_checked:
-            return cls._is_available
-        try:
-            from tabpfn import TabPFNClassifier
-            import numpy as np
-            X_test = np.random.randn(100, 10).astype(np.float32)
-            y_test = (X_test[:, 0] > 0).astype(int)
-            clf = TabPFNClassifier(device="cpu", n_estimators=2, random_state=0)
-            clf.fit(X_test, y_test)
-            _ = clf.predict_proba(X_test[:5])
-            cls._is_available = True
-        except Exception as e:
-            cls._is_available = False
-            cls._availability_error = str(e)
-            logger.warning(f"TabPFN 不可用: {e}")
-        cls._availability_checked = True
-        return cls._is_available
-
-    def fit(self, X, y):
-        t0 = time.time()
-
-        rng = np.random.RandomState(self.random_state)
-        n_samples = X.shape[0]
-
-        if n_samples > self.max_train_samples:
-            pos_idx = np.where(y == 1)[0]
-            neg_idx = np.where(y == 0)[0]
-            n_pos = len(pos_idx)
-            n_neg = len(neg_idx)
-            n_sub_pos = min(n_pos, self.max_train_samples // 2)
-            n_sub_neg = min(n_neg, self.max_train_samples - n_sub_pos)
-            if n_sub_pos < n_pos or n_sub_neg < n_neg:
-                sub_pos = rng.choice(pos_idx, size=n_sub_pos, replace=False)
-                sub_neg = rng.choice(neg_idx, size=n_sub_neg, replace=False)
-                sub_idx = np.concatenate([sub_pos, sub_neg])
-                rng.shuffle(sub_idx)
-                X_train_sub = X[sub_idx]
-                y_train_sub = y[sub_idx]
-                logger.info(f"    TabPFN 子采样: {n_samples} → {len(sub_idx)} "
-                            f"(pos={n_sub_pos}, neg={n_sub_neg})")
-            else:
-                X_train_sub = X
-                y_train_sub = y
-        else:
-            X_train_sub = X
-            y_train_sub = y
-
-        if X_train_sub.shape[1] > self.max_features:
-            self._feature_selector = TabPFNFeatureSelector(max_features=self.max_features)
-            X_selected = self._feature_selector.fit_transform(X_train_sub, y_train_sub)
-            logger.info(f"    TabPFN 特征选择: {X_train_sub.shape[1]} → {X_selected.shape[1]}")
-        else:
-            X_selected = X_train_sub
-
-        try:
-            from tabpfn import TabPFNClassifier
-        except ImportError:
-            raise ImportError("tabpfn 未安装，请运行: pip install tabpfn")
-
-        self._model = TabPFNClassifier(
-            device=self.device,
-            random_state=self.random_state,
-            n_estimators=8,
-        )
-
-        self._model.fit(X_selected, y_train_sub)
-        logger.info(f"    TabPFN 训练完成: {X_selected.shape}, "
-                    f"耗时: {time.time()-t0:.1f}s")
-        return self
-
-    def predict_proba(self, X):
-        if self._feature_selector is not None:
-            X = self._feature_selector.transform(X)
-        return self._model.predict_proba(X)
-
-    def predict(self, X):
-        if self._feature_selector is not None:
-            X = self._feature_selector.transform(X)
-        return self._model.predict(X)
-
-
-
-
-# ============================================================
-# 9. 模型训练与评估
+# 6. 模型训练与评估
 # ============================================================
 
 def evaluate_model(model, X_train, y_train, X_test, y_test, model_name):
@@ -946,8 +760,7 @@ def train_ensemble(
 ):
     """5-fold Scaffold Split CV 训练 XGBoost，用于模型选择。
 
-    v6.5 精简：仅保留 XGBoost，移除 RF / LGB / CatBoost / TabPFN。
-    v6.3 修复：RDKit 标准化和蛋白 PCA 均在每个 fold 内仅用训练集拟合，
+    仅保留 XGBoost，RDKit 标准化和蛋白 PCA 均在每个 fold 内仅用训练集拟合，
     彻底消除数据泄露。
 
     CV 设计原则：
@@ -1007,62 +820,7 @@ def train_ensemble(
 
 
 # ============================================================
-# 10. TabPFN 特征重要性分析
-# ============================================================
-
-def tabpfn_feature_importance(tabpfn_model, X, y, feature_names=None, n_permute=5):
-    """TabPFN 特征重要性（置换重要性）
-
-    TabPFN 不直接提供 feature_importances_，使用置换重要性。
-    """
-    t0 = time.time()
-    logger.info("  计算 TabPFN 置换特征重要性...")
-
-    from sklearn.metrics import roc_auc_score
-
-    # 基线 AUC
-    y_prob = tabpfn_model.predict_proba(X)[:, 1]
-    baseline_auc = roc_auc_score(y, y_prob)
-
-    n_features = X.shape[1]
-    importances = np.zeros(n_features)
-
-    for i in range(n_features):
-        scores = []
-        for _ in range(n_permute):
-            X_perm = X.copy()
-            X_perm[:, i] = np.random.permutation(X_perm[:, i])
-            y_prob_perm = tabpfn_model.predict_proba(X_perm)[:, 1]
-            try:
-                auc_perm = roc_auc_score(y, y_prob_perm)
-            except ValueError:
-                auc_perm = 0.5
-            scores.append(baseline_auc - auc_perm)
-        importances[i] = np.mean(scores)
-
-    # 归一化
-    imp_sum = np.abs(importances).sum()
-    if imp_sum > 0:
-        importances = importances / imp_sum
-
-    logger.info(f"  特征重要性计算完成, 耗时: {time.time()-t0:.1f}s")
-
-    if feature_names is not None and len(feature_names) == n_features:
-        imp_df = pd.DataFrame({
-            "feature": feature_names,
-            "importance": importances,
-        }).sort_values("importance", ascending=False)
-    else:
-        imp_df = pd.DataFrame({
-            "feature": [f"feat_{i}" for i in range(n_features)],
-            "importance": importances,
-        }).sort_values("importance", ascending=False)
-
-    return imp_df
-
-
-# ============================================================
-# 11. TCM 预测（含 TabPFN 不确定性）
+# 7. TCM 预测
 # ============================================================
 
 def load_herb_mapping():
@@ -1137,10 +895,7 @@ def predict_tcm_pool(
     """预测 TCM 化合物池，可选不确定性估计
 
     当 return_std=True 时，添加 score_std 列（当前为 NaN 占位）。
-    TabPFN 的不确定性需要通过训练多个不同随机种子的模型集成来实现，
-    在 TCM 预测循环中逐一拟合多个模型计算量过大，因此暂不实现。
-    可替代方案：在模型选择阶段训练 5 个 TabPFN 成员模型，
-    取预测值的标准差作为不确定性。
+    不确定性估计需要通过预训练多成员集成模型实现，暂未在 TCM 预测循环中实现。
     """
     if herb_map is None:
         herb_map = {}
@@ -1152,7 +907,7 @@ def predict_tcm_pool(
 
     if return_std:
         logger.info("    注意: return_std=True 但当前暂未实现逐一预测的不确定性估计，score_std 将置为 NaN。"
-                     "真正的 TabPFN 不确定性需要预训练多成员集成模型。")
+                     "不确定性需要预训练多成员集成模型。")
 
     for i, (_, row) in enumerate(tcm_df.iterrows()):
         smi = str(row["SMILES_std"])
@@ -1195,19 +950,6 @@ def predict_tcm_pool(
             logger.info(f"    进度: {i+1}/{len(tcm_df)}")
 
     return pd.DataFrame(predictions)
-
-
-# ============================================================
-# 12. TabPFN + Tree 集成投票
-# ============================================================
-
-def ensemble_predict(tabpfn_model, tree_model, X):
-    """TabPFN + 最佳树模型加权集成"""
-    tabpfn_prob = tabpfn_model.predict_proba(X)[:, 1]
-    tree_prob = tree_model.predict_proba(X)[:, 1]
-    # 等权平均
-    ensemble_prob = 0.5 * tabpfn_prob + 0.5 * tree_prob
-    return ensemble_prob
 
 
 def build_fold_features(
@@ -1355,12 +1097,10 @@ def run_mode_cv_ablation(mode, cpi_df, all_smiles, X_binary_all, X_rdkit_raw_all
                          base_model_name="XGBoost", n_folds=5, random_seed=42):
     """对单个蛋白嵌入模式运行轻量 5-fold CV（仅 XGBoost），用于消融筛选。
 
-    v6.5 精简：仅保留 XGBoost。
-    v6.3 修复：RDKit 标准化和蛋白 PCA 均在每个 fold 内仅用训练集拟合，
-    彻底消除数据泄露。
+    RDKit 标准化和蛋白 PCA 均在每个 fold 内仅用训练集拟合，彻底消除数据泄露。
     """
     logger.info(f"\n{'='*60}")
-    logger.info(f"蛋白嵌入消融: mode={mode} (v6.5 XGBoost-only)")
+    logger.info(f"蛋白嵌入消融: mode={mode} (XGBoost-only)")
     logger.info(f"{'='*60}")
 
     # ---- 加载原始蛋白嵌入（不做 PCA/标准化）----
@@ -1428,12 +1168,11 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
                       n_folds=5, random_seed=42):
     """使用指定蛋白嵌入模式运行完整 5-fold CV、全量训练与 TCM 预测。
 
-    v6.5 精简：仅使用 XGBoost，移除 RF / LGB / CatBoost / TabPFN。
-    v6.3 修复：RDKit 标准化和蛋白 PCA 均在每个 fold 内仅用训练集拟合，
+    仅使用 XGBoost，RDKit 标准化和蛋白 PCA 均在每个 fold 内仅用训练集拟合，
     彻底消除数据泄露。
     """
     logger.info(f"\n{'='*60}")
-    logger.info(f"完整流程: 蛋白嵌入 mode={mode} (v6.5 XGBoost-only)")
+    logger.info(f"完整流程: 蛋白嵌入 mode={mode} (XGBoost-only)")
     logger.info(f"{'='*60}")
 
     # ---- 3. 加载原始蛋白嵌入 ----
@@ -1469,7 +1208,7 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
     for model_name in summary.index:
         row = summary.loc[model_name]
         logger.info(f"\n  {model_name}:")
-        for metric in ["AUC", "AUPR", "F1", "MCC", "EF@1%", "EF@5%", "BEDROC", "ROCE@1%"]:
+        for metric in ["AUC", "AUPR", "F1", "MCC", "Precision@10", "Precision@20", "Precision@50", "EF@1%", "EF@5%", "BEDROC", "ROCE@1%"]:
             if metric in row.index:
                 logger.info(f"    {metric}: {row[metric]['mean']:.4f} +/- {row[metric]['std']:.4f}")
 
@@ -1480,7 +1219,7 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
     # ---- 6. 全量训练 XGBoost ----
     logger.info("\n[6/7] 全量训练 XGBoost...")
 
-    # v6.5: 仅使用 XGBoost
+    # 仅使用 XGBoost
     best_model_name = "XGBoost"
 
     # 用全部 CPI 数据拟合 scaler 和 PCA（全量训练用，已脱离模型选择阶段）
@@ -1510,7 +1249,6 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
         pca_model=full_prot_pca, scaler=full_prot_scaler,
     )
 
-    # 构建全量训练特征
     compound_feat_dim = compound_features_all.shape[1]
     prot_dim = next(iter(protein_embeddings_full.values())).shape[0]
     feat_dim = compound_feat_dim + prot_dim
@@ -1522,7 +1260,6 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
         X_full[i, :compound_feat_dim] = compound_features_all[ci]
         X_full[i, compound_feat_dim:] = protein_embeddings_full[gene]
 
-    # 全量训练 XGBoost
     import xgboost as xgb
     scale_pos_weight = (y == 0).sum() / max(y.sum(), 1)
     best_tree = xgb.XGBClassifier(
@@ -1587,7 +1324,7 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
 
     logger.info(f"Top 50 候选已保存: {top_path}")
     logger.info(f"=" * 60)
-    logger.info("任务完成! XGBoost (v6.5 精简版).")
+    logger.info("任务完成! XGBoost 精简版.")
     logger.info(f"=" * 60)
 
 
@@ -1597,10 +1334,7 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
 
 def main():
     logger.info("=" * 60)
-    logger.info("树模型 CPI v6.5 — 仅 XGBoost，加速 CPI 扩展迭代")
-    logger.info("  v6.5 更新: 移除 RF / LGB / CatBoost / TabPFN，仅保留 XGBoost")
-    logger.info("  v6.4 更新: 合并 28 个新铁衰老基因数据，51/96 铁衰老基因有 CPI 数据")
-    logger.info("  v6.3 修复: RDKit 标准化和蛋白 PCA 均在 CV fold 内仅用训练集拟合")
+    logger.info("树模型 CPI — 仅 XGBoost，加速 CPI 扩展迭代")
     logger.info("=" * 60)
 
     # ---- 1. 加载数据 ----
@@ -1628,7 +1362,7 @@ def main():
     logger.info(f"  注意: RDKit 标准化参数仅用于预览，实际 CV 内每折独立拟合")
 
     # ---- 2.5. 蛋白嵌入消融实验 (4 modes x 5-fold CV, XGBoost 基线, 无泄露) ----
-    logger.info("\n[2.5/8] 蛋白嵌入消融实验 (4 种模式 x 5-fold CV, XGBoost 基线, 无泄露 v6.5)...")
+    logger.info("\n[2.5/8] 蛋白嵌入消融实验 (4 种模式 x 5-fold CV, XGBoost 基线, 无泄露)...")
     ablation_results = []
     best_mode = None
     best_aupr = -1.0

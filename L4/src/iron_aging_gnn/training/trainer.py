@@ -1,13 +1,8 @@
 """训练模块：SAGE 和 HGT 的 mini-batch 训练函数
 
-v25: 从 phase4_v10_minibatch.py 提取 train_sage 和 train_hgt 函数
 支持两阶段迁移学习、表型分类辅助任务、课程负采样、Memory Bank 等。
 
-v39-refactor: 引入 TrainingConfig 数据类封装 30+ 参数，提取 Validator、
-  MemoryBankManager、GradientMonitor、LRSchedulerFactory 组件类，
-  消除 train_sage / train_hgt 中的重复代码。
-
-注意：以下辅助函数仍从主脚本中注入：
+以下辅助函数从主脚本中注入：
   - _compute_cpi_loss (losses)
   - _validate_sage, _validate_hgt (validation)
 """
@@ -17,9 +12,9 @@ from __future__ import annotations
 import logging
 import random
 
-import numpy as np
 import torch
 import torch.nn as nn
+from sklearn.metrics import roc_auc_score
 from torch.cuda.amp import GradScaler, autocast
 
 from ..graph import (
@@ -104,18 +99,11 @@ def train_sage(
     grad_clip_norm: float = 1.0,
     pretrain_lr_multiplier: float = 1.5,
     pretrain_lr_decay: float = 0.5,
-    # v38: 移除了蛋白冷启动验证（_validate_sage_protein_cold_fn），
-    # 早停仅依赖 val_aupr（化合物冷启动），集成权重基于 val_aupr 而非 prot_aupr。
-    # 蛋白冷启动验证已被独立评估脚本 tree_model_cpi_v6_tabpfn.py 替代。
     _validate_sage_fn=None,
     _compute_cpi_loss_fn=None,
     use_amp: bool = True,
 ) -> tuple[SAGELinkPredictor, list[dict]]:
-    """v38: GraphSAGE mini-batch 训练 — 移除了蛋白冷启动验证
-    v38 变更:
-      - 移除 _validate_sage_protein_cold_fn 参数及其所有调用
-      - 早停基于 val_aupr（化合物冷启动），不再由蛋白冷启动 AUPR 驱动
-      - 预训练 checkpoint 基于 val_aupr 保存
+    """GraphSAGE mini-batch 训练
 
     阶段1 (可选, two_stage): 在尾节点平衡子图上预训练，学习稀疏靶标表示
     阶段2: 在完整训练图上微调（CPI + 表型多任务联合训练）
@@ -152,6 +140,7 @@ def train_sage(
     _homo_edge_index_train = graphs.get("homo_edge_index_train", graphs["homo_edge_index"]).to(device)
 
     precomputed_pos = {src: sorted(pos_set) for src, pos_set in compound_to_pos.items() if pos_set}
+    compound_to_prot_locals = {c: [p - n_compounds for p in pos_set] for c, pos_set in precomputed_pos.items()}
 
     prot_to_topo_medium_neighbors = graphs.get("prot_to_topo_medium_neighbors")
     prot_to_topo_hard_neighbors = graphs.get("prot_to_topo_hard_neighbors")
@@ -169,7 +158,7 @@ def train_sage(
         pos_weight = n_neg_pheno / max(n_pos_pheno, 1)
         pheno_pos_weight = torch.tensor([pos_weight], device=device)
         bce_loss_fn = nn.BCEWithLogitsLoss(pos_weight=pheno_pos_weight)
-        logger.info(f"  v25 表型分类任务: {len(pheno_compound_indices)} 个化合物, "
+        logger.info(f"  表型分类任务: {len(pheno_compound_indices)} 个化合物, "
                     f"正样本={n_pos_pheno}, 负样本={n_neg_pheno}, "
                     f"pos_weight={pos_weight:.1f}, lambda={pheno_lambda}")
 
@@ -177,7 +166,6 @@ def train_sage(
     scheduler = LRSchedulerFactory.create_cosine_warmup(optimizer, epochs, warmup_ratio)
     scaler = GradScaler(enabled=use_amp)
 
-    # v39-refactor: 使用组件类替代内联逻辑
     memory_bank_mgr = MemoryBankManager(memory_bank_size, model.out_dim, str(device))
     memory_bank = memory_bank_mgr.memory_bank
     gradient_monitor = GradientMonitor(grad_clip_norm)
@@ -281,6 +269,7 @@ def train_sage(
                 epoch=epoch,
                 stage_epochs=stage_epochs,
                 memory_bank=stage_memory_bank,
+                compound_to_prot_locals=compound_to_prot_locals,
                 use_infonce=use_infonce,
                 bpr_weight=bpr_weight if use_bpr else 0.0,
                 use_curriculum=use_curriculum,
@@ -327,7 +316,7 @@ def train_sage(
         pretrain_compounds, tail_compounds = split_head_tail_nodes(
             train_compounds, compound_to_pos, head_ratio=head_ratio, lambda_hhi=lambda_hhi, seed=random_seed)
         n_head_kept = len(pretrain_compounds) - len(tail_compounds)
-        logger.info(f"  v25 两阶段预训练: tail={len(tail_compounds)}, head_kept={n_head_kept}, "
+        logger.info(f"  两阶段预训练: tail={len(tail_compounds)}, head_kept={n_head_kept}, "
                     f"total_pretrain={len(pretrain_compounds)}")
 
         pretrain_lr_actual = pretrain_lr if pretrain_lr is not None else lr * pretrain_lr_multiplier
@@ -369,12 +358,12 @@ def train_sage(
             pretrain_scheduler.step()
 
         if validator.load_best_state(model):
-            logger.info(f"  v38 SAGE 预训练完成，加载最优 checkpoint (val_aupr={validator.best_val_aupr:.4f}) 进入微调阶段")
+            logger.info(f"  SAGE 预训练完成，加载最优 checkpoint (val_aupr={validator.best_val_aupr:.4f}) 进入微调阶段")
         else:
-            logger.info("  v25 SAGE 预训练完成，加载最终参数进入微调阶段")
+            logger.info("  SAGE 预训练完成，加载最终参数进入微调阶段")
 
-    # v27-cleanup: 表型预训练阶段已移除（pheno_pretrain_epochs 默认 0，多任务联合训练已足够）
-    # 消融实验如需启用，设置 pheno_pretrain_epochs > 0 即可恢复此代码块
+    # 表型预训练阶段已移除，多任务联合训练已足够。
+    # 消融实验如需启用，设置 pheno_pretrain_epochs > 0 即可恢复。
 
     # ============================================================
     # 阶段2 — 完整训练图微调
@@ -405,7 +394,6 @@ def train_sage(
                         val_pheno_logits = model.predict_phenotype(val_pheno_emb).squeeze(-1)
                         val_pheno_labels = [pheno_idx_to_label[c] for c in val_pheno_indices]
                         val_pheno_labels_t = torch.tensor(val_pheno_labels, dtype=torch.float32, device=device)
-                        from sklearn.metrics import roc_auc_score
                         try:
                             pheno_auc = roc_auc_score(val_pheno_labels_t.cpu().numpy(),
                                                       torch.sigmoid(val_pheno_logits).cpu().numpy())
@@ -422,7 +410,7 @@ def train_sage(
                 log_str += f" | pheno_auc={pheno_auc:.4f}"
             logger.info(log_str)
 
-            # v38: 早停基于 val_aupr（化合物冷启动），替代原蛋白冷启动 AUPR
+            # 早停基于 val_aupr（化合物冷启动）
             is_new_best = validator.update_best(m["aupr"], m["auc"])
             if is_new_best:
                 validator.capture_best_state(model)
@@ -489,13 +477,11 @@ def train_hgt(
     grad_clip_norm: float = 1.0,
     pretrain_lr_multiplier: float = 1.5,
     pretrain_lr_decay: float = 0.5,
-    # v38: 移除了蛋白冷启动验证（_validate_hgt_protein_cold_fn），
-    # 早停仅依赖 val_aupr（化合物冷启动）。
     _validate_hgt_fn=None,
     _compute_cpi_loss_fn=None,
     use_amp: bool = True,
 ) -> tuple[HGTLinkPredictor, list[dict]]:
-    """v38: HGT mini-batch 训练 — 移除了蛋白冷启动验证
+    """HGT mini-batch 训练
 
     阶段1 (可选): 在尾节点平衡子图上预训练，学习稀疏靶标表示
     阶段2: 在完整训练图上微调
@@ -536,6 +522,7 @@ def train_hgt(
 
     all_compound_to_pos = compound_to_pos
     precomputed_pos = {src: sorted(pos_set) for src, pos_set in compound_to_pos.items() if pos_set}
+    compound_to_prot_locals = {c: [p - n_compounds for p in pos_set] for c, pos_set in precomputed_pos.items()}
 
     prot_to_topo_medium_neighbors = graphs.get("prot_to_topo_medium_neighbors")
     prot_to_topo_hard_neighbors = graphs.get("prot_to_topo_hard_neighbors")
@@ -544,7 +531,6 @@ def train_hgt(
     scheduler = LRSchedulerFactory.create_cosine_warmup(optimizer, epochs, warmup_ratio)
     scaler = GradScaler(enabled=use_amp)
 
-    # v39-refactor: 使用组件类替代内联逻辑
     memory_bank_mgr = MemoryBankManager(memory_bank_size, model.out_dim, str(device))
     memory_bank = memory_bank_mgr.memory_bank
     gradient_monitor = GradientMonitor(grad_clip_norm)
@@ -652,6 +638,7 @@ def train_hgt(
                 epoch=epoch,
                 stage_epochs=stage_epochs,
                 memory_bank=stage_memory_bank,
+                compound_to_prot_locals=compound_to_prot_locals,
                 use_infonce=use_infonce,
                 bpr_weight=bpr_weight if use_bpr else 0.0,
                 use_curriculum=use_curriculum,
@@ -693,7 +680,7 @@ def train_hgt(
         pretrain_compounds, tail_compounds = split_head_tail_nodes(
             train_compounds, compound_to_pos, head_ratio=head_ratio, lambda_hhi=lambda_hhi, seed=random_seed)
         n_head_kept = len(pretrain_compounds) - len(tail_compounds)
-        logger.info(f"  v25 HGT 两阶段预训练: tail={len(tail_compounds)}, head_kept={n_head_kept}, "
+        logger.info(f"  HGT 两阶段预训练: tail={len(tail_compounds)}, head_kept={n_head_kept}, "
                     f"total_pretrain={len(pretrain_compounds)}")
 
         pretrain_lr_actual = pretrain_lr if pretrain_lr is not None else lr * pretrain_lr_multiplier
@@ -738,9 +725,9 @@ def train_hgt(
             pretrain_scheduler.step()
 
         if validator.load_best_state(model):
-            logger.info(f"  v38 HGT 预训练完成，加载最优 checkpoint (val_aupr={validator.best_val_aupr:.4f}) 进入微调阶段")
+            logger.info(f"  HGT 预训练完成，加载最优 checkpoint (val_aupr={validator.best_val_aupr:.4f}) 进入微调阶段")
         else:
-            logger.info("  v25 HGT 预训练完成，加载最终参数进入微调阶段")
+            logger.info("  HGT 预训练完成，加载最终参数进入微调阶段")
 
     # ============================================================
     # 阶段2 — 完整训练图微调

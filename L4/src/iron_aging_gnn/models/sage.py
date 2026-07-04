@@ -198,7 +198,7 @@ class SAGELinkPredictor(nn.Module):
         Returns:
             (*,) 预测 logits
         """
-        # v40-fix: AMP autocast 下 decoder 权重为 float32，输入可能为 float16，
+        # AMP autocast 下 decoder 权重为 float32，输入可能为 float16，
         # 显式转 float32 并关闭 autocast，避免 mat1/mat2 dtype 不匹配。
         with torch.cuda.amp.autocast(enabled=False):
             comp_emb = comp_emb.float()
@@ -246,7 +246,7 @@ class SAGELinkPredictor(nn.Module):
 
     def predict_phenotype(self, compound_embeds: torch.Tensor) -> torch.Tensor:
         """预测化合物的铁死亡表型"""
-        # v40-fix: 表型头权重为 float32，AMP 下输入可能为 float16，需统一 dtype。
+        # 表型头权重为 float32，AMP 下输入可能为 float16，需统一 dtype。
         with torch.cuda.amp.autocast(enabled=False):
             return self.pheno_head(compound_embeds.float())
 

@@ -1,8 +1,5 @@
 """训练配置数据类 — 封装 train_sage / train_hgt 的 30+ 参数
 
-v39-refactor: 将 trainer.py 中 train_sage / train_hgt 的扁平参数列表
-凝练为单一 TrainingConfig 数据类，减少函数签名复杂度，提升可维护性。
-
 使用方式:
     config = TrainingConfig()                    # 全默认值
     config = TrainingConfig(epochs=50, lr=1e-3)  # 覆盖部分参数
@@ -132,7 +129,7 @@ class TrainingConfig:
             pretrain_lr_multiplier=cfg.two_stage.pretrain_lr_multiplier,
             pretrain_lr_decay=cfg.two_stage.pretrain_lr_decay,
             # 损失函数
-            use_infonce=False,  # v21: 消融实验结论 — 默认关闭
+            use_infonce=False,
             use_bpr=True,
             bpr_weight=cfg.loss.bpr_weight,
             use_curriculum=True,

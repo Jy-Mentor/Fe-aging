@@ -1,4 +1,4 @@
-﻿﻿# v40 优化配置 (2026-07-04)
+﻿﻿﻿﻿﻿﻿﻿# v40 优化配置 (2026-07-04)
 # 目标: 树模型 v7 集成 (86基因) + 残基级双线性解码器
 # 策略: 更大容量 + 更低学习率 + 更长训练 + 强化排序损失
 random_seed: 42
@@ -50,6 +50,11 @@ curriculum:
   moderate_pathway_weight: 0.3
   medium_neg_ratio: 0.3
   hard_neg_ratio: 0.1
+negative_sampling:
+  use_topology_neg: false          # v41: 是否启用PPI拓扑驱动的难负样本（度中心性/聚类系数/共同邻居）
+  use_esm_similarity_neg: false    # v41: 是否启用ESM-2余弦相似度难负样本（结构相似蛋白）
+  topo_neighbors_top_k: 50         # 拓扑负样本每个蛋白保留的候选数
+  esm_similarity_top_k: 50         # ESM-2相似度负样本每个蛋白保留的候选数
 loss:
   focal_gamma: 2.0
   focal_alpha: 0.75

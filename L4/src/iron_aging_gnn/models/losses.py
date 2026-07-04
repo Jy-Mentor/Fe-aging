@@ -1,12 +1,16 @@
-"""损失函数模块 — Focal Loss + InfoNCE 对比损失 + CPI 联合损失 (v25)
+"""损失函数模块 — Focal Loss + InfoNCE 对比损失
 
-v17: Focal Loss + 标签平滑
-v18: Focal Loss α 固定为 0.75
-v19: 共享 CPI 损失计算（Focal + BPR + 课程负采样 + InfoNCE）
-v20: 新增 bpr_weight 参数支持消融实验
-v21: 消融实验结论 — 移除 InfoNCE 提升 SAGE +75%, HGT +23%（use_infonce 默认 False）
-v23-topo: 新增基于PPI拓扑的难负样本选项
-v25: 完整版 _compute_cpi_loss（与主脚本 phase4_v10_minibatch.py 保持同步）
+.. deprecated::
+    此模块中的 `compute_cpi_loss` 已废弃，不再与主脚本保持同步。
+    实际逻辑已迁移至 ``L4/scripts/phase4_v10_minibatch.py`` 中的
+    ``_compute_cpi_loss``（v37+），其包含以下本模块缺失的特性：
+      - ``compound_to_prot_locals`` 向量化 mask 预计算（v31）
+      - ``_get_residue_indices`` 辅助函数 + ``prot_residue_indices`` 参数（v33）
+      - ``ResidueAwareBilinearDecoder`` 的 OOM 降级处理（v37）
+      - BPR 负样本的残基注意力路径（v37）
+
+    本模块保留 ``focal_loss_with_logits`` 与 ``infonce_loss`` 两个基础函数，
+    供其他模块独立使用。
 
 参考:
   - Lin et al. (2017) "Focal Loss for Dense Object Detection", ICCV
@@ -25,10 +29,9 @@ from .memory_bank import MemoryBank
 
 logger = logging.getLogger(__name__)
 
-# 设备选择（与原脚本保持一致）
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# ---- v25 模块级常量（与主脚本 phase4_v10_minibatch.py 保持一致） ----
+# ---- 模块级常量 ----
 MASK_VAL = -1e9                  # 掩码值（屏蔽无效候选）
 EPS = 1e-8                       # 数值稳定 epsilon
 EPS_SMALL = 1e-10                # 小数 epsilon（用于 multinomial 分母保护）
@@ -143,35 +146,10 @@ def compute_cpi_loss(
     prot_to_topo_medium_neighbors: dict[int, set] | None = None,
     prot_to_topo_hard_neighbors: dict[int, set] | None = None,
 ) -> torch.Tensor:
-    """v25: 共享的 CPI 损失计算（Focal + BPR + 课程负采样）— InfoNCE 默认关闭
-    v20: 新增 bpr_weight 参数支持消融实验
-    v23-topo: 新增基于PPI拓扑的难负样本选项，可替代通路共现中度负样本。
-
-    统一 SAGE 与 HGT 训练循环中的负采样与损失计算逻辑，避免重复代码。
-
-    Args:
-        model: 拥有 decode() 与 temperature 属性的模型
-        comp_emb: (n_batch_compounds, out_dim) 化合物嵌入
-        prot_emb: (n_batch_proteins, out_dim) 蛋白嵌入
-        pos_src: (n_pos,) 正样本对的化合物局部索引
-        pos_dst: (n_pos,) 正样本对的蛋白局部索引
-        comp_sorted: 局部化合物索引 -> 全局化合物索引
-        prot_map: 局部蛋白索引 (p_global - n_compounds) -> batch 蛋白索引
-        precomputed_pos: 全局化合物 -> 正样本蛋白全局索引集合
-        n_compounds: 化合物总数，用于蛋白全局/局部索引转换
-        prot_to_path_neighbors: 蛋白 -> 同通路蛋白局部索引集合
-        epoch: 当前 epoch（用于课程阶段判定）
-        stage_epochs: 当前阶段总 epoch 数
-        memory_bank: MemoryBank 实例
-        use_infonce: 是否启用 InfoNCE（预训练阶段可关闭）
-        bpr_weight: BPR 排序损失权重（默认 0.4）
-        use_curriculum: 是否启用课程负采样（默认 True）
-        use_topology_neg: 为True时，优先使用PPI拓扑邻居替代通路邻居。
-        prot_to_topo_medium_neighbors: 蛋白 -> 拓扑中度负样本局部索引集合。
-        prot_to_topo_hard_neighbors: 蛋白 -> 拓扑难负样本局部索引集合。
-
-    Returns:
-        loss 标量张量
+    """.. deprecated:: v25
+        此函数已废弃。实际逻辑请使用 ``L4/scripts/phase4_v10_minibatch.py``
+        中的 ``_compute_cpi_loss``（v37+），该版本新增了 ``compound_to_prot_locals``
+        向量化 mask、``_get_residue_indices`` 残基索引辅助、以及 OOM 降级处理。
     """
     n_batch_prots = prot_emb.shape[0]
     T = model.temperature
