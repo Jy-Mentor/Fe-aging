@@ -283,6 +283,7 @@ from iron_aging_gnn.graph.topology_negative_sampling import (  # noqa: E402
     build_topology_medium_neighbors,
 )
 from iron_aging_gnn.models import MemoryBank, SAGELinkPredictor, HGTLinkPredictor  # noqa: E402
+from iron_aging_gnn.training.trainer import train_sage  # noqa: E402
 from iron_aging_gnn.utils.config import Config, load_config  # noqa: E402
 
 for d in [L4_RESULTS, L4_LOGS]:
@@ -416,6 +417,8 @@ PRETRAIN_LR_DECAY = _cfg.two_stage.pretrain_lr_decay if _cfg else 0.5
 WEIGHT_DECAY = _cfg.training.weight_decay if _cfg else 1e-4
 GRAD_CLIP_NORM = _cfg.training.grad_clip_norm if _cfg else 1.0
 WARMUP_RATIO = _cfg.training.warmup_ratio if _cfg else 0.05
+DROPPEDGE_PPI = _cfg.training.dropedge_ppi if _cfg else 0.15
+DROPPEDGE_PATHWAY = _cfg.training.dropedge_pathway if _cfg else 0.1
 EPOCHS = _cfg.sage.epochs if _cfg else 15
 PATIENCE = _cfg.sage.patience if _cfg else 5
 PRETRAIN_EPOCHS = _cfg.sage.pretrain_epochs if _cfg else 10
@@ -4069,14 +4072,24 @@ def main(decoder_type: str | None = None):
         )
     sage_model, sage_history = train_sage(
         sage_model, graphs, train_compounds, val_compounds, compound_to_pos,
+        device=DEVICE,
         val_proteins=val_proteins,
         epochs=EPOCHS, lr=LEARNING_RATE_SAGE, patience=PATIENCE, batch_size=SAGE_BATCH_SIZE,
         num_neighbors=SAGE_NUM_NEIGHBORS,
         prot_to_path_neighbors=graphs.get("prot_to_path_neighbors"),
         two_stage=True, pretrain_epochs=PRETRAIN_EPOCHS, pretrain_lr=PRETRAIN_LR_SAGE,
+        random_seed=RANDOM_SEED,
         pheno_compound_indices=pheno_train_indices,
         pheno_labels=pheno_train_labels,
-        pheno_lambda=PHENO_LAMBDA)  # v33-fix: 移除 train_sage 不接受的参数
+        pheno_lambda=PHENO_LAMBDA,
+        bpr_weight=BPR_WEIGHT, weight_decay=WEIGHT_DECAY, warmup_ratio=WARMUP_RATIO,
+        dropedge_ppi=DROPPEDGE_PPI, dropedge_pathway=DROPPEDGE_PATHWAY,
+        focal_gamma=FOCAL_GAMMA, focal_alpha=FOCAL_ALPHA,
+        memory_bank_size=MEMORY_BANK_SIZE,
+        head_ratio=HEAD_RATIO, lambda_hhi=LAMBDA_HHI,
+        grad_clip_norm=GRAD_CLIP_NORM,
+        pretrain_lr_multiplier=PRETRAIN_LR_MULTIPLIER, pretrain_lr_decay=PRETRAIN_LR_DECAY,
+        _validate_sage_fn=_validate_sage, _compute_cpi_loss_fn=_compute_cpi_loss)
 
     try:
         torch.save({"state_dict": sage_model.state_dict(), "version": "v40", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "sage_best_v40.pt")
