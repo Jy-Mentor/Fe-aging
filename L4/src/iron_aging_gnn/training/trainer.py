@@ -134,8 +134,12 @@ def train_sage(
 
     if hasattr(torch, 'compile') and device.type == 'cuda':
         try:
-            model = torch.compile(model, mode='reduce-overhead')
-            logger.info('SAGE model compiled with torch.compile (reduce-overhead)')
+            import importlib.util
+            if importlib.util.find_spec("triton") is not None:
+                model = torch.compile(model, mode='reduce-overhead')
+                logger.info('SAGE model compiled with torch.compile (reduce-overhead)')
+            else:
+                logger.info('Triton not available, skipping torch.compile for SAGE')
         except Exception as e:
             logger.warning(f'torch.compile failed for SAGE: {e}, continuing without compilation')
 
@@ -510,8 +514,12 @@ def train_hgt(
 
     if hasattr(torch, 'compile') and device.type == 'cuda':
         try:
-            model = torch.compile(model, mode='reduce-overhead')
-            logger.info('HGT model compiled with torch.compile (reduce-overhead)')
+            import importlib.util
+            if importlib.util.find_spec("triton") is not None:
+                model = torch.compile(model, mode='reduce-overhead')
+                logger.info('HGT model compiled with torch.compile (reduce-overhead)')
+            else:
+                logger.info('Triton not available, skipping torch.compile for HGT')
         except Exception as e:
             logger.warning(f'torch.compile failed for HGT: {e}, continuing without compilation')
 
