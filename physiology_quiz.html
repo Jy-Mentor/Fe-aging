@@ -2334,10 +2334,10 @@
                 chapterStatsContainer.classList.add('hidden');
             }
 
-            // Wrong answers
-            document.getElementById('wrongAnswersSection').classList.add('hidden');
+            // Wrong answers - auto-show when there are wrong/partial answers
             const wrongList = document.getElementById('wrongAnswersList');
             const allWrong = [...state.wrongList, ...state.partialList];
+            const wrongSection = document.getElementById('wrongAnswersSection');
 
             if (allWrong.length > 0) {
                 wrongList.innerHTML = allWrong.map(item => {
@@ -2356,9 +2356,11 @@
                         '</div>' +
                     '</div>';
                 }).join('');
+                wrongSection.classList.remove('hidden');
                 document.getElementById('toggleWrongBtn').classList.remove('hidden');
             } else {
                 wrongList.innerHTML = '<p style="color:var(--success);">🎉 全部答对，没有错题！</p>';
+                wrongSection.classList.add('hidden');
                 document.getElementById('toggleWrongBtn').classList.add('hidden');
             }
 
