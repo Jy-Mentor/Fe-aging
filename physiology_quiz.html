@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -213,15 +213,36 @@
         .count-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
         .count-btn:active { transform: scale(0.96); }
 
-        .quick-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 20px 0; }
+        .quick-actions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 20px 0; }
         .quick-btn {
-            padding: 10px 18px; border: 1px solid var(--border); border-radius: 10px;
+            padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px;
             background: var(--card-bg); color: var(--text); font-size: 0.9rem;
-            cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+            cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px;
             user-select: none; -webkit-tap-highlight-color: transparent;
+            min-height: 48px;
         }
         .quick-btn:hover { border-color: var(--primary-light); background: var(--bg); }
         .quick-btn:active { transform: scale(0.97); }
+
+        .home-substats {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin: -8px 0 16px; flex-wrap: wrap;
+            font-size: 0.82rem; color: var(--text-secondary);
+        }
+        .home-substats .substat strong { color: var(--text); font-weight: 600; }
+        .substat-dot { opacity: 0.4; }
+
+        .home-secondary-actions {
+            display: flex; gap: 20px; justify-content: center; margin: 8px 0 4px;
+        }
+        .link-btn {
+            background: none; border: none; color: var(--text-secondary);
+            font-size: 0.85rem; cursor: pointer; padding: 6px 8px;
+            text-decoration: underline; text-underline-offset: 3px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .link-btn:hover { color: var(--primary); }
+        .link-btn:active { opacity: 0.7; }
 
         /* QUIZ PAGE */
         .quiz-top-bar {
@@ -358,17 +379,30 @@
         .option.wrong .option-checkbox { background: var(--error); border-color: var(--error); }
         .option.partial .option-checkbox { background: var(--warning); border-color: var(--warning); }
 
-        .question-nav-panel { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
-        .question-nav-panel-header {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
+        .question-nav-panel {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            max-height: 70vh; background: var(--card-bg);
+            border-top-left-radius: 20px; border-top-right-radius: 20px;
+            box-shadow: 0 -4px 30px rgba(0,0,0,0.15);
+            padding: 20px; z-index: 200;
+            transform: translateY(100%); transition: transform 0.3s ease;
+            overflow-y: auto;
         }
+        .question-nav-panel:not(.hidden) { transform: translateY(0); }
+        .question-nav-panel-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 16px; position: sticky; top: 0;
+            background: var(--card-bg); padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        .question-nav-panel-header strong { font-size: 1rem; }
         .question-nav-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
             gap: 8px;
         }
         .q-nav-btn {
-            width: 36px; height: 36px; border-radius: 8px; border: 2px solid var(--border);
-            background: var(--card-bg); color: var(--text-secondary); font-size: 0.85rem;
+            width: 44px; height: 44px; border-radius: 10px; border: 2px solid var(--border);
+            background: var(--card-bg); color: var(--text-secondary); font-size: 0.9rem;
             font-weight: 600; cursor: pointer; transition: all 0.2s;
             user-select: none; -webkit-tap-highlight-color: transparent;
         }
@@ -746,8 +780,9 @@
             .option-text { font-size: 0.95rem; line-height: 1.5; padding-top: 2px; }
             .quiz-navigation { margin-top: 24px; gap: 10px; flex-wrap: wrap; }
             .quiz-navigation .btn { flex: 1; min-width: 100px; }
-            .question-nav-grid { grid-template-columns: repeat(auto-fill, minmax(32px, 1fr)); gap: 6px; }
-            .q-nav-btn { width: 32px; height: 32px; font-size: 0.8rem; }
+            .question-nav-panel { padding: 16px; border-top-left-radius: 16px; border-top-right-radius: 16px; }
+            .question-nav-grid { grid-template-columns: repeat(auto-fill, minmax(36px, 1fr)); gap: 6px; }
+            .q-nav-btn { width: 36px; height: 36px; font-size: 0.8rem; border-radius: 8px; }
             .result-screen { padding: 30px 16px; }
             .result-screen h2 { font-size: 1.3rem; }
             .score-circle { width: 150px; height: 150px; }
@@ -782,8 +817,9 @@
             .result-stats { gap: 18px; }
             .result-actions { flex-direction: column; }
             .result-actions .btn { width: 100%; }
-            .question-nav-grid { grid-template-columns: repeat(auto-fill, minmax(30px, 1fr)); gap: 5px; }
-            .q-nav-btn { width: 30px; height: 30px; font-size: 0.75rem; }
+            .question-nav-panel { padding: 12px; }
+            .question-nav-grid { grid-template-columns: repeat(auto-fill, minmax(34px, 1fr)); gap: 5px; }
+            .q-nav-btn { width: 34px; height: 34px; font-size: 0.75rem; }
             .filter-bar { gap: 6px; }
             .filter-btn { padding: 6px 12px; font-size: 0.8rem; }
             .count-btn { padding: 5px 10px; font-size: 0.8rem; }
@@ -865,22 +901,6 @@
                 </div>
 
                 <div class="option-row">
-                    <span class="label">打乱选项</span>
-                    <div class="switch-container" onclick="toggleShuffleOptions()">
-                        <div class="switch" id="shuffleSwitch"></div>
-                        <span class="switch-label" id="shuffleSwitchLabel">关闭</span>
-                    </div>
-                </div>
-
-                <div class="option-row">
-                    <span class="label">只看收藏</span>
-                    <div class="switch-container" onclick="toggleOnlyBookmarks()">
-                        <div class="switch" id="bookmarkSwitch"></div>
-                        <span class="switch-label" id="bookmarkSwitchLabel">关闭</span>
-                    </div>
-                </div>
-
-                <div class="option-row">
                     <span class="label">题量选择</span>
                     <div class="count-selector" id="countSelector">
                         <button class="count-btn active" data-count="0" onclick="setCount(0)">全部</button>
@@ -896,36 +916,29 @@
                         <div class="value" id="homeTotalCount">370</div>
                         <div class="label">题目总数</div>
                     </div>
-                    <div class="home-stat">
-                        <div class="icon">⭐</div>
-                        <div class="value" id="homeLastScore">--</div>
-                        <div class="label">上次得分</div>
-                    </div>
-                    <div class="home-stat">
-                        <div class="icon">⏱️</div>
-                        <div class="value" id="homeLastTime">--</div>
-                        <div class="label">上次用时</div>
-                    </div>
-                    <div class="home-stat">
-                        <div class="icon">📌</div>
-                        <div class="value" id="homeBookmarkCount">0</div>
-                        <div class="label">收藏题目</div>
-                    </div>
-                    <div class="home-stat" onclick="startDueReview()">
+                    <div class="home-stat" onclick="startDueReview()" style="cursor:pointer;">
                         <div class="icon">📅</div>
                         <div class="value" id="homeDueCount">--</div>
-                        <div class="label">今日待复习</div>
+                        <div class="label">今日复习</div>
                     </div>
                     <div class="home-stat">
                         <div class="icon">❌</div>
                         <div class="value" id="homeWrongCount">--</div>
-                        <div class="label">待复习错题</div>
+                        <div class="label">错题数</div>
                     </div>
                     <div class="home-stat">
-                        <div class="icon">▶️</div>
-                        <div class="value" id="homeProgressCount">--</div>
-                        <div class="label">当前进度</div>
+                        <div class="icon">📌</div>
+                        <div class="value" id="homeBookmarkCount">0</div>
+                        <div class="label">收藏</div>
                     </div>
+                </div>
+
+                <div class="home-substats">
+                    <span id="homeLastScoreLine" class="substat">上次得分: <strong id="homeLastScore">--</strong></span>
+                    <span class="substat-dot">·</span>
+                    <span id="homeLastTimeLine" class="substat">用时: <strong id="homeLastTime">--</strong></span>
+                    <span class="substat-dot">·</span>
+                    <span class="substat">进度: <strong id="homeProgressCount">--</strong></span>
                 </div>
 
                 <div class="option-row" id="wrongReasonFilterRow">
@@ -943,9 +956,12 @@
                     <button class="quick-btn" onclick="continueQuiz()">▶️ 继续答题</button>
                     <button class="quick-btn" onclick="startWrongPractice()">❌ 错题重练</button>
                     <button class="quick-btn" onclick="startDueReview()">📅 今日复习</button>
-                    <button class="quick-btn" onclick="navigateTo('bookmarks')">📌 查看收藏</button>
-                    <button class="quick-btn" onclick="toggleSearchPanel()">🔍 搜索题库</button>
-                    <button class="quick-btn" onclick="resetProgress()">🔄 重置进度</button>
+                    <button class="quick-btn" onclick="navigateTo('bookmarks')">📌 我的收藏</button>
+                </div>
+
+                <div class="home-secondary-actions">
+                    <button class="link-btn" onclick="toggleSearchPanel()">🔍 搜索题库</button>
+                    <button class="link-btn" onclick="resetProgress()">🔄 重置进度</button>
                 </div>
 
                 <div id="searchPanel" class="search-panel hidden">
@@ -956,6 +972,9 @@
                 </div>
 
                 <div style="text-align:center; margin-top:20px;">
+                    <div id="filteredCount" style="color:var(--text-secondary); font-size:0.9rem; margin-bottom:12px;">
+                        共筛选出 <strong style="color:var(--primary);">370</strong> 道题目
+                    </div>
                     <button class="btn btn-primary btn-lg" onclick="startQuiz()">开始答题 →</button>
                 </div>
             </div>
@@ -1162,6 +1181,13 @@
                     <span class="switch-label" id="settingsVibrationLabel">开启</span>
                 </div>
             </div>
+            <div class="settings-row">
+                <span class="label">只看收藏</span>
+                <div class="switch-container" onclick="toggleOnlyBookmarks()">
+                    <div class="switch" id="settingsBookmarkSwitch"></div>
+                    <span class="switch-label" id="settingsBookmarkLabel">关闭</span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1217,9 +1243,9 @@
             wrongList: [],
             partialList: [],
             unanswered: 0,
-            showNav: true,
+            showNav: false,
             currentPage: 'home',
-            shuffleOptions: true,
+            shuffleOptions: false,
             vibrationEnabled: true,
             fontSize: 'medium',
             colorTheme: 'default',
@@ -1240,7 +1266,7 @@
                     state.questionType = data.questionType || 'all';
                     state.filterChapter = data.filterChapter || 'all';
                     state.wrongReasonFilter = data.wrongReasonFilter || '';
-                    state.shuffleOptions = data.shuffleOptions !== undefined ? data.shuffleOptions : true;
+                    state.shuffleOptions = data.shuffleOptions !== undefined ? data.shuffleOptions : false;
                     state.vibrationEnabled = data.vibrationEnabled !== undefined ? data.vibrationEnabled : true;
                     state.fontSize = data.fontSize || 'medium';
                     state.colorTheme = data.colorTheme || 'default';
@@ -1323,26 +1349,15 @@
 
         // ==================== OPTION SHUFFLING ====================
         function getShuffledMapping(q, gid) {
-            const letters = Object.keys(q.options).sort();
-            if (!state.shuffleOptions || letters.length <= 1) return letters;
-            return seededShuffle(letters, gid * 7919 + letters.length * 1049);
+            return Object.keys(q.options).sort();
         }
 
         function realLetterForDisplay(gid, displayLetter) {
-            const mapping = state.optionMappings[gid];
-            const letters = Object.keys(questions[gid].options).sort();
-            const idx = letters.indexOf(displayLetter);
-            return mapping && idx >= 0 ? mapping[idx] : displayLetter;
+            return displayLetter;
         }
 
         function displayLettersForReal(gid, realLetters) {
-            const mapping = state.optionMappings[gid];
-            const letters = Object.keys(questions[gid].options).sort();
-            if (!mapping) return realLetters;
-            return realLetters.split('').map(real => {
-                const idx = mapping.indexOf(real);
-                return idx >= 0 ? letters[idx] : real;
-            }).sort().join('');
+            return realLetters;
         }
 
         // ==================== QUIZ PROGRESS ====================
@@ -1426,8 +1441,8 @@
         }
 
         function updateTimerDisplay() {
-            const el = document.getElementById('timer');
-            if (el) el.textContent = '⏱ ' + getElapsedTimeStr();
+            const el = document.getElementById('timerText');
+            if (el) el.textContent = getElapsedTimeStr();
         }
 
         // ==================== HOME PAGE ====================
@@ -1460,38 +1475,62 @@
             const reasonFilter = document.getElementById('wrongReasonFilter');
             if (reasonFilter) reasonFilter.value = state.wrongReasonFilter;
 
-            // Update due count
-            const dueCountEl = document.getElementById('dueCount');
+            // Update home stats
+            const totalCountEl = document.getElementById('homeTotalCount');
+            if (totalCountEl) totalCountEl.textContent = questions.length;
+
+            const dueCountEl = document.getElementById('homeDueCount');
             if (dueCountEl) {
                 const dueCount = questions.reduce(function(count, _, gid) { return isDue(gid) ? count + 1 : count; }, 0);
                 dueCountEl.textContent = dueCount;
             }
 
-            // Update wrong count
-            const wrongCountEl = document.getElementById('wrongCount');
+            const wrongCountEl = document.getElementById('homeWrongCount');
             if (wrongCountEl) {
                 const wrongSet = loadWrongAnswers();
                 wrongCountEl.textContent = wrongSet.size;
             }
 
-            // Update bookmark-only switch
-            const bookmarkSwitch = document.getElementById('bookmarkSwitch');
-            const bookmarkLabel = document.getElementById('bookmarkLabel');
-            if (bookmarkSwitch) bookmarkSwitch.classList.toggle('on', !!state.onlyBookmarks);
-            if (bookmarkLabel) bookmarkLabel.textContent = state.onlyBookmarks ? '开启' : '关闭';
+            const bookmarkCountEl = document.getElementById('homeBookmarkCount');
+            if (bookmarkCountEl) {
+                bookmarkCountEl.textContent = state.bookmarks ? state.bookmarks.size : 0;
+            }
 
-            // Update shuffle switch
-            const shuffleSwitch = document.getElementById('shuffleSwitch');
-            const shuffleLabel = document.getElementById('shuffleSwitchLabel');
-            if (shuffleSwitch) shuffleSwitch.classList.toggle('on', state.shuffleOptions);
-            if (shuffleLabel) shuffleLabel.textContent = state.shuffleOptions ? '开启' : '关闭';
+            // Update last result
+            try {
+                const results = JSON.parse(localStorage.getItem(LS_RESULTS) || '[]');
+                if (results.length > 0) {
+                    const last = results[results.length - 1];
+                    const lastScoreEl = document.getElementById('homeLastScore');
+                    if (lastScoreEl) lastScoreEl.textContent = last.score + '分';
+                    const lastTimeEl = document.getElementById('homeLastTime');
+                    if (lastTimeEl) lastTimeEl.textContent = last.time || '--';
+                }
+            } catch (e) {
+                console.warn('Failed to load last result:', e);
+            }
+
+            // Update progress
+            const progressEl = document.getElementById('homeProgressCount');
+            if (progressEl) {
+                const answered = state.quizQuestions ? state.quizQuestions.filter(gid => (state.userAnswers && state.userAnswers[gid])).length : 0;
+                progressEl.textContent = answered > 0 ? answered + '/' + state.quizQuestions.length : '--';
+            }
+
+            // Update bookmark-only switch (settings panel)
+            const settingsBookmarkSwitch = document.getElementById('settingsBookmarkSwitch');
+            const settingsBookmarkLabel = document.getElementById('settingsBookmarkLabel');
+            if (settingsBookmarkSwitch) settingsBookmarkSwitch.classList.toggle('on', !!state.onlyBookmarks);
+            if (settingsBookmarkLabel) settingsBookmarkLabel.textContent = state.onlyBookmarks ? '开启' : '关闭';
         }
 
         function refreshHomePage() {
             if (state.currentPage !== 'home') return;
             const filtered = getFilteredQuestions();
             const countEl = document.getElementById('filteredCount');
-            if (countEl) countEl.textContent = filtered.length;
+            if (countEl) {
+                countEl.innerHTML = '共筛选出 <strong style="color:var(--primary);">' + filtered.length + '</strong> 道题目';
+            }
         }
 
         // ==================== WRONG ANSWERS ====================
@@ -1607,12 +1646,13 @@
 
         function toggleOnlyBookmarks() {
             state.onlyBookmarks = !state.onlyBookmarks;
-            const bookmarkSwitch = document.getElementById('bookmarkSwitch');
-            const bookmarkLabel = document.getElementById('bookmarkLabel');
-            if (bookmarkSwitch) bookmarkSwitch.classList.toggle('on', !!state.onlyBookmarks);
-            if (bookmarkLabel) bookmarkLabel.textContent = state.onlyBookmarks ? '开启' : '关闭';
+            const settingsBookmarkSwitch = document.getElementById('settingsBookmarkSwitch');
+            const settingsBookmarkLabel = document.getElementById('settingsBookmarkLabel');
+            if (settingsBookmarkSwitch) settingsBookmarkSwitch.classList.toggle('on', !!state.onlyBookmarks);
+            if (settingsBookmarkLabel) settingsBookmarkLabel.textContent = state.onlyBookmarks ? '开启' : '关闭';
             saveState();
             refreshHomePage();
+            showNotification(state.onlyBookmarks ? '已开启只看收藏' : '已关闭只看收藏', 'info');
         }
 
         function setCount(count) {
@@ -1633,7 +1673,7 @@
                     panel.classList.add('hidden');
                 } else {
                     panel.classList.remove('hidden');
-                    var input = document.getElementById('searchInput');
+                    var input = document.getElementById('homeSearchInput');
                     if (input) setTimeout(function() { input.focus(); }, 100);
                 }
             }
@@ -1688,6 +1728,8 @@
             startTimer();
             navigateTo('quiz');
             updateBottomNavForQuiz();
+            buildQuestionNav();
+            renderQuestion();
         }
 
         function startWrongPractice() {
@@ -1709,17 +1751,25 @@
             startTimer();
             navigateTo('quiz');
             updateBottomNavForQuiz();
+            buildQuestionNav();
+            renderQuestion();
             showNotification('已开始错题重练，共 ' + wrongSet.size + ' 题', 'info');
         }
 
         function continueQuiz() {
             if (state.quizQuestions.length > 0 && !state.submitted) {
                 navigateTo('quiz');
+                if (document.querySelectorAll('#questionNavGrid .q-nav-btn').length === 0) {
+                    buildQuestionNav();
+                }
+                renderQuestion();
                 return;
             }
             if (loadQuizProgress()) {
                 navigateTo('quiz');
                 updateBottomNavForQuiz();
+                buildQuestionNav();
+                renderQuestion();
                 return;
             }
             if (state.submitted && state.quizQuestions.length > 0) {
@@ -1934,6 +1984,14 @@
                 if (navigator.vibrate && state.vibrationEnabled && isCorrect) {
                     navigator.vibrate(30);
                 }
+                saveQuizProgress();
+                renderQuestion();
+                if (isCorrect && state.currentIndex < state.quizQuestions.length - 1) {
+                    setTimeout(function() {
+                        nextQuestion();
+                    }, 800);
+                }
+                return;
             }
 
             saveQuizProgress();
@@ -1975,6 +2033,11 @@
                 renderQuestion();
                 if (navigator.vibrate && state.vibrationEnabled && result === 'correct') {
                     navigator.vibrate(30);
+                }
+                if (result === 'correct' && state.currentIndex < state.quizQuestions.length - 1) {
+                    setTimeout(function() {
+                        nextQuestion();
+                    }, 800);
                 }
             }
         }
@@ -2120,7 +2183,12 @@
             state.showNav = !state.showNav;
             const panel = document.getElementById('questionNavPanel');
             panel.classList.toggle('hidden', !state.showNav);
-            if (state.showNav) updateQuestionNav();
+            if (state.showNav) {
+                if (document.querySelectorAll('#questionNavGrid .q-nav-btn').length === 0) {
+                    buildQuestionNav();
+                }
+                updateQuestionNav();
+            }
         }
 
         // ==================== SUBMIT & RESULTS ====================
@@ -2346,6 +2414,42 @@
             }).join('');
         }
 
+        function filterHomeSearch() {
+            const input = document.getElementById('homeSearchInput');
+            const results = document.getElementById('homeSearchResults');
+            if (!input || !results) return;
+            const kw = input.value.trim().toLowerCase();
+            if (!kw) {
+                results.innerHTML = '<div class="empty-state"><div class="icon">🔍</div><div>输入关键词搜索题目</div></div>';
+                return;
+            }
+            const matches = [];
+            questions.forEach((q, gid) => {
+                if (q.question.toLowerCase().includes(kw) ||
+                    q.chapter.toLowerCase().includes(kw) ||
+                    Object.values(q.options).some(t => t.toLowerCase().includes(kw))) {
+                    matches.push(gid);
+                }
+            });
+            if (matches.length === 0) {
+                results.innerHTML = '<div class="empty-state"><div class="icon">😔</div><div>没有找到匹配的题目</div></div>';
+                return;
+            }
+            const re = new RegExp('(' + kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+            results.innerHTML = matches.slice(0, 50).map(gid => {
+                const q = questions[gid];
+                const typeLabel = q.type === 'multi' ? ' [多选]' : '';
+                let qText = q.question.replace(re, '<span class="search-match">$1</span>');
+                return '<div class="bookmark-item" onclick="startQuizFromBookmark(' + gid + ')">' +
+                    '<div class="bookmark-item-num">第 ' + (gid + 1) + ' 题 — ' + q.chapter + typeLabel + '</div>' +
+                    '<div class="bookmark-item-text">' + qText + '</div>' +
+                '</div>';
+            }).join('');
+            if (matches.length > 50) {
+                results.innerHTML += '<div style="text-align:center;padding:10px;color:var(--text-secondary);font-size:0.85rem;">仅显示前50条匹配结果，共' + matches.length + '条</div>';
+            }
+        }
+
         function filterBookmarkSearch() {
             const input = document.getElementById('bookmarkSearchInput');
             renderBookmarks(input ? input.value : '');
@@ -2361,6 +2465,8 @@
             startTimer();
             navigateTo('quiz');
             updateBottomNavForQuiz();
+            buildQuestionNav();
+            renderQuestion();
         }
 
         // ==================== NOTIFICATION ====================
@@ -2477,12 +2583,8 @@
             });
             const shuffleSwitch = document.getElementById('settingsShuffleSwitch');
             const shuffleLabel = document.getElementById('settingsShuffleLabel');
-            const homeShuffleSwitch = document.getElementById('shuffleSwitch');
-            const homeShuffleLabel = document.getElementById('shuffleSwitchLabel');
             if (shuffleSwitch) shuffleSwitch.classList.toggle('on', state.shuffleOptions);
             if (shuffleLabel) shuffleLabel.textContent = state.shuffleOptions ? '开启' : '关闭';
-            if (homeShuffleSwitch) homeShuffleSwitch.classList.toggle('on', state.shuffleOptions);
-            if (homeShuffleLabel) homeShuffleLabel.textContent = state.shuffleOptions ? '开启' : '关闭';
             const darkSwitch = document.getElementById('settingsDarkSwitch');
             const darkLabel = document.getElementById('settingsDarkLabel');
             const isDark = document.body.classList.contains('dark');
@@ -2492,6 +2594,10 @@
             const vibLabel = document.getElementById('settingsVibrationLabel');
             if (vibSwitch) vibSwitch.classList.toggle('on', state.vibrationEnabled);
             if (vibLabel) vibLabel.textContent = state.vibrationEnabled ? '开启' : '关闭';
+            const bookmarkSwitch = document.getElementById('settingsBookmarkSwitch');
+            const bookmarkLabel = document.getElementById('settingsBookmarkLabel');
+            if (bookmarkSwitch) bookmarkSwitch.classList.toggle('on', !!state.onlyBookmarks);
+            if (bookmarkLabel) bookmarkLabel.textContent = state.onlyBookmarks ? '开启' : '关闭';
         }
 
         function toggleVibration() {
@@ -2595,6 +2701,8 @@
             startTimer();
             navigateTo('quiz');
             updateBottomNavForQuiz();
+            buildQuestionNav();
+            renderQuestion();
             showNotification('今日复习：共 ' + due.length + ' 题', 'info');
         }
 
