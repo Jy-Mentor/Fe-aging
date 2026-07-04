@@ -19,7 +19,7 @@ _paths = _cfg.get_resolved_paths()
 
 def load_cpi_data() -> pd.DataFrame:
     """加载 CPI（化合物-蛋白互作）数据"""
-    cpi_path = _paths.l4_root / "results" / "experimental_actives_detail_cleaned.csv"
+    cpi_path = _paths.l4_root / "results" / "experimental_actives_detail_cleaned_combined.csv"
     if not cpi_path.exists():
         logger.error(f"CPI 数据文件不存在: {cpi_path}")
         sys.exit(1)
