@@ -1971,6 +1971,8 @@ def _compute_cpi_loss(
     use_topology_neg: bool = False,  # v23-topo: 是否使用PPI拓扑驱动的难负样本
     prot_to_topo_medium_neighbors: dict[int, set] | None = None,
     prot_to_topo_hard_neighbors: dict[int, set] | None = None,
+    focal_gamma: float = 2.0,
+    focal_alpha: float = 0.75,
 ) -> torch.Tensor:
     """v21: 共享的 CPI 损失计算（Focal + BPR + 课程负采样）— InfoNCE 默认关闭
     v20: 新增 bpr_weight 参数支持消融实验
@@ -2037,7 +2039,7 @@ def _compute_cpi_loss(
         pos_score = model.decode(comp_emb[pos_src], prot_emb[pos_dst], prot_residue_indices=None) / T
     pos_score = torch.clamp(pos_score, -SCORE_CLAMP, SCORE_CLAMP)
     pos_loss = focal_loss_with_logits(
-        pos_score, torch.full_like(pos_score, LABEL_SMOOTHING_POS), alpha=FOCAL_ALPHA)
+        pos_score, torch.full_like(pos_score, LABEL_SMOOTHING_POS), gamma=focal_gamma, alpha=focal_alpha)
 
     unique_src = pos_src.unique()
     n_unique = len(unique_src)
@@ -2217,7 +2219,7 @@ def _compute_cpi_loss(
 
     # Focal Loss
     neg_loss = focal_loss_with_logits(
-        hard_neg_scores, torch.full_like(hard_neg_scores, LABEL_SMOOTHING_NEG), alpha=FOCAL_ALPHA)
+        hard_neg_scores, torch.full_like(hard_neg_scores, LABEL_SMOOTHING_NEG), gamma=focal_gamma, alpha=focal_alpha)
 
     # 正样本对 -> unique_src 位置映射（用于 BPR 和 InfoNCE）
     src_to_pos = {s.item(): i for i, s in enumerate(unique_src)}
