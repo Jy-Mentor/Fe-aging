@@ -182,9 +182,16 @@ class HGTLinkPredictor(nn.Module):
         Returns:
             预测 logits（未经过 sigmoid）。
         """
-        if self.decoder_type == "residue_bilinear":
-            return self.decoder(comp_emb, prot_emb, prot_residue_indices)
-        return self.decoder(comp_emb, prot_emb)
+        # v40-fix: AMP autocast 下 decoder 权重为 float32，输入可能为 float16，
+        # 显式转 float32 并关闭 autocast，避免 mat1/mat2 dtype 不匹配。
+        with torch.cuda.amp.autocast(enabled=False):
+            comp_emb = comp_emb.float()
+            prot_emb = prot_emb.float()
+            if prot_residue_indices is not None:
+                prot_residue_indices = prot_residue_indices.long()
+            if self.decoder_type == "residue_bilinear":
+                return self.decoder(comp_emb, prot_emb, prot_residue_indices)
+            return self.decoder(comp_emb, prot_emb)
 
     def set_residue_features(self, embeddings: torch.Tensor, offsets: torch.Tensor,
                              lengths: torch.Tensor, prot_to_residue_idx: torch.Tensor,
@@ -209,7 +216,9 @@ class HGTLinkPredictor(nn.Module):
 
     def predict_phenotype(self, compound_embeds: torch.Tensor) -> torch.Tensor:
         """预测化合物的铁死亡表型（二分类：是否铁死亡调节剂）"""
-        return self.pheno_head(compound_embeds)
+        # v40-fix: 表型头权重为 float32，AMP 下输入可能为 float16，需统一 dtype。
+        with torch.cuda.amp.autocast(enabled=False):
+            return self.pheno_head(compound_embeds.float())
 
     def free_residue_features(self) -> None:
         """释放 decoder 中的残基级 ESM-2 特征内存。

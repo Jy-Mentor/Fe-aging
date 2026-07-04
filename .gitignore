@@ -9,6 +9,10 @@ dist/
 build/
 *.egg
 .eggs/
+.venv/
+node_modules/
+package-lock.json
+package.json
 
 # ============================================================
 # Ruff

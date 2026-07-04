@@ -78,11 +78,16 @@ def sample_hetero_subgraph(
     num_neighbors: list[int] | None = None,
     seed: int | None = None,
     seed_proteins: list[int] | None = None,
+    add_seed_cpi_edges: bool = False,
 ) -> tuple[HeteroData, list[int], list[int], list[int], list[int], dict[int, int], dict[int, int], dict[int, int]]:
     """异质图手动邻居采样。
 
     seed_proteins 参数允许将指定蛋白（如验证蛋白）作为孤立节点纳入子图，
     用于 OOM 降级 mini-batch 验证。
+
+    add_seed_cpi_edges: 冷启动验证时，seed_compounds 在 hetero_adj 中无 CPI 出边，
+        导致 HGT 中化合物节点孤立。若开启，则在子图中临时添加 seed_compounds -> seed_proteins
+        的 CPI 边，仅用于消息传递，不用于标签构造。
     """
     if num_neighbors is None:
         num_neighbors = [32, 16]
@@ -154,8 +159,43 @@ def sample_hetero_subgraph(
 
     sg["compound", "interacts", "protein"].edge_index = _build_edges(
         ("compound", "interacts", "protein"), comp_map, prot_map)
+
+    # v40-fix: 冷启动化合物在 hetero_adj 中无 CPI 出边，验证时临时添加 seed -> candidate 蛋白边，
+    # 仅用于 HGT 消息传递，不用于标签构造。
+    if add_seed_cpi_edges and seed_proteins:
+        extra_sl, extra_dl = [], []
+        for c in seed_compounds:
+            c_local = comp_map.get(c)
+            if c_local is None:
+                continue
+            for p in seed_proteins:
+                p_local = prot_map.get(p)
+                if p_local is not None:
+                    extra_sl.append(c_local)
+                    extra_dl.append(p_local)
+        if extra_sl:
+            existing = sg["compound", "interacts", "protein"].edge_index
+            extra = torch.tensor([extra_sl, extra_dl], dtype=torch.long)
+            sg["compound", "interacts", "protein"].edge_index = torch.cat([existing, extra], dim=1)
+
+    # v40-fix: HGTConv 需要双向消息传递，手动构建 CPI 反向边
+    cpi_sl, cpi_dl = sg["compound", "interacts", "protein"].edge_index.tolist()
+    if cpi_sl:
+        sg["protein", "rev_interacts", "compound"].edge_index = torch.tensor(
+            [cpi_dl, cpi_sl], dtype=torch.long)
+    else:
+        sg["protein", "rev_interacts", "compound"].edge_index = torch.zeros((2, 0), dtype=torch.long)
+
     sg["protein", "ppi", "protein"].edge_index = _build_edges(
         ("protein", "ppi", "protein"), prot_map, prot_map)
+    # v40-fix: 无向 PPI 需要双向边
+    ppi_sl, ppi_dl = sg["protein", "ppi", "protein"].edge_index.tolist()
+    if ppi_sl:
+        sg["protein", "rev_ppi", "protein"].edge_index = torch.tensor(
+            [ppi_dl, ppi_sl], dtype=torch.long)
+    else:
+        sg["protein", "rev_ppi", "protein"].edge_index = torch.zeros((2, 0), dtype=torch.long)
+
     sg["protein", "belongs_to", "pathway"].edge_index = _build_edges(
         ("protein", "belongs_to", "pathway"), prot_map, path_map)
     sg["protein", "associated_with", "disease"].edge_index = _build_edges(

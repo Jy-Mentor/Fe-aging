@@ -1,8 +1,12 @@
 #!/usr/bin/env python
 """
-树模型 CPI 筛选 v6.4 — 扩展铁衰老基因版 + 无数据泄露 + TabPFN 集成
+树模型 CPI 筛选 v6.5 — 仅 XGBoost，加速 CPI 扩展迭代
 ================================================================
-基于 v6.3 架构，补充 28 个新铁衰老基因的 CPI 数据，显著扩展靶点覆盖。
+基于 v6.4 架构，精简模型集成为仅 XGBoost，加速 CPI 数据扩展迭代。
+
+核心更新（v6.5）：
+  1. 仅 XGBoost：移除 RF / LightGBM / CatBoost / TabPFN 训练和推理逻辑
+  2. 加速 CPI 扩展迭代：精简后训练和预测速度显著提升
 
 核心更新（v6.4）：
   1. 【P0 基因覆盖扩展】合并 ChEMBL API 补充数据：
@@ -31,15 +35,10 @@
   5. 【性能优化】残基统计特征缓存：residue_meanmaxstd 模式
      首次计算后保存为 NPZ，后续秒级加载
 
-新增内容（v6.2 继承）：
-  1. TabPFN (Nature 2025) 集成：无需调参的表格基础模型
-     - 自动处理缺失值、类别特征、异常值
-     - 内置不确定性估计
-  2. 特征选择适配：原始 ~6650 维 → 互信息降维至 ≤500 维（全矩阵一次性计算）
-  3. 5-fold Scaffold Split 全面对比（RF / XGB / LGB / CatBoost / TabPFN）
-  4. TabPFN 特征重要性（置换重要性）+ 不确定性估计（score_std）
-  5. TabPFN 集成投票 Ensemble (TabPFN + Best Tree)，CV 严格评估无泄露
-  6. 残基级 ESM-2 蛋白嵌入消融实验（4 种模式: global / residue_pooled /
+新增内容（v6.2 继承，v6.5 精简）：
+  1. 特征选择适配：原始 ~6650 维 → 互信息降维至 ≤500 维（全矩阵一次性计算）
+  2. 5-fold Scaffold Split 评估（XGBoost）
+  3. 残基级 ESM-2 蛋白嵌入消融实验（4 种模式: global / residue_pooled /
      residue_meanmaxstd / combined）
      - residue_meanmaxstd: 残基 mean/max/std 聚合 → 3×640 → PCA 128 维
      - combined: 全局 CLS + 残基 mean 拼接 → PCA 降维
@@ -69,12 +68,13 @@
     - 【P1 Bug修复】修复 residue_pooled NPZ 加载变量名错误（v for k, v in d.items()）
     - 【P1 参数统一】CatBoost 统一使用 auto_class_weights="Balanced"
 
-修复记录 v6.2 → v6.3：
+修复记录 v6.3 → v6.5：
     - 【P0 数据泄露】RDKit 标准化移至 CV 折内，仅用训练集拟合 scaler
     - 【P0 数据泄露】蛋白 PCA 移至 CV 折内，仅用训练集蛋白拟合 PCA+scaler
     - 【P0 缓存安全】特征缓存新增 X_rdkit_raw，旧缓存自动兼容处理
     - 【性能】蛋白 PCA 仅变换 pair_genes 中出现的蛋白（6847 → ~42）
     - 【性能】残基统计特征缓存，避免重复计算
+    - v6.5: 仅 XGBoost，移除 RF / LGB / CatBoost / TabPFN，加速 CPI 扩展迭代
 
 引用：Hollmann et al., "Accurate predictions on small data with a tabular foundation model",
        Nature 637(8045), 2025. https://github.com/PriorLabs/TabPFN
@@ -90,8 +90,7 @@
 
 输出：
   - L4/results/tree_v6_protein_emb_ablation.csv（蛋白嵌入消融对比结果）
-  - L4/results/tree_v6_results.csv（5-fold CV 对比结果）
-  - L4/results/tree_v6_tabpfn_importance.csv（TabPFN 特征重要性）
+  - L4/results/tree_v6_results.csv（5-fold CV 评估结果）
   - L4/results/tree_v6_tcm_predictions.csv（TCM 预测）
   - L4/results/tree_v6_top_candidates.csv（Top 候选）
   - L4/results/tree_v6_ensemble_results.csv（Ensemble 结果）
@@ -112,7 +111,6 @@ from rdkit.Chem import AllChem, Descriptors, MACCSkeys, rdMolDescriptors
 
 from sklearn.base import BaseEstimator, ClassifierMixin, clone
 from sklearn.decomposition import PCA
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_selection import mutual_info_classif
 from sklearn.model_selection import KFold, StratifiedKFold
 from sklearn.metrics import (
@@ -143,7 +141,7 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[
         logging.StreamHandler(sys.stdout),
-        logging.FileHandler(L4_LOGS / "tree_v6_tabpfn.log", mode="w", encoding="utf-8"),
+        logging.FileHandler(L4_LOGS / "tree_v6_5.log", mode="w", encoding="utf-8"),
     ],
 )
 logger = logging.getLogger(__name__)
@@ -946,19 +944,17 @@ def train_ensemble(
     protein_embeddings_raw,
     best_params_per_model=None, n_folds=5, random_seed=42,
 ):
-    """5-fold Scaffold Split CV 训练多模型（含 TabPFN），用于模型选择。
+    """5-fold Scaffold Split CV 训练 XGBoost，用于模型选择。
 
+    v6.5 精简：仅保留 XGBoost，移除 RF / LGB / CatBoost / TabPFN。
     v6.3 修复：RDKit 标准化和蛋白 PCA 均在每个 fold 内仅用训练集拟合，
     彻底消除数据泄露。
 
     CV 设计原则：
       - 每折独立拟合 RDKit scaler 和蛋白 PCA（仅用训练集）
-      - 每折独立执行 TabPFN 特征选择（互信息 Top-500），不同折的特征空间不同
       - 这是严谨的 CV 设计（预处理作为 pipeline 纳入 CV），
         确保模型选择阶段的指标无泄露
-      - 树模型始终使用全量特征，不受特征选择影响
       - 注意：CV 汇总指标仅用于模型选择，不代表最终泛化性能。
-        最终集成模型性能由独立种子的另一组 5-fold CV 独立评估。
     """
     results = []
 
@@ -982,29 +978,10 @@ def train_ensemble(
                     f"pos_ratio={y_train.mean():.3f}/{y_test.mean():.3f}, "
                     f"feat_dim={X_train.shape[1]}")
 
-        fold_results = []
-
-        # ---- 1. Random Forest ----
-        logger.info("  [1/5] Random Forest...")
-        rf_params = best_params_per_model.get("rf", {}) if best_params_per_model else {}
-        rf = RandomForestClassifier(
-            n_estimators=rf_params.get("n_estimators", 200),
-            max_depth=rf_params.get("max_depth", 20),
-            min_samples_leaf=rf_params.get("min_samples_leaf", 10),
-            class_weight="balanced", n_jobs=-1, random_state=random_seed,
-        )
-        r = evaluate_model(rf, X_train, y_train, X_test, y_test, "RandomForest")
-        if r:
-            r["fold"] = fold
-            fold_results.append(r)
-            results.append(r)
-            logger.info(f"    AUC={r['AUC']:.4f}, AUPR={r['AUPR']:.4f}, "
-                        f"F1={r['F1']:.4f}, MCC={r['MCC']:.4f}")
-
-        # ---- 2. XGBoost ----
+        # ---- XGBoost ----
         try:
             import xgboost as xgb
-            logger.info("  [2/5] XGBoost...")
+            logger.info("  [1/1] XGBoost...")
             xgb_params = best_params_per_model.get("xgb", {}) if best_params_per_model else {}
             scale_pos_weight = (y_train == 0).sum() / max(y_train.sum(), 1)
             xgb_model = xgb.XGBClassifier(
@@ -1019,84 +996,12 @@ def train_ensemble(
             r = evaluate_model(xgb_model, X_train, y_train, X_test, y_test, "XGBoost")
             if r:
                 r["fold"] = fold
-                fold_results.append(r)
                 results.append(r)
                 logger.info(f"    AUC={r['AUC']:.4f}, AUPR={r['AUPR']:.4f}, "
                             f"F1={r['F1']:.4f}, MCC={r['MCC']:.4f}")
         except ImportError:
-            logger.warning("XGBoost 未安装，跳过")
-
-        # ---- 3. LightGBM ----
-        try:
-            import lightgbm as lgb
-            logger.info("  [3/5] LightGBM...")
-            lgb_params = best_params_per_model.get("lgb", {}) if best_params_per_model else {}
-            lgb_model = lgb.LGBMClassifier(
-                n_estimators=lgb_params.get("n_estimators", 200),
-                max_depth=lgb_params.get("max_depth", 10),
-                learning_rate=lgb_params.get("learning_rate", 0.05),
-                num_leaves=lgb_params.get("num_leaves", 31),
-                subsample=lgb_params.get("subsample", 0.8),
-                colsample_bytree=lgb_params.get("colsample_bytree", 0.8),
-                class_weight="balanced", random_state=random_seed,
-                n_jobs=-1, verbose=-1,
-            )
-            r = evaluate_model(lgb_model, X_train, y_train, X_test, y_test, "LightGBM")
-            if r:
-                r["fold"] = fold
-                fold_results.append(r)
-                results.append(r)
-                logger.info(f"    AUC={r['AUC']:.4f}, AUPR={r['AUPR']:.4f}, "
-                            f"F1={r['F1']:.4f}, MCC={r['MCC']:.4f}")
-        except ImportError:
-            logger.warning("LightGBM 未安装，跳过")
-
-        # ---- 4. CatBoost ----
-        try:
-            from catboost import CatBoostClassifier
-            logger.info("  [4/5] CatBoost...")
-            cb_model = CatBoostClassifier(
-                iterations=200, depth=8, learning_rate=0.05,
-                auto_class_weights="Balanced",
-                random_seed=random_seed, thread_count=-1,
-                verbose=False, allow_writing_files=False,
-            )
-            r = evaluate_model(cb_model, X_train, y_train, X_test, y_test, "CatBoost")
-            if r:
-                r["fold"] = fold
-                fold_results.append(r)
-                results.append(r)
-                logger.info(f"    AUC={r['AUC']:.4f}, AUPR={r['AUPR']:.4f}, "
-                            f"F1={r['F1']:.4f}, MCC={r['MCC']:.4f}")
-        except ImportError:
-            logger.warning("CatBoost 未安装，跳过")
-
-        # ---- 5. TabPFN (Nature 2025) ----
-        logger.info("  [5/5] TabPFN (Nature 2025, zero-shot)...")
-        if not TabPFNWrapper.check_available():
-            logger.warning("  TabPFN 不可用（模型下载失败或未授权），跳过")
-            continue
-        try:
-            tabpfn_model = TabPFNWrapper(
-                device="auto",
-                random_state=random_seed,
-                max_features=500,
-            )
-            r = evaluate_model(tabpfn_model, X_train, y_train, X_test, y_test, "TabPFN")
-            if r:
-                r["fold"] = fold
-                fold_results.append(r)
-                results.append(r)
-                logger.info(f"    AUC={r['AUC']:.4f}, AUPR={r['AUPR']:.4f}, "
-                            f"F1={r['F1']:.4f}, MCC={r['MCC']:.4f}")
-        except ImportError:
-            logger.error("tabpfn 未安装，跳过 TabPFN 评估")
-        except Exception as e:
-            logger.error(f"  TabPFN 评估异常: {e}")
-            import traceback as tb
-            logger.error(tb.format_exc())
-            TabPFNWrapper._is_available = False
-            TabPFNWrapper._availability_error = str(e)
+            logger.error("XGBoost 未安装，无法继续")
+            raise
 
     return pd.DataFrame(results)
 
@@ -1448,13 +1353,14 @@ def build_pair_dataset(cpi_df, protein_embeddings, compound_features, all_smiles
 
 def run_mode_cv_ablation(mode, cpi_df, all_smiles, X_binary_all, X_rdkit_raw_all,
                          base_model_name="XGBoost", n_folds=5, random_seed=42):
-    """对单个蛋白嵌入模式运行轻量 5-fold CV（仅基线模型），用于消融筛选。
+    """对单个蛋白嵌入模式运行轻量 5-fold CV（仅 XGBoost），用于消融筛选。
 
+    v6.5 精简：仅保留 XGBoost。
     v6.3 修复：RDKit 标准化和蛋白 PCA 均在每个 fold 内仅用训练集拟合，
     彻底消除数据泄露。
     """
     logger.info(f"\n{'='*60}")
-    logger.info(f"蛋白嵌入消融: mode={mode} (无泄露 v6.3)")
+    logger.info(f"蛋白嵌入消融: mode={mode} (v6.5 XGBoost-only)")
     logger.info(f"{'='*60}")
 
     # ---- 加载原始蛋白嵌入（不做 PCA/标准化）----
@@ -1472,29 +1378,14 @@ def run_mode_cv_ablation(mode, cpi_df, all_smiles, X_binary_all, X_rdkit_raw_all
     n_genes = len(cpi_genes_in_emb)
     logger.info(f"  有效基因数: {n_genes}, 正样本数: {n_pos}, 总样本数: {len(y)}")
 
-    if base_model_name == "RandomForest":
-        base_model = RandomForestClassifier(
-            n_estimators=200, max_depth=20, min_samples_leaf=10,
-            class_weight="balanced", n_jobs=-1, random_state=random_seed,
-        )
-    elif base_model_name == "XGBoost":
-        import xgboost as xgb
-        scale_pos_weight = (y == 0).sum() / max(y.sum(), 1)
-        base_model = xgb.XGBClassifier(
-            n_estimators=200, max_depth=8, learning_rate=0.05,
-            subsample=0.8, colsample_bytree=0.8,
-            scale_pos_weight=scale_pos_weight,
-            random_state=random_seed, n_jobs=-1, verbosity=0,
-        )
-    elif base_model_name == "LightGBM":
-        import lightgbm as lgb
-        base_model = lgb.LGBMClassifier(
-            n_estimators=200, max_depth=10, learning_rate=0.05,
-            num_leaves=31, subsample=0.8, colsample_bytree=0.8,
-            class_weight="balanced", random_state=random_seed, n_jobs=-1, verbose=-1,
-        )
-    else:
-        raise ValueError(f"Unsupported base model for ablation: {base_model_name}")
+    import xgboost as xgb
+    scale_pos_weight = (y == 0).sum() / max(y.sum(), 1)
+    base_model = xgb.XGBClassifier(
+        n_estimators=200, max_depth=8, learning_rate=0.05,
+        subsample=0.8, colsample_bytree=0.8,
+        scale_pos_weight=scale_pos_weight,
+        random_state=random_seed, n_jobs=-1, verbosity=0,
+    )
 
     results = []
     for fold in range(n_folds):
@@ -1535,13 +1426,14 @@ def run_mode_cv_ablation(mode, cpi_df, all_smiles, X_binary_all, X_rdkit_raw_all
 def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
                       X_binary_all, X_rdkit_raw_all,
                       n_folds=5, random_seed=42):
-    """使用指定蛋白嵌入模式运行完整 5-fold CV、全量训练、TabPFN 集成与 TCM 预测。
+    """使用指定蛋白嵌入模式运行完整 5-fold CV、全量训练与 TCM 预测。
 
+    v6.5 精简：仅使用 XGBoost，移除 RF / LGB / CatBoost / TabPFN。
     v6.3 修复：RDKit 标准化和蛋白 PCA 均在每个 fold 内仅用训练集拟合，
     彻底消除数据泄露。
     """
     logger.info(f"\n{'='*60}")
-    logger.info(f"完整流程: 蛋白嵌入 mode={mode} (无泄露 v6.3)")
+    logger.info(f"完整流程: 蛋白嵌入 mode={mode} (v6.5 XGBoost-only)")
     logger.info(f"{'='*60}")
 
     # ---- 3. 加载原始蛋白嵌入 ----
@@ -1560,7 +1452,7 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
     logger.info(f"  有效基因数: {len(cpi_genes_in_emb)}, 正样本数: {int(y.sum())}, 总样本数: {len(y)}")
 
     # ---- 5. 5-fold CV 对比评估（无泄露版本）----
-    logger.info("\n[5/7] 5-fold Scaffold Split 全模型对比 (含 TabPFN, 无泄露)...")
+    logger.info("\n[5/7] 5-fold Scaffold Split XGBoost 评估 (无泄露)...")
     results_df = train_ensemble(
         pair_smiles, pair_genes, y,
         X_binary_all, X_rdkit_raw_all, all_smiles,
@@ -1571,7 +1463,7 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
 
     # 汇总
     logger.info("\n" + "=" * 60)
-    logger.info("模型评估汇总 (5-fold Scaffold Split, mean +/- std):")
+    logger.info("XGBoost 评估汇总 (5-fold Scaffold Split, mean +/- std):")
     logger.info("=" * 60)
     summary = results_df.groupby("model").agg(["mean", "std"]).round(4)
     for model_name in summary.index:
@@ -1585,17 +1477,11 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
     results_df.to_csv(results_path, index=False)
     logger.info(f"\n评估结果已保存: {results_path}")
 
-    # ---- 6. 全量训练最佳模型 + TabPFN ----
-    logger.info("\n[6/7] 全量训练最佳模型 + TabPFN 特征重要性...")
+    # ---- 6. 全量训练 XGBoost ----
+    logger.info("\n[6/7] 全量训练 XGBoost...")
 
-    # 选择最佳树模型（按 AUPR）
-    if "AUPR" in summary.columns.levels[0]:
-        best_model_name = summary["AUPR"]["mean"].idxmax()
-        best_aupr = summary.loc[best_model_name, "AUPR"]["mean"]
-        logger.info(f"  最佳单模型: {best_model_name} (AUPR={best_aupr:.4f})")
-    else:
-        best_model_name = "RandomForest"
-        logger.info(f"  使用默认模型: {best_model_name}")
+    # v6.5: 仅使用 XGBoost
+    best_model_name = "XGBoost"
 
     # 用全部 CPI 数据拟合 scaler 和 PCA（全量训练用，已脱离模型选择阶段）
     # 注意：这里用全部 pair 中的化合物和蛋白，因为已经是最终训练阶段
@@ -1636,154 +1522,20 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
         X_full[i, :compound_feat_dim] = compound_features_all[ci]
         X_full[i, compound_feat_dim:] = protein_embeddings_full[gene]
 
-    # 全量训练最佳树模型
-    if best_model_name == "RandomForest":
-        best_tree = RandomForestClassifier(
-            n_estimators=200, max_depth=20, min_samples_leaf=10,
-            class_weight="balanced", n_jobs=-1, random_state=random_seed,
-        )
-    elif best_model_name == "XGBoost":
-        import xgboost as xgb
-        scale_pos_weight = (y == 0).sum() / max(y.sum(), 1)
-        best_tree = xgb.XGBClassifier(
-            n_estimators=200, max_depth=8, learning_rate=0.05,
-            subsample=0.8, colsample_bytree=0.8,
-            scale_pos_weight=scale_pos_weight,
-            random_state=random_seed, n_jobs=-1, verbosity=0,
-        )
-    elif best_model_name == "LightGBM":
-        import lightgbm as lgb
-        best_tree = lgb.LGBMClassifier(
-            n_estimators=200, max_depth=10, learning_rate=0.05,
-            num_leaves=31, subsample=0.8, colsample_bytree=0.8,
-            class_weight="balanced", random_state=random_seed, n_jobs=-1, verbose=-1,
-        )
-    elif best_model_name == "CatBoost":
-        from catboost import CatBoostClassifier
-        best_tree = CatBoostClassifier(
-            iterations=200, depth=8, learning_rate=0.05,
-            auto_class_weights="Balanced",
-            random_seed=random_seed, thread_count=-1,
-            verbose=False, allow_writing_files=False,
-        )
-    else:
-        best_tree = RandomForestClassifier(
-            n_estimators=200, max_depth=20, min_samples_leaf=10,
-            class_weight="balanced", n_jobs=-1, random_state=random_seed,
-        )
+    # 全量训练 XGBoost
+    import xgboost as xgb
+    scale_pos_weight = (y == 0).sum() / max(y.sum(), 1)
+    best_tree = xgb.XGBClassifier(
+        n_estimators=200, max_depth=8, learning_rate=0.05,
+        subsample=0.8, colsample_bytree=0.8,
+        scale_pos_weight=scale_pos_weight,
+        random_state=random_seed, n_jobs=-1, verbosity=0,
+    )
 
-    logger.info(f"  全量训练 {best_model_name} ({len(X_full)} 样本)...")
+    logger.info(f"  全量训练 XGBoost ({len(X_full)} 样本)...")
     best_tree.fit(X_full, y)
 
-    # 全量训练 TabPFN
-    best_tabpfn = None
-    if TabPFNWrapper.check_available():
-        logger.info(f"  全量训练 TabPFN ({len(X_full)} 样本)...")
-        try:
-            best_tabpfn = TabPFNWrapper(device="auto", random_state=random_seed, max_features=500)
-            best_tabpfn.fit(X_full, y)
-        except Exception as e:
-            logger.warning(f"  TabPFN 全量训练失败: {e}")
-            best_tabpfn = None
-    else:
-        logger.warning("  TabPFN 不可用，跳过全量训练")
-
-    # TabPFN 特征重要性
-    if best_tabpfn is not None:
-        try:
-            if best_tabpfn._feature_selector is not None:
-                X_imp = best_tabpfn._feature_selector.transform(X_full)
-                n_features_imp = X_imp.shape[1]
-            else:
-                X_imp = X_full
-                n_features_imp = X_full.shape[1]
-
-            imp_df = tabpfn_feature_importance(
-                best_tabpfn, X_imp, y,
-                feature_names=[f"sel_feat_{i}" for i in range(n_features_imp)],
-                n_permute=3,
-            )
-
-            if best_tabpfn._feature_selector is not None:
-                orig_indices = best_tabpfn._feature_selector.selected_indices
-                feat_type = []
-                n_binary = X_binary_all.shape[1]
-                n_rdkit = X_rdkit_raw_all.shape[1]
-                for idx in orig_indices:
-                    if idx < n_binary:
-                        feat_type.append("binary_fp")
-                    elif idx < n_binary + n_rdkit:
-                        feat_type.append("rdkit_2d")
-                    else:
-                        feat_type.append("protein_emb")
-                imp_df["orig_feature_index"] = orig_indices
-                imp_df["feature_type"] = feat_type
-            else:
-                imp_df["feature_type"] = "all"
-
-            imp_path = L4_RESULTS / "tree_v6_tabpfn_importance.csv"
-            imp_df.to_csv(imp_path, index=False)
-            logger.info(f"\nTabPFN Top 20 重要特征:")
-            for i, row in imp_df.head(20).iterrows():
-                logger.info(f"  {row['feature']}: {row['importance']:.6f} ({row.get('feature_type','')})")
-            logger.info(f"特征重要性已保存: {imp_path}")
-        except Exception as e:
-            logger.warning(f"TabPFN 特征重要性计算失败: {e}")
-            import traceback as tb
-            logger.warning(tb.format_exc())
-    else:
-        logger.info("  TabPFN 不可用，跳过特征重要性计算")
-
-    # TabPFN + Tree Ensemble 评估（严格 5-fold Scaffold Split CV，每折独立训练）
-    # 注意：此处使用与模型选择阶段不同的随机种子（random_seed + 1000），
-    #       确保集成评估的测试集与模型选择的折完全独立，避免数据泄露。
-    #       模型选择使用 random_seed + fold，集成评估使用 random_seed + 1000 + fold。
-    # v6.3：每折独立拟合 RDKit scaler 和蛋白 PCA，彻底消除预处理泄露。
-    if best_tabpfn is not None and TabPFNWrapper.check_available():
-        logger.info("\n  TabPFN + Tree Ensemble 评估 (独立 5-fold Scaffold Split CV, 无泄露)...")
-        from sklearn.base import clone
-        ensemble_metrics = []
-        ensemble_seed_offset = 1000
-
-        for fold in range(n_folds):
-            train_idx, test_idx = scaffold_split(
-                pair_smiles, y, test_size=0.2,
-                random_state=random_seed + ensemble_seed_offset + fold,
-            )
-            y_tr_fold, y_te_fold = y[train_idx], y[test_idx]
-
-            X_fold, _, _, _ = build_fold_features(
-                pair_smiles, pair_genes, train_idx,
-                X_binary_all, X_rdkit_raw_all, all_smiles,
-                protein_embeddings_raw, prot_target_dim=128,
-            )
-            X_tr_fold, X_te_fold = X_fold[train_idx], X_fold[test_idx]
-
-            tree_inner = clone(best_tree).set_params(**best_tree.get_params())
-            tree_inner.fit(X_tr_fold, y_tr_fold)
-
-            tabpfn_inner = TabPFNWrapper(device="auto", random_state=random_seed, max_features=500)
-            tabpfn_inner.fit(X_tr_fold, y_tr_fold)
-
-            ensemble_prob = ensemble_predict(tabpfn_inner, tree_inner, X_te_fold)
-            m = compute_metrics(y_te_fold, ensemble_prob)
-            m["fold"] = fold
-            ensemble_metrics.append(m)
-
-        if ensemble_metrics:
-            ens_df = pd.DataFrame(ensemble_metrics)
-            logger.info(f"\n  TabPFN+{best_model_name} Ensemble (严格 5-fold CV, 无泄露):")
-            for metric in ["AUC", "AUPR", "F1", "MCC", "EF@1%"]:
-                if metric in ens_df.columns:
-                    logger.info(f"    {metric}: {ens_df[metric].mean():.4f} +/- {ens_df[metric].std():.4f}")
-
-            ens_path = L4_RESULTS / "tree_v6_ensemble_results.csv"
-            ens_df.to_csv(ens_path, index=False)
-            logger.info(f"Ensemble 结果已保存: {ens_path}")
-    else:
-        logger.info("\n  TabPFN 不可用，跳过集成评估")
-
-    # ---- 7. TCM 预测（用最佳模型 + TabPFN） ----
+    # ---- 7. TCM 预测（用 XGBoost） ----
     logger.info("\n[7/7] TCM 化合物池预测...")
     herb_map = load_herb_mapping()
 
@@ -1799,22 +1551,9 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
         best_tree, tcm_df, tcm_binary_feats, tcm_rdkit_feats,
         protein_embeddings_full, cpi_genes_in_emb, best_model_name, herb_map=herb_map,
     )
+    pred_df = pred_tree
 
-    if best_tabpfn is not None:
-        try:
-            pred_tabpfn = predict_tcm_pool(
-                best_tabpfn, tcm_df, tcm_binary_feats, tcm_rdkit_feats,
-                protein_embeddings_full, cpi_genes_in_emb, "TabPFN", herb_map=herb_map,
-            )
-            pred_df = pd.concat([pred_tree, pred_tabpfn], ignore_index=True)
-        except Exception as e:
-            logger.warning(f"TabPFN TCM 预测失败，仅使用树模型结果: {e}")
-            pred_df = pred_tree
-    else:
-        logger.info("  TabPFN 不可用，仅使用树模型进行 TCM 预测")
-        pred_df = pred_tree
-
-    pred_path = L4_RESULTS / "tree_v6_tcm_predictions.csv"
+    pred_path = L4_RESULTS / "tree_v6_tcm_predictions_v7.csv"
     pred_df.to_csv(pred_path, index=False)
     logger.info(f"TCM 预测结果已保存: {pred_path} ({len(pred_df)} 条)")
 
@@ -1848,10 +1587,7 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
 
     logger.info(f"Top 50 候选已保存: {top_path}")
     logger.info(f"=" * 60)
-    if best_tabpfn is not None:
-        logger.info("任务完成! TabPFN (Nature 2025) 集成成功.")
-    else:
-        logger.info(f"任务完成! 最佳模型: {best_model_name} (TabPFN 因网络/授权问题不可用，已自动跳过)")
+    logger.info("任务完成! XGBoost (v6.5 精简版).")
     logger.info(f"=" * 60)
 
 
@@ -1861,7 +1597,8 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
 
 def main():
     logger.info("=" * 60)
-    logger.info("树模型 CPI v6.4 — 扩展铁衰老基因版 + 无数据泄露 + TabPFN 集成")
+    logger.info("树模型 CPI v6.5 — 仅 XGBoost，加速 CPI 扩展迭代")
+    logger.info("  v6.5 更新: 移除 RF / LGB / CatBoost / TabPFN，仅保留 XGBoost")
     logger.info("  v6.4 更新: 合并 28 个新铁衰老基因数据，51/96 铁衰老基因有 CPI 数据")
     logger.info("  v6.3 修复: RDKit 标准化和蛋白 PCA 均在 CV fold 内仅用训练集拟合")
     logger.info("=" * 60)
@@ -1891,7 +1628,7 @@ def main():
     logger.info(f"  注意: RDKit 标准化参数仅用于预览，实际 CV 内每折独立拟合")
 
     # ---- 2.5. 蛋白嵌入消融实验 (4 modes x 5-fold CV, XGBoost 基线, 无泄露) ----
-    logger.info("\n[2.5/8] 蛋白嵌入消融实验 (4 种模式 x 5-fold CV, XGBoost 基线, 无泄露 v6.4)...")
+    logger.info("\n[2.5/8] 蛋白嵌入消融实验 (4 种模式 x 5-fold CV, XGBoost 基线, 无泄露 v6.5)...")
     ablation_results = []
     best_mode = None
     best_aupr = -1.0

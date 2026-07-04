@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Phase 4 v38: Mini-Batch GNN 双分支 — 两阶段迁移学习与化合物冷启动验证 (移除蛋白冷启动)
+Phase 4 v41: Mini-Batch GNN 双分支 — 两阶段迁移学习与化合物冷启动验证 (移除蛋白冷启动)
 ==========================================================================
 v27 修复 (2026-06-29):
   - 数据清洗: PPI去重(107K重复边)、CPI补充SMILES修复、BindingDB SMILES修复
@@ -278,18 +278,19 @@ L4_RESULTS = L4_ROOT / "results_v10_minibatch"
 L4_LOGS = L4_ROOT / "logs"
 
 sys.path.insert(0, str(L4_SRC))
+from iron_aging_gnn.graph.sampling import sample_hetero_subgraph  # noqa: E402
 from iron_aging_gnn.graph.topology_negative_sampling import (  # noqa: E402
     build_topology_hard_neighbors,
     build_topology_medium_neighbors,
 )
 from iron_aging_gnn.models import MemoryBank, SAGELinkPredictor, HGTLinkPredictor  # noqa: E402
-from iron_aging_gnn.training.trainer import train_sage  # noqa: E402
+from iron_aging_gnn.training.trainer import train_sage, train_hgt  # noqa: E402
 from iron_aging_gnn.utils.config import Config, load_config  # noqa: E402
 
 for d in [L4_RESULTS, L4_LOGS]:
     d.mkdir(parents=True, exist_ok=True)
 
-LOG_FILE = L4_LOGS / "phase4_v37_hgt_diag.log"
+LOG_FILE = L4_LOGS / "phase4_v41_hgt_diag.log"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -989,6 +990,7 @@ def load_protein_features(use_esm2: bool = True) -> tuple[dict[str, np.ndarray],
     pseaac_path = L2_RESULTS / "protein_pseaac.csv"
     # v33: 优先使用残基自注意力池化嵌入 (GS-DTI/PLM-SWE 论文方法)
     # 残基级 ESM-2 → 单头自注意力池化 → 蛋白级嵌入, 捕获结合口袋级别信息
+    esm_residue_stats_cache = L4_RESULTS / "esm2_residue_mean_max_std_cache.npz"  # v40: 1920D 统计池化
     esm_residue_cache = L4_RESULTS / "esm2_residue_pooled_embeddings.npz"
     esm_cache = L4_RESULTS / "esm2_protein_embeddings.npz"
     prot_feat: dict[str, np.ndarray] = {}
@@ -1005,12 +1007,38 @@ def load_protein_features(use_esm2: bool = True) -> tuple[dict[str, np.ndarray],
             seq = str(row["sequence"]) if pd.notna(row["sequence"]) else ""
             gene_to_seq[gene] = seq
 
-    # v24: 优先从 ESM-2 npz 加载所有可用蛋白特征（支持铁衰老96基因扩展）
+    # v40: 优先使用残基级 ESM-2 统计池化特征 (mean/max/std, 1920D)
+    # 避免加载损坏的 8.86GB .pt 文件，同时比 640D 池化嵌入保留更丰富的残基分布信息。
     esm2_embeddings = None
-    if use_esm2 and esm_cache.exists():
+    if use_esm2 and esm_residue_stats_cache.exists():
+        try:
+            with np.load(esm_residue_stats_cache, allow_pickle=True) as data:
+                esm2_embeddings = {str(k): data[k].astype(np.float32) for k in data.files if k != "__meta__"}
+            logger.info(f"v40: 从残基统计池化 ESM-2 npz 加载 {len(esm2_embeddings)} 个蛋白嵌入, dim={next(iter(esm2_embeddings.values())).shape[0]}")
+            for g in esm2_embeddings:
+                if g not in gene_to_seq:
+                    gene_to_seq[g] = ""
+        except Exception as e:
+            logger.warning(f"v40: 加载残基统计池化 ESM-2 npz 失败 ({e})，将回退")
+
+    # v40: 若统计池化未加载，则使用 640D 残基池化嵌入
+    if use_esm2 and esm2_embeddings is None and esm_residue_cache.exists():
+        try:
+            with np.load(esm_residue_cache, allow_pickle=True) as data:
+                # 残基池化缓存键为基因名，值为 640D 蛋白级嵌入
+                esm2_embeddings = {str(k): data[k].astype(np.float32) for k in data.files if k != "__meta__"}
+            logger.info(f"v40: 从残基池化 ESM-2 npz 加载 {len(esm2_embeddings)} 个蛋白嵌入")
+            for g in esm2_embeddings:
+                if g not in gene_to_seq:
+                    gene_to_seq[g] = ""
+        except Exception as e:
+            logger.warning(f"v40: 加载残基池化 ESM-2 npz 失败 ({e})，将回退到标准 ESM-2")
+
+    # v24: 若尚未加载，则尝试标准 ESM-2 npz
+    if use_esm2 and esm2_embeddings is None and esm_cache.exists():
         try:
             with np.load(esm_cache, allow_pickle=True) as data:
-                esm2_embeddings = {str(k): data[k].astype(np.float32) for k in data}
+                esm2_embeddings = {str(k): data[k].astype(np.float32) for k in data.files if k != "__meta__"}
             logger.info(f"v25: 从 ESM-2 npz 加载 {len(esm2_embeddings)} 个蛋白嵌入")
             # 用 ESM-2 中的基因扩展 gene_to_seq（序列信息从pf_path中已有的保留）
             for g in esm2_embeddings:
@@ -1115,18 +1143,24 @@ def load_residue_esm2_features(
 
     logger.info(f">>> 加载残基级 ESM-2 特征: {residue_pt_path}")
     try:
-        data = torch.load(residue_pt_path, map_location="cpu", weights_only=False)
+        # v40-fix: 使用 mmap 避免一次性加载 8.86GB 到 RAM；
+        # 保持 embeddings 为 mmap-backed CPU 张量，仅在 decoder 前向时按需切片。
+        data = torch.load(
+            residue_pt_path, map_location="cpu",
+            mmap=True, weights_only=False)
     except Exception:
         logger.error(f"残基级 ESM-2 特征加载失败: {residue_pt_path}", exc_info=True)
         raise
 
-    embeddings = data["embeddings"].to(residue_device)
-    offsets = data["offsets"].to(residue_device)
-    lengths = data["lengths"].to(residue_device)
+    # 注意：mmap 张量必须保持驻留 CPU，调用 .to() 会触发深拷贝并撑爆内存。
+    embeddings = data["embeddings"]
+    offsets = data["offsets"]
+    lengths = data["lengths"]
     residue_genes = data.get("genes", [])
     n_residue_proteins = len(residue_genes)
     logger.info(f"  残基特征: {n_residue_proteins} 个蛋白, "
-                f"total_residues={embeddings.shape[0]}, dim={embeddings.shape[1]}")
+                f"total_residues={embeddings.shape[0]}, dim={embeddings.shape[1]}, "
+                f"device={embeddings.device}, is_mmapped={getattr(embeddings, 'is_mmap', 'unknown')}")
 
     max_len = min(int(lengths.max().item()), max_len_cap)
     if max_len < 1:
@@ -1459,21 +1493,25 @@ def build_graphs_and_adj(
     hetero_data["pathway"].x = torch.zeros(max(n_pathways, 1), 1, dtype=torch.float32)
     hetero_data["pathway"].n_pathways = n_pathways
 
-    # CPI 边
+    # CPI 边（v40-fix: HGTConv 需要双向消息传递，添加 protein->compound 反向边）
     cpi_edges = [[], []]
     for src, dsts in hetero_adj[("compound", "interacts", "protein")].items():
         for dst in dsts:
             cpi_edges[0].append(src)
             cpi_edges[1].append(dst)
     hetero_data["compound", "interacts", "protein"].edge_index = torch.tensor(cpi_edges, dtype=torch.long)
+    rev_cpi = [cpi_edges[1][:], cpi_edges[0][:]]
+    hetero_data["protein", "rev_interacts", "compound"].edge_index = torch.tensor(rev_cpi, dtype=torch.long)
 
-    # PPI 边
+    # PPI 边（v40-fix: 无向 PPI 需要双向边以支持对称消息传递）
     ppi_edges = [[], []]
     for src, dsts in hetero_adj[("protein", "ppi", "protein")].items():
         for dst in dsts:
             ppi_edges[0].append(src)
             ppi_edges[1].append(dst)
     hetero_data["protein", "ppi", "protein"].edge_index = torch.tensor(ppi_edges, dtype=torch.long)
+    rev_ppi = [ppi_edges[1][:], ppi_edges[0][:]]
+    hetero_data["protein", "rev_ppi", "protein"].edge_index = torch.tensor(rev_ppi, dtype=torch.long)
 
     # 通路边（v12: 通路ID已数值化，dst 已是整数，无需再次转换）
     pt_edges = [[], []]
@@ -1614,141 +1652,6 @@ def sample_homo_subgraph(
     edge_index = torch.tensor(edge_list, dtype=torch.long).t().contiguous() if edge_list else torch.zeros((2, 0), dtype=torch.long)
 
     return node_list, node_to_local, edge_index
-
-
-def sample_hetero_subgraph(
-    seed_compounds: list[int],
-    hetero_adj: dict,
-    num_neighbors: list[int] = None,
-    seed: int | None = None,
-    seed_proteins: list[int] | None = None,
-):
-    """异质图手动邻居采样（v15: 通路ID已数值化，移除冗余 pathway_to_idx 参数）
-
-    v18: 新增 seed_proteins 参数，允许将指定蛋白（如验证蛋白）作为孤立节点纳入子图，
-    用于蛋白冷启动 OOM 降级 mini-batch 验证。
-    """
-    if num_neighbors is None:
-        num_neighbors = [32, 16]
-    if seed is not None:
-        random.seed(seed)
-    compounds = set(seed_compounds)
-    proteins = set(seed_proteins) if seed_proteins else set()
-    pathways = set()
-    diseases = set()
-
-    # 1-hop: 化合物 → 蛋白
-    cpi_adj = hetero_adj[("compound", "interacts", "protein")]
-    for c in seed_compounds:
-        if c in cpi_adj:
-            nbrs = cpi_adj[c]
-            if len(nbrs) > num_neighbors[0]:
-                nbrs = random.sample(nbrs, num_neighbors[0])
-            proteins.update(nbrs)
-
-    # 2-hop: 蛋白 → 蛋白 + 蛋白 → 通路 + 蛋白 → 疾病
-    ppi_adj = hetero_adj[("protein", "ppi", "protein")]
-    pt_adj = hetero_adj[("protein", "belongs_to", "pathway")]
-    pd_adj = hetero_adj[("protein", "associated_with", "disease")]
-    for p in list(proteins):
-        if p in ppi_adj:
-            nbrs = ppi_adj[p]
-            if len(nbrs) > num_neighbors[1]:
-                nbrs = random.sample(nbrs, num_neighbors[1])
-            proteins.update(nbrs)
-        if p in pt_adj:
-            nbrs = pt_adj[p]
-            if len(nbrs) > num_neighbors[1]:
-                nbrs = random.sample(nbrs, num_neighbors[1])
-            pathways.update(nbrs)
-        if p in pd_adj:
-            nbrs = pd_adj[p]
-            if len(nbrs) > num_neighbors[1]:
-                nbrs = random.sample(nbrs, num_neighbors[1])
-            diseases.update(nbrs)
-
-    comp_sorted = sorted(compounds)
-    prot_sorted = sorted(proteins)
-    path_sorted = sorted(pathways)  # v12: 已是整数通路ID
-    disease_sorted = sorted(diseases)
-
-    comp_map = {c: i for i, c in enumerate(comp_sorted)}
-    prot_map = {p: i for i, p in enumerate(prot_sorted)}
-    path_map = {p: i for i, p in enumerate(path_sorted)}
-    disease_map = {d: i for i, d in enumerate(disease_sorted)}
-
-    # v12: 通路ID已数值化，直接使用（无需 pathway_to_idx 转换）
-    path_global = list(path_sorted)
-    disease_global = list(disease_sorted)
-
-    sg = HeteroData()
-    sg._comp_sorted = comp_sorted
-    sg._prot_map = prot_map
-    sg._path_global = path_global  # v11: 存储全局通路索引
-    sg._disease_global = disease_global
-
-    def _build_edges(et, src_map, dst_map):
-        sl, dl = [], []
-        for s, ds in hetero_adj.get(et, {}).items():
-            if s in src_map:
-                for d in ds:
-                    if d in dst_map:
-                        sl.append(src_map[s])
-                        dl.append(dst_map[d])
-        if sl:
-            return torch.tensor([sl, dl], dtype=torch.long)
-        return torch.zeros((2, 0), dtype=torch.long)
-
-    sg["compound", "interacts", "protein"].edge_index = _build_edges(
-        ("compound", "interacts", "protein"), comp_map, prot_map)
-    sg["protein", "ppi", "protein"].edge_index = _build_edges(
-        ("protein", "ppi", "protein"), prot_map, prot_map)
-    sg["protein", "belongs_to", "pathway"].edge_index = _build_edges(
-        ("protein", "belongs_to", "pathway"), prot_map, path_map)
-    sg["protein", "associated_with", "disease"].edge_index = _build_edges(
-        ("protein", "associated_with", "disease"), prot_map, disease_map)
-
-    # Bug1 修复: 手动构建反向边（通路→蛋白），_build_edges 无法处理反向映射
-    sl_rev, dl_rev = [], []
-    for p_global, pathway_ids in hetero_adj.get(("protein", "belongs_to", "pathway"), {}).items():
-        if p_global in prot_map:
-            for pid in pathway_ids:
-                if pid in path_map:
-                    sl_rev.append(path_map[pid])   # 通路为源
-                    dl_rev.append(prot_map[p_global])  # 蛋白为目标
-    if sl_rev:
-        sg["pathway", "includes", "protein"].edge_index = torch.tensor(
-            [sl_rev, dl_rev], dtype=torch.long)
-    else:
-        sg["pathway", "includes", "protein"].edge_index = torch.zeros((2, 0), dtype=torch.long)
-
-    # v24: 手动构建疾病→蛋白反向边
-    sl_rev_d, dl_rev_d = [], []
-    for p_global, disease_ids in hetero_adj.get(("protein", "associated_with", "disease"), {}).items():
-        if p_global in prot_map:
-            for did in disease_ids:
-                if did in disease_map:
-                    sl_rev_d.append(disease_map[did])
-                    dl_rev_d.append(prot_map[p_global])
-    if sl_rev_d:
-        sg["disease", "involves", "protein"].edge_index = torch.tensor(
-            [sl_rev_d, dl_rev_d], dtype=torch.long)
-    else:
-        sg["disease", "involves", "protein"].edge_index = torch.zeros((2, 0), dtype=torch.long)
-
-    # v24: disease节点特征（无原始特征，用零向量，模型内disease_embed生成嵌入）
-    sg["disease"].x = torch.zeros(len(disease_sorted), 1, dtype=torch.float32)
-
-    # v31-fix: 断言 prot_map 键为局部蛋白索引（整数），防止 v20 类似 bug 复发
-    if prot_map:
-        assert all(isinstance(k, int) and k >= 0 for k in prot_map.keys()),             "prot_map 键必须是局部蛋白索引（非负整数）"
-        assert all(isinstance(v, int) and v >= 0 for v in prot_map.values()),             "prot_map 值必须是 batch 内局部索引（非负整数）"
-        logger.debug(
-            f"  sample_hetero_subgraph: prot_map 校验通过，键范围 "
-            f"[{min(prot_map.keys())}, {max(prot_map.keys())}], 大小 {len(prot_map)}"
-        )
-
-    return sg, comp_sorted, prot_sorted, path_sorted, disease_sorted, comp_map, prot_map, disease_map
 
 
 # ============================================================
@@ -2873,8 +2776,13 @@ def _validate_hgt_minibatch(
                     candidate_proteins.update(rng.sample(neg_pool, n_neg_sample))
             seed_proteins = sorted(candidate_proteins)
 
+            # v41-fix: 化合物冷启动验证中禁止临时添加 seed->candidate CPI 边。
+            # 这些边会在 HGT 消息传递中造成信息泄漏（化合物嵌入吸收候选蛋白特征），
+            # 导致模型在验证时变相“看到答案”，训练/验证分布不一致，AUC 被严重压低。
+            # 保持化合物节点孤立，使其嵌入退化为 encode_compound(x)，才是公平的冷启动评估。
             sg, comp_sorted, prot_sorted, path_sorted, disease_sorted, comp_map, prot_map, disease_map = sample_hetero_subgraph(
-                batch_seeds, hetero_adj, num_neighbors, seed=42, seed_proteins=seed_proteins)
+                batch_seeds, hetero_adj, num_neighbors, seed=42, seed_proteins=seed_proteins,
+                add_seed_cpi_edges=False)
 
             if not prot_sorted:
                 continue
@@ -2997,392 +2905,8 @@ def _validate_hgt_minibatch(
 
 
 # [Ref: 2,3,5,6,7] HGT[2] + Focal Loss[3] + BPR[5] + CTCL-DPI[6] + 课程采样[7]
-def train_hgt(
-    model: HGTLinkPredictor,
-    graphs: dict,
-    train_compounds: list[int],
-    val_compounds: list[int],
-    compound_to_pos: dict[int, set],
-    val_proteins: set | None = None,
-    epochs: int = 100,
-    lr: float = 1e-3,
-    patience: int = 15,
-    batch_size: int = 128,
-    num_neighbors: list[int] | None = None,
-    prot_to_path_neighbors: dict[int, set] | None = None,
-    flag_step: float = 0.01,
-    two_stage: bool = False,
-    pretrain_epochs: int = 0,
-    pretrain_lr: float | None = None,
-    use_infonce: bool = False,    # v21: 消融实验结论 — 移除 InfoNCE
-    use_bpr: bool = True,         # v20: 消融实验开关
-    use_curriculum: bool = True,  # v20: 消融实验开关
-    use_topology_neg: bool = False,  # v23-topo: 启用PPI拓扑负样本
-    pheno_compound_indices: list[int] | None = None,  # 表型训练用的化合物在全图中的索引
-    pheno_labels: list[int] | None = None,  # 对应标签(0/1)
-    pheno_lambda: float = 0.3,  # 表型损失权重
-) -> tuple[HGTLinkPredictor, list[dict]]:
-    """v21: HGT mini-batch 训练 — 支持两阶段迁移学习，InfoNCE 默认关闭
+# v40: HGT 训练函数已从 trainer.py 导入，避免主脚本中重复定义。
 
-    阶段1 (可选): 在尾节点平衡子图上预训练，学习稀疏靶标表示
-    阶段2: 在完整训练图上微调
-    """
-    if num_neighbors is None:
-        num_neighbors = [32, 16]
-    model = model.to(DEVICE)
-    for p in model.parameters():
-        if p.dim() >= 2:
-            nn.init.xavier_uniform_(p)
-
-    # v18: 使用训练安全异质邻接表，验证蛋白在训练阶段完全不可见
-    hetero_adj = graphs.get("hetero_adj_train", graphs["hetero_adj"])
-    # v18: Memory Bank 与 mini-batch 特征查找均使用训练安全图结构
-    hetero_data = graphs.get("hetero_data_train", graphs["hetero_data"]).to(DEVICE)
-    n_compounds = graphs["n_compounds"]
-    n_proteins = graphs["n_proteins"]
-    n_pathways = graphs["n_pathways"]
-
-    logger.info(f"  HGT 通路嵌入: {max(n_pathways, 1)} 通路, dim={model.pathway_embed.embedding_dim}")
-
-    all_compound_to_pos = compound_to_pos
-    precomputed_pos = {src: sorted(pos_set) for src, pos_set in compound_to_pos.items() if pos_set}
-
-    # v31: 预计算 compound_to_prot_locals — 向量化mask构建
-    compound_to_prot_locals = {}
-    for src_global, pos_set in precomputed_pos.items():
-        compound_to_prot_locals[src_global] = [p_global - n_compounds for p_global in pos_set]
-
-    # v23-topo: 从 graphs 中提取预计算的拓扑负样本邻居
-    prot_to_topo_medium_neighbors = graphs.get("prot_to_topo_medium_neighbors")
-    prot_to_topo_hard_neighbors = graphs.get("prot_to_topo_hard_neighbors")
-
-    # v17: AdamW 解耦权重衰减与自适应学习率
-    optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=WEIGHT_DECAY)
-    # v27-fix: LR Warmup + Cosine Annealing（前5%线性预热，后95%余弦退火至1e-6）
-    # 最小2个epoch预热，确保短训练周期（15 epochs）有足够预热时间
-    warmup_epochs = max(2, int(epochs * WARMUP_RATIO))
-    def lr_lambda(e):
-        if e < warmup_epochs:
-            return e / warmup_epochs
-        progress = (e - warmup_epochs) / (epochs - warmup_epochs)
-        return 0.5 * (1 + np.cos(np.pi * progress)) * 1.0 + 1e-6
-    scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda)
-    # v17: Memory Bank — 存储跨 batch 蛋白嵌入，供全局困难负样本采样
-    memory_bank = MemoryBank(max_size=MEMORY_BANK_SIZE, out_dim=model.out_dim, device=DEVICE)
-    # v38: 早停基于 val_aupr（化合物冷启动），移除蛋白冷启动相关指标
-    best_val_auc = 0.0
-    best_val_aupr = 0.0
-    best_state = None
-    patience_counter = 0
-    history = []
-
-    use_pheno = pheno_compound_indices is not None and pheno_labels is not None
-    if use_pheno:
-        pheno_idx_tensor = torch.tensor(pheno_compound_indices, device=DEVICE, dtype=torch.long)
-        pheno_label_tensor = torch.tensor(pheno_labels, device=DEVICE, dtype=torch.float32)
-        # v25-fix: pos_weight平衡正负样本
-        n_pos_p = sum(pheno_labels)
-        n_neg_p = len(pheno_labels) - n_pos_p
-        hgt_pos_weight = torch.tensor([n_neg_p / max(n_pos_p, 1)], device=DEVICE)
-        pheno_bce = nn.BCEWithLogitsLoss(pos_weight=hgt_pos_weight)
-        _, pheno_sort_pos = torch.sort(pheno_idx_tensor)
-        pheno_sorted_idx = pheno_idx_tensor[pheno_sort_pos]
-        pheno_sorted_labels = pheno_label_tensor[pheno_sort_pos]
-        logger.info(f"  表型分类训练: {len(pheno_compound_indices)} 个化合物, lambda={pheno_lambda}")
-
-    # v19: 内层训练循环 — 被预训练/微调两个阶段复用
-    def _train_one_epoch(
-        epoch: int,
-        active_compounds: list[int],
-        stage_optimizer: torch.optim.Optimizer,
-        stage_memory_bank: MemoryBank,
-        stage_epochs: int,
-        stage_use_pheno: bool = False,
-    ) -> tuple[float, int]:
-        model.train()
-        total_loss = 0.0
-        n_batches = 0
-
-        shuffled_compounds = list(active_compounds)
-        random.shuffle(shuffled_compounds)
-        for batch_start in range(0, len(shuffled_compounds), batch_size):
-            batch_seeds = shuffled_compounds[batch_start:batch_start + batch_size]
-
-            sg, comp_sorted, prot_sorted, path_sorted, disease_sorted, comp_map, prot_map, disease_map = sample_hetero_subgraph(
-                batch_seeds, hetero_adj, num_neighbors,
-                seed=epoch * 10000 + batch_start)
-
-            if not prot_sorted:
-                continue
-
-            # 填充节点特征
-            sg["compound"].x = hetero_data["compound"].x[torch.tensor(comp_sorted, device=DEVICE)]
-            sg["protein"].x = hetero_data["protein"].x[torch.tensor(prot_sorted, device=DEVICE)]
-            # v17: Gaussian Feature Augmentation
-            if flag_step > 0:
-                sg["compound"].x = sg["compound"].x + flag_step * torch.randn_like(sg["compound"].x)
-                sg["protein"].x = sg["protein"].x + flag_step * torch.randn_like(sg["protein"].x)
-                sg["compound"].x = sg["compound"].x.detach()
-                sg["protein"].x = sg["protein"].x.detach()
-            # v16: 通路嵌入 batch 级直接调用 model.pathway_embed，杜绝参数-特征不同步
-            if path_sorted:
-                path_global_tensor = torch.tensor(sg._path_global, device=DEVICE)
-                path_global_tensor = torch.clamp(path_global_tensor, min=0,
-                                                  max=model.pathway_embed.num_embeddings - 1)
-                sg["pathway"].x = model.pathway_embed(path_global_tensor)
-            else:
-                sg["pathway"].x = torch.zeros(0, model.pathway_embed.embedding_dim, device=DEVICE)
-            # v24: 疾病节点嵌入
-            if disease_sorted:
-                disease_global_tensor = torch.tensor(sg._disease_global, device=DEVICE).unsqueeze(-1)
-                sg["disease"].x = disease_global_tensor
-            else:
-                sg["disease"].x = torch.zeros(0, 1, device=DEVICE)
-
-            sg = sg.to(DEVICE)
-            # v17: DropEdge 按边类型丢弃 — PPI边15%, 通路边10%, CPI边保留
-            for et in list(sg.edge_index_dict.keys()):
-                if "ppi" in str(et):
-                    sg[et].edge_index = drop_edge(sg[et].edge_index, p=DROPEDGE_PPI)
-                elif "pathway" in str(et) or "belongs_to" in str(et) or "includes" in str(et):
-                    sg[et].edge_index = drop_edge(sg[et].edge_index, p=DROPEDGE_PATHWAY)
-                # CPI边 (interacts) 不丢弃，保留交互完整性
-
-            stage_optimizer.zero_grad()
-
-            hgt_out = model(sg.x_dict, sg.edge_index_dict)
-            prot_emb = hgt_out["protein"]
-            comp_emb = hgt_out["compound"]
-
-            if torch.isnan(prot_emb).any() or torch.isinf(prot_emb).any() or torch.isnan(comp_emb).any() or torch.isinf(comp_emb).any():
-                _check_tensor_nan(prot_emb, "HGT prot_emb")
-                _check_tensor_nan(comp_emb, "HGT comp_emb")
-                logger.warning("HGT 前向传播产生 NaN/Inf 嵌入，跳过当前 batch")
-                continue
-
-            cpi_ei = sg[("compound", "interacts", "protein")].edge_index
-            if cpi_ei.shape[1] < 1:
-                continue
-
-            # 正样本
-            pos_src = cpi_ei[0]
-            pos_dst = cpi_ei[1]
-
-            # v19: 共享 CPI 损失计算 — 统一 Focal + BPR + 课程负采样 + InfoNCE
-            # v20-fix: sample_hetero_subgraph 返回的 prot_map 键已是局部蛋白索引
-            # （hetero_adj 中存的就是 p_global - n_compounds），无需再次转换
-            loss = _compute_cpi_loss(
-                model=model,
-                comp_emb=comp_emb,
-                prot_emb=prot_emb,
-                pos_src=pos_src,
-                pos_dst=pos_dst,
-                comp_sorted=comp_sorted,
-                prot_map=prot_map,
-                precomputed_pos=precomputed_pos,
-                n_compounds=n_compounds,
-                prot_to_path_neighbors=prot_to_path_neighbors,
-                compound_to_prot_locals=compound_to_prot_locals,
-                epoch=epoch,
-                stage_epochs=stage_epochs,
-                memory_bank=stage_memory_bank,
-                use_infonce=use_infonce,
-                bpr_weight=BPR_WEIGHT if use_bpr else 0.0,
-                use_curriculum=use_curriculum,
-                use_topology_neg=use_topology_neg,
-                prot_to_topo_medium_neighbors=prot_to_topo_medium_neighbors,
-                prot_to_topo_hard_neighbors=prot_to_topo_hard_neighbors,
-            )
-
-            if stage_use_pheno:
-                comp_sorted_tensor = torch.tensor(comp_sorted, device=DEVICE, dtype=torch.long)
-                pheno_mask = torch.isin(comp_sorted_tensor, pheno_idx_tensor)
-                if pheno_mask.any():
-                    pheno_comp_emb = comp_emb[pheno_mask]
-                    pheno_global_indices = comp_sorted_tensor[pheno_mask]
-                    matched_pos = torch.searchsorted(pheno_sorted_idx, pheno_global_indices)
-                    pheno_label_batch = pheno_sorted_labels[matched_pos]
-                    pheno_logits = model.predict_phenotype(pheno_comp_emb).squeeze(-1)
-                    pheno_loss = pheno_bce(pheno_logits, pheno_label_batch)
-                    loss = loss + pheno_lambda * pheno_loss
-
-            loss.backward()
-            _check_gradient_norm(model, warn_threshold=100.0)
-            torch.nn.utils.clip_grad_norm_(model.parameters(), GRAD_CLIP_NORM)
-            stage_optimizer.step()
-
-            # v17: 更新 Memory Bank
-            stage_memory_bank.update(prot_emb.detach())
-
-            total_loss += loss.item()
-            n_batches += 1
-
-        return total_loss, n_batches
-
-    # ============================================================
-    # v19: 阶段1 — 尾节点平衡子图预训练 (HGT)
-    # ============================================================
-    if two_stage and pretrain_epochs > 0:
-        pretrain_compounds, tail_compounds = _split_head_tail_nodes(
-            train_compounds, compound_to_pos, head_ratio=HEAD_RATIO, lambda_hhi=LAMBDA_HHI, seed=RANDOM_SEED)
-        n_head_kept = len(pretrain_compounds) - len(tail_compounds)
-        logger.info(f"  v25 HGT 两阶段预训练: tail={len(tail_compounds)}, head_kept={n_head_kept}, "
-                    f"total_pretrain={len(pretrain_compounds)}")
-
-        pretrain_lr_actual = pretrain_lr if pretrain_lr is not None else lr * PRETRAIN_LR_MULTIPLIER
-        pretrain_optimizer = torch.optim.AdamW(model.parameters(), lr=pretrain_lr_actual, weight_decay=WEIGHT_DECAY)
-        def pretrain_lr_lambda(e):
-            return 1.0 - PRETRAIN_LR_DECAY * (e / pretrain_epochs)
-        pretrain_scheduler = torch.optim.lr_scheduler.LambdaLR(pretrain_optimizer, pretrain_lr_lambda)
-        pretrain_memory_bank = MemoryBank(max_size=MEMORY_BANK_SIZE, out_dim=model.out_dim, device=DEVICE)
-
-        best_pretrain_aupr = 0.0
-        best_pretrain_state = None
-        val_hetero = graphs.get("hetero_data_val")
-        val_hetero_adj = graphs.get("hetero_adj_val", hetero_adj)
-
-        # v28: 预训练阶段 tqdm 进度条 + 计时
-        pretrain_start = time.time()
-        pretrain_pbar = tqdm(range(1, pretrain_epochs + 1), desc="HGT pretrain", unit="epoch")
-        for epoch in pretrain_pbar:
-            epoch_start = time.time()
-            total_loss, n_batches = _train_one_epoch(
-                epoch, pretrain_compounds, pretrain_optimizer, pretrain_memory_bank, pretrain_epochs)
-            epoch_time = time.time() - epoch_start
-            if n_batches == 0:
-                pretrain_pbar.set_postfix({"loss": "N/A", "time": f"{epoch_time:.1f}s"})
-                continue
-            avg_loss = total_loss / n_batches
-            pretrain_pbar.set_postfix({"loss": f"{avg_loss:.4f}", "time": f"{epoch_time:.1f}s"})
-
-            if epoch % PRETRAIN_VAL_FREQ == 0 and val_compounds:
-                model.eval()
-                torch.cuda.empty_cache()
-                with torch.no_grad():
-                    vh = val_hetero.to(DEVICE) if val_hetero is not None else hetero_data
-                    # v27-review: 验证时动态生成通路嵌入是设计选择（非性能问题）：
-                    # pathway_embed 是 nn.Embedding 参数，直接使用确保参数同步，
-                    # 预计算到 hetero_data 中会增加 .to(DEVICE) 时的显存传输量
-                    vh["pathway"].x = model.pathway_embed(
-                        torch.arange(max(graphs["n_pathways"], 1), device=DEVICE))
-                    x_dict_full = {k: v.clone() for k, v in vh.x_dict.items()}
-                    val_metrics = _validate_hgt(
-                        model, vh, val_compounds, all_compound_to_pos,
-                        n_compounds, n_proteins, hetero_adj=val_hetero_adj)
-                # v38: 移除蛋白冷启动验证，预训练 checkpoint 基于 val_aupr 保存
-                logger.info(
-                    f"  HGT pretrain epoch {epoch:3d} | loss={avg_loss:.4f} | "
-                    f"val_auc={val_metrics['auc']:.4f} | val_aupr={val_metrics['aupr']:.4f}")
-                if val_metrics["aupr"] > best_pretrain_aupr:
-                    best_pretrain_aupr = val_metrics["aupr"]
-                    best_pretrain_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
-                model.train()
-            elif epoch % 5 == 0:
-                logger.info(f"  HGT pretrain epoch {epoch:3d} | loss={avg_loss:.4f}")
-
-            pretrain_scheduler.step()
-
-        if best_pretrain_state is not None:
-            model.load_state_dict(best_pretrain_state)
-            logger.info(f"  v38 HGT 预训练完成，加载最优 checkpoint (val_aupr={best_pretrain_aupr:.4f}) 进入微调阶段")
-        else:
-            logger.info("  v38 HGT 预训练完成，加载最终参数进入微调阶段")
-        pretrain_pbar.close()
-        pretrain_elapsed = time.time() - pretrain_start
-        logger.info(f"  HGT 预训练完成，耗时 {pretrain_elapsed / 60:.1f} 分钟")
-        # 不保留预训练 Memory Bank，避免子图分布偏差传入微调
-
-    # ============================================================
-    # v19: 阶段2 — 完整训练图微调
-    # ============================================================
-    # v28: 训练阶段 tqdm 进度条 + 计时 + GPU 显存监控
-    fine_tune_start = time.time()
-    hgt_pbar = tqdm(range(1, epochs + 1), desc="HGT fine-tune", unit="epoch")
-    for epoch in hgt_pbar:
-        epoch_start = time.time()
-        total_loss, n_batches = _train_one_epoch(
-            epoch, train_compounds, optimizer, memory_bank, epochs,
-            stage_use_pheno=use_pheno)
-        epoch_time = time.time() - epoch_start
-
-        if n_batches == 0:
-            hgt_pbar.set_postfix({"loss": "N/A", "time": f"{epoch_time:.1f}s"})
-            continue
-
-        avg_loss = total_loss / n_batches
-        hgt_pbar.set_postfix({"loss": f"{avg_loss:.4f}", "time": f"{epoch_time:.1f}s"})
-
-        if epoch % VAL_FREQ == 0 and val_compounds:
-            torch.cuda.empty_cache()
-            # v17: 使用验证安全异质图（无验证集 CPI 边），防止冷启动信息泄露
-            val_hetero = graphs.get("hetero_data_val")
-            val_hetero = val_hetero.to(DEVICE) if val_hetero is not None else hetero_data
-            # v18: 验证时使用验证安全邻接表，避免 OOM 降级采样引入训练边
-            val_hetero_adj = graphs.get("hetero_adj_val", hetero_adj)
-            val_metrics = _validate_hgt(
-                model, val_hetero, val_compounds,
-                all_compound_to_pos, n_compounds, n_proteins,
-                hetero_adj=val_hetero_adj)
-            val_auc = val_metrics["auc"]
-            val_aupr = val_metrics["aupr"]
-
-            # v38: 移除蛋白冷启动验证，早停基于 val_aupr（化合物冷启动）
-            if val_aupr > best_val_aupr:
-                best_val_aupr = val_aupr
-                best_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
-                patience_counter = 0
-            else:
-                patience_counter += 1
-
-            history.append({"epoch": epoch, "loss": avg_loss, "auc": val_auc, "aupr": val_aupr})
-            logger.info(f"  HGT epoch {epoch:3d} | loss={avg_loss:.4f} | val_auc={val_auc:.4f} | val_aupr={val_aupr:.4f}")
-
-            if patience_counter >= patience:
-                logger.info(f"  HGT 早停 (epoch {epoch}, patience_counter={patience_counter})")
-                break
-
-            # v17: Memory Bank 全局刷新 — 每5 epoch 全图前向，填充完整蛋白嵌入
-            # v18: 过滤掉验证蛋白，避免验证信息进入 bank
-            # v25-fix: try/finally 防御 — 确保 model.train() 不会被提前 return/break/continue 跳过
-            if epoch % 5 == 0:
-                model.eval()
-                try:
-                    with torch.no_grad():
-                        hetero_data_dev = hetero_data.to(DEVICE)
-                        n_path = hetero_data_dev["pathway"].n_pathways
-                        hetero_data_dev["pathway"].x = model.pathway_embed(
-                            torch.arange(max(n_path, 1), device=DEVICE))
-                        x_dict_full = {k: v.clone() for k, v in hetero_data_dev.x_dict.items()}
-                        hgt_out = model(x_dict_full, hetero_data_dev.edge_index_dict)
-                        full_prot_emb = hgt_out["protein"]
-                        # 排除验证蛋白嵌入
-                        if val_proteins is not None and len(val_proteins) > 0:
-                            train_prot_mask = torch.ones(full_prot_emb.shape[0], dtype=torch.bool, device=DEVICE)
-                            train_prot_mask[list(val_proteins)] = False
-                            full_prot_emb = full_prot_emb[train_prot_mask]
-                        memory_bank = MemoryBank(max_size=MEMORY_BANK_SIZE, out_dim=model.out_dim, device=DEVICE)
-                        memory_bank.update(full_prot_emb)
-                    logger.info(f"  HGT Memory Bank 全局刷新: {memory_bank.size()} 训练蛋白嵌入")
-                finally:
-                    model.train()
-
-        scheduler.step()
-
-    hgt_pbar.close()
-    fine_tune_elapsed = time.time() - fine_tune_start
-    logger.info(f"  HGT 微调训练完成，耗时 {fine_tune_elapsed / 60:.1f} 分钟")
-    _log_gpu_memory("HGT 训练结束")
-
-    if best_state is not None:
-        model.load_state_dict(best_state)
-    best_entry = max(history, key=lambda x: x.get("aupr", 0)) if history else {"auc": 0.0, "aupr": 0.0}
-    logger.info(f"  HGT best val_aupr={best_entry.get('aupr', 0):.4f}, val_auc={best_entry.get('auc', 0):.4f}")
-    return model, history
-
-
-# ============================================================
-# 11. 预测与集成
-# ============================================================
 def predict_tcm(
     sage_model: SAGELinkPredictor,
     hgt_model: HGTLinkPredictor | None,
@@ -3397,16 +2921,6 @@ def predict_tcm(
     tree_weight: float = 0.6,  # v40: 树模型集成权重
 ) -> pd.DataFrame:
     """v40: SAGE + HGT + 树模型三方集成预测 — 等权集成 + 多样性约束 + MC Dropout
-
-    v40 改进:
-      - 树模型 v7 预测集成（XGBoost，86基因，覆盖全部CPI数据基因）
-      - 三方加权融合: GNN集成分数 x (1-tree_weight) + 树模型分数 x tree_weight
-      - 残基级双线性解码器 (residue_bilinear) 利用 ESM-2 逐残基特征
-
-    v38 改进:
-      - 移除蛋白冷启动 AUPR 动态权重，改为等权集成
-      - 余弦相似度多样性惩罚：鼓励两个分支利用不同信号
-      - MC Dropout 不确定性估计
 
     Args:
         diversity_penalty: 余弦相似度惩罚系数（0~1，越大越惩罚相似预测）
@@ -3698,7 +3212,7 @@ def pipeline_self_check(tcm_df, cpi_df, ppi_df, prot_feat, gene_to_pathways, war
 # ============================================================
 # 13. 主流程
 # ============================================================
-def main(decoder_type: str | None = None):
+def main(decoder_type: str | None = None, skip_sage: bool = False):
     """v27: Phase 4 主流程 — SAGE + HGT 双分支训练与 TCM 预测
 
     流程:
@@ -3732,6 +3246,7 @@ def main(decoder_type: str | None = None):
     logger.info("v37: HGT 蛋白冷启动验证负采样与 SAGE 对齐 (仅 CPI 蛋白) + 化合物冷启动验证 prot_residue_indices 改用全局索引")
     logger.info("v38: 彻底移除蛋白冷启动验证 / 早停仅基于 val_aupr / 等权集成 / 清理未定义变量")
     logger.info("v40: 集成树模型 v7 扩展CPI数据 (86基因/48K条) + 树模型预测集成")
+    logger.info("v41: 修复 HGT 化合物冷启动验证信息泄漏，验证时禁用 seed->candidate 临时 CPI 边")
     logger.info("=" * 60)
 
     # ── 加固: 关键数据文件存在性检查 ──
@@ -3807,10 +3322,10 @@ def main(decoder_type: str | None = None):
     if missing_ferro_in_prot_feat:
         logger.warning(f">>> 以下铁衰老96基因缺少ESM-2特征: {missing_ferro_in_prot_feat}")
 
-    # v40: 图数据缓存路径与缓存键（扩展至86基因，强制重建图）
-    GRAPH_CACHE_PATH = L4_RESULTS / "graph_cache_v40.pkl"
+    # v41: 图数据缓存路径与缓存键（修复 HGT 化合物冷启动验证信息泄漏）
+    GRAPH_CACHE_PATH = L4_RESULTS / "graph_cache_v41.pkl"
     GRAPH_CACHE_KEY = {
-        "version": "v40",
+        "version": "v41",
         "random_seed": RANDOM_SEED,
         "compound_val_split": COMPOUND_VAL_SPLIT,
         "protein_val_split": PROTEIN_VAL_SPLIT,
@@ -3828,7 +3343,7 @@ def main(decoder_type: str | None = None):
             logger.info(f">>> 尝试加载图数据缓存: {GRAPH_CACHE_PATH}")
             with open(GRAPH_CACHE_PATH, "rb") as _f:
                 _cached = pickle.load(_f)
-            if _cached.get("key") == _graph_cache_key:
+            if _cached.get("key") == GRAPH_CACHE_KEY:
                 graphs = _cached["graphs"]
                 train_compounds = _cached["train_compounds"]
                 val_compounds = _cached["val_compounds"]
@@ -4009,7 +3524,7 @@ def main(decoder_type: str | None = None):
     if not _cache_loaded:
         try:
             _cache_data = {
-                "key": _graph_cache_key,
+                "key": GRAPH_CACHE_KEY,
                 "graphs": graphs,
                 "train_compounds": train_compounds,
                 "val_compounds": val_compounds,
@@ -4039,40 +3554,74 @@ def main(decoder_type: str | None = None):
             raise FileNotFoundError(
                 f"decoder_type=residue_bilinear 但残基特征文件不存在: {residue_pt_path}"
             )
-        (
-            residue_embeddings,
-            residue_offsets,
-            residue_lengths,
-            prot_to_residue_idx,
-            residue_max_len,
-        ) = load_residue_esm2_features(
-            graphs, residue_pt_path=residue_pt_path, residue_device="cpu"
-        )
+        try:
+            (
+                residue_embeddings,
+                residue_offsets,
+                residue_lengths,
+                prot_to_residue_idx,
+                residue_max_len,
+            ) = load_residue_esm2_features(
+                graphs, residue_pt_path=residue_pt_path, residue_device="cpu"
+            )
+        except Exception as _e:
+            logger.warning(
+                f"v40: 残基特征文件加载失败 ({_e})，自动降级为 bilinear 解码器"
+            )
+            DECODER_TYPE = "bilinear"
+            residue_embeddings = None
 
     # ======== 训练 SAGE ========
-    logger.info(">>> 训练 SAGE（v40: SAGEConv + residue_bilinear + 两阶段迁移学习 + FocalLoss + 课程负采样）")
-    _log_gpu_memory("SAGE 训练前")
-    _t0 = time.time()
-    sage_model = SAGELinkPredictor(
-        comp_feat_dim=graphs["feat_dim"], prot_feat_dim=graphs["prot_esm_dim"],  # v17-ESM2: 传 ESM-2 维度（640），通路独立投影
-        n_compounds=graphs["n_compounds"],
-        hidden_dim=HIDDEN_DIM, out_dim=OUT_DIM, num_layers=NUM_LAYERS, dropout=DROPOUT,
-        n_pathways=graphs["n_pathways"],
-        prot_proj_dropout=PROT_PROJ_DROPOUT,
-        prot_proj_inner_dropout=PROT_PROJ_INNER_DROPOUT,
-        pathway_proj_dropout=PATHWAY_PROJ_DROPOUT,
-        pheno_head_dropout=PHENO_HEAD_DROPOUT,
-        temperature=TEMPERATURE,
-        decoder_type=DECODER_TYPE)
-    # v33: 注册残基级 ESM-2 特征到 SAGE 解码器（大张量保留在 CPU）
-    if DECODER_TYPE == "residue_bilinear" and residue_embeddings is not None:
-        sage_model.set_residue_features(
-            residue_embeddings, residue_offsets, residue_lengths,
-            prot_to_residue_idx=prot_to_residue_idx,
-            max_len=residue_max_len,
-            residue_device="cpu",
-        )
-    sage_model, sage_history = train_sage(
+    sage_model_path = L4_RESULTS / "sage_best_v41.pt"
+    if skip_sage and sage_model_path.exists():
+        logger.info(f">>> 跳过 SAGE 训练，加载已有模型: {sage_model_path}")
+        sage_model = SAGELinkPredictor(
+            comp_feat_dim=graphs["feat_dim"], prot_feat_dim=graphs["prot_esm_dim"],
+            n_compounds=graphs["n_compounds"],
+            hidden_dim=HIDDEN_DIM, out_dim=OUT_DIM, num_layers=NUM_LAYERS, dropout=DROPOUT,
+            n_pathways=graphs["n_pathways"],
+            prot_proj_dropout=PROT_PROJ_DROPOUT,
+            prot_proj_inner_dropout=PROT_PROJ_INNER_DROPOUT,
+            pathway_proj_dropout=PATHWAY_PROJ_DROPOUT,
+            pheno_head_dropout=PHENO_HEAD_DROPOUT,
+            temperature=TEMPERATURE,
+            decoder_type=DECODER_TYPE)
+        if DECODER_TYPE == "residue_bilinear" and residue_embeddings is not None:
+            sage_model.set_residue_features(
+                residue_embeddings, residue_offsets, residue_lengths,
+                prot_to_residue_idx=prot_to_residue_idx,
+                max_len=residue_max_len,
+                residue_device="cpu",
+            )
+        sage_checkpoint = torch.load(sage_model_path, map_location=DEVICE, weights_only=False)
+        sage_model.load_state_dict(sage_checkpoint["state_dict"])
+        sage_model = sage_model.to(DEVICE)
+        sage_history = []
+        _t0 = time.time()
+    else:
+        logger.info(f">>> 训练 SAGE（v41: SAGEConv + {DECODER_TYPE} + 两阶段迁移学习 + FocalLoss + 课程负采样）")
+        _log_gpu_memory("SAGE 训练前")
+        _t0 = time.time()
+        sage_model = SAGELinkPredictor(
+            comp_feat_dim=graphs["feat_dim"], prot_feat_dim=graphs["prot_esm_dim"],  # v17-ESM2: 传 ESM-2 维度（640），通路独立投影
+            n_compounds=graphs["n_compounds"],
+            hidden_dim=HIDDEN_DIM, out_dim=OUT_DIM, num_layers=NUM_LAYERS, dropout=DROPOUT,
+            n_pathways=graphs["n_pathways"],
+            prot_proj_dropout=PROT_PROJ_DROPOUT,
+            prot_proj_inner_dropout=PROT_PROJ_INNER_DROPOUT,
+            pathway_proj_dropout=PATHWAY_PROJ_DROPOUT,
+            pheno_head_dropout=PHENO_HEAD_DROPOUT,
+            temperature=TEMPERATURE,
+            decoder_type=DECODER_TYPE)
+        # v33: 注册残基级 ESM-2 特征到 SAGE 解码器（大张量保留在 CPU）
+        if DECODER_TYPE == "residue_bilinear" and residue_embeddings is not None:
+            sage_model.set_residue_features(
+                residue_embeddings, residue_offsets, residue_lengths,
+                prot_to_residue_idx=prot_to_residue_idx,
+                max_len=residue_max_len,
+                residue_device="cpu",
+            )
+        sage_model, sage_history = train_sage(
         sage_model, graphs, train_compounds, val_compounds, compound_to_pos,
         device=DEVICE,
         val_proteins=val_proteins,
@@ -4094,8 +3643,8 @@ def main(decoder_type: str | None = None):
         _validate_sage_fn=_validate_sage, _compute_cpi_loss_fn=_compute_cpi_loss)
 
     try:
-        torch.save({"state_dict": sage_model.state_dict(), "version": "v40", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "sage_best_v40.pt")
-        logger.info("  SAGE 模型已保存到 sage_best_v40.pt")
+        torch.save({"state_dict": sage_model.state_dict(), "version": "v41", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "sage_best_v41.pt")
+        logger.info("  SAGE 模型已保存到 sage_best_v41.pt")
     except Exception:
         logger.error("  SAGE 模型保存失败", exc_info=True)
         raise
@@ -4117,7 +3666,7 @@ def main(decoder_type: str | None = None):
         gc.collect()
 
     # ======== 训练 HGT ========
-    logger.info(">>> 训练 HGT（v40: HGTConv + residue_bilinear + 两阶段迁移学习 + FocalLoss + 课程负采样）")
+    logger.info(f">>> 训练 HGT（v41: HGTConv + {DECODER_TYPE} + 两阶段迁移学习 + FocalLoss + 课程负采样）")
     _log_gpu_memory("HGT 训练前")
     hgt_node_feat_dims = {
         "compound": graphs["feat_dim"],
@@ -4143,18 +3692,28 @@ def main(decoder_type: str | None = None):
         )
     hgt_model, hgt_history = train_hgt(
         hgt_model, graphs, train_compounds, val_compounds, compound_to_pos,
+        device=DEVICE,
         val_proteins=val_proteins,
         epochs=EPOCHS, lr=LEARNING_RATE_HGT, patience=PATIENCE, batch_size=HGT_BATCH_SIZE,
         num_neighbors=HGT_NUM_NEIGHBORS,
         prot_to_path_neighbors=graphs.get("prot_to_path_neighbors"),
         two_stage=True, pretrain_epochs=PRETRAIN_EPOCHS, pretrain_lr=PRETRAIN_LR_HGT,
+        random_seed=RANDOM_SEED,
         pheno_compound_indices=pheno_train_indices,
         pheno_labels=pheno_train_labels,
-        pheno_lambda=PHENO_LAMBDA)  # v33-fix: 移除 train_hgt 不接受的参数
+        pheno_lambda=PHENO_LAMBDA,
+        bpr_weight=BPR_WEIGHT, weight_decay=WEIGHT_DECAY, warmup_ratio=WARMUP_RATIO,
+        dropedge_ppi=DROPPEDGE_PPI, dropedge_pathway=DROPPEDGE_PATHWAY,
+        focal_gamma=FOCAL_GAMMA, focal_alpha=FOCAL_ALPHA,
+        memory_bank_size=MEMORY_BANK_SIZE,
+        head_ratio=HEAD_RATIO, lambda_hhi=LAMBDA_HHI,
+        grad_clip_norm=GRAD_CLIP_NORM,
+        pretrain_lr_multiplier=PRETRAIN_LR_MULTIPLIER, pretrain_lr_decay=PRETRAIN_LR_DECAY,
+        _validate_hgt_fn=_validate_hgt, _compute_cpi_loss_fn=_compute_cpi_loss)
 
     try:
-        torch.save({"state_dict": hgt_model.state_dict(), "version": "v40", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "hgt_best_v40.pt")
-        logger.info("  HGT 模型已保存到 hgt_best_v40.pt")
+        torch.save({"state_dict": hgt_model.state_dict(), "version": "v41", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "hgt_best_v41.pt")
+        logger.info("  HGT 模型已保存到 hgt_best_v41.pt")
     except Exception:
         logger.error("  HGT 模型保存失败", exc_info=True)
         raise
@@ -4379,10 +3938,10 @@ def main(decoder_type: str | None = None):
     top_df = pred_df.head(TOP_N_CANDIDATES).copy()
 
     try:
-        pred_df.to_csv(L4_RESULTS / "tcm_predictions_full_v40.csv", index=False)
-        top_df.to_csv(L4_RESULTS / "tcm_top_candidates_v40.csv", index=False)
-        logger.info(f"  预测结果已保存: tcm_predictions_full_v40.csv ({len(pred_df)} 行), "
-                    f"tcm_top_candidates_v40.csv ({len(top_df)} 行)")
+        pred_df.to_csv(L4_RESULTS / "tcm_predictions_full_v41.csv", index=False)
+        top_df.to_csv(L4_RESULTS / "tcm_top_candidates_v41.csv", index=False)
+        logger.info(f"  预测结果已保存: tcm_predictions_full_v41.csv ({len(pred_df)} 行), "
+                    f"tcm_top_candidates_v41.csv ({len(top_df)} 行)")
     except Exception:
         logger.error("  预测结果 CSV 保存失败", exc_info=True)
         raise
@@ -4412,15 +3971,15 @@ def main(decoder_type: str | None = None):
         perf_rows.append(hgt_row)
     if perf_rows:
         try:
-            pd.DataFrame(perf_rows).to_csv(L4_RESULTS / "model_performance_v40.csv", index=False)
-            logger.info(f"  模型性能报告已保存: model_performance_v40.csv (训练时间={train_time_min:.1f}min, GPU峰值={gpu_mem_peak_gb:.2f}GB)")
+            pd.DataFrame(perf_rows).to_csv(L4_RESULTS / "model_performance_v41.csv", index=False)
+            logger.info(f"  模型性能报告已保存: model_performance_v41.csv (训练时间={train_time_min:.1f}min, GPU峰值={gpu_mem_peak_gb:.2f}GB)")
         except Exception:
             logger.error("  模型性能 CSV 保存失败", exc_info=True)
             raise
 
     total_time = time.time() - start_time
     logger.info("=" * 60)
-    logger.info(f"Phase 4 v40 完成！总耗时 {total_time / 60:.1f} 分钟")
+    logger.info(f"Phase 4 v41 完成！总耗时 {total_time / 60:.1f} 分钟")
     if sage_history:
         logger.info(f"  SAGE best val_auc: {max(h['auc'] for h in sage_history):.4f}  val_aupr: {max(h.get('aupr', 0) for h in sage_history):.4f}")
     if hgt_history:
@@ -4429,7 +3988,7 @@ def main(decoder_type: str | None = None):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Phase 4 v40: SAGE + HGT + 树模型集成训练与 TCM 预测")
+    parser = argparse.ArgumentParser(description="Phase 4 v41: SAGE + HGT + 树模型集成训练与 TCM 预测")
     parser.add_argument(
         "--decoder_type",
         type=str,
@@ -4437,5 +3996,10 @@ if __name__ == "__main__":
         choices=["mlp", "dot", "bilinear", "residue_bilinear"],
         help="覆盖配置中的解码器类型（默认从 config 读取）",
     )
+    parser.add_argument(
+        "--skip_sage",
+        action="store_true",
+        help="若 SAGE 模型已存在则跳过训练，直接加载并训练 HGT",
+    )
     args = parser.parse_args()
-    main(decoder_type=args.decoder_type)
+    main(decoder_type=args.decoder_type, skip_sage=args.skip_sage)
