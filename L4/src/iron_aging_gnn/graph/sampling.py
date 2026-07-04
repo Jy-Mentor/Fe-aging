@@ -50,26 +50,22 @@ def sample_homo_subgraph(
     node_to_local = {n: i for i, n in enumerate(node_list)}
 
     # 向量化边构建，替换双重 Python 循环
-    _max_node = max(node_list)
-    ntl = torch.full((_max_node + 1,), -1, dtype=torch.long)
-    for n, l in node_to_local.items():
-        ntl[n] = l
-
-    # 从 homo_adj 构建扁平边列表（仅 node_list 中的节点）
+    # 仅保留两端点都在 node_list 中的边
     src_list, dst_list = [], []
     for node in node_list:
         nbrs = homo_adj.get(node, [])
         if nbrs:
-            src_list.extend([node] * len(nbrs))
-            dst_list.extend(nbrs)
+            for nbr in nbrs:
+                if nbr in node_to_local:
+                    src_list.append(node)
+                    dst_list.append(nbr)
 
     if src_list:
         src_t = torch.tensor(src_list, dtype=torch.long)
         dst_t = torch.tensor(dst_list, dtype=torch.long)
-        src_local = ntl[src_t]
-        dst_local = ntl[dst_t]
-        valid = (src_local >= 0) & (dst_local >= 0)
-        edge_index = torch.stack([src_local[valid], dst_local[valid]])
+        src_local = torch.tensor([node_to_local[int(s)] for s in src_t], dtype=torch.long)
+        dst_local = torch.tensor([node_to_local[int(d)] for d in dst_t], dtype=torch.long)
+        edge_index = torch.stack([src_local, dst_local])
     else:
         edge_index = torch.zeros((2, 0), dtype=torch.long)
 
