@@ -309,7 +309,7 @@ def train_sage(
 
             stage_optimizer.zero_grad()
             stage_scaler.scale(loss).backward()
-            gradient_monitor.check_and_clip(model, scaler=stage_scaler)
+            gradient_monitor.check_and_clip(model, scaler=stage_scaler, optimizer=stage_optimizer)
             stage_scaler.step(stage_optimizer)
             stage_scaler.update()
 
@@ -675,7 +675,7 @@ def train_hgt(
                     loss = loss + pheno_lambda * pheno_loss
 
             stage_scaler.scale(loss).backward()
-            gradient_monitor.check_and_clip(model, scaler=stage_scaler)
+            gradient_monitor.check_and_clip(model, scaler=stage_scaler, optimizer=stage_optimizer)
             stage_scaler.step(stage_optimizer)
             stage_scaler.update()
 
