@@ -13,6 +13,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import torch
+from rdkit import Chem
 from torch_geometric.data import HeteroData
 
 from ..data.features import build_compound_features
@@ -59,6 +60,9 @@ def build_graphs_and_adj(
     topo_neighbors_top_k: int = 50,
     use_esm_similarity_neg: bool = False,
     esm_similarity_top_k: int = 50,
+    use_compound_similarity_edges: bool = True,
+    comp_sim_threshold: float = 0.7,
+    comp_sim_top_k: int = 10,
 ):
     """构建同质图 + 异质图 + 邻接表（可选疾病节点和拓扑/ESM-2负样本）
 
@@ -91,6 +95,40 @@ def build_graphs_and_adj(
     # 化合物特征
     logger.info(f"  computing compound features ({n_compounds} compounds)...")
     comp_feat, _, _, _ = build_compound_features(all_smiles)
+
+    # 化合物-化合物 Tanimoto 相似性边 — 解决冷启动验证时化合物节点孤立问题
+    comp_sim_edges: list[tuple[int, int]] = []
+    if use_compound_similarity_edges and n_compounds > 1:
+        logger.info(f"  computing compound-compound similarity edges (threshold={comp_sim_threshold}, top_k={comp_sim_top_k})...")
+        try:
+            from rdkit import DataStructs
+            from rdkit.Chem import AllChem
+            ecfp4_fps = []
+            for smi in all_smiles:
+                mol = Chem.MolFromSmiles(smi)
+                if mol is None:
+                    ecfp4_fps.append(None)
+                else:
+                    ecfp4_fps.append(AllChem.GetMorganFingerprintAsBitVect(mol, 2, nBits=2048))
+            n_comp_sim_edges = 0
+            for i in range(n_compounds):
+                if ecfp4_fps[i] is None:
+                    continue
+                sims = []
+                for j in range(n_compounds):
+                    if i >= j or ecfp4_fps[j] is None:
+                        continue
+                    sim = DataStructs.TanimotoSimilarity(ecfp4_fps[i], ecfp4_fps[j])
+                    if sim >= comp_sim_threshold:
+                        sims.append((j, sim))
+                sims.sort(key=lambda x: x[1], reverse=True)
+                for j, _sim in sims[:comp_sim_top_k]:
+                    comp_sim_edges.append((i, j))
+                    comp_sim_edges.append((j, i))
+                    n_comp_sim_edges += 2
+            logger.info(f"  compound-compound similarity edges: {n_comp_sim_edges} (threshold={comp_sim_threshold})")
+        except Exception as e:
+            logger.warning(f"  compound similarity edge computation failed ({e}), skipping")
 
     # 蛋白特征
     prot_feat_dim = next(iter(prot_feat.values())).shape[0] if prot_feat else 20
@@ -170,11 +208,18 @@ def build_graphs_and_adj(
             homo_adj[ti].append(si)
             n_ppi_edges += 1
 
-    logger.info(f"同质图邻接: {len(homo_adj)} 节点, {n_ppi_edges} PPI 边")
+    n_comp_sim_adj = 0
+    for src, dst in comp_sim_edges:
+        if src < n_compounds and dst < n_compounds:
+            homo_adj[src].append(dst)
+            n_comp_sim_adj += 1
+
+    logger.info(f"同质图邻接: {len(homo_adj)} 节点, {n_ppi_edges} PPI 边, {n_comp_sim_adj} 化合物相似性边")
 
     # 异质图邻接表（用于 HGT 分支采样）
     hetero_adj = {
         ("compound", "interacts", "protein"): defaultdict(list),
+        ("compound", "similar_to", "compound"): defaultdict(list),
         ("protein", "ppi", "protein"): defaultdict(list),
         ("protein", "belongs_to", "pathway"): defaultdict(list),
         ("protein", "associated_with", "disease"): defaultdict(list),
@@ -197,6 +242,10 @@ def build_graphs_and_adj(
         if smi in smi_to_idx and gene in gene_to_idx:
             hetero_adj[("compound", "interacts", "protein")][smi_to_idx[smi]].append(
                 gene_to_idx[gene] - n_compounds)
+
+    for src, dst in comp_sim_edges:
+        if src < n_compounds and dst < n_compounds:
+            hetero_adj[("compound", "similar_to", "compound")][src].append(dst)
 
     for _, row in ppi_df.iterrows():
         src = str(row["source"]).strip().upper()
@@ -253,6 +302,21 @@ def build_graphs_and_adj(
             cpi_edges[1].append(dst)
     hetero_data["compound", "interacts", "protein"].edge_index = torch.tensor(cpi_edges, dtype=torch.long)
 
+    # 化合物-化合物相似性边
+    comp_sim_edges_tensor = [[], []]
+    for src, dsts in hetero_adj[("compound", "similar_to", "compound")].items():
+        for dst in dsts:
+            comp_sim_edges_tensor[0].append(src)
+            comp_sim_edges_tensor[1].append(dst)
+    hetero_data["compound", "similar_to", "compound"].edge_index = torch.tensor(
+        comp_sim_edges_tensor, dtype=torch.long
+    ) if comp_sim_edges_tensor[0] else torch.zeros((2, 0), dtype=torch.long)
+    # 反向边（用于双向消息传递）
+    rev_comp_sim = [comp_sim_edges_tensor[1][:], comp_sim_edges_tensor[0][:]]
+    hetero_data["compound", "rev_similar_to", "compound"].edge_index = torch.tensor(
+        rev_comp_sim, dtype=torch.long
+    ) if rev_comp_sim[0] else torch.zeros((2, 0), dtype=torch.long)
+
     # PPI 边
     ppi_edges = [[], []]
     for src, dsts in hetero_adj[("protein", "ppi", "protein")].items():
@@ -285,7 +349,8 @@ def build_graphs_and_adj(
         logger.info(f"disease edges = {len(pd_edges[0])}")
 
     logger.info(f"异质图: compound({n_compounds}) protein({n_proteins}) pathway({n_pathways}) disease({n_diseases}) | "
-                f"CPI={len(cpi_edges[0])} PPI={len(ppi_edges[0])} Pathway={len(pt_edges[0])}")
+                f"CPI={len(cpi_edges[0])} PPI={len(ppi_edges[0])} Pathway={len(pt_edges[0])} "
+                f"CompSim={len(comp_sim_edges_tensor[0])}")
 
     # Opt1: 预计算全图同质边索引，验证/预测直接复用（速度提升 10x+）
     homo_edge_list = []

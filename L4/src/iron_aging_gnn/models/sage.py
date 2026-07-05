@@ -105,23 +105,29 @@ class SAGELinkPredictor(nn.Module):
 
         self.prot_dropout = nn.Dropout(prot_proj_dropout)
 
-        # SAGEConv 层
+        # SAGEConv 层 + 残差投影
         self.convs = nn.ModuleList()
         self.norms = nn.ModuleList()
         self.dropouts = nn.ModuleList()
+        self.residual_projs = nn.ModuleList()
 
         self.convs.append(SAGEConv(hidden_dim, hidden_dim))
         self.norms.append(nn.LayerNorm(hidden_dim))
         self.dropouts.append(nn.Dropout(dropout))
+        self.residual_projs.append(nn.Identity())
 
         for _ in range(num_layers - 2):
             self.convs.append(SAGEConv(hidden_dim, hidden_dim))
             self.norms.append(nn.LayerNorm(hidden_dim))
             self.dropouts.append(nn.Dropout(dropout))
+            self.residual_projs.append(nn.Identity())
 
         self.convs.append(SAGEConv(hidden_dim, out_dim))
         self.norms.append(nn.Identity())
         self.dropouts.append(nn.Dropout(dropout))
+        self.residual_projs.append(
+            nn.Identity() if hidden_dim == out_dim else nn.Linear(hidden_dim, out_dim, bias=False)
+        )
 
         # 可插拔解码器
         if decoder_type == "mlp":
@@ -185,10 +191,9 @@ class SAGELinkPredictor(nn.Module):
         prot_indices = slice(n_compounds, h.shape[0])
         h[prot_indices] = self.prot_dropout(h[prot_indices])
 
-        for conv, norm, drop in zip(self.convs, self.norms, self.dropouts, strict=False):
+        for conv, norm, drop, res_proj in zip(self.convs, self.norms, self.dropouts, self.residual_projs, strict=False):
             h_new = conv(h, edge_index)
-            if h.shape[-1] == h_new.shape[-1]:
-                h_new = h_new + h
+            h_new = h_new + res_proj(h)
             h = norm(h_new)
             h = F.relu(h)
             h = drop(h)
@@ -243,10 +248,9 @@ class SAGELinkPredictor(nn.Module):
         x_actual = x[:, :self.comp_feat_dim]
         h = self.comp_proj(x_actual)
         empty_edge = torch.zeros((2, 0), dtype=torch.long, device=h.device)
-        for conv, norm, drop in zip(self.convs, self.norms, self.dropouts, strict=False):
+        for conv, norm, drop, res_proj in zip(self.convs, self.norms, self.dropouts, self.residual_projs, strict=False):
             h_new = conv(h, empty_edge)
-            if h.shape[-1] == h_new.shape[-1]:
-                h_new = h_new + h
+            h_new = h_new + res_proj(h)
             h = norm(h_new)
             h = F.relu(h)
             h = drop(h)

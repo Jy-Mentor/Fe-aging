@@ -148,6 +148,30 @@ def compute_avalon(smiles_list, nbits=1024):
     return fps
 
 
+def compute_pharmacophore(smiles_list, nbits=1024):
+    """Pharmacophore 指纹（Gobbi 2D 药效团）"""
+    fps = np.zeros((len(smiles_list), nbits), dtype=np.float32)
+    try:
+        from rdkit.Chem.Pharm2D import Generate, Gobbi_Pharm2D
+        factory = Gobbi_Pharm2D.factory
+        for i, smi in enumerate(smiles_list):
+            if not smi or pd.isna(smi):
+                continue
+            mol = Chem.MolFromSmiles(str(smi))
+            if mol is None:
+                continue
+            fp = Generate.Gen2DFingerprint(mol, factory)
+            arr = np.zeros(nbits, dtype=np.float32)
+            on_bits = list(fp.GetOnBits())
+            for b in on_bits:
+                if b < nbits:
+                    arr[b] = 1.0
+            fps[i] = arr
+    except Exception as e:
+        logger.warning(f"Pharmacophore 指纹计算失败: {e}，跳过")
+    return fps
+
+
 def compute_rdkit_2d(smiles_list):
     """RDKit 2D 描述符（连续值）"""
     desc_names = [name for name, _ in Descriptors._descList]
@@ -208,7 +232,7 @@ def build_multifingerprint_features(smiles_list, rdkit_scaler=None, use_cache=Tr
                             f"耗时: {time.time()-t0:.1f}s")
                 return X_binary, X_rdkit, X_rdkit_raw, rdkit_scaler_loaded, binary_labels, rdkit_names
             else:
-                logger.info(f"  缓存 SMILES 列表不匹配，重新计算")
+                logger.info("  缓存 SMILES 列表不匹配，重新计算")
         except Exception as e:
             logger.warning(f"  缓存加载失败: {e}，重新计算")
 
@@ -240,6 +264,11 @@ def build_multifingerprint_features(smiles_list, rdkit_scaler=None, use_cache=Tr
     binary_labels.append("Avalon")
     logger.info(f"    Avalon: {fp.shape} (binary)")
 
+    fp = compute_pharmacophore(smiles_list, nbits=1024)
+    binary_fps.append(fp)
+    binary_labels.append("Pharmacophore")
+    logger.info(f"    Pharmacophore: {fp.shape} (binary)")
+
     X_binary = np.hstack(binary_fps).astype(np.float32)
     logger.info(f"  二进制指纹总维度: {X_binary.shape[1]}")
 
@@ -257,7 +286,7 @@ def build_multifingerprint_features(smiles_list, rdkit_scaler=None, use_cache=Tr
     if rdkit_scaler is None:
         rdkit_scaler = StandardScaler()
         X_rdkit = rdkit_scaler.fit_transform(X_rdkit_raw)
-        logger.info(f"  RDKit2D 已标准化 (mean=0, std=1)")
+        logger.info("  RDKit2D 已标准化 (mean=0, std=1)")
 
         if use_cache:
             try:
@@ -307,7 +336,7 @@ def process_protein_embeddings(protein_embeddings, target_dim=128, pca_model=Non
         logger.info(f"  Top-5 PC 累计方差: {top5_ratio:.4f}")
         scaler = StandardScaler()
         vectors_scaled = scaler.fit_transform(vectors_reduced)
-        logger.info(f"  蛋白嵌入已标准化")
+        logger.info("  蛋白嵌入已标准化")
         processed = {k: vectors_scaled[i] for i, k in enumerate(keys)}
         return processed, pca, scaler
     else:
@@ -505,8 +534,22 @@ def scaffold_split(pair_smiles, y, test_size=0.2, random_state=42):
 
 def diversity_constrained_negative_sampling(
     pos_pairs, compound_smiles, cpi_genes_in_emb, neg_ratio=3, random_seed=42,
+    protein_embeddings=None, compound_ecfp4=None,
+    hard_ratio=0.3, esm_hard_ratio=0.2,
 ):
-    """多样性约束负采样"""
+    """多样性约束负采样：混合随机 + Tanimoto 难负 + ESM-2 结构难负。
+
+    Args:
+        pos_pairs: [(smiles, gene), ...] 正样本对
+        compound_smiles: 所有化合物 SMILES
+        cpi_genes_in_emb: 有嵌入的 CPI 基因列表
+        neg_ratio: 负正样本比例
+        random_seed: 随机种子
+        protein_embeddings: {gene: vector} 蛋白 ESM-2 嵌入（用于 ESM-2 难负样本）
+        compound_ecfp4: (n_compounds, 2048) ECFP4 指纹（用于 Tanimoto 难负样本）
+        hard_ratio: Tanimoto 难负样本比例
+        esm_hard_ratio: ESM-2 结构难负样本比例
+    """
     rng = np.random.RandomState(random_seed)
     smiles_to_idx = {str(s): i for i, s in enumerate(compound_smiles)}
 
@@ -520,25 +563,90 @@ def diversity_constrained_negative_sampling(
     n_genes = len(cpi_genes_in_emb)
     n_neg_target = len(pos_pairs) * neg_ratio
 
+    n_random = int(n_neg_target * (1.0 - hard_ratio - esm_hard_ratio))
+    n_tanimoto_hard = int(n_neg_target * hard_ratio)
+    n_esm_hard = n_neg_target - n_random - n_tanimoto_hard
+
     gene_neg_counts = {gi: 0 for gi in range(n_genes)}
     max_per_gene = max(1, n_neg_target // n_genes + 1)
 
     neg_idx_set = set()
-    batch_size = n_neg_target * 10
-    max_attempts = n_neg_target * 50
 
-    while len(neg_idx_set) < n_neg_target and len(neg_idx_set) < max_attempts:
+    # 1) Tanimoto 难负样本：选择与正样本化合物结构相似但无交互的化合物-蛋白对
+    if n_tanimoto_hard > 0 and compound_ecfp4 is not None:
+        from rdkit import DataStructs
+        pos_comp_set = {smi for smi, _ in pos_pairs}
+        pos_comp_indices = [smiles_to_idx[s] for s in pos_comp_set if s in smiles_to_idx]
+        non_pos_comps = [i for i in range(n_compounds) if i not in pos_comp_indices]
+        if non_pos_comps:
+            rng.shuffle(non_pos_comps)
+            non_pos_fps = compound_ecfp4[non_pos_comps] if compound_ecfp4 is not None else None
+            pos_fps = compound_ecfp4[pos_comp_indices] if compound_ecfp4 is not None else None
+            n_tani = 0
+            for non_pos_i in non_pos_comps[:min(len(non_pos_comps), n_tanimoto_hard * 3)]:
+                if n_tani >= n_tanimoto_hard:
+                    break
+                if non_pos_fps is None or pos_fps is None:
+                    continue
+                non_pos_fp = compound_ecfp4[non_pos_i]
+                max_sim = 0.0
+                for pos_i in pos_comp_indices[:min(len(pos_comp_indices), 100)]:
+                    sim = DataStructs.TanimotoSimilarity(compound_ecfp4[pos_i], non_pos_fp)
+                    if sim > max_sim:
+                        max_sim = sim
+                if max_sim >= 0.6:
+                    gi = rng.randint(0, n_genes)
+                    pair = (non_pos_i, int(gi))
+                    if pair not in pos_idx_set and pair not in neg_idx_set:
+                        if gene_neg_counts[gi] < max_per_gene:
+                            neg_idx_set.add(pair)
+                            gene_neg_counts[gi] += 1
+                            n_tani += 1
+            logger.info(f"  Tanimoto 难负样本: {n_tani}/{n_tanimoto_hard} (目标比例 {hard_ratio:.0%})")
+
+    # 2) ESM-2 余弦相似度难负样本：选择蛋白结构相似但无交互的化合物-蛋白对
+    if n_esm_hard > 0 and protein_embeddings is not None:
+        gene_emb_list = np.array([protein_embeddings[g] for g in cpi_genes_in_emb], dtype=np.float32)
+        gene_norms = np.linalg.norm(gene_emb_list, axis=1, keepdims=True) + 1e-8
+        gene_emb_normed = gene_emb_list / gene_norms
+        sim_matrix = np.dot(gene_emb_normed, gene_emb_normed.T)
+        sim_matrix[np.diag_indices_from(sim_matrix)] = 0.0
+        n_esm = 0
+        for gi in range(n_genes):
+            if n_esm >= n_esm_hard:
+                break
+            similar_genes = np.argsort(sim_matrix[gi])[::-1][:5]
+            for sg in similar_genes:
+                if sim_matrix[gi, sg] < 0.7:
+                    continue
+                ci = rng.randint(0, n_compounds)
+                pair = (int(ci), int(sg))
+                if pair not in pos_idx_set and pair not in neg_idx_set:
+                    if gene_neg_counts[sg] < max_per_gene:
+                        neg_idx_set.add(pair)
+                        gene_neg_counts[sg] += 1
+                        n_esm += 1
+                        if n_esm >= n_esm_hard:
+                            break
+        logger.info(f"  ESM-2 结构难负样本: {n_esm}/{n_esm_hard} (目标比例 {esm_hard_ratio:.0%})")
+
+    # 3) 随机负样本：填充剩余
+    batch_size = n_random * 10
+    max_attempts = n_random * 50
+    n_random_collected = 0
+    while n_random_collected < n_random and n_random_collected < max_attempts:
         batch_comp = rng.randint(0, n_compounds, size=batch_size)
         batch_gene = rng.randint(0, n_genes, size=batch_size)
         for ci, gi in zip(batch_comp, batch_gene):
-            pair = (ci, gi)
+            pair = (int(ci), int(gi))
             if pair in pos_idx_set or pair in neg_idx_set:
                 continue
             if gene_neg_counts[gi] >= max_per_gene:
                 continue
             neg_idx_set.add(pair)
             gene_neg_counts[gi] += 1
-            if len(neg_idx_set) >= n_neg_target:
+            n_random_collected += 1
+            if n_random_collected >= n_random:
                 break
 
     neg_pairs = []
@@ -547,7 +655,7 @@ def diversity_constrained_negative_sampling(
         gene = cpi_genes_in_emb[gi]
         neg_pairs.append((smi, gene))
 
-    logger.info(f"  负样本: {len(neg_pairs)} 对 (比例 1:{neg_ratio}), "
+    logger.info(f"  负样本总计: {len(neg_pairs)} 对 (比例 1:{neg_ratio}), "
                 f"蛋白覆盖: {sum(1 for c in gene_neg_counts.values() if c > 0)}/{n_genes}")
 
     return neg_pairs
@@ -629,7 +737,7 @@ def evaluate_model(model, X_train, y_train, X_test, y_test, model_name):
     t0 = time.time()
     try:
         model.fit(X_train, y_train)
-    except Exception as e:
+    except Exception:
         logger.error(f"  {model_name} 训练失败: {traceback.format_exc()}")
         return None
 
@@ -790,7 +898,6 @@ def predict_tcm_pool(
     logger.info(f"  预测 {len(tcm_df)} 个 TCM 化合物 x {len(cpi_genes_in_emb)} 个基因...")
 
     predictions = []
-    comp_dim = tcm_binary_feats.shape[1] + tcm_rdkit_feats.shape[1]
 
     if return_std:
         logger.info("    注意: return_std=True 但当前暂未实现逐一预测的不确定性估计，score_std 将置为 NaN。"
@@ -928,7 +1035,8 @@ def build_fold_features(
 
 
 def build_pair_dataset(cpi_df, protein_embeddings, compound_features, all_smiles,
-                       neg_ratio=3, random_seed=42):
+                       neg_ratio=3, random_seed=42,
+                       real_protein_embeddings=None, compound_ecfp4=None):
     """构建化合物-蛋白 pair 分类数据集。"""
     smiles_to_idx = {str(s): i for i, s in enumerate(all_smiles)}
     compound_feat_dim = compound_features.shape[1]
@@ -948,6 +1056,8 @@ def build_pair_dataset(cpi_df, protein_embeddings, compound_features, all_smiles
     neg_pairs = diversity_constrained_negative_sampling(
         pos_pairs, all_smiles, cpi_genes_in_emb,
         neg_ratio=neg_ratio, random_seed=random_seed,
+        protein_embeddings=real_protein_embeddings,
+        compound_ecfp4=compound_ecfp4,
     )
 
     all_pairs = pos_pairs + neg_pairs
@@ -994,6 +1104,8 @@ def run_mode_cv_ablation(mode, cpi_df, all_smiles, X_binary_all, X_rdkit_raw_all
     _, y, pair_smiles, pair_genes, cpi_genes_in_emb, _ = build_pair_dataset(
         cpi_df, dummy_protein, dummy_compound, all_smiles,
         neg_ratio=3, random_seed=random_seed,
+        real_protein_embeddings=protein_embeddings_raw,
+        compound_ecfp4=compute_ecfp(all_smiles, radius=2, nbits=2048),
     )
     n_pos = int(y.sum())
     n_genes = len(cpi_genes_in_emb)
@@ -1004,6 +1116,46 @@ def run_mode_cv_ablation(mode, cpi_df, all_smiles, X_binary_all, X_rdkit_raw_all
     base_model = xgb.XGBClassifier(
         n_estimators=200, max_depth=8, learning_rate=0.05,
         subsample=0.8, colsample_bytree=0.8,
+        scale_pos_weight=scale_pos_weight,
+        random_state=random_seed, n_jobs=-1, verbosity=0,
+    )
+
+    # GridSearchCV 超参数调优（仅在第一个 fold 上运行，避免过拟合）
+    logger.info("  GridSearchCV 超参数调优 (fold 1, 3-fold 内交叉)...")
+    param_grid = {
+        "n_estimators": [100, 200, 300],
+        "max_depth": [4, 6, 8],
+        "learning_rate": [0.01, 0.03, 0.05],
+        "subsample": [0.7, 0.8, 0.9],
+        "colsample_bytree": [0.6, 0.7, 0.8],
+        "reg_alpha": [0, 0.1, 1.0],
+        "reg_lambda": [0.1, 1.0, 10.0],
+        "min_child_weight": [1, 5, 10],
+    }
+    from sklearn.model_selection import GridSearchCV
+    first_fold_train, first_fold_test = scaffold_split(
+        pair_smiles, y, test_size=0.2, random_state=random_seed,
+    )
+    X_fold0, _, _, _ = build_fold_features(
+        pair_smiles, pair_genes, first_fold_train,
+        X_binary_all, X_rdkit_raw_all, all_smiles,
+        protein_embeddings_raw, prot_target_dim=128,
+    )
+    X_gs_train, y_gs_train = X_fold0[first_fold_train], y[first_fold_train]
+    grid_search = GridSearchCV(
+        xgb.XGBClassifier(
+            scale_pos_weight=scale_pos_weight,
+            random_state=random_seed, n_jobs=-1, verbosity=0,
+        ),
+        param_grid, cv=3, scoring="average_precision",
+        n_jobs=-1, verbose=0,
+    )
+    grid_search.fit(X_gs_train, y_gs_train)
+    best_params = grid_search.best_params_
+    logger.info(f"  最优参数: {best_params}")
+    logger.info(f"  最佳验证 AUPR: {grid_search.best_score_:.4f}")
+    base_model = xgb.XGBClassifier(
+        **best_params,
         scale_pos_weight=scale_pos_weight,
         random_state=random_seed, n_jobs=-1, verbosity=0,
     )
@@ -1066,6 +1218,8 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
     _, y, pair_smiles, pair_genes, cpi_genes_in_emb, smiles_to_idx = build_pair_dataset(
         cpi_df, dummy_protein, dummy_compound, all_smiles,
         neg_ratio=3, random_seed=random_seed,
+        real_protein_embeddings=protein_embeddings_raw,
+        compound_ecfp4=compute_ecfp(all_smiles, radius=2, nbits=2048),
     )
     logger.info(f"  有效基因数: {len(cpi_genes_in_emb)}, 正样本数: {int(y.sum())}, 总样本数: {len(y)}")
 
@@ -1186,7 +1340,7 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
     top_path = L4_RESULTS / "tree_v6_top_candidates.csv"
     top50.to_csv(top_path, index=False)
 
-    logger.info(f"\nTop 20 候选化合物:")
+    logger.info("\nTop 20 候选化合物:")
     for i, row in enumerate(top50.head(20).itertuples(index=False), 1):
         logger.info(f"  {i:2d}. {row.molecule_name} | max={row.max_score:.4f} "
                     f"| mean={row.mean_score:.4f} "
@@ -1196,9 +1350,9 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
                     f"| {row.top_3_genes}")
 
     logger.info(f"Top 50 候选已保存: {top_path}")
-    logger.info(f"=" * 60)
+    logger.info("=" * 60)
     logger.info("任务完成.")
-    logger.info(f"=" * 60)
+    logger.info("=" * 60)
 
 
 def main():
@@ -1227,7 +1381,7 @@ def main():
     compound_features_preview = np.hstack([X_binary, X_rdkit])
     logger.info(f"  化合物特征总维度: {compound_features_preview.shape[1]} "
                 f"(binary={X_binary.shape[1]}, rdkit={X_rdkit.shape[1]})")
-    logger.info(f"  注意: RDKit 标准化参数仅用于预览，实际 CV 内每折独立拟合")
+    logger.info("  注意: RDKit 标准化参数仅用于预览，实际 CV 内每折独立拟合")
 
     logger.info("\n[2.5/8] 蛋白嵌入消融实验 (4 种模式 x 5-fold CV, XGBoost 基线, 无泄露)...")
     ablation_results = []
@@ -1280,7 +1434,7 @@ def main():
         n_folds=5, random_seed=42,
     )
 
-    logger.info(f"\n[8/8] 全部流程完成!")
+    logger.info("\n[8/8] 全部流程完成!")
     logger.info("=" * 60)
 
 

@@ -94,7 +94,7 @@ class HGTLinkPredictor(nn.Module):
                     heads=num_heads,
                 ))
                 gate = nn.Linear(hidden_dim, 1)
-                nn.init.constant_(gate.bias, 1.0)
+                nn.init.constant_(gate.bias, 2.0)
                 self.gates.append(gate)
 
         self.out_proj = nn.Linear(hidden_dim, out_dim)

@@ -181,7 +181,7 @@ class ResidueAwareBilinearDecoder(nn.Module):
         gc.collect()
 
     def _gather_residues(self, prot_indices: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
-        """根据蛋白全局索引收集残基特征并填充到 [N, L, d]。
+        """根据蛋白全局索引收集残基特征并填充到 [N, L, d]（向量化版本）。
 
         Args:
             prot_indices: (N,) 蛋白全局索引（0-based，对应图蛋白节点）
@@ -192,44 +192,33 @@ class ResidueAwareBilinearDecoder(nn.Module):
         """
         device = prot_indices.device
         n = prot_indices.shape[0]
-        residue_feats = torch.zeros(
-            n, self.max_len, self.residue_dim,
-            dtype=self._residue_embeddings.dtype, device=device
-        )
-        residue_mask = torch.zeros(n, self.max_len, dtype=torch.bool, device=device)
 
         residue_idx = self._prot_to_residue_idx[prot_indices].cpu()
-
-        # 检测 -1 索引（对应无残基特征的蛋白），标记为 unknown
         missing_mask = residue_idx < 0
         if missing_mask.any():
-            missing_count = missing_mask.sum().item()
             logger.warning(
-                "_gather_residues: %d/%d 蛋白索引无残基特征映射（值为 -1），"
-                "已回退到 unknown placeholder",
-                missing_count, residue_idx.shape[0],
+                "_gather_residues: %d/%d 蛋白索引无残基特征映射（值为 -1），已回退到 unknown placeholder",
+                missing_mask.sum().item(), residue_idx.shape[0],
             )
-
-        # unknown placeholder 位于 n_residue_proteins（load_residue_esm2_features 的 unknown_idx）
         residue_idx = residue_idx.clamp(0, self._unknown_idx)
         unknown_mask = missing_mask | (residue_idx == self._unknown_idx)
 
         lengths = self._residue_lengths[residue_idx].clamp(1, self.max_len)
         offsets = self._residue_offsets[residue_idx]
 
-        for i in range(n):
-            if unknown_mask[i].item():
-                residue_mask[i, 0] = True
-                continue
-            start = int(offsets[i].item())
-            length = int(lengths[i].item())
-            end = start + length
-            feats = self._residue_embeddings[start:end]
-            if length > self.max_len:
-                feats = feats[:self.max_len]
-                length = self.max_len
-            residue_feats[i, :length] = feats.to(device)
-            residue_mask[i, :length] = True
+        # 向量化：构造位置网格 [n, max_len] 并一次性 gather 所有残基
+        pos_grid = torch.arange(self.max_len, device=offsets.device).unsqueeze(0).expand(n, -1)
+        residue_mask = pos_grid < lengths.unsqueeze(1)
+        residue_mask[unknown_mask] = False
+        residue_mask[unknown_mask, 0] = True
+
+        gather_indices = (offsets.unsqueeze(1) + pos_grid).clamp(
+            0, self._residue_embeddings.shape[0] - 1
+        )
+        residue_feats = self._residue_embeddings[gather_indices].to(device)
+        residue_mask = residue_mask.to(device)
+        residue_feats[~residue_mask] = 0.0
+
         return residue_feats, residue_mask
 
     def _forward_chunk(self, comp_emb: torch.Tensor, prot_emb: torch.Tensor,
