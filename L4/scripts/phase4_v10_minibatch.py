@@ -223,8 +223,6 @@ import logging
 import math
 import os
 import pickle
-import shutil
-import tempfile
 import random
 import sys
 import time
@@ -299,29 +297,6 @@ torch.backends.cudnn.benchmark = False
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 logger.info(f"设备: {DEVICE}")
-
-
-def _safe_torch_save(obj, path: Path) -> None:
-    """v41-workaround: torch.save 在 Windows 中文路径上有 bug，先存临时文件再移动/copy"""
-    tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".pt")
-    tmp.close()  # 关闭句柄，避免 Windows 文件锁定
-    try:
-        torch.save(obj, tmp.name)
-        # 如果目标已存在，先删除
-        if path.exists():
-            path.unlink()
-        try:
-            shutil.move(tmp.name, str(path))
-        except PermissionError:
-            # move 失败时尝试 copy + unlink
-            shutil.copy2(tmp.name, str(path))
-    finally:
-        try:
-            if os.path.exists(tmp.name):
-                os.unlink(tmp.name)
-        except (PermissionError, OSError):
-            pass  # 清理失败不影响主流程
-
 
 # ============================================================
 # 配置系统加载（v28: 工业级重构 — 从 YAML 加载配置，替代硬编码常量）
@@ -3788,7 +3763,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False):
         _validate_sage_fn=_validate_sage, _compute_cpi_loss_fn=_compute_cpi_loss)
 
     try:
-        _safe_torch_save({"state_dict": sage_model.state_dict(), "version": "v41", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "sage_best_v41.pt")
+        torch.save({"state_dict": sage_model.state_dict(), "version": "v41", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "sage_best_v41.pt")
         logger.info("  SAGE 模型已保存到 sage_best_v41.pt")
     except Exception:
         logger.error("  SAGE 模型保存失败", exc_info=True)
@@ -3857,7 +3832,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False):
         _validate_hgt_fn=_validate_hgt, _compute_cpi_loss_fn=_compute_cpi_loss)
 
     try:
-        _safe_torch_save({"state_dict": hgt_model.state_dict(), "version": "v41", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "hgt_best_v41.pt")
+        torch.save({"state_dict": hgt_model.state_dict(), "version": "v41", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "hgt_best_v41.pt")
         logger.info("  HGT 模型已保存到 hgt_best_v41.pt")
     except Exception:
         logger.error("  HGT 模型保存失败", exc_info=True)

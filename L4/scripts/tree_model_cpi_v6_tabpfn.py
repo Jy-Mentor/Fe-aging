@@ -1,91 +1,25 @@
 #!/usr/bin/env python
 """
-树模型 CPI 筛选 — 仅 XGBoost，加速 CPI 扩展迭代
-================================================================
-基于 v6 架构，精简模型集成为仅 XGBoost，加速 CPI 数据扩展迭代。
+树模型 CPI 筛选 — 仅 XGBoost
+==============================
 
-架构设计：
-  1. 仅 XGBoost：精简模型集成，加速 CPI 扩展迭代训练和预测
+基于化合物多指纹特征与蛋白 ESM-2 嵌入，训练 XGBoost 分类模型进行
+化合物-蛋白相互作用（CPI）预测。采用 5-fold Scaffold Split 进行模型
+选择，并在全量 CPI 数据上训练最终模型后对 TCM 化合物池打分。
 
-核心更新（ChEMBL 扩展）：
-  1. 合并 ChEMBL API 补充数据：
-     - 新增 28 个铁衰老基因的 CPI 数据（4868 条记录）
-     - 铁衰老基因覆盖：23 → 51 个（提升 122%）
-     - 总基因数：42 → 70 个
-     - 总数据量：43238 → 48106 条
-  2. 最佳模式选择策略优化：
-     - 优先选择基因覆盖度更高的蛋白嵌入模式（生物学意义更大）
-     - 基因覆盖度相同时，选 AUPR 更高的
-  3. 数据质量保证：
-     - 补充数据 SMILES 有效性验证（100% 通过）
-     - 统一 pchembl_value 计算（9 - log10(activity_nM)）
-
-核心修复（数据泄露）：
-  1. RDKit 2D 描述符标准化：
-     - 不再用全部化合物（含测试集+TCM池）拟合 StandardScaler
-     - 改为在每个 CV 折内仅用训练集化合物拟合 scaler，再分别变换
-  2. 蛋白嵌入 PCA 降维：
-     - 不再用全部蛋白（含测试集蛋白）拟合 PCA 和 StandardScaler
-     - 改为在每个 CV 折内仅用训练集出现的蛋白拟合 PCA+scaler
-  3. 缓存一致性：特征缓存新增 X_rdkit_raw 字段，
-     确保旧缓存不会导致"双重标准化"
-  4. 性能优化：蛋白 PCA 只变换 pair_genes 中实际出现的蛋白
-     （从 6847 个降至约 70 个，每折节省数秒）
-  5. 性能优化：残基统计特征缓存：residue_meanmaxstd 模式
-     首次计算后保存为 NPZ，后续秒级加载
-
-新增内容（特征选择 + 消融实验）：
-  1. 特征选择适配：原始 ~6650 维 → 互信息降维至 ≤500 维（全矩阵一次性计算）
-  2. 5-fold Scaffold Split 评估（XGBoost）
-  3. 残基级 ESM-2 蛋白嵌入消融实验（4 种模式: global / residue_pooled /
-     residue_meanmaxstd / combined）
-     - residue_meanmaxstd: 残基 mean/max/std 聚合 → 3×640 → PCA 128 维
-     - combined: 全局 CLS + 残基 mean 拼接 → PCA 降维
-
-修复记录：
-    - 移除 CascadeForestFixed 空壳模型（fit 不保存模型，predict 用全零标签训练）
-    - BEDROC 直接委托给 RDKit CalcBEDROC（Truchon & Bayly 2007 的事实标准实现），
-      避免任何手写公式偏差；异常直接上抛，不准静默吞错
-    - 特征选择修复：全矩阵 `mutual_info_classif` 一次性计算，不再分批
-      且增加零方差特征过滤，防止 MI 崩溃
-    - Ensemble 评估修复：统一使用 Scaffold Split（与主CV一致），消除拆分方式不一致
-    - 主流程重构：先跑 4 模式蛋白嵌入消融（XGBoost 基线），选最佳模式再跑完整流程
-    - 中药映射列名修复：多候选列名 + 明确警告
-    - PCA 解释方差验证：<50% 时发出警告；n_components 自适应样本数
-    - 不确定性估计：删除永不调用的虚假循环，改为 NaN 占位 + 文档说明
-    - 清理进度日志编号、移除未使用导入
-
-修复记录（数据完整性）：
-    - 集成评估使用独立随机种子（seed+1000）的 Scaffold Split，
-      与模型选择阶段的折完全独立，避免测试集重复使用导致的指标高估
-    - 消融实验新增有效基因数、正样本数、总样本数记录，
-      不同蛋白嵌入模式的结果可评估可比性
-    - NPZ 蛋白嵌入加载中，跳过高比例（>10%）非数值键时
-      发出警告，避免隐蔽数据损坏
-    - 修复 residue_pooled NPZ 加载变量名错误（v for k, v in d.items()）
-    - CatBoost 统一使用 auto_class_weights="Balanced"
-
-修复记录（数据泄露 + 性能）：
-    - RDKit 标准化移至 CV 折内，仅用训练集拟合 scaler
-    - 蛋白 PCA 移至 CV 折内，仅用训练集蛋白拟合 PCA+scaler
-    - 缓存安全：特征缓存新增 X_rdkit_raw，旧缓存自动兼容处理
-    - 性能：蛋白 PCA 仅变换 pair_genes 中出现的蛋白（6847 → ~42）
-    - 性能：残基统计特征缓存，避免重复计算
-    数据来源（全部真实，不模拟）：
+数据来源（全部真实，不模拟）：
   - CPI: L4/results/experimental_actives_detail_cleaned_combined.csv
-    (合并 ChEMBL/BindingDB 补充数据，70 个基因，51 个铁衰老基因)
-  - 蛋白嵌入: L4/results_v10_minibatch/esm2_protein_embeddings.npz (全局 CLS, 103 蛋白)
-  - 蛋白嵌入: L4/results_v10_minibatch/esm2_residue_pooled_embeddings.npz (残基池化, 6847 蛋白)
-  - 蛋白嵌入: L4/results_v10_minibatch/esm2_150M_residue_features.pt (残基级, 6864 蛋白)
+  - 蛋白嵌入: L4/results_v10_minibatch/esm2_protein_embeddings.npz (全局 CLS)
+  - 蛋白嵌入: L4/results_v10_minibatch/esm2_residue_pooled_embeddings.npz (残基池化)
+  - 蛋白嵌入: L4/results_v10_minibatch/esm2_150M_residue_features.pt (残基级)
   - TCM池: L3/results/tcm_compound_pool_tox_filtered_noleak.csv
   - 中药映射: L3/results/herb_ingredient_mapping.xlsx
 
 输出：
-  - L4/results/tree_v6_protein_emb_ablation.csv（蛋白嵌入消融对比结果）
-  - L4/results/tree_v6_results.csv（5-fold CV 评估结果）
-  - L4/results/tree_v6_tcm_predictions.csv（TCM 预测）
-  - L4/results/tree_v6_top_candidates.csv（Top 候选）
-  - L4/results/tree_v6_ensemble_results.csv（Ensemble 结果）
+  - L4/results/tree_v6_protein_emb_ablation.csv
+  - L4/results/tree_v6_results.csv
+  - L4/results/tree_v6_tcm_predictions_v7.csv
+  - L4/results/tree_v6_top_candidates.csv
 """
 
 import logging
@@ -117,9 +51,6 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 RDLogger.DisableLog("rdApp.error")
 RDLogger.DisableLog("rdApp.warning")
 
-# ============================================================
-# 日志配置
-# ============================================================
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 L4_RESULTS = PROJECT_ROOT / "L4" / "results"
 L4_RESULTS_V10 = PROJECT_ROOT / "L4" / "results_v10_minibatch"
@@ -132,14 +63,11 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[
         logging.StreamHandler(sys.stdout),
-        logging.FileHandler(L4_LOGS / "tree_v6.log", mode="w", encoding="utf-8"),
+        logging.FileHandler(L4_LOGS / "tree_v6_5.log", mode="w", encoding="utf-8"),
     ],
 )
 logger = logging.getLogger(__name__)
 
-# ============================================================
-# 铁衰老靶标基因
-# ============================================================
 FERROAGING_ALL = sorted([
     "ABCC1","ACSL4","ACVR1B","ALOX15","ATF3","ATG3","BAP1","BCL6","BRD7","CAVIN1",
     "CD74","CD82","CDO1","COX7A1","CTSB","CXCL10","DPEP1","DPP4","DUOX1","DYRK1A",
@@ -153,9 +81,6 @@ FERROAGING_ALL = sorted([
     "TNFAIP3","TXNIP","WNT5A","WWTR1","YAP1","ZEB1",
 ])
 
-# ============================================================
-# 1. 多指纹特征工程
-# ============================================================
 
 def compute_ecfp(smiles_list, radius=2, nbits=2048):
     """ECFP 指纹（二进制）"""
@@ -290,31 +215,26 @@ def build_multifingerprint_features(smiles_list, rdkit_scaler=None, use_cache=Tr
     binary_fps = []
     binary_labels = []
 
-    # ECFP4
     fp = compute_ecfp(smiles_list, radius=2, nbits=2048)
     binary_fps.append(fp)
     binary_labels.append("ECFP4")
     logger.info(f"    ECFP4: {fp.shape} (binary)")
 
-    # ECFP6
     fp = compute_ecfp(smiles_list, radius=3, nbits=2048)
     binary_fps.append(fp)
     binary_labels.append("ECFP6")
     logger.info(f"    ECFP6: {fp.shape} (binary)")
 
-    # MACCS
     fp = compute_maccs(smiles_list)
     binary_fps.append(fp)
     binary_labels.append("MACCS")
     logger.info(f"    MACCS: {fp.shape} (binary)")
 
-    # AtomPairs
     fp = compute_atom_pairs(smiles_list, nbits=1024)
     binary_fps.append(fp)
     binary_labels.append("AtomPairs")
     logger.info(f"    AtomPairs: {fp.shape} (binary)")
 
-    # Avalon
     fp = compute_avalon(smiles_list, nbits=1024)
     binary_fps.append(fp)
     binary_labels.append("Avalon")
@@ -323,11 +243,9 @@ def build_multifingerprint_features(smiles_list, rdkit_scaler=None, use_cache=Tr
     X_binary = np.hstack(binary_fps).astype(np.float32)
     logger.info(f"  二进制指纹总维度: {X_binary.shape[1]}")
 
-    # RDKit 2D
     X_rdkit, rdkit_names = compute_rdkit_2d(smiles_list)
     logger.info(f"    RDKit2D: {X_rdkit.shape} (continuous)")
 
-    # NaN 处理（原始值）
     nan_mask = np.isnan(X_rdkit)
     if nan_mask.any():
         logger.info(f"  RDKit2D 处理 {nan_mask.sum()} 个 NaN 值...")
@@ -363,10 +281,6 @@ def build_multifingerprint_features(smiles_list, rdkit_scaler=None, use_cache=Tr
         return X_binary, X_rdkit, X_rdkit_raw, None, binary_labels, rdkit_names
 
 
-# ============================================================
-# 2. 蛋白嵌入处理
-# ============================================================
-
 def process_protein_embeddings(protein_embeddings, target_dim=128, pca_model=None, scaler=None):
     """蛋白嵌入处理：PCA 降维 + 标准化"""
     keys = sorted(protein_embeddings.keys())
@@ -375,7 +289,6 @@ def process_protein_embeddings(protein_embeddings, target_dim=128, pca_model=Non
     logger.info(f"  蛋白嵌入原始维度: {original_dim}, 数量: {len(keys)}")
 
     if pca_model is None:
-        # PCA 的 n_components 不能超过 min(n_samples, n_features)
         max_components = min(vectors.shape[0], vectors.shape[1])
         actual_target = min(target_dim, max_components)
         if actual_target < target_dim:
@@ -390,7 +303,6 @@ def process_protein_embeddings(protein_embeddings, target_dim=128, pca_model=Non
         if ev_ratio < 0.5:
             logger.warning(f"  PCA 降维至 {actual_target} 仅保留 {ev_ratio:.2%} 方差，"
                            f"建议增加 target_dim 至 {min(256, original_dim)} 或使用更高维主干嵌入")
-        # 显示 Top-5 主成分贡献
         top5_ratio = pca.explained_variance_ratio_[:5].sum()
         logger.info(f"  Top-5 PC 累计方差: {top5_ratio:.4f}")
         scaler = StandardScaler()
@@ -405,15 +317,12 @@ def process_protein_embeddings(protein_embeddings, target_dim=128, pca_model=Non
         return processed, None, None
 
 
-# ============================================================
-# 2b. 蛋白嵌入多模式加载（支持残基层 ESM-2 消融）
-# ============================================================
 
 PROTEIN_EMB_MODES = ["global", "residue_pooled", "residue_meanmaxstd", "combined"]
 
 
 def _load_protein_embeddings_global():
-    """加载全局 CLS 蛋白嵌入（原始 v6 行为，仅覆盖 29/42 个 CPI 基因）"""
+    """加载全局 CLS 蛋白嵌入"""
     d = np.load(L4_RESULTS_V10 / "esm2_protein_embeddings.npz",
                 allow_pickle=True)
     result = {}
@@ -435,7 +344,7 @@ def _load_protein_embeddings_global():
 
 
 def _load_protein_embeddings_residue_pooled():
-    """加载预池化的残基层 ESM-2 嵌入（覆盖全部 42 个 CPI 基因）"""
+    """加载预池化的残基层 ESM-2 嵌入"""
     d = np.load(L4_RESULTS_V10 / "esm2_residue_pooled_embeddings.npz",
                 allow_pickle=True)
     result = {}
@@ -543,10 +452,6 @@ def load_protein_embeddings_by_mode(mode="global"):
                          f"Available: {PROTEIN_EMB_MODES}")
 
 
-# ============================================================
-# 3. Scaffold Split (Bemis-Murcko)
-# ============================================================
-
 def get_scaffold(smiles):
     """Bemis-Murcko 骨架"""
     try:
@@ -598,10 +503,6 @@ def scaffold_split(pair_smiles, y, test_size=0.2, random_state=42):
     return train_idx, test_idx
 
 
-# ============================================================
-# 4. 多样性约束负采样
-# ============================================================
-
 def diversity_constrained_negative_sampling(
     pos_pairs, compound_smiles, cpi_genes_in_emb, neg_ratio=3, random_seed=42,
 ):
@@ -651,10 +552,6 @@ def diversity_constrained_negative_sampling(
 
     return neg_pairs
 
-
-# ============================================================
-# 5. 扩展评估指标
-# ============================================================
 
 def compute_metrics(y_true, y_prob):
     """计算扩展评估指标"""
@@ -727,10 +624,6 @@ def compute_bedroc_standard(y_true, y_prob, alpha=20.0):
     return float(CalcBEDROC(scores, col=1, alpha=alpha))
 
 
-# ============================================================
-# 6. 模型训练与评估
-# ============================================================
-
 def evaluate_model(model, X_train, y_train, X_test, y_test, model_name):
     """训练并评估单个模型"""
     t0 = time.time()
@@ -791,7 +684,6 @@ def train_ensemble(
                     f"pos_ratio={y_train.mean():.3f}/{y_test.mean():.3f}, "
                     f"feat_dim={X_train.shape[1]}")
 
-        # ---- XGBoost ----
         try:
             import xgboost as xgb
             logger.info("  [1/1] XGBoost...")
@@ -819,10 +711,6 @@ def train_ensemble(
     return pd.DataFrame(results)
 
 
-# ============================================================
-# 7. TCM 预测
-# ============================================================
-
 def load_herb_mapping():
     """加载中药来源映射"""
     herb_map_path = L3_RESULTS / "herb_ingredient_mapping.xlsx"
@@ -832,7 +720,6 @@ def load_herb_mapping():
 
     try:
         herb_df = pd.read_excel(herb_map_path)
-        # 优先尝试已知列名
         col_candidates = {
             "MOL_ID": ["MOL_ID", "mol_id", "Molecule_ID", "compound_id"],
             "herb_cn": ["herb_cn", "Herb_cn", "herb_Chinese", "Chinese_name", "herb_name_cn"],
@@ -988,7 +875,6 @@ def build_fold_features(
     """
     smiles_to_idx = {str(s): i for i, s in enumerate(all_smiles)}
 
-    # ---- 1. 收集训练集中出现的化合物和蛋白 ----
     train_smiles_set = set(pair_smiles[train_idx])
     train_genes_set = set(pair_genes[train_idx])
 
@@ -1006,14 +892,12 @@ def build_fold_features(
     if len(train_emb) == 0:
         raise ValueError("训练集蛋白为空，无法拟合蛋白 PCA")
 
-    # ---- 2. RDKit 标准化（仅训练集拟合）----
     rdkit_scaler = StandardScaler()
     rdkit_scaler.fit(X_rdkit_raw_all[train_compound_indices])
     X_rdkit_all_scaled = rdkit_scaler.transform(X_rdkit_raw_all)
     compound_features_all = np.hstack([X_binary_all, X_rdkit_all_scaled])
     compound_feat_dim = compound_features_all.shape[1]
 
-    # ---- 3. 蛋白 PCA + 标准化（仅训练集蛋白拟合，仅变换 pair 中出现的蛋白）----
     _, prot_pca, prot_scaler = process_protein_embeddings(
         train_emb, target_dim=prot_target_dim, pca_model=None, scaler=None,
     )
@@ -1030,7 +914,6 @@ def build_fold_features(
     prot_dim = next(iter(protein_embeddings_processed.values())).shape[0]
     feat_dim = compound_feat_dim + prot_dim
 
-    # ---- 4. 构建完整特征矩阵 ----
     n_pairs = len(pair_smiles)
     X = np.zeros((n_pairs, feat_dim), dtype=np.float32)
 
@@ -1103,10 +986,8 @@ def run_mode_cv_ablation(mode, cpi_df, all_smiles, X_binary_all, X_rdkit_raw_all
     logger.info(f"蛋白嵌入消融: mode={mode} (XGBoost-only)")
     logger.info(f"{'='*60}")
 
-    # ---- 加载原始蛋白嵌入（不做 PCA/标准化）----
     protein_embeddings_raw = load_protein_embeddings_by_mode(mode)
 
-    # ---- 预构建所有 pairs（含负采样），仅用于获取 pair_smiles/pair_genes/y ----
     # 注意：这里用 dummy compound_features 来获取 pair 结构，不用于实际特征计算
     dummy_compound = np.zeros((len(all_smiles), 1), dtype=np.float32)
     dummy_protein = {k: np.zeros(1, dtype=np.float32) for k in protein_embeddings_raw}
@@ -1175,11 +1056,9 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
     logger.info(f"完整流程: 蛋白嵌入 mode={mode} (XGBoost-only)")
     logger.info(f"{'='*60}")
 
-    # ---- 3. 加载原始蛋白嵌入 ----
     logger.info("\n[3/7] 加载原始蛋白嵌入...")
     protein_embeddings_raw = load_protein_embeddings_by_mode(mode)
 
-    # ---- 4. 预构建 pair 结构（负采样 + 获取 pair_smiles/pair_genes/y）----
     logger.info("\n[4/7] 构建训练数据集 (多样性约束负采样)...")
     # 用 dummy 特征获取 pair 结构，实际特征在 fold 内构建
     dummy_compound = np.zeros((len(all_smiles), 1), dtype=np.float32)
@@ -1190,7 +1069,6 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
     )
     logger.info(f"  有效基因数: {len(cpi_genes_in_emb)}, 正样本数: {int(y.sum())}, 总样本数: {len(y)}")
 
-    # ---- 5. 5-fold CV 对比评估（无泄露版本）----
     logger.info("\n[5/7] 5-fold Scaffold Split XGBoost 评估 (无泄露)...")
     results_df = train_ensemble(
         pair_smiles, pair_genes, y,
@@ -1200,7 +1078,6 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
         n_folds=n_folds, random_seed=random_seed,
     )
 
-    # 汇总
     logger.info("\n" + "=" * 60)
     logger.info("XGBoost 评估汇总 (5-fold Scaffold Split, mean +/- std):")
     logger.info("=" * 60)
@@ -1216,10 +1093,8 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
     results_df.to_csv(results_path, index=False)
     logger.info(f"\n评估结果已保存: {results_path}")
 
-    # ---- 6. 全量训练 XGBoost ----
     logger.info("\n[6/7] 全量训练 XGBoost...")
 
-    # 仅使用 XGBoost
     best_model_name = "XGBoost"
 
     # 用全部 CPI 数据拟合 scaler 和 PCA（全量训练用，已脱离模型选择阶段）
@@ -1272,7 +1147,6 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
     logger.info(f"  全量训练 XGBoost ({len(X_full)} 样本)...")
     best_tree.fit(X_full, y)
 
-    # ---- 7. TCM 预测（用 XGBoost） ----
     logger.info("\n[7/7] TCM 化合物池预测...")
     herb_map = load_herb_mapping()
 
@@ -1294,7 +1168,6 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
     pred_df.to_csv(pred_path, index=False)
     logger.info(f"TCM 预测结果已保存: {pred_path} ({len(pred_df)} 条)")
 
-    # Top 候选
     comp_agg = pred_df.groupby(["MOL_ID", "molecule_name", "SMILES", "herb_cn", "herb_en"]).agg(
         max_score=("score", "max"),
         mean_score=("score", "mean"),
@@ -1324,20 +1197,16 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
 
     logger.info(f"Top 50 候选已保存: {top_path}")
     logger.info(f"=" * 60)
-    logger.info("任务完成! XGBoost 精简版.")
+    logger.info("任务完成.")
     logger.info(f"=" * 60)
 
 
-# ============================================================
-# 主流程
-# ============================================================
-
 def main():
     logger.info("=" * 60)
-    logger.info("树模型 CPI — 仅 XGBoost，加速 CPI 扩展迭代")
+    logger.info("树模型 CPI — 仅 XGBoost")
+    logger.info("  RDKit 标准化和蛋白 PCA 均在 CV fold 内仅用训练集拟合")
     logger.info("=" * 60)
 
-    # ---- 1. 加载数据 ----
     logger.info("\n[1/8] 加载原始数据...")
     cpi_df = pd.read_csv(L4_RESULTS / "experimental_actives_detail_cleaned_combined.csv", low_memory=False)
     tcm_df = pd.read_csv(L3_RESULTS / "tcm_compound_pool_tox_filtered_noleak.csv",
@@ -1351,7 +1220,6 @@ def main():
     logger.info(f"  总 SMILES: {len(all_smiles)} (CPI 唯一: {len(all_smiles) - len(tcm_smiles)}, "
                 f"TCM: {len(tcm_smiles)})")
 
-    # ---- 2. 多指纹特征工程（保留原始 RDKit 值，标准化在 CV fold 内进行）----
     logger.info("\n[2/8] 多指纹特征工程...")
     X_binary, X_rdkit, X_rdkit_raw, rdkit_scaler, binary_labels, rdkit_names = \
         build_multifingerprint_features(all_smiles)
@@ -1361,7 +1229,6 @@ def main():
                 f"(binary={X_binary.shape[1]}, rdkit={X_rdkit.shape[1]})")
     logger.info(f"  注意: RDKit 标准化参数仅用于预览，实际 CV 内每折独立拟合")
 
-    # ---- 2.5. 蛋白嵌入消融实验 (4 modes x 5-fold CV, XGBoost 基线, 无泄露) ----
     logger.info("\n[2.5/8] 蛋白嵌入消融实验 (4 种模式 x 5-fold CV, XGBoost 基线, 无泄露)...")
     ablation_results = []
     best_mode = None
@@ -1406,7 +1273,6 @@ def main():
 
     logger.info(f"\n  最佳蛋白嵌入模式: {best_mode} (AUPR={best_aupr:.4f})")
 
-    # ---- 3~7. 使用最佳模式运行完整流程 ----
     logger.info(f"\n[3-7/8] 使用最佳模式 {best_mode} 运行完整流程...")
     run_full_pipeline(
         best_mode, cpi_df, tcm_df, all_smiles,
