@@ -131,14 +131,21 @@ class HGTLinkPredictor(nn.Module):
     def forward(self, x_dict, edge_index_dict, use_pathway: bool = True):
         """前向传播：执行 HGT 卷积、门控聚合与输出投影。
 
-        仅在 compound 和 protein 节点上执行 out_proj。
+        HGT 将通路信息作为独立 pathway 节点处理（异质图结构），
+        因此蛋白节点仅需 ESM-2 特征，不需要通路 one-hot 编码。
+        若输入蛋白特征维度大于 prot_in_dim，则仅取前 prot_in_dim 维（ESM-2 部分）。
         """
         x_dict = {k: v.clone() for k, v in x_dict.items()}
 
         if "compound" in x_dict:
             x_dict["compound"] = self.comp_proj(x_dict["compound"])
         if "protein" in x_dict:
-            x_dict["protein"] = self.prot_proj(x_dict["protein"][:, :self.prot_in_dim])
+            if x_dict["protein"].shape[-1] < self.prot_in_dim:
+                raise ValueError(
+                    f"蛋白输入维度 {x_dict['protein'].shape[-1]} < prot_in_dim {self.prot_in_dim}"
+                )
+            x_dict["protein"] = self.prot_proj(
+                x_dict["protein"][:, :self.prot_in_dim])
         if "disease" in x_dict and self.disease_embed is not None:
             x_dict["disease"] = self.disease_embed(x_dict["disease"].squeeze(-1).long())
         if "pathway" in x_dict:

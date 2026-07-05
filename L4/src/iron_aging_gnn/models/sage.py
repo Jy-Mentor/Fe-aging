@@ -163,6 +163,14 @@ class SAGELinkPredictor(nn.Module):
 
         comp_x = x[:n_compounds]
         prot_x = x[n_compounds:]
+        if comp_x.shape[-1] < self.comp_feat_dim:
+            raise ValueError(
+                f"化合物输入维度 {comp_x.shape[-1]} < comp_feat_dim {self.comp_feat_dim}"
+            )
+        if prot_x.shape[-1] < self.prot_esm_dim:
+            raise ValueError(
+                f"蛋白输入维度 {prot_x.shape[-1]} < prot_esm_dim {self.prot_esm_dim}"
+            )
         comp_x_actual = comp_x[:, :self.comp_feat_dim]
         prot_esm = prot_x[:, :self.prot_esm_dim]
         prot_h = self.prot_feat_proj(prot_esm)

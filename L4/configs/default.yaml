@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿# v40 优化配置 (2026-07-04)
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿# v40 优化配置 (2026-07-04)
 # 目标: 树模型 v7 集成 (86基因) + 残基级双线性解码器
 # 策略: 更大容量 + 更低学习率 + 更长训练 + 强化排序损失
 random_seed: 42
@@ -13,7 +13,7 @@ model:
   pathway_proj_dropout: 0.25    # v31: 0.3→0.25
   pheno_head_dropout: 0.3
   score_clamp: 10.0
-  decoder_type: "bilinear"  # v40-fix: esm2_150M_residue_features.pt 访问段错误，改用 bilinear + 残基池化蛋白嵌入
+  decoder_type: "bilinear"  # v40-fix: esm2_150M_residue_features.pt 访问段错误，改用 bilinear + 残基池化蛋白嵌入；手动恢复"residue_bilinear"需解决 pt 文件加载问题
 sage:
   epochs: 20             # v32-fast: 30→20, 单种子快速筛选
   lr: 0.0003             # v31: 5e-4→3e-4, 更稳定收敛
@@ -51,8 +51,8 @@ curriculum:
   medium_neg_ratio: 0.3
   hard_neg_ratio: 0.1
 negative_sampling:
-  use_topology_neg: false          # v41: 是否启用PPI拓扑驱动的难负样本（度中心性/聚类系数/共同邻居）
-  use_esm_similarity_neg: false    # v41: 是否启用ESM-2余弦相似度难负样本（结构相似蛋白）
+  use_topology_neg: true           # v42: 启用PPI拓扑驱动的难负样本（度中心性/聚类系数/共同邻居），强化化合物冷启动训练
+  use_esm_similarity_neg: true     # v42: 启用ESM-2余弦相似度难负样本（结构相似蛋白），提供更强对比信号
   topo_neighbors_top_k: 50         # 拓扑负样本每个蛋白保留的候选数
   esm_similarity_top_k: 50         # ESM-2相似度负样本每个蛋白保留的候选数
 loss:
