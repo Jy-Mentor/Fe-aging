@@ -1056,7 +1056,7 @@ def load_protein_features(use_esm2: bool = True) -> tuple[dict[str, np.ndarray],
 def load_residue_esm2_features(
     graphs: dict,
     residue_pt_path: Path | str = L4_RESULTS / "esm2_150M_residue_features.pt",
-    max_len_cap: int = 1024,
+    max_len_cap: int = 512,
     residue_device: str = "cpu",
 ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor, int]:
     """v33: 加载残基级 ESM-2 特征并建立图蛋白索引到 residue 文件索引的映射。

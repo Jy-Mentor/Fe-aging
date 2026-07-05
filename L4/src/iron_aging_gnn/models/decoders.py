@@ -87,8 +87,8 @@ class ResidueAwareBilinearDecoder(nn.Module):
     """
 
     def __init__(self, comp_dim: int, residue_dim: int = 640, rank: int = 64,
-                 hidden_dim: int = 128, dropout: float = 0.3, max_len: int = 1024,
-                 max_residue_batch: int = 8):
+                 hidden_dim: int = 128, dropout: float = 0.3, max_len: int = 512,
+                 max_residue_batch: int = 4):
         super().__init__()
         self.comp_dim = comp_dim
         self.residue_dim = residue_dim
@@ -126,6 +126,8 @@ class ResidueAwareBilinearDecoder(nn.Module):
         self._residue_embeddings = torch.zeros(1, residue_dim)
         self._residue_offsets = torch.zeros(2, dtype=torch.long)
         self._residue_lengths = torch.zeros(1, dtype=torch.long)
+        self._residue_is_mmap = False
+        self._unknown_idx: int = -1
         self.register_buffer("_prot_to_residue_idx", torch.zeros(1, dtype=torch.long))
 
     def register_residue_buffers(self, embeddings: torch.Tensor, offsets: torch.Tensor,
@@ -134,8 +136,11 @@ class ResidueAwareBilinearDecoder(nn.Module):
                                  residue_device: str = "cpu") -> None:
         """注册 packed 格式残基特征。
 
+        v43: mmap 张量禁止 torch.cat 物化。unknown placeholder 通过独立索引
+        _unknown_idx 标记，在 _gather_residues 中特殊处理。
+
         Args:
-            embeddings: (total_residues, residue_dim)
+            embeddings: (total_residues, residue_dim) mmap 或普通张量
             offsets: (n_proteins+1,)
             lengths: (n_proteins,)
             max_len: 单个蛋白最大截断长度
@@ -145,25 +150,33 @@ class ResidueAwareBilinearDecoder(nn.Module):
         self.max_len = max_len
         self.residue_device = residue_device
 
-        # 追加 unknown placeholder：单个零残基
-        unknown_emb = torch.zeros(1, embeddings.shape[1], dtype=embeddings.dtype)
-        embeddings = torch.cat([embeddings, unknown_emb], dim=0).to(residue_device)
-
-        unknown_start = offsets[-1]  # total_residues
-        unknown_end = unknown_start + 1
-        offsets = torch.cat(
-            [offsets, torch.tensor([unknown_start, unknown_end], dtype=offsets.dtype)],
-            dim=0,
-        ).to(residue_device)
-
-        lengths = torch.cat(
-            [lengths, torch.ones(1, dtype=lengths.dtype)],
-            dim=0,
-        ).to(residue_device)
-
-        self._residue_embeddings = embeddings
-        self._residue_offsets = offsets
-        self._residue_lengths = lengths
+        is_mmap = getattr(embeddings, "is_mmap", False)
+        if is_mmap:
+            logger.info("检测到 mmap 残基张量，跳过 torch.cat 物化，"
+                        "unknown placeholder 使用独立索引处理")
+            self._residue_is_mmap = True
+            self._residue_embeddings = embeddings
+            self._residue_offsets = offsets
+            self._residue_lengths = lengths
+            self._unknown_idx = offsets.shape[0] - 1
+        else:
+            self._residue_is_mmap = False
+            unknown_emb = torch.zeros(1, embeddings.shape[1], dtype=embeddings.dtype)
+            embeddings = torch.cat([embeddings, unknown_emb], dim=0).to(residue_device)
+            unknown_start = offsets[-1]
+            unknown_end = unknown_start + 1
+            offsets = torch.cat(
+                [offsets, torch.tensor([unknown_start, unknown_end], dtype=offsets.dtype)],
+                dim=0,
+            ).to(residue_device)
+            lengths = torch.cat(
+                [lengths, torch.ones(1, dtype=lengths.dtype)],
+                dim=0,
+            ).to(residue_device)
+            self._residue_embeddings = embeddings
+            self._residue_offsets = offsets
+            self._residue_lengths = lengths
+            self._unknown_idx = offsets.shape[0] - 1
 
         if prot_to_residue_idx is None:
             prot_to_residue_idx = torch.zeros(1, dtype=torch.long)
@@ -184,6 +197,8 @@ class ResidueAwareBilinearDecoder(nn.Module):
     def _gather_residues(self, prot_indices: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         """根据蛋白全局索引收集残基特征并填充到 [N, L, d]。
 
+        v43: mmap 模式下 unknown 蛋白直接返回全零嵌入，不触发 mmap 切片。
+
         Args:
             prot_indices: (N,) 蛋白全局索引（0-based，对应图蛋白节点）
 
@@ -199,12 +214,10 @@ class ResidueAwareBilinearDecoder(nn.Module):
         )
         residue_mask = torch.zeros(n, self.max_len, dtype=torch.bool, device=device)
 
-        # 图蛋白索引 -> residue 文件索引；在 CPU 上索引大残基张量
         residue_idx = self._prot_to_residue_idx[prot_indices].cpu()
-        # unknown placeholder 位于追加后的最后一个有效索引
-        num_residues = self._residue_lengths.shape[0] - 1
+        n_total = self._residue_lengths.shape[0]
 
-        # 检测 -1 索引（对应无残基特征的蛋白），记录警告并 clamp 到 unknown placeholder
+        # 检测 -1 索引（对应无残基特征的蛋白），标记为 unknown
         missing_mask = residue_idx < 0
         if missing_mask.any():
             missing_count = missing_mask.sum().item()
@@ -213,12 +226,17 @@ class ResidueAwareBilinearDecoder(nn.Module):
                 "已回退到 unknown placeholder",
                 missing_count, residue_idx.shape[0],
             )
-        residue_idx = residue_idx.clamp(0, num_residues)
+        residue_idx = residue_idx.clamp(0, n_total - 1)
+
+        # 标记 unknown 蛋白（-1 或 _unknown_idx），跳过 mmap 切片
+        unknown_mask = missing_mask | (residue_idx == self._unknown_idx)
 
         lengths = self._residue_lengths[residue_idx].clamp(1, self.max_len)
         offsets = self._residue_offsets[residue_idx]
 
         for i in range(n):
+            if unknown_mask[i].item():
+                continue
             start = int(offsets[i].item())
             length = int(lengths[i].item())
             end = start + length

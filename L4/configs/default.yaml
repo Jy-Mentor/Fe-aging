@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿# v40 优化配置 (2026-07-04)
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿# v40 优化配置 (2026-07-04)
 # 目标: 树模型 v7 集成 (86基因) + 残基级双线性解码器
 # 策略: 更大容量 + 更低学习率 + 更长训练 + 强化排序损失
 random_seed: 42
@@ -13,7 +13,7 @@ model:
   pathway_proj_dropout: 0.25    # v31: 0.3→0.25
   pheno_head_dropout: 0.3
   score_clamp: 10.0
-  decoder_type: "bilinear"  # v40-fix: esm2_150M_residue_features.pt 访问段错误，改用 bilinear + 残基池化蛋白嵌入；手动恢复"residue_bilinear"需解决 pt 文件加载问题
+  decoder_type: "residue_bilinear"  # v43: 启用残基感知双线性注意力解码器，mmap加载避免OOM
 sage:
   epochs: 20             # v32-fast: 30→20, 单种子快速筛选
   lr: 0.0003             # v31: 5e-4→3e-4, 更稳定收敛
