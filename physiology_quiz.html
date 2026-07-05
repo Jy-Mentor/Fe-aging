@@ -1250,6 +1250,7 @@
             fontSize: 'medium',
             colorTheme: 'default',
             onlyBookmarks: false,
+            _resultSaved: false,
         };
 
         let state = { ...DEFAULT_STATE };
@@ -1316,6 +1317,7 @@
             state.quizElapsed = 0;
             state.resultKey = '';
             state._resultData = null;
+            state._resultSaved = false;
             state.chapterStats = {};
             state.wrongList = [];
             state.partialList = [];
@@ -1557,7 +1559,8 @@
 
         // ==================== RESULTS ====================
         function saveResult() {
-            if (!state._resultData) return;
+            if (!state._resultData || state._resultSaved) return;
+            state._resultSaved = true;
             try {
                 const results = JSON.parse(localStorage.getItem(LS_RESULTS) || '[]');
                 results.push({
@@ -1640,6 +1643,7 @@
                 btn.classList.toggle('active', btn.dataset.chapter === chapter);
             });
             saveState();
+            syncHomeUI();
             refreshHomePage();
         }
 
@@ -1772,6 +1776,7 @@
                 if (document.querySelectorAll('#questionNavGrid .q-nav-btn').length === 0) {
                     buildQuestionNav();
                 }
+                startTimer();
                 renderQuestion();
                 return;
             }
@@ -2496,20 +2501,23 @@
 
         // ==================== THEME ====================
         function toggleTheme() {
-            const isDark = document.body.classList.toggle('dark');
+            const isDark = !document.body.classList.contains('dark');
+            state.colorTheme = isDark ? 'contrast' : 'default';
+            applySettings();
             const btn = document.querySelector('.theme-toggle');
-            btn.textContent = isDark ? '☀️' : '🌙';
-            try { localStorage.setItem('physio_theme', isDark ? 'dark' : 'light'); } catch (e) {}
+            if (btn) btn.textContent = isDark ? '☀️' : '🌙';
+            saveSettings();
         }
 
         function loadTheme() {
-            try {
-                const saved = localStorage.getItem('physio_theme');
-                if (saved === 'dark') {
-                    document.body.classList.add('dark');
-                    document.querySelector('.theme-toggle').textContent = '☀️';
-                }
-            } catch (e) {}
+            const btn = document.querySelector('.theme-toggle');
+            if (state.colorTheme === 'contrast') {
+                document.body.classList.add('dark');
+                if (btn) btn.textContent = '☀️';
+            } else {
+                document.body.classList.remove('dark');
+                if (btn) btn.textContent = '🌙';
+            }
         }
 
         // ==================== SETTINGS ====================
@@ -2555,9 +2563,11 @@
         }
 
         function applySettings() {
-            document.body.classList.remove('font-small', 'font-medium', 'font-large', 'theme-contrast', 'theme-sepia');
+            document.body.classList.remove('font-small', 'font-medium', 'font-large', 'theme-contrast', 'theme-sepia', 'dark');
             document.body.classList.add('font-' + (state.fontSize || 'medium'));
-            if (state.colorTheme && state.colorTheme !== 'default') {
+            if (state.colorTheme === 'contrast') {
+                document.body.classList.add('dark');
+            } else if (state.colorTheme && state.colorTheme !== 'default') {
                 document.body.classList.add('theme-' + state.colorTheme);
             }
             syncSettingsUI();
@@ -2879,8 +2889,8 @@
         // ==================== INIT ====================
         function init() {
             try {
-                loadTheme();
                 loadState();
+                loadTheme();
                 setupSwipe();
                 refreshHomePage();
                 syncHomeUI();
