@@ -945,8 +945,8 @@
                     <span class="label">错因筛选</span>
                     <div class="filter-bar" id="wrongReasonFilter">
                         <button class="filter-btn active" data-reason="" onclick="setWrongReasonFilter('')">全部错题</button>
-                        <button class="filter-btn" data-reason="concept" onclick="setWrongReasonFilter('concept')">概念不清</button>
-                        <button class="filter-btn" data-reason="memory" onclick="setWrongReasonFilter('memory')">记忆模糊</button>
+                        <button class="filter-btn" data-reason="confuse" onclick="setWrongReasonFilter('confuse')">概念混淆</button>
+                        <button class="filter-btn" data-reason="forgot" onclick="setWrongReasonFilter('forgot')">知识点遗忘</button>
                         <button class="filter-btn" data-reason="careless" onclick="setWrongReasonFilter('careless')">粗心</button>
                         <button class="filter-btn" data-reason="other" onclick="setWrongReasonFilter('other')">其他</button>
                     </div>
@@ -1249,6 +1249,7 @@
             vibrationEnabled: true,
             fontSize: 'medium',
             colorTheme: 'default',
+            onlyBookmarks: false,
         };
 
         let state = { ...DEFAULT_STATE };
@@ -1472,8 +1473,10 @@
             if (randomLabel) randomLabel.textContent = state.randomMode ? '开启' : '关闭';
 
             // Update wrong reason filter
-            const reasonFilter = document.getElementById('wrongReasonFilter');
-            if (reasonFilter) reasonFilter.value = state.wrongReasonFilter;
+            const reasonBtns = document.querySelectorAll('#wrongReasonFilter .filter-btn');
+            reasonBtns.forEach(function(btn) {
+                btn.classList.toggle('active', (btn.dataset.reason || '') === (state.wrongReasonFilter || ''));
+            });
 
             // Update home stats
             const totalCountEl = document.getElementById('homeTotalCount');
@@ -1562,7 +1565,7 @@
                     total: state.quizQuestions.length,
                     correct: state._resultData.correct,
                     partial: state._resultData.partial || 0,
-                    wrong: state._resultData.wrong,
+                    wrong: state._resultData.total - state._resultData.correct - (state._resultData.partial || 0),
                     score: state._resultData.score,
                     time: getElapsedTimeStr(),
                     mode: state.quizMode,
@@ -1584,6 +1587,7 @@
 
         // ==================== NAVIGATION ====================
         function navigateTo(page) {
+            var prevPage = state.currentPage;
             document.querySelectorAll('.page').forEach(function(p) {
                 p.classList.remove('active');
             });
@@ -1594,8 +1598,12 @@
                 item.classList.toggle('active', item.dataset.nav === page);
             });
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (prevPage === 'quiz' && page !== 'quiz' && !state.submitted) {
+                pauseTimer();
+            }
             if (page === 'home') refreshHomePage();
             if (page === 'result') renderResult();
+            if (page === 'bookmarks') renderBookmarks();
         }
 
         function setChapterFilter(chapter) {
@@ -1760,6 +1768,7 @@
         function continueQuiz() {
             if (state.quizQuestions.length > 0 && !state.submitted) {
                 navigateTo('quiz');
+                updateBottomNavForQuiz();
                 if (document.querySelectorAll('#questionNavGrid .q-nav-btn').length === 0) {
                     buildQuestionNav();
                 }
@@ -1790,8 +1799,9 @@
         function confirmBackToHome() {
             const answered = state.quizQuestions.filter(gid => (state.userAnswers[gid] || '').trim()).length;
             if (answered > 0 && !state.submitted) {
-                if (!confirm('确定要返回主页吗？当前答题进度已自动保存，可点击“继续答题”恢复。')) return;
+                if (!confirm('确定要返回主页吗？当前答题进度已自动保存，可点击"继续答题"恢复。')) return;
             }
+            pauseTimer();
             navigateTo('home');
         }
 
