@@ -1352,15 +1352,33 @@
 
         // ==================== OPTION SHUFFLING ====================
         function getShuffledMapping(q, gid) {
-            return Object.keys(q.options).sort();
+            const keys = Object.keys(q.options).sort();
+            if (state.shuffleOptions) return seededShuffle(keys, gid * 31 + 17);
+            return keys;
         }
 
         function realLetterForDisplay(gid, displayLetter) {
-            return displayLetter;
+            if (!state.shuffleOptions) return displayLetter;
+            const q = questions[gid];
+            if (!q) return displayLetter;
+            const sortedKeys = Object.keys(q.options).sort();
+            const mapping = state.optionMappings[gid];
+            if (!mapping) return displayLetter;
+            const idx = sortedKeys.indexOf(displayLetter);
+            return idx >= 0 ? mapping[idx] : displayLetter;
         }
 
         function displayLettersForReal(gid, realLetters) {
-            return realLetters;
+            if (!state.shuffleOptions || !realLetters) return realLetters;
+            const q = questions[gid];
+            if (!q) return realLetters;
+            const sortedKeys = Object.keys(q.options).sort();
+            const mapping = state.optionMappings[gid];
+            if (!mapping) return realLetters;
+            return realLetters.split('').map(r => {
+                const idx = mapping.indexOf(r);
+                return idx >= 0 ? sortedKeys[idx] : r;
+            }).join('');
         }
 
         // ==================== QUIZ PROGRESS ====================
@@ -1703,6 +1721,7 @@
                 state.sm2 = {};
                 state.wrongReasons = {};
                 state.bookmarks = new Set();
+                saveState();
                 showNotification('学习进度已重置', 'info');
                 syncHomeUI();
                 refreshHomePage();
@@ -2287,7 +2306,7 @@
                             chapter: q.chapter,
                             userAnswer: userAnswer || '未作答',
                             correctAnswer: q.answer,
-                            correctText: q.options[q.answer],
+                            correctText: q.answer + '. ' + q.options[q.answer],
                         });
                         recordQuestionResult(gid, 'wrong');
                     }
@@ -2368,27 +2387,27 @@
                         '<div class="wrong-item-answer">' +
                             '<span class="' + cls + '">' + label + '：' + item.userAnswer + '</span>' +
                             '&nbsp;|&nbsp;' +
-                            '<span class="correct-ans">正确答案：' + item.correctAnswer + '</span>' +
+                            '<span class="correct-ans">正确答案：' + item.correctText + '</span>' +
                         '</div>' +
                     '</div>';
                 }).join('');
                 wrongSection.classList.remove('hidden');
                 document.getElementById('toggleWrongBtn').classList.remove('hidden');
+                document.getElementById('toggleWrongBtn').textContent = '📝 隐藏错题';
             } else {
                 wrongList.innerHTML = '<p style="color:var(--success);">🎉 全部答对，没有错题！</p>';
                 wrongSection.classList.add('hidden');
                 document.getElementById('toggleWrongBtn').classList.add('hidden');
             }
 
-            saveResult(d.score, d.time);
-
-            const wrongSet = new Set([...state.wrongList, ...state.partialList].map(item => item.globalId));
-            saveWrongAnswers(wrongSet);
+            saveResult();
         }
 
         function toggleWrongAnswers() {
             const section = document.getElementById('wrongAnswersSection');
-            section.classList.toggle('hidden');
+            const isHidden = section.classList.toggle('hidden');
+            const btn = document.getElementById('toggleWrongBtn');
+            if (btn) btn.textContent = isHidden ? '📝 错题回顾' : '📝 隐藏错题';
         }
 
         function redoQuiz() {
@@ -2502,10 +2521,13 @@
         // ==================== THEME ====================
         function toggleTheme() {
             const isDark = !document.body.classList.contains('dark');
-            state.colorTheme = isDark ? 'contrast' : 'default';
+            if (isDark) {
+                state._prevColorTheme = state.colorTheme;
+                state.colorTheme = 'contrast';
+            } else {
+                state.colorTheme = state._prevColorTheme || 'default';
+            }
             applySettings();
-            const btn = document.querySelector('.theme-toggle');
-            if (btn) btn.textContent = isDark ? '☀️' : '🌙';
             saveSettings();
         }
 
@@ -2621,6 +2643,10 @@
             const bookmarkLabel = document.getElementById('settingsBookmarkLabel');
             if (bookmarkSwitch) bookmarkSwitch.classList.toggle('on', !!state.onlyBookmarks);
             if (bookmarkLabel) bookmarkLabel.textContent = state.onlyBookmarks ? '开启' : '关闭';
+            const themeToggleBtn = document.querySelector('.theme-toggle');
+            if (themeToggleBtn) {
+                themeToggleBtn.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+            }
         }
 
         function toggleVibration() {
