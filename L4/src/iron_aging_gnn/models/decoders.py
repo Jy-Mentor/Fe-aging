@@ -136,9 +136,6 @@ class ResidueAwareBilinearDecoder(nn.Module):
                                  residue_device: str = "cpu") -> None:
         """注册 packed 格式残基特征。
 
-        v43: mmap 张量禁止 torch.cat 物化。unknown placeholder 通过独立索引
-        _unknown_idx 标记，在 _gather_residues 中特殊处理。
-
         Args:
             embeddings: (total_residues, residue_dim) mmap 或普通张量
             offsets: (n_proteins+1,)
@@ -150,33 +147,22 @@ class ResidueAwareBilinearDecoder(nn.Module):
         self.max_len = max_len
         self.residue_device = residue_device
 
-        is_mmap = getattr(embeddings, "is_mmap", False)
-        if is_mmap:
-            logger.info("检测到 mmap 残基张量，跳过 torch.cat 物化，"
-                        "unknown placeholder 使用独立索引处理")
-            self._residue_is_mmap = True
-            self._residue_embeddings = embeddings
-            self._residue_offsets = offsets
-            self._residue_lengths = lengths
-            self._unknown_idx = offsets.shape[0] - 1
-        else:
-            self._residue_is_mmap = False
-            unknown_emb = torch.zeros(1, embeddings.shape[1], dtype=embeddings.dtype)
-            embeddings = torch.cat([embeddings, unknown_emb], dim=0).to(residue_device)
-            unknown_start = offsets[-1]
-            unknown_end = unknown_start + 1
-            offsets = torch.cat(
-                [offsets, torch.tensor([unknown_start, unknown_end], dtype=offsets.dtype)],
-                dim=0,
-            ).to(residue_device)
-            lengths = torch.cat(
-                [lengths, torch.ones(1, dtype=lengths.dtype)],
-                dim=0,
-            ).to(residue_device)
-            self._residue_embeddings = embeddings
-            self._residue_offsets = offsets
-            self._residue_lengths = lengths
-            self._unknown_idx = offsets.shape[0] - 1
+        n_residue_proteins = int(offsets.shape[0]) - 1
+        self._unknown_idx = n_residue_proteins
+
+        self._residue_embeddings = embeddings
+        self._residue_is_mmap = getattr(embeddings, "is_mmap", False)
+
+        unknown_start = int(offsets[-1].item())
+        unknown_end = unknown_start + 1
+        self._residue_offsets = torch.cat([
+            offsets.to(residue_device),
+            torch.tensor([unknown_start, unknown_end], dtype=offsets.dtype, device=residue_device),
+        ])
+        self._residue_lengths = torch.cat([
+            lengths.to(residue_device),
+            torch.ones(1, dtype=lengths.dtype, device=residue_device),
+        ])
 
         if prot_to_residue_idx is None:
             prot_to_residue_idx = torch.zeros(1, dtype=torch.long)
@@ -197,8 +183,6 @@ class ResidueAwareBilinearDecoder(nn.Module):
     def _gather_residues(self, prot_indices: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         """根据蛋白全局索引收集残基特征并填充到 [N, L, d]。
 
-        v43: mmap 模式下 unknown 蛋白直接返回全零嵌入，不触发 mmap 切片。
-
         Args:
             prot_indices: (N,) 蛋白全局索引（0-based，对应图蛋白节点）
 
@@ -215,7 +199,6 @@ class ResidueAwareBilinearDecoder(nn.Module):
         residue_mask = torch.zeros(n, self.max_len, dtype=torch.bool, device=device)
 
         residue_idx = self._prot_to_residue_idx[prot_indices].cpu()
-        n_total = self._residue_lengths.shape[0]
 
         # 检测 -1 索引（对应无残基特征的蛋白），标记为 unknown
         missing_mask = residue_idx < 0
@@ -226,9 +209,9 @@ class ResidueAwareBilinearDecoder(nn.Module):
                 "已回退到 unknown placeholder",
                 missing_count, residue_idx.shape[0],
             )
-        residue_idx = residue_idx.clamp(0, n_total - 1)
 
-        # 标记 unknown 蛋白（-1 或 _unknown_idx），跳过 mmap 切片
+        # unknown placeholder 位于 n_residue_proteins（load_residue_esm2_features 的 unknown_idx）
+        residue_idx = residue_idx.clamp(0, self._unknown_idx)
         unknown_mask = missing_mask | (residue_idx == self._unknown_idx)
 
         lengths = self._residue_lengths[residue_idx].clamp(1, self.max_len)
@@ -236,6 +219,7 @@ class ResidueAwareBilinearDecoder(nn.Module):
 
         for i in range(n):
             if unknown_mask[i].item():
+                residue_mask[i, 0] = True
                 continue
             start = int(offsets[i].item())
             length = int(lengths[i].item())

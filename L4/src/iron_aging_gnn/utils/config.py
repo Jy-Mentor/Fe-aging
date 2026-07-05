@@ -1,9 +1,6 @@
 """铁衰老 GNN 项目配置系统
 =======================
-基于 pydantic 的严格类型配置类，所有默认值均来自 phase4_v10_minibatch.py 中的硬编码常量。
-支持从 YAML 文件加载配置并合并默认值。
-
-编辑测试行 — 验证文件可写。
+基于 pydantic 的严格类型配置类，支持从 YAML 文件加载配置并合并默认值。
 """
 
 from __future__ import annotations
@@ -14,9 +11,6 @@ import yaml
 from pydantic import BaseModel, Field
 
 
-# ============================================================
-# 默认项目根目录（自动推断）
-# ============================================================
 def _get_default_project_root() -> Path:
     """自动推断项目根目录：config.py 位于 L4/src/iron_aging_gnn/utils/，
     项目根目录为 L4 的父目录。
@@ -24,9 +18,6 @@ def _get_default_project_root() -> Path:
     return Path(__file__).resolve().parent.parent.parent.parent.parent
 
 
-# ============================================================
-# 铁衰老靶标基因（默认列表，来自 phase4_v10_minibatch.py 硬编码）
-# ============================================================
 _DEFAULT_FERRORAGING_GENES: list[str] = sorted([
     "ABCC1", "ACSL4", "ACVR1B", "ALOX15", "ATF3", "ATG3", "BAP1", "BCL6",
     "BRD7", "CAVIN1", "CD74", "CD82", "CDO1", "COX7A1", "CTSB", "CXCL10",
@@ -42,10 +33,6 @@ _DEFAULT_FERRORAGING_GENES: list[str] = sorted([
     "TLR4", "TNFAIP1", "TNFAIP3", "TXNIP", "WNT5A", "WWTR1", "YAP1", "ZEB1",
 ])
 
-
-# ============================================================
-# 子配置类
-# ============================================================
 
 class PathConfig(BaseModel):
     """路径配置 — 所有路径均相对于 project_root 或为绝对路径。"""
@@ -226,10 +213,6 @@ class ESM2Config(BaseModel):
     esm_max_len: int = Field(default=1022, ge=1, description="ESM-2 最大序列长度（含特殊 token 则为 1022 aa）")
 
 
-# ============================================================
-# 新增子配置类：TrainingConfig, MemoryBankConfig, PredictionConfig
-# ============================================================
-
 class TrainingConfig(BaseModel):
     """共享训练超参数 — SAGE 和 HGT 共用。"""
 
@@ -271,9 +254,14 @@ class NumericalConfig(BaseModel):
     eps_small: float = Field(default=1e-10, gt=0.0, description="小数 epsilon（用于 multinomial 分母保护）")
 
 
-# ============================================================
-# 顶层配置类
-# ============================================================
+class NegativeSamplingConfig(BaseModel):
+    """难负样本配置（PPI拓扑 + ESM-2结构相似性）。"""
+
+    use_topology_neg: bool = Field(default=False, description="是否启用PPI拓扑难负样本")
+    use_esm_similarity_neg: bool = Field(default=False, description="是否启用ESM-2余弦相似度难负样本")
+    topo_neighbors_top_k: int = Field(default=50, ge=1, description="拓扑负样本每个蛋白保留候选数")
+    esm_similarity_top_k: int = Field(default=50, ge=1, description="ESM-2相似度负样本每个蛋白保留候选数")
+
 
 class Config(BaseModel):
     """铁衰老 GNN 项目总配置。
@@ -303,6 +291,7 @@ class Config(BaseModel):
     memory_bank: MemoryBankConfig = Field(default_factory=MemoryBankConfig)
     prediction: PredictionConfig = Field(default_factory=PredictionConfig)
     numerical: NumericalConfig = Field(default_factory=NumericalConfig)
+    negative_sampling: NegativeSamplingConfig = Field(default_factory=NegativeSamplingConfig)
     ferrogenesis_genes: list[str] = Field(
         default_factory=lambda: list(_DEFAULT_FERRORAGING_GENES),
         description="铁衰老靶标基因列表",
@@ -331,10 +320,6 @@ class Config(BaseModel):
         return d
 
 
-# ============================================================
-# 配置加载函数
-# ============================================================
-
 def load_config(config_path: str | None = None) -> Config:
     """从 YAML 文件加载配置，未指定的字段使用默认值。
 
@@ -355,7 +340,8 @@ def load_config(config_path: str | None = None) -> Config:
     if not config_file.exists():
         raise FileNotFoundError(f"配置文件不存在: {config_file}")
 
-    with config_file.open(encoding="utf-8") as f:
+    # utf-8-sig 自动去除 BOM，避免 Windows 下 BOM 导致 yaml 解析失败
+    with config_file.open(encoding="utf-8-sig") as f:
         raw = yaml.safe_load(f)
 
     if raw is None:

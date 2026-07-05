@@ -1,173 +1,15 @@
 #!/usr/bin/env python3
-"""
-Phase 4 v42: Mini-Batch GNN 双分支 — 化合物冷启动验证 (蛋白冷启动已移除 v38)
-==========================================================================
-核心任务:
-  - 针对89个铁衰老基因的候选化合物发现（化合物冷启动验证）
-  - 使用ESM-2预训练蛋白嵌入 (facebook/esm2_t30_150M_UR50D, 640维)
-  - SAGE + HGT 双分支：拓扑 (SAGEConv) + 语义 (HGTConv)
-  - 评估指标: AUPR、AUC、Precision@K、EF@1%、EF@5%、BEDROC、ROCE@1%
+"""Phase 4: Mini-Batch GNN 双分支 — 化合物冷启动候选化合物发现
 
-核心设计:
-  1. 两阶段迁移学习 (BiMLPA/HHI 社区感知头尾划分，参考 CTCL-DPI)
-     阶段1: 尾节点保持 + 头节点欠采样 → 平衡子图预训练
-     阶段2: 加载最优参数 → 完整图微调
-  2. 课程负采样 (随机 → 中度通路邻近 → 极硬)
-  3. PPI拓扑难负样本 + ESM-2结构相似性难负样本 (v42启用)
-  4. Focal Loss + BPR排序损失
-  5. Memory Bank 跨batch全局难负样本
-  6. DropEdge / 标签平滑 / AdamW / 梯度裁剪
-  7. 铁死亡表型分类辅助任务 (多任务联合训练)
-  8. HGT mini-batch 验证 (采样CPI边2阶子图, 禁止信息泄漏)
-  9. 四模态异质图: 化合物-蛋白-通路-疾病 (GSE61616)
-
-关键修复历史:
-  - v41: 修复HGT化合物冷启动信息泄漏 (add_seed_cpi_edges=False)
-  - v41: 修复prot_residue_indices全局索引 (v36用局部索引导致AUC被压低)
-  - v40: 残基特征文件加载段错误降级为bilinear解码器
-  - v38: 彻底移除蛋白冷启动验证（已被独立评估脚本替代）
-  - v37: HGT mini-batch验证(替换全图前向)，OOM降级为全图
-  - v31: AUPR取代AUC作为早停指标，双分支等权集成
-  - 化合物冷启动验证 + MC Dropout 不确定性估计 + 等权集成
-  - BCE + BPR 排序损失联合优化（6:4 加权）
-
-╔══════════════════════════════════════════════════════════════════════════════╗
-║                         论文级引用 (Paper-Level Citations)                     ║
-╚══════════════════════════════════════════════════════════════════════════════╝
-
-核心方法论:
-  [1] Hamilton, W.L., Ying, R., & Leskovec, J. (2017). Inductive Representation
-      Learning on Large Graphs. In Advances in Neural Information Processing
-      Systems (NeurIPS), 30, 1024-1034.
-      应用: SAGE 分支图卷积编码器 (GraphSAGE with mean aggregation)
-
-  [2] Hu, Z., Dong, Y., Wang, K., & Sun, Y. (2020). Heterogeneous Graph
-      Transformer. In Proceedings of The Web Conference (WWW), 2704-2710.
-      应用: HGT 分支异质图编码器 (HGTConv with multi-head attention)
-
-  [3] Lin, T.Y., Goyal, P., Girshick, R., He, K., & Dollar, P. (2017). Focal
-      Loss for Dense Object Detection. In IEEE International Conference on
-      Computer Vision (ICCV), 2980-2988.
-      应用: BCE主损失 (α=0.75, γ=2.0)
-
-  [4] Rives, A., Meier, J., Sercu, T., Goyal, S., Lin, Z., Liu, J., ... &
-      Fergus, R. (2021). Biological structure and function emerge from scaling
-      unsupervised learning to 250 million protein sequences. Proceedings of the
-      National Academy of Sciences (PNAS), 118(15), e2016239118.
-      应用: ESM-2 (facebook/esm2_t30_150M_UR50D) 蛋白序列嵌入, 640维
-
-  [5] Rendle, S., Freudenthaler, C., Gantner, Z., & Schmidt-Thieme, L. (2009).
-      BPR: Bayesian Personalized Ranking from Implicit Feedback. In Proceedings
-      of the Twenty-Fifth Conference on Uncertainty in Artificial Intelligence
-      (UAI), 452-461.
-      应用: BPR 排序损失 (6:4 加权联合优化)
-
-  [6] 王煦, 方贤进. (2026). 基于迁移学习与图对比学习的药物-蛋白质相互作用预测
-      方法. 计算机应用 (Journal of Computer Applications).
-      应用: 两阶段迁移学习 (CTCL-DPI pretrain + fine-tune)
-
-  [7] You, Y., Chen, T., Sui, Y., Chen, T., Wang, Z., & Shen, Y. (2020). Graph
-      Contrastive Learning with Augmentations. In Advances in Neural Information
-      Processing Systems (NeurIPS), 33, 5812-5823.
-      应用: 课程负采样 (curriculum negative sampling)
-
-  [8] Chen, T., Kornblith, S., Norouzi, M., & Hinton, G. (2020). A Simple
-      Framework for Contrastive Learning of Visual Representations. In
-      International Conference on Machine Learning (ICML), 1597-1607.
-      应用: Memory Bank 对比学习 (v21已移除, 消融实验证实-75% SAGE AUPR)
-
-铁衰老领域背景:
-  [9] Dixon, S.J., Lemberg, K.M., Lamprecht, M.R., Skouta, R., Zaitsev, E.M.,
-      Gleason, C.E., ... & Stockwell, B.R. (2012). Ferroptosis: An Iron-Dependent
-      Form of Nonapoptotic Cell Death. Cell, 149(5), 1060-1072.
-      应用: 铁死亡核心概念定义
-
-  [10] Tsvetkov, P., Coy, S., Petrova, B., Dreishpoon, M., Verma, A., Abdusamad,
-       M., ... & Golub, T.R. (2022). Copper induces cell death by targeting
-       lipoylated TCA cycle proteins. Science, 375(6586), 1254-1261.
-       应用: 铜死亡机制 (Cuproptosis, FDX1-LIAS-DLAT 通路)
-
-  [11] BCP (β-Caryophyllene): 天然双环倍半萜, CB2受体激动剂, 具有抗炎/抗氧化/
-       神经保护活性. 本项目核心筛选目标化合物.
-
-数据集:
-  [12] BindingDB: Liu, T., Lin, Y., Wen, X., Jorissen, R.N., & Gilson, M.K.
-       (2007). BindingDB: a web-accessible database of experimentally determined
-       protein-ligand binding affinities. Nucleic Acids Research, 35(Database),
-       D198-D201.
-       应用: 训练集CPI标注 (实验验证的化合物-蛋白互作数据)
-
-  [13] KEGG PATHWAY: Kanehisa, M., Furumichi, M., Sato, Y., Ishiguro-Watanabe,
-       M., & Tanabe, M. (2021). KEGG: integrating viruses and cellular organisms.
-       Nucleic Acids Research, 49(D1), D545-D551.
-       应用: 蛋白-通路关联 (人类通路基因注释)
-
-  [14] STRING PPI: Szklarczyk, D., Gable, A.L., Nastou, K.C., Lyon, D., Kirsch,
-       R., Pyysalo, S., ... & von Mering, C. (2021). The STRING database in 2021:
-       customizable protein-protein networks, and functional characterization of
-       user-uploaded gene/measurement sets. Nucleic Acids Research, 49(D1),
-       D605-D612.
-       应用: 蛋白-蛋白互作网络 (combined score ≥ 700)
-
-  [15] GSE61616: Gene Expression Omnibus (GEO) dataset for cerebral ischemia-
-       reperfusion injury (CIRI). 应用: 疾病节点差异基因构建
-
-  [16] PubChem: Kim, S., Chen, J., Cheng, T., Gindulyte, A., He, J., He, S.,
-       ... & Bolton, E.E. (2023). PubChem 2023 update. Nucleic Acids Research,
-       51(D1), D1373-D1380. 应用: 化合物SMILES获取与结构验证
-
-评估指标:
-  [17] Precision@K: 药物筛选场景核心指标, 衡量Top-K推荐中真阳性比例
-  [18] Enrichment Factor (EF): EF@x% = (正样本在Top x%中的比例) / x%
-       反映模型对正样本的富集能力, 是虚拟筛选的标准评估指标
-  [19] AUPR (Area Under Precision-Recall Curve): 适用于类别不平衡场景
-       优于AUC的排序性能评估指标 (Saito & Rehmsmeier, 2015, PLOS ONE)
-  [20] ROCE (ROC Enrichment): 早期富集评估, 关注低假阳性率区域
-
-╔══════════════════════════════════════════════════════════════════════════════╗
-║                       实验设置 (Experimental Setup)                           ║
-╚══════════════════════════════════════════════════════════════════════════════╝
-
-超参数 (Hyperparameters):
-  - 模型架构: SAGE (2层 GraphSAGE) + HGT (2层 HGTConv, 2头注意力)
-  - 隐藏维度: 64 (hidden_dim), 输出维度: 64 (out_dim)
-  - Dropout: 0.5 (SAGE & HGT)
-  - 学习率: SAGE 5e-4, HGT 1e-3 (微调阶段)
-  - 预训练学习率: SAGE 7.5e-4, HGT 1.5e-3 (预训练阶段)
-  - 优化器: AdamW (weight_decay=1e-4)
-  - 批次大小: SAGE 256, HGT 128
-  - 邻域采样: [32, 16] (2-hop)
-  - 训练轮数: 预训练10 epochs + 微调15 epochs
-  - 早停: patience=5 (AUPR无提升且AUC下降)
-  - Focal Loss: α=0.75, γ=2.0
-  - BPR权重: 0.4 (BCE:BPR = 6:4)
-  - 表型任务权重: 0.05 (pheno_lambda)
-  - 温度参数: 5.0 (固定, 不参与梯度)
-
-数据拆分 (Data Split):
-  - 化合物冷启动: 85%训练 / 15%验证 (按化合物拆分, 归纳式设定)
-  - 蛋白: 所有CPI蛋白均在训练集中（化合物冷启动仅关注新化合物的泛化）
-  - 随机种子: 42 (主种子), 消融实验使用 [42, 123, 456]
-
-评估协议 (Evaluation Protocol):
-  - 每epoch验证 (化合物冷启动)
-  - 主指标: AUPR (化合物冷启动)
-  - 辅助指标: AUC, Precision@K, EF@1%, EF@5%, BEDROC, ROCE@1%
-  - 早停条件: 连续5 epoch内val_aupr无提升
-  - 验证图: 仅保留蛋白侧拓扑，移除验证化合物的所有CPI边（严格归纳式验证）
-
-特征 (Features):
-  - 化合物: Morgan指纹 (2048维, radius=2) + ECFP4 (2048维) + 物化性质 (分子量/LogP/氢键供受体等)
-  - 蛋白: ESM-2 预训练嵌入 (640维, facebook/esm2_t30_150M_UR50D)
-  - 通路: KEGG one-hot编码 + 通路嵌入投影器
-  - 疾病: GSE61616差异基因 one-hot编码 (v24新增)
-
-图结构 (Graph Structure):
-  - 同质图 (SAGE): 化合物-蛋白CPI边, 蛋白-蛋白PPI边
-  - 异质图 (HGT): 化合物-蛋白-通路-疾病 四模态
-  - 边类型: CPI (化合物↔蛋白), PPI (蛋白↔蛋白), 蛋白-通路, 疾病-蛋白
-  - 铁衰老基因: 96个核心基因全蛋白集 (含ACSL4/SOD1/IGFBP7等)
-  - CPI补充: v27 (27条) + v28 (51条) 补充数据
+SAGE + HGT 双分支集成：拓扑 (SAGEConv) + 语义 (HGTConv)，支持：
+- 两阶段迁移学习 (BiMLPA/HHI 社区感知头尾划分)
+- 课程负采样 (随机 → 中度通路邻近 → 极硬)
+- PPI拓扑难负样本 + ESM-2结构相似性难负样本
+- Focal Loss + BPR排序损失 + Memory Bank
+- 铁死亡表型分类辅助任务 (多任务联合训练)
+- 四模态异质图: 化合物-蛋白-通路-疾病 (GSE61616)
+- ResidueAwareBilinearDecoder 残基-原子级交互解码器
+- 化合物冷启动验证 (归纳式设定)
 """
 
 from __future__ import annotations
@@ -196,7 +38,6 @@ from rdkit.Chem import AllChem, Descriptors, rdMolDescriptors
 from sklearn.metrics import average_precision_score, roc_auc_score
 from torch_geometric.data import HeteroData
 from tqdm import tqdm
-# SAGEConv/HGTConv 已由 src/iron_aging_gnn/models 模块封装，移除主脚本直接导入
 
 RDLogger.DisableLog("rdApp.error")
 RDLogger.DisableLog("rdApp.warning")
@@ -245,17 +86,12 @@ torch.manual_seed(RANDOM_SEED)
 if torch.cuda.is_available():
     torch.cuda.manual_seed_all(RANDOM_SEED)
 
-# 启用CuDNN确定性模式，确保实验结果可复现
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 logger.info(f"设备: {DEVICE}")
 
-# ============================================================
-# 配置系统加载（v28: 工业级重构 — 从 YAML 加载配置，替代硬编码常量）
-# 向后兼容：若配置系统不可用或 YAML 文件不存在，回退到模块级硬编码常量
-# ============================================================
 _config_path = PROJECT_ROOT / "L4" / "configs" / "default.yaml"
 try:
     _cfg = load_config(str(_config_path))
@@ -264,9 +100,6 @@ except Exception as _cfg_err:
     logger.warning(f"配置系统加载失败 ({_cfg_err})，将使用硬编码常量作为回退（向后兼容）")
     _cfg = None
 
-# ============================================================
-# 0. 铁衰老靶标列表
-# ============================================================
 FERRORAGING_GENES_CSV = L1_RESULTS / "ferroaging_genes_96.csv"
 if FERRORAGING_GENES_CSV.exists():
     _df = pd.read_csv(FERRORAGING_GENES_CSV)
@@ -289,11 +122,6 @@ else:
     ])
 logger.info(f"铁衰老靶标: {len(ALL_FERRORAGING_GENES)} 个基因")
 
-# 铁衰老核心靶标优先级权重（用于化合物排序）
-# Tier 1: 铁死亡/铁衰老核心效应器 (weight=5.0)
-# Tier 2: 关键调控因子 (weight=3.0)
-# Tier 3: 相关通路蛋白 (weight=2.0)
-# Tier 4: 其他铁衰老相关基因 (weight=1.0)
 TARGET_PRIORITY = {
     # Tier 1: 核心铁死亡/铁衰老效应器 (weight=5.0)
     "ACSL4": 5.0, "HMOX1": 5.0, "TFRC": 5.0, "LPCAT3": 5.0, "PTGS2": 5.0,
@@ -315,16 +143,8 @@ TARGET_PRIORITY = {
     "LOX": 1.5, "MCU": 1.5, "SMURF2": 1.5,
     "SOCS1": 1.5, "SOCS2": 1.5, "TNFAIP3": 1.5,
 }
-# 默认权重（未明确列出的基因）
 _DEFAULT_PRIORITY = 1.0
 
-# ============================================================
-# 模块级常量（v28: 工业级重构 — 优先从配置系统取值，失败时回退到硬编码常量）
-# 所有超参数均可通过 configs/default.yaml 修改，无需改动代码
-# 配置映射: config.py → Config.{model,sage,hgt,loss,training,curriculum,validation,esm2,memory_bank,prediction,numerical}
-# ============================================================
-
-# ---- 模型架构 ----
 HIDDEN_DIM = _cfg.model.hidden_dim if _cfg else 64
 OUT_DIM = _cfg.model.out_dim if _cfg else 64
 NUM_LAYERS = _cfg.model.num_layers if _cfg else 2
@@ -336,7 +156,6 @@ PATHWAY_PROJ_DROPOUT = _cfg.model.pathway_proj_dropout if _cfg else 0.3
 PHENO_HEAD_DROPOUT = _cfg.model.pheno_head_dropout if _cfg else 0.3
 TEMPERATURE = _cfg.model.temperature if _cfg else 5.0
 
-# ---- 损失函数 ----
 FOCAL_GAMMA = _cfg.loss.focal_gamma if _cfg else 2.0
 FOCAL_ALPHA = _cfg.loss.focal_alpha if _cfg else 0.75
 LABEL_SMOOTHING_POS = _cfg.loss.label_smoothing_pos if _cfg else 0.9
@@ -345,7 +164,6 @@ BPR_WEIGHT = _cfg.loss.bpr_weight if _cfg else 0.4
 CPI_LOSS_WEIGHT = _cfg.loss.bce_weight if _cfg else 0.6
 INFONCE_WEIGHT = _cfg.loss.infonce_weight if _cfg else 0.1
 
-# ---- 训练超参数 ----
 LEARNING_RATE_SAGE = _cfg.sage.lr if _cfg else 5e-4
 LEARNING_RATE_HGT = _cfg.hgt.lr if _cfg else 1e-3
 PRETRAIN_LR_MULTIPLIER = _cfg.two_stage.pretrain_lr_multiplier if _cfg else 1.5
@@ -369,46 +187,38 @@ PRETRAIN_VAL_FREQ = _cfg.validation.pretrain_val_freq if _cfg else 5
 MEM_REFRESH_FREQ = _cfg.validation.mem_refresh_freq if _cfg else 5
 PHENO_LAMBDA = _cfg.training.pheno_lambda if _cfg else 0.05
 
-# ---- 课程负采样 ----
 CURRICULUM_PHASE1 = _cfg.curriculum.random_ratio if _cfg else 0.3
 CURRICULUM_PHASE2 = (_cfg.curriculum.random_ratio + _cfg.curriculum.moderate_ratio) if _cfg else 0.7
 MEDIUM_NEG_RATIO = _cfg.curriculum.medium_neg_ratio if _cfg else 0.3
 HARD_NEG_RATIO = _cfg.curriculum.hard_neg_ratio if _cfg else 0.1
 
-# ---- 负采样增强 (v41) ----
 USE_TOPOLOGY_NEG = _cfg.negative_sampling.use_topology_neg if _cfg else False
 USE_ESM_SIMILARITY_NEG = _cfg.negative_sampling.use_esm_similarity_neg if _cfg else False
 TOPO_NEIGHBORS_TOP_K = _cfg.negative_sampling.topo_neighbors_top_k if _cfg else 50
 ESM_SIMILARITY_TOP_K = _cfg.negative_sampling.esm_similarity_top_k if _cfg else 50
 
-# ---- 正则化 ----
 FLAG_STEP = _cfg.training.flag_step if _cfg else 0.01
 SCORE_CLAMP = _cfg.model.score_clamp if _cfg else 10
-DECODER_TYPE = _cfg.model.decoder_type if _cfg else "mlp"  # mlp / dot / bilinear / residue_bilinear
+DECODER_TYPE = _cfg.model.decoder_type if _cfg else "mlp"
 
-# ---- Memory Bank ----
 MEMORY_BANK_SIZE = _cfg.memory_bank.memory_bank_size if _cfg else 8192
 INFONCE_WARMUP_RATIO = _cfg.two_stage.infonce_warmup_ratio if _cfg else 0.15
 INFONCE_MEM_SAMPLE = _cfg.memory_bank.infonce_mem_sample if _cfg else 256
 INFONCE_TEMPERATURE = _cfg.loss.infonce_temperature if _cfg else 0.07
 
-# ---- 两阶段迁移学习 ----
 HEAD_RATIO = _cfg.two_stage.head_ratio if _cfg else 0.2
 LAMBDA_HHI = _cfg.two_stage.lambda_hhi if _cfg else 1.0
 HEAD_UNDERSAMPLE_RATIO = _cfg.two_stage.head_undersample_ratio if _cfg else 0.6
 
-# ---- 数据拆分 ----
 COMPOUND_VAL_SPLIT = _cfg.validation.compound_split_ratio if _cfg else 0.85
-PROTEIN_VAL_SPLIT = _cfg.validation.protein_cold_split_ratio if _cfg else 0.50  # 仅用于构建训练/验证蛋白集
+PROTEIN_VAL_SPLIT = _cfg.validation.protein_cold_split_ratio if _cfg else 0.50
 
-# ---- 验证 ----
 HARD_NEG_TOP_K = _cfg.validation.hard_neg_top_k if _cfg else 5
 RAND_NEG_TOP_K = _cfg.validation.rand_neg_top_k if _cfg else 5
 VAL_BATCH_SIZE = _cfg.validation.val_batch_size if _cfg else 512
 HGT_VAL_BATCH_SIZE = _cfg.validation.hgt_val_batch_size if _cfg else 64
 HGT_VAL_NUM_NEIGHBORS = _cfg.validation.hgt_val_num_neighbors if _cfg else [64, 32]
 
-# ---- 预测 ----
 MC_SAMPLES = _cfg.validation.mc_samples if _cfg else 30
 DIVERSITY_PENALTY = _cfg.validation.diversity_penalty if _cfg else 0.3
 DEFAULT_AUPR = _cfg.validation.default_aupr if _cfg else 0.5
@@ -417,26 +227,20 @@ WARM_TARGETS_TOP_N = _cfg.prediction.warm_targets_top_n if _cfg else 5
 ZS_TARGETS_TOP_N = _cfg.prediction.zs_targets_top_n if _cfg else 3
 COMPOSITE_AVG_WEIGHT = _cfg.prediction.composite_avg_weight if _cfg else 0.4
 COMPOSITE_MAX_WEIGHT = _cfg.prediction.composite_max_weight if _cfg else 0.3
-# 树模型集成权重（树模型 v7, 86基因, AUC~0.99）
 TREE_ENSEMBLE_WEIGHT = _cfg.prediction.tree_ensemble_weight if _cfg else 0.6
 COMPOSITE_HITS_WEIGHT = _cfg.prediction.composite_hits_weight if _cfg else 0.3
 FERRO_FACTOR_BASE = _cfg.prediction.ferro_factor_base if _cfg else 0.7
 ZS_BONUS_MAX = _cfg.prediction.zs_bonus_max if _cfg else 0.05
 
-# ---- ESM-2 ----
 ESM_MAX_LEN = _cfg.esm2.esm_max_len if _cfg else 1022
 ESM_BATCH_SIZE = _cfg.esm2.esm_batch_size if _cfg else 4
 ESM_MODEL_NAME = _cfg.esm2.model_name if _cfg else "facebook/esm2_t30_150M_UR50D"
 
-# ---- 数值常量 ----
 MASK_VAL = _cfg.numerical.mask_val if _cfg else -1e9
 EPS = _cfg.numerical.eps if _cfg else 1e-8
 EPS_SMALL = _cfg.numerical.eps_small if _cfg else 1e-10
 
 
-# ============================================================
-# 1. 化合物特征工程（复用 v9）
-# ============================================================
 RDKIT_DESCRIPTOR_NAMES = [
     "MolWt", "MolLogP", "MolMR", "TPSA",
     "NumHAcceptors", "NumHDonors", "NumRotatableBonds",
@@ -445,6 +249,17 @@ RDKIT_DESCRIPTOR_NAMES = [
     "RingCount", "FractionCSP3", "BalabanJ",
 ]
 ECFP4_NBITS = 2048
+
+
+def _get_prot_feat_dim(prot_feat) -> int | None:
+    """提取蛋白特征维度，兼容 numpy ndarray / torch Tensor / dict。"""
+    if hasattr(prot_feat, "shape") and len(prot_feat.shape) >= 2:
+        return int(prot_feat.shape[-1])
+    if isinstance(prot_feat, dict):
+        for v in prot_feat.values():
+            if hasattr(v, "shape") and len(v.shape) >= 1:
+                return int(v.shape[-1])
+    return None
 
 
 def _compute_ecfp4(smiles_iter: list[str]) -> np.ndarray:
@@ -621,9 +436,6 @@ def build_compound_features(
     return features, mean, std, col_mean
 
 
-# ============================================================
-# 2. 蛋白特征（复用 v9）
-# ============================================================
 def compute_aac(sequences: list[str]) -> np.ndarray:
     amino_acids = "ACDEFGHIKLMNPQRSTVWY"
     aa_to_idx = {aa: i for i, aa in enumerate(amino_acids)}
@@ -733,13 +545,7 @@ def compute_esm2_embeddings(
     return embeddings
 
 
-# ============================================================
-# 3. 数据加载（复用 v9）
-# ============================================================
-# [Ref: 12] BindingDB: Liu et al. (2007) Nucleic Acids Research
-# ============================================================
 def load_cpi_data() -> pd.DataFrame:
-    # 使用树模型 v7 扩展版本（86基因 / 48K条），替代原 v6 版本 (70基因)
     cpi_path = L4_ROOT / "results" / "experimental_actives_detail_cleaned_combined.csv"
     if not cpi_path.exists():
         logger.error(f"CPI 数据文件不存在: {cpi_path}")
@@ -1211,9 +1017,6 @@ def load_disease_edges() -> pd.DataFrame | None:
     return None
 
 
-# ============================================================
-# 4. 图构建 & 邻接表预计算
-# ============================================================
 def build_pathway_neighbors(
     gene_to_pathways: dict[str, list[str]],
     gene_to_idx: dict[str, int],
@@ -1335,8 +1138,6 @@ def build_graphs_and_adj(
     x = torch.from_numpy(np.vstack([comp_feat, prot_matrix]))
     logger.info(f"同质图: {n_compounds + n_proteins} 节点, feat_dim={feat_dim}, prot_raw_dim={prot_feat_dim}")
 
-    # ======== 邻接表构建 ========
-    # 同质图邻接表（用于 GAT 分支采样）
     homo_adj = defaultdict(list)  # node_idx -> [neighbor_indices]
 
     for _, row in cpi_df.iterrows():
@@ -1572,9 +1373,6 @@ def build_graphs_and_adj(
     }
 
 
-# ============================================================
-# 5. 手动邻居采样（GraphSAGE 风格）
-# ============================================================
 def drop_edge(edge_index: torch.Tensor, p: float = 0.15) -> torch.Tensor:
     """DropEdge 正则化：随机丢弃 p 比例的边，缓解过拟合与过平滑
 
@@ -1625,9 +1423,6 @@ def sample_homo_subgraph(
     return node_list, node_to_local, edge_index
 
 
-# ============================================================
-# 6. 损失函数（v17: Focal Loss + 标签平滑）
-# ============================================================
 def focal_loss_with_logits(
     logits: torch.Tensor,
     targets: torch.Tensor,
@@ -1649,11 +1444,7 @@ def focal_loss_with_logits(
     return loss.mean() if reduction == "mean" else loss.sum()
 
 
-# ============================================================
-# 7. InfoNCE 对比损失（v17 改进）
-# ============================================================
 # MemoryBank 类已移至 iron_aging_gnn.models.memory_bank，从模块导入
-# ============================================================
 
 def infonce_loss(
     pos_scores: torch.Tensor,
@@ -1704,14 +1495,11 @@ def infonce_loss(
     return loss.mean()
 
 
-# ============================================================
-# 8. GPU 显存检查工具
 # _check_tensor_nan 和 _check_gradient_norm 与
 #   src/iron_aging_gnn/training/trainer.py 重复定义。
 # 主脚本保留内联版本供 train_sage/train_hgt 直接调用，
 # src/ 模块版本供 trainer.py 内部使用。
 # 后续完整迁移后应统一。
-# ============================================================
 def _check_gpu_memory(min_free_gb: float = 1.0) -> bool:
     """检查 GPU 显存是否足够，返回 True/False"""
     if not torch.cuda.is_available():
@@ -1816,14 +1604,21 @@ def _check_gradient_norm(model: nn.Module, warn_threshold: float = 100.0) -> flo
     return total_norm
 
 
+class _CpiLossState:
+    """_compute_cpi_loss 运行期状态，替代模块级全局变量。"""
+
+    def __init__(self) -> None:
+        self.nan_batch_counter: int = 0
+        self.pos_oom_counter: int = 0
+        self.hard_neg_oom_counter: int = 0
+        self.bpr_oom_counter: int = 0
+
+
+# 默认共享状态：训练器不注入 _state 时仍可跨 batch 累计 OOM/NaN 次数。
+_default_cpi_loss_state = _CpiLossState()
+
+
 # [Ref: 3] Focal Loss: Lin et al. (2017) ICCV (α=0.75, γ=2.0)
-# 模块级 NaN/Inf 计数器（避免函数属性污染）
-_nan_batch_counter: int = 0
-_pos_oom_counter: int = 0
-_hard_neg_oom_counter: int = 0
-_bpr_oom_counter: int = 0
-
-
 def _compute_cpi_loss(
     model,
     comp_emb: torch.Tensor,
@@ -1847,10 +1642,12 @@ def _compute_cpi_loss(
     prot_to_topo_hard_neighbors: dict[int, set] | None = None,
     focal_gamma: float = 2.0,
     focal_alpha: float = 0.75,
+    _state: _CpiLossState | None = None,
 ) -> torch.Tensor:
     """v21: 共享的 CPI 损失计算（Focal + BPR + 课程负采样）— InfoNCE 默认关闭
     v20: 新增 bpr_weight 参数支持消融实验
     v23-topo: 新增基于PPI拓扑的难负样本选项，可替代通路共现中度负样本。
+    v44: OOM/NaN 状态改为 _CpiLossState 局部实例，避免模块级全局状态污染。
 
     统一 SAGE 与 HGT 训练循环中的负采样与损失计算逻辑，避免重复代码。
 
@@ -1872,10 +1669,12 @@ def _compute_cpi_loss(
         use_topology_neg: 为True时，优先使用PPI拓扑邻居替代通路邻居。
         prot_to_topo_medium_neighbors: 蛋白 -> 拓扑中度负样本局部索引集合。
         prot_to_topo_hard_neighbors: 蛋白 -> 拓扑难负样本局部索引集合。
+        _state: 运行期状态实例；未提供时自动创建。
 
     Returns:
         loss 标量张量
     """
+    state = _state if _state is not None else _default_cpi_loss_state
     n_batch_prots = prot_emb.shape[0]
     T = model.temperature
 
@@ -1902,10 +1701,9 @@ def _compute_cpi_loss(
         pos_score = model.decode(comp_emb[pos_src], prot_emb[pos_dst], prot_residue_indices=pos_residue_idx) / T
     except torch.cuda.OutOfMemoryError as e:
         # 正样本 OOM 降级为 fast bilinear
-        global _pos_oom_counter
-        _pos_oom_counter += 1
+        state.pos_oom_counter += 1
         logger.warning(
-            f"_compute_cpi_loss: pos 残基路径 OOM（连续 {_pos_oom_counter} 次），"
+            f"_compute_cpi_loss: pos 残基路径 OOM（连续 {state.pos_oom_counter} 次），"
             f"降级为 fast bilinear: {e}"
         )
         if torch.cuda.is_available():
@@ -1995,10 +1793,9 @@ def _compute_cpi_loss(
                 prot_residue_indices=rand_residue_idx,
             ) / T
         except torch.cuda.OutOfMemoryError as e:
-            global _hard_neg_oom_counter
-            _hard_neg_oom_counter += 1
+            state.hard_neg_oom_counter += 1
             logger.warning(
-                f"_compute_cpi_loss: hard_neg 残基路径 OOM（连续 {_hard_neg_oom_counter} 次），"
+                f"_compute_cpi_loss: hard_neg 残基路径 OOM（连续 {state.hard_neg_oom_counter} 次），"
                 f"降级为 fast bilinear: {e}"
             )
             if torch.cuda.is_available():
@@ -2050,6 +1847,23 @@ def _compute_cpi_loss(
 
     # Phase 3: 极硬负样本
     # 支持基于PPI拓扑的难负样本（共同邻居/高Jaccard）
+    # v43: 额外引入 Memory Bank 全局蛋白嵌入作为跨 batch 的极硬负样本。
+    hard_neg_from_memory = torch.zeros(n_unique, device=DEVICE)
+    has_memory_neg = False
+    if n_hard > 0 and memory_bank.size() > 0:
+        n_mem = min(256, memory_bank.size())
+        mem_emb = memory_bank.sample(n_mem)
+        if mem_emb.shape[0] > 0:
+            # 计算当前 batch 化合物与全局 memory bank 蛋白的得分
+            mem_scores = model.decode(
+                batch_comp_emb.unsqueeze(1).expand(-1, mem_emb.shape[0], -1).reshape(-1, model.out_dim),
+                mem_emb.repeat(n_unique, 1),
+                prot_residue_indices=None,
+            ).reshape(n_unique, -1)
+            mem_hard_scores, _ = mem_scores.max(dim=1)
+            hard_neg_from_memory = torch.clamp(mem_hard_scores, -SCORE_CLAMP, SCORE_CLAMP)
+            has_memory_neg = True
+
     if n_hard > 0:
         if use_topology_neg and prot_to_topo_hard_neighbors is not None:
             hard_neg_scores_topo = hard_neg_scores.clone()
@@ -2078,6 +1892,11 @@ def _compute_cpi_loss(
                     hard_neg_scores_topo[i] = torch.clamp(hard_neighbor_scores[best_idx], -SCORE_CLAMP, SCORE_CLAMP)
                     hard_found[i] = True
 
+            if has_memory_neg:
+                # 取拓扑难负样本与 memory bank 难负样本中的更高分者
+                hard_neg_scores_topo = torch.maximum(hard_neg_scores_topo, hard_neg_from_memory)
+                hard_found = hard_found | (hard_neg_from_memory > hard_neg_scores)
+
             hard_candidates = torch.where(hard_found)[0]
             if len(hard_candidates) > 0:
                 n_actual = min(n_hard, len(hard_candidates))
@@ -2087,6 +1906,8 @@ def _compute_cpi_loss(
         else:
             hard_neg_idx = (all_scores + mask).argmax(dim=1)
             hard_scores = all_scores[torch.arange(n_unique, device=DEVICE), hard_neg_idx]
+            if has_memory_neg:
+                hard_scores = torch.maximum(hard_scores, hard_neg_from_memory)
             hard_scores = torch.clamp(hard_scores, -SCORE_CLAMP, SCORE_CLAMP)
             hard_candidates = torch.randperm(n_unique, device=DEVICE)[:n_hard]
             hard_neg_scores[hard_candidates] = hard_scores[hard_candidates]
@@ -2122,9 +1943,9 @@ def _compute_cpi_loss(
                 prot_residue_indices=bpr_neg_residue_idx,
             ) / T
         except torch.cuda.OutOfMemoryError as e:
-            compute_cpi_loss._bpr_residue_oom_count = getattr(compute_cpi_loss, "_bpr_residue_oom_count", 0) + 1
+            state.bpr_oom_counter += 1
             logger.warning(
-                f"_compute_cpi_loss: BPR 残基路径 OOM（连续 {compute_cpi_loss._bpr_residue_oom_count} 次），"
+                f"_compute_cpi_loss: BPR 残基路径 OOM（连续 {state.bpr_oom_counter} 次），"
                 f"降级为 fast bilinear: {e}"
             )
             if torch.cuda.is_available():
@@ -2164,25 +1985,21 @@ def _compute_cpi_loss(
             loss = loss + INFONCE_WEIGHT * infonce
 
     if torch.isnan(loss) or torch.isinf(loss):
-        global _nan_batch_counter
-        _nan_batch_counter += 1
-        if _nan_batch_counter >= 5:
+        state.nan_batch_counter += 1
+        if state.nan_batch_counter >= 5:
             raise RuntimeError(
-                f"_compute_cpi_loss 连续 {_nan_batch_counter} 个 batch 产生 NaN/Inf loss，"
+                f"_compute_cpi_loss 连续 {state.nan_batch_counter} 个 batch 产生 NaN/Inf loss，"
                 f"可能是梯度爆炸或数据异常，请检查学习率、模型初始化或输入数据")
         logger.warning(
-            f"_compute_cpi_loss 产生 NaN/Inf loss（连续 {_nan_batch_counter}/5），"
+            f"_compute_cpi_loss 产生 NaN/Inf loss（连续 {state.nan_batch_counter}/5），"
             f"返回零损失以保护训练")
         return torch.tensor(0.0, device=loss.device, requires_grad=False)
     else:
-        _nan_batch_counter = 0  # 正常 batch 重置计数器
+        state.nan_batch_counter = 0  # 正常 batch 重置计数器
 
     return loss
 
 
-# ============================================================
-# 9. GAT 分支训练（mini-batch 邻居采样）
-# ============================================================
 def _split_head_tail_nodes(
     train_compounds: list[int],
     compound_to_pos: dict[int, set],
@@ -2226,9 +2043,6 @@ def _split_head_tail_nodes(
     return pretrain_compounds, tail_compounds
 
 
-# ============================================================
-# 验证安全图构建（v17 冷启动数据泄露修复）
-# ============================================================
 def _build_val_safe_homo_edge_index(
     homo_edge_index: torch.Tensor,
     n_compounds: int,
@@ -2502,14 +2316,11 @@ def _build_val_safe_hetero_adj(
     return _build_train_safe_hetero_adj(hetero_adj, n_compounds, val_comp_set, val_prot_set)
 
 
-# ============================================================
-# 9b. 药物筛选排名指标 — Precision@K / Enrichment Factor
 # 参考:
 #   - Precision@K: 常用于推荐系统评估，衡量Top-K排序中正样本命中率
 #   - Enrichment Factor (EF): 常用于虚拟筛选，EF = (正样本在Top X%命中率) / (全局正样本比例)
 #     EF > 1 表示模型富集能力优于随机，EF 越大越好
 #     Bender et al. (2021) "A practical guide to large-scale docking", Nature Protocols.
-# ============================================================
 def _compute_ranking_metrics(score_matrix, valid_pos_list, ks=(10, 20, 50)):
     """从预计算得分矩阵中计算 Precision@K 和 Enrichment Factor (EF)。
 
@@ -2744,9 +2555,6 @@ def _validate_sage(model, x, homo_edge_index, val_compounds, all_compound_to_pos
         return result
 
 
-# ============================================================
-# 10. HGT 分支训练（mini-batch 邻居采样）
-# ============================================================
 def _validate_hgt(
     model: HGTLinkPredictor,
     hetero_data,
@@ -2979,7 +2787,126 @@ def _validate_hgt_minibatch(
         return result
 
 
-# [Ref: 2,3,5,6,7] HGT[2] + Focal Loss[3] + BPR[5] + CTCL-DPI[6] + 课程采样[7]
+def _predict_hgt_scores(
+    hgt_model: HGTLinkPredictor,
+    graphs: dict,
+    tcm_feat: torch.Tensor,
+    target_local_indices: torch.Tensor,
+    n_targets: int,
+) -> torch.Tensor:
+    """HGT 目标蛋白评分：优先全图推理，OOM 时降级为 mini-batch。"""
+    n_compounds = graphs["n_compounds"]
+    n_pathways = graphs.get("n_pathways", 0)
+    hetero_data = graphs["hetero_data"]
+    hgt_data_dev = hetero_data.to(DEVICE)
+    hgt_data_dev["pathway"].x = hgt_model.pathway_embed(
+        torch.arange(max(n_pathways, 1), device=DEVICE))
+    hgt_x_dict_full = {k: v.clone() for k, v in hgt_data_dev.x_dict.items()}
+
+    hgt_model.eval()
+    with torch.no_grad():
+        try:
+            hgt_out = hgt_model(hgt_x_dict_full, hgt_data_dev.edge_index_dict)
+            hgt_prot_emb = hgt_out["protein"]
+        except (torch.cuda.OutOfMemoryError, RuntimeError) as e:
+            if isinstance(e, RuntimeError) and "out of memory" not in str(e).lower():
+                raise
+            torch.cuda.empty_cache()
+            logger.warning("  HGT 全图预测 OOM，降级为 mini-batch 蛋白推理")
+            hgt_prot_emb = torch.zeros(
+                n_compounds + graphs["n_proteins"], hgt_model.out_dim, device=DEVICE)
+            hgt_prot_emb[n_compounds:] = _predict_hgt_target_proteins_minibatch(
+                hgt_model, graphs, target_local_indices)
+
+        hgt_tcm_emb = hgt_model.encode_compound(tcm_feat)
+        hgt_T = hgt_model.temperature
+        n_tcm = hgt_tcm_emb.shape[0]
+        hgt_tcm_exp = hgt_tcm_emb.unsqueeze(1).expand(-1, n_targets, -1).reshape(-1, hgt_tcm_emb.shape[-1])
+        hgt_prot_exp = hgt_prot_emb[target_local_indices].unsqueeze(0).expand(n_tcm, -1, -1).reshape(-1, hgt_prot_emb.shape[-1])
+        hgt_prot_residue_idx = target_local_indices.repeat(n_tcm)
+        return torch.sigmoid(
+            hgt_model.decode(hgt_tcm_exp, hgt_prot_exp, prot_residue_indices=hgt_prot_residue_idx) / hgt_T
+        ).reshape(n_tcm, n_targets)
+
+
+def _predict_hgt_target_proteins_minibatch(
+    hgt_model: HGTLinkPredictor,
+    graphs: dict,
+    target_local_indices: torch.Tensor,
+    num_neighbors: list[int] | None = None,
+    batch_size: int = 16,
+) -> torch.Tensor:
+    """HGT mini-batch 目标蛋白嵌入推理（OOM 安全）"""
+    if num_neighbors is None:
+        num_neighbors = HGT_VAL_NUM_NEIGHBORS
+    hetero_data = graphs["hetero_data"]
+    hetero_adj = graphs["hetero_adj"]
+    n_compounds = graphs["n_compounds"]
+    n_proteins = graphs["n_proteins"]
+
+    cpi_adj = hetero_adj[("compound", "interacts", "protein")]
+    prot_to_compounds = defaultdict(list)
+    for c_global, p_locals in cpi_adj.items():
+        for p_local in p_locals:
+            if 0 <= p_local < n_proteins:
+                prot_to_compounds[p_local].append(c_global)
+
+    full_prot_emb = torch.zeros(n_proteins, hgt_model.out_dim, device=DEVICE)
+    target_list = target_local_indices.cpu().tolist()
+    missing_targets = set()
+
+    hgt_model.eval()
+    with torch.no_grad():
+        for batch_start in range(0, len(target_list), batch_size):
+            batch_targets = target_list[batch_start:batch_start + batch_size]
+            seed_compounds = sorted({c for p in batch_targets for c in prot_to_compounds.get(p, [])})
+            if not seed_compounds:
+                seed_compounds = [0]
+            try:
+                sg, comp_sorted, prot_sorted, path_sorted, disease_sorted, comp_map, prot_map, disease_map = sample_hetero_subgraph(
+                    seed_compounds, hetero_adj, num_neighbors=num_neighbors, seed=42,
+                    seed_proteins=batch_targets, add_seed_cpi_edges=False,
+                )
+            except Exception as e:
+                logger.warning(f"  HGT mini-batch 子图采样失败 (targets={batch_start}-{batch_start + len(batch_targets)}): {e}")
+                missing_targets.update(batch_targets)
+                continue
+            if not prot_sorted:
+                missing_targets.update(batch_targets)
+                continue
+
+            comp_tensor = torch.tensor(comp_sorted, device=DEVICE)
+            if seed_compounds == [0] and 0 not in cpi_adj:
+                sg["compound"].x = torch.zeros(len(comp_sorted), hetero_data["compound"].x.shape[1], device=DEVICE)
+            else:
+                sg["compound"].x = hetero_data["compound"].x[comp_tensor]
+            sg["protein"].x = hetero_data["protein"].x[torch.tensor(prot_sorted, device=DEVICE)]
+            if path_sorted:
+                path_global_tensor = torch.tensor(sg._path_global, device=DEVICE)
+                path_global_tensor = torch.clamp(path_global_tensor, min=0, max=hgt_model.pathway_embed.num_embeddings - 1)
+                sg["pathway"].x = hgt_model.pathway_embed(path_global_tensor)
+            else:
+                sg["pathway"].x = torch.zeros(0, hgt_model.pathway_embed.embedding_dim, device=DEVICE)
+            if disease_sorted:
+                disease_global_tensor = torch.tensor(sg._disease_global, device=DEVICE).unsqueeze(-1)
+                sg["disease"].x = disease_global_tensor
+            else:
+                sg["disease"].x = torch.zeros(0, 1, device=DEVICE)
+
+            sg = sg.to(DEVICE)
+            hgt_out = hgt_model(sg.x_dict, sg.edge_index_dict)
+            batch_prot_emb = hgt_out["protein"]
+            for p_local in batch_targets:
+                if p_local in prot_map:
+                    full_prot_emb[p_local] = batch_prot_emb[prot_map[p_local]]
+                else:
+                    missing_targets.add(p_local)
+
+    if missing_targets:
+        logger.warning(f"  HGT mini-batch 推理缺失 {len(missing_targets)} 个目标蛋白嵌入，已置零: {sorted(list(missing_targets))[:10]}")
+
+    return full_prot_emb[target_local_indices]
+
 
 def predict_tcm(
     sage_model: SAGELinkPredictor,
@@ -3050,17 +2977,6 @@ def predict_tcm(
     all_sage_scores_mc = []  # (n_iter, n_tcm, n_genes)
     all_hgt_scores_mc = []
 
-    # HGT MC Dropout 预准备 — 将 hetero_data.to(DEVICE) 和 pathway_embed 移出循环
-    # 30 次迭代中图数据不变，仅模型 dropout 随机化
-    hgt_data_dev = None
-    hgt_x_dict_full = None
-    if hgt_model is not None:
-        hgt_data_dev = graphs["hetero_data"].to(DEVICE)
-        n_pathways = graphs["n_pathways"]
-        hgt_data_dev["pathway"].x = hgt_model.pathway_embed(
-            torch.arange(max(n_pathways, 1), device=DEVICE))
-        hgt_x_dict_full = {k: v.clone() for k, v in hgt_data_dev.x_dict.items()}
-
     for _it in range(n_iterations):
         try:
             with torch.no_grad():
@@ -3072,42 +2988,35 @@ def predict_tcm(
                 sage_tcm_emb = sage_model.encode_compound(tcm_feat)  # TCM 化合物（无CPI边，仅投影+卷积）
                 sage_T = sage_model.temperature
 
-                # SAGE 向量化评分: (n_tcm, n_prots) — v18: MLP 解码器
+                # v45: 仅对目标基因对应的蛋白打分，避免 residue_bilinear 在全蛋白集上耗时爆炸。
+                valid_gene_indices = [(j, lp) for j, (_, lp) in enumerate(gene_index_map) if lp >= 0]
+                target_local_indices = torch.tensor(
+                    [lp for _, lp in valid_gene_indices], dtype=torch.long, device=DEVICE)
+
+                # SAGE 向量化评分: (n_tcm, n_target_prots)
                 n_tcm_sage = sage_tcm_emb.shape[0]
-                n_prots_all = sage_prot_emb.shape[0]
-                sage_tcm_exp = sage_tcm_emb.unsqueeze(1).expand(-1, n_prots_all, -1).reshape(-1, sage_tcm_emb.shape[-1])
-                sage_prot_exp = sage_prot_emb.unsqueeze(0).expand(n_tcm_sage, -1, -1).reshape(-1, sage_prot_emb.shape[-1])
-                sage_prot_residue_idx = torch.arange(n_prots_all, device=DEVICE).repeat(n_tcm_sage)
-                sage_all_scores = torch.sigmoid(
+                n_targets = target_local_indices.shape[0]
+                sage_tcm_exp = sage_tcm_emb.unsqueeze(1).expand(-1, n_targets, -1).reshape(-1, sage_tcm_emb.shape[-1])
+                sage_prot_exp = sage_prot_emb[target_local_indices].unsqueeze(0).expand(n_tcm_sage, -1, -1).reshape(-1, sage_prot_emb.shape[-1])
+                sage_prot_residue_idx = target_local_indices.repeat(n_tcm_sage)
+                sage_target_scores = torch.sigmoid(
                     sage_model.decode(sage_tcm_exp, sage_prot_exp, prot_residue_indices=sage_prot_residue_idx) / sage_T
-                ).reshape(n_tcm_sage, n_prots_all)
+                ).reshape(n_tcm_sage, n_targets)
 
-                # HGT: 全图推理（v26-fix: 数据预准备在循环外，仅 forward pass 在循环内）
                 if hgt_model is not None:
-                    hgt_out = hgt_model(hgt_x_dict_full, hgt_data_dev.edge_index_dict)
-                    hgt_prot_emb = hgt_out["protein"]
-                    hgt_tcm_emb = hgt_model.encode_compound(tcm_feat)
-                    hgt_T = hgt_model.temperature
-
-                    # HGT 向量化双线性评分: (n_tcm, n_prots)
-                    n_tcm = hgt_tcm_emb.shape[0]
-                    n_prots_all = hgt_prot_emb.shape[0]
-                    hgt_tcm_exp = hgt_tcm_emb.unsqueeze(1).expand(-1, n_prots_all, -1).reshape(-1, hgt_tcm_emb.shape[-1])
-                    hgt_prot_exp = hgt_prot_emb.unsqueeze(0).expand(n_tcm, -1, -1).reshape(-1, hgt_prot_emb.shape[-1])
-                    hgt_prot_residue_idx = torch.arange(n_prots_all, device=DEVICE).repeat(n_tcm)
-                    hgt_all_scores = torch.sigmoid(
-                        hgt_model.decode(hgt_tcm_exp, hgt_prot_exp, prot_residue_indices=hgt_prot_residue_idx) / hgt_T
-                    ).reshape(n_tcm, n_prots_all)
+                    hgt_target_scores = _predict_hgt_scores(
+                        hgt_model, graphs, tcm_feat, target_local_indices, n_targets
+                    )
                 else:
-                    hgt_all_scores = None
+                    hgt_target_scores = None
 
                 # 提取目标基因的分数
                 iter_sage = torch.full((len(tcm_smiles), len(target_genes)), 0.5, device=DEVICE)
                 iter_hgt = torch.full((len(tcm_smiles), len(target_genes)), 0.5, device=DEVICE)
-                for j, local_p_idx in [(j, lp) for j, (_, lp) in enumerate(gene_index_map) if lp >= 0]:
-                    iter_sage[:, j] = sage_all_scores[:, local_p_idx]
-                    if hgt_all_scores is not None:
-                        iter_hgt[:, j] = hgt_all_scores[:, local_p_idx]
+                for score_col, (target_col, _local_p_idx) in enumerate(valid_gene_indices):
+                    iter_sage[:, target_col] = sage_target_scores[:, score_col]
+                    if hgt_target_scores is not None:
+                        iter_hgt[:, target_col] = hgt_target_scores[:, score_col]
                 all_sage_scores_mc.append(iter_sage.cpu())
                 all_hgt_scores_mc.append(iter_hgt.cpu())
         except (torch.cuda.OutOfMemoryError, RuntimeError) as e:
@@ -3154,7 +3063,15 @@ def predict_tcm(
         # 构建 (SMILES, gene) → score 的查找表
         tree_lookup = {}
         for _, row in tree_predictions.iterrows():
-            tree_lookup[(str(row["SMILES"]), str(row["gene"]))] = float(row["score"])
+            raw_score = float(row["score"])
+            # v44: 若树模型分数超出 [0,1]，视为 logit 进行 sigmoid 校准并告警。
+            if raw_score < 0.0 or raw_score > 1.0:
+                logger.warning(
+                    f"树模型分数超出概率范围 (score={raw_score:.4f})，自动 sigmoid 校准"
+                )
+                raw_score = float(1.0 / (1.0 + math.exp(-raw_score)))
+                raw_score = max(0.0, min(1.0, raw_score))
+            tree_lookup[(str(row["SMILES"]), str(row["gene"]))] = raw_score
         # 构建与 final_scores 同形状的张量
         tree_scores_tensor = torch.full_like(final_scores, 0.5)
         tree_matched = 0
@@ -3198,9 +3115,6 @@ def predict_tcm(
     return pd.DataFrame(results)
 
 
-# ============================================================
-# 12. 管线自检
-# ============================================================
 def pipeline_self_check(tcm_df, cpi_df, ppi_df, prot_feat, gene_to_pathways, warm_targets):
     """v25: 管线自检 — 训练前验证数据完整性和一致性
 
@@ -3283,10 +3197,8 @@ def pipeline_self_check(tcm_df, cpi_df, ppi_df, prot_feat, gene_to_pathways, war
     return {"overall": overall, **results}
 
 
-# ============================================================
-# 13. 主流程
-# ============================================================
-def main(decoder_type: str | None = None, skip_sage: bool = False):
+def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: bool = False,
+         global_overrides: dict | None = None):
     """v27: Phase 4 主流程 — SAGE + HGT 双分支训练与 TCM 预测
 
     流程:
@@ -3301,10 +3213,17 @@ def main(decoder_type: str | None = None, skip_sage: bool = False):
     Args:
         decoder_type: CLI 传入的解码器类型，覆盖配置中的 DECODER_TYPE。
     """
-    global DECODER_TYPE
+    global DECODER_TYPE, EPOCHS, PRETRAIN_EPOCHS, RANDOM_SEED
     if decoder_type is not None:
         DECODER_TYPE = decoder_type
         logger.info(f"CLI 覆盖 decoder_type = {DECODER_TYPE}")
+    if global_overrides:
+        for key, value in global_overrides.items():
+            if key in globals():
+                globals()[key] = value
+                logger.info(f"CLI 覆盖 {key} = {value}")
+            else:
+                logger.warning(f"CLI 覆盖项 {key} 不是全局常量，已忽略")
 
     start_time = time.time()
     logger.info("=" * 60)
@@ -3406,7 +3325,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False):
         "n_cpi": len(cpi_df),
         "n_ppi": len(ppi_df),
         "n_pathway_genes": len(gene_to_pathways),
-        "prot_feat_shape": prot_feat.shape if hasattr(prot_feat, "shape") else None,
+        "prot_feat_shape": _get_prot_feat_dim(prot_feat),
         "disease_file_exists": disease_df is not None,
     }
 
@@ -3650,7 +3569,6 @@ def main(decoder_type: str | None = None, skip_sage: bool = False):
             DECODER_TYPE = "bilinear"
             residue_embeddings = None
 
-    # ======== 训练 SAGE ========
     sage_model_path = L4_RESULTS / "sage_best_v42.pt"
     if skip_sage and sage_model_path.exists():
         logger.info(f">>> 跳过 SAGE 训练，加载已有模型: {sage_model_path}")
@@ -3729,6 +3647,10 @@ def main(decoder_type: str | None = None, skip_sage: bool = False):
         logger.error("  SAGE 模型保存失败", exc_info=True)
         raise
 
+    # train_sage 的早停加载最佳参数时会把参数 clone 到 CPU，
+    # 预测前必须移回 DEVICE。
+    sage_model = sage_model.to(DEVICE)
+
     _t0 = _log_step_time(_t0, "SAGE 训练完成")
     torch.cuda.empty_cache()
     _log_gpu_memory("SAGE 训练后 (cache cleared)")
@@ -3745,64 +3667,74 @@ def main(decoder_type: str | None = None, skip_sage: bool = False):
         import gc
         gc.collect()
 
-    # ======== 训练 HGT ========
-    logger.info(f">>> 训练 HGT（v41: HGTConv + {DECODER_TYPE} + 两阶段迁移学习 + FocalLoss + 课程负采样）")
-    _log_gpu_memory("HGT 训练前")
-    hgt_node_feat_dims = {
-        "compound": graphs["feat_dim"],
-        "protein": graphs["prot_esm_dim"],  # 使用 ESM-2 维度（640），通路信息由异质图结构传递
-        "pathway": 1,
-        "pathway_count": graphs["n_pathways"],
-        "disease_count": graphs.get("n_diseases", 0),
-    }
-    hgt_model = HGTLinkPredictor(
-        hidden_dim=HIDDEN_DIM, out_dim=OUT_DIM, num_heads=NUM_HEADS, num_layers=NUM_LAYERS,
-        dropout=DROPOUT, metadata=graphs["hetero_data"].metadata(),
-        compound_feat_dim=graphs["feat_dim"], node_feat_dims=hgt_node_feat_dims,
-        pheno_head_dropout=PHENO_HEAD_DROPOUT,
-        temperature=TEMPERATURE,
-        decoder_type=DECODER_TYPE)
-    # 注册残基级 ESM-2 特征到 HGT 解码器（大张量保留在 CPU）
-    if DECODER_TYPE == "residue_bilinear" and residue_embeddings is not None:
-        hgt_model.set_residue_features(
-            residue_embeddings, residue_offsets, residue_lengths,
-            prot_to_residue_idx=prot_to_residue_idx,
-            max_len=residue_max_len,
-            residue_device="cpu",
-        )
-    hgt_model, hgt_history = train_hgt(
-        hgt_model, graphs, train_compounds, val_compounds, compound_to_pos,
-        device=DEVICE,
-        val_proteins=val_proteins,
-        epochs=EPOCHS, lr=LEARNING_RATE_HGT, patience=PATIENCE, batch_size=HGT_BATCH_SIZE,
-        num_neighbors=HGT_NUM_NEIGHBORS,
-        prot_to_path_neighbors=graphs.get("prot_to_path_neighbors"),
-        two_stage=True, pretrain_epochs=PRETRAIN_EPOCHS, pretrain_lr=PRETRAIN_LR_HGT,
-        random_seed=RANDOM_SEED,
-        pheno_compound_indices=pheno_train_indices,
-        pheno_labels=pheno_train_labels,
-        pheno_lambda=PHENO_LAMBDA,
-        bpr_weight=BPR_WEIGHT, weight_decay=WEIGHT_DECAY, warmup_ratio=WARMUP_RATIO,
-        dropedge_ppi=DROPPEDGE_PPI, dropedge_pathway=DROPPEDGE_PATHWAY,
-        focal_gamma=FOCAL_GAMMA, focal_alpha=FOCAL_ALPHA,
-        memory_bank_size=MEMORY_BANK_SIZE,
-        head_ratio=HEAD_RATIO, lambda_hhi=LAMBDA_HHI,
-        grad_clip_norm=GRAD_CLIP_NORM,
-        pretrain_lr_multiplier=PRETRAIN_LR_MULTIPLIER, pretrain_lr_decay=PRETRAIN_LR_DECAY,
-        use_topology_neg=USE_TOPOLOGY_NEG,
-        _validate_hgt_fn=_validate_hgt, _compute_cpi_loss_fn=_compute_cpi_loss)
+    if skip_hgt:
+        logger.info(">>> 跳过 HGT 训练")
+        hgt_history = []
+    else:
+        logger.info(f">>> 训练 HGT（v41: HGTConv + {DECODER_TYPE} + 两阶段迁移学习 + FocalLoss + 课程负采样）")
+        _log_gpu_memory("HGT 训练前")
+    if skip_hgt:
+        hgt_model = None
+        hgt_history = []
+    else:
+        hgt_node_feat_dims = {
+            "compound": graphs["feat_dim"],
+            "protein": graphs["prot_esm_dim"],  # 使用 ESM-2 维度（640），通路信息由异质图结构传递
+            "pathway": 1,
+            "pathway_count": graphs["n_pathways"],
+            "disease_count": graphs.get("n_diseases", 0),
+        }
+        hgt_model = HGTLinkPredictor(
+            hidden_dim=HIDDEN_DIM, out_dim=OUT_DIM, num_heads=NUM_HEADS, num_layers=NUM_LAYERS,
+            dropout=DROPOUT, metadata=graphs["hetero_data"].metadata(),
+            compound_feat_dim=graphs["feat_dim"], node_feat_dims=hgt_node_feat_dims,
+            pheno_head_dropout=PHENO_HEAD_DROPOUT,
+            temperature=TEMPERATURE,
+            decoder_type=DECODER_TYPE)
+        # 注册残基级 ESM-2 特征到 HGT 解码器（大张量保留在 CPU）
+        if DECODER_TYPE == "residue_bilinear" and residue_embeddings is not None:
+            hgt_model.set_residue_features(
+                residue_embeddings, residue_offsets, residue_lengths,
+                prot_to_residue_idx=prot_to_residue_idx,
+                max_len=residue_max_len,
+                residue_device="cpu",
+            )
+        hgt_model, hgt_history = train_hgt(
+            hgt_model, graphs, train_compounds, val_compounds, compound_to_pos,
+            device=DEVICE,
+            val_proteins=val_proteins,
+            epochs=EPOCHS, lr=LEARNING_RATE_HGT, patience=PATIENCE, batch_size=HGT_BATCH_SIZE,
+            num_neighbors=HGT_NUM_NEIGHBORS,
+            prot_to_path_neighbors=graphs.get("prot_to_path_neighbors"),
+            two_stage=True, pretrain_epochs=PRETRAIN_EPOCHS, pretrain_lr=PRETRAIN_LR_HGT,
+            random_seed=RANDOM_SEED,
+            pheno_compound_indices=pheno_train_indices,
+            pheno_labels=pheno_train_labels,
+            pheno_lambda=PHENO_LAMBDA,
+            bpr_weight=BPR_WEIGHT, weight_decay=WEIGHT_DECAY, warmup_ratio=WARMUP_RATIO,
+            dropedge_ppi=DROPPEDGE_PPI, dropedge_pathway=DROPPEDGE_PATHWAY,
+            focal_gamma=FOCAL_GAMMA, focal_alpha=FOCAL_ALPHA,
+            memory_bank_size=MEMORY_BANK_SIZE,
+            head_ratio=HEAD_RATIO, lambda_hhi=LAMBDA_HHI,
+            grad_clip_norm=GRAD_CLIP_NORM,
+            pretrain_lr_multiplier=PRETRAIN_LR_MULTIPLIER, pretrain_lr_decay=PRETRAIN_LR_DECAY,
+            use_topology_neg=USE_TOPOLOGY_NEG,
+            _validate_hgt_fn=_validate_hgt, _compute_cpi_loss_fn=_compute_cpi_loss)
 
-    try:
-        torch.save({"state_dict": hgt_model.state_dict(), "version": "v42", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "hgt_best_v42.pt")
-        logger.info("  HGT 模型已保存到 hgt_best_v42.pt")
-    except Exception:
-        logger.error("  HGT 模型保存失败", exc_info=True)
-        raise
+        try:
+            torch.save({"state_dict": hgt_model.state_dict(), "version": "v42", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "hgt_best_v42.pt")
+            logger.info("  HGT 模型已保存到 hgt_best_v42.pt")
+        except Exception:
+            logger.error("  HGT 模型保存失败", exc_info=True)
+            raise
 
-    _t0 = _log_step_time(_t0, "HGT 训练完成")
-    torch.cuda.empty_cache()
-    _log_gpu_memory("HGT 训练后 (cache cleared)")
-    logger.info("  HGT GPU 内存已释放")
+        # train_hgt 的早停加载最佳参数时会把参数 clone 到 CPU，预测前必须移回 DEVICE。
+        hgt_model = hgt_model.to(DEVICE)
+
+        _t0 = _log_step_time(_t0, "HGT 训练完成")
+        torch.cuda.empty_cache()
+        _log_gpu_memory("HGT 训练后 (cache cleared)")
+        logger.info("  HGT GPU 内存已释放")
 
     # 蛋白冷启动评估已移除（被独立评估脚本替代）
     # 集成权重固定为等权
@@ -3820,7 +3752,25 @@ def main(decoder_type: str | None = None, skip_sage: bool = False):
     else:
         logger.warning(f"v40: 树模型预测文件不存在: {tree_pred_path}，跳过树模型集成")
 
-    # ======== 预测 TCM ========
+    # v45: predict_tcm 需要残基特征，SAGE 训练后可能已释放，重新注册。
+    if DECODER_TYPE == "residue_bilinear" and residue_embeddings is not None:
+        if sage_model is not None:
+            sage_model.set_residue_features(
+                residue_embeddings, residue_offsets, residue_lengths,
+                prot_to_residue_idx=prot_to_residue_idx,
+                max_len=residue_max_len,
+                residue_device="cpu",
+            )
+            logger.info("  v45: SAGE 残基特征已重新注册，供预测使用")
+        if hgt_model is not None:
+            hgt_model.set_residue_features(
+                residue_embeddings, residue_offsets, residue_lengths,
+                prot_to_residue_idx=prot_to_residue_idx,
+                max_len=residue_max_len,
+                residue_device="cpu",
+            )
+            logger.info("  v45: HGT 残基特征已重新注册，供预测使用")
+
     logger.info(">>> 预测 TCM 化合物（v40: 86基因 + 树模型集成 + 铁死亡表型融合）")
     # 检查SMILES列
     tcm_smiles_col = "SMILES_std" if "SMILES_std" in tcm_df.columns else (
@@ -3856,7 +3806,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False):
 
     # 铁死亡概率预测 — SAGE + HGT 双分支平均
     final_ferroptosis_prob = None
-    if pheno_train_indices is not None and len(pheno_train_indices) > 0:
+    if pheno_train_indices is not None and len(pheno_train_indices) > 0 and hgt_model is not None:
         logger.info(">>> 预测 TCM 化合物铁死亡概率（表型分类头）")
         sage_model.eval()
         hgt_model.eval()
@@ -3876,7 +3826,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False):
             logger.info(f"  铁死亡概率范围: [{final_ferroptosis_prob.min():.4f}, {final_ferroptosis_prob.max():.4f}], "
                         f"均值={final_ferroptosis_prob.mean():.4f}")
     else:
-        logger.info(">>> 无表型训练数据，跳过铁死亡概率预测")
+        logger.info(">>> 无表型训练数据或跳过HGT，跳过铁死亡概率预测")
 
     if "MOL_ID" in tcm_df.columns and "molecule_name" in tcm_df.columns and "SMILES_std" in tcm_df.columns:
         name_map = dict(zip(tcm_df["SMILES_std"], tcm_df["molecule_name"], strict=False))
@@ -3944,12 +3894,13 @@ def main(decoder_type: str | None = None, skip_sage: bool = False):
     )
 
     # 不确定性调整 — 优先选择高分且低不确定度的化合物
+    # v44: 改为温和惩罚，最大惩罚 50%，避免高不确定性高潜力分子被完全抑制。
     if "mean_uncertainty" in pred_df.columns:
         uncertainty = pred_df["mean_uncertainty"].values
-        uncertainty_penalty = 1.0 - _norm(uncertainty)
+        uncertainty_penalty = 1.0 - 0.5 * _norm(uncertainty)
         composite = composite * uncertainty_penalty
         pred_df["uncertainty_penalty"] = uncertainty_penalty
-        logger.info(f"  不确定性调整: 惩罚范围 [{uncertainty_penalty.min():.4f}, {uncertainty_penalty.max():.4f}]")
+        logger.info(f"  不确定性调整: 惩罚范围 [{uncertainty_penalty.min():.4f}, {uncertainty_penalty.max():.4f}] (最大惩罚50%)")
 
     # 保留全部靶标的原始指标供参考（含 zero-shot）
     all_scores = pred_df[all_gene_cols].values
@@ -4069,7 +4020,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Phase 4 v41: SAGE + HGT + 树模型集成训练与 TCM 预测")
+    parser = argparse.ArgumentParser(description="Phase 4 v43: SAGE + HGT + 树模型集成训练与 TCM 预测")
     parser.add_argument(
         "--decoder_type",
         type=str,
@@ -4080,7 +4031,47 @@ if __name__ == "__main__":
     parser.add_argument(
         "--skip_sage",
         action="store_true",
-        help="若 SAGE 模型已存在则跳过训练，直接加载并训练 HGT",
+        help="跳过 SAGE 训练（用于快速测试 HGT 或 TCM 预测）",
+    )
+    parser.add_argument(
+        "--skip_hgt",
+        action="store_true",
+        help="跳过 HGT 训练（用于快速测试 SAGE）",
+    )
+    parser.add_argument(
+        "--sage_epochs",
+        type=int,
+        default=None,
+        help="覆盖 SAGE 训练 epoch 数（快速测试用）",
+    )
+    parser.add_argument(
+        "--hgt_epochs",
+        type=int,
+        default=None,
+        help="覆盖 HGT 训练 epoch 数（快速测试用）",
+    )
+    parser.add_argument(
+        "--pretrain_epochs",
+        type=int,
+        default=None,
+        help="覆盖预训练 epoch 数（快速测试用）",
+    )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=None,
+        help="覆盖随机种子",
     )
     args = parser.parse_args()
-    main(decoder_type=args.decoder_type, skip_sage=args.skip_sage)
+    # 应用 CLI 覆盖到全局常量
+    global_overrides = {}
+    if args.sage_epochs is not None:
+        global_overrides["EPOCHS"] = args.sage_epochs
+    if args.hgt_epochs is not None:
+        global_overrides["EPOCHS"] = args.hgt_epochs
+    if args.pretrain_epochs is not None:
+        global_overrides["PRETRAIN_EPOCHS"] = args.pretrain_epochs
+    if args.seed is not None:
+        global_overrides["RANDOM_SEED"] = args.seed
+    main(decoder_type=args.decoder_type, skip_sage=args.skip_sage, skip_hgt=args.skip_hgt,
+         global_overrides=global_overrides)

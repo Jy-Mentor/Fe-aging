@@ -1,41 +1,41 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿# v40 优化配置 (2026-07-04)
-# 目标: 树模型 v7 集成 (86基因) + 残基级双线性解码器
-# 策略: 更大容量 + 更低学习率 + 更长训练 + 强化排序损失
+# v43 优化配置 (2026-07-05)
+# 目标: 化合物冷启动发现 + residue_bilinear + 拓扑/ESM难负样本 + Memory Bank
+# 策略: 大容量 + 低学习率 + 长训练 + 强化排序损失 + 残基层面交互
 random_seed: 42
 model:
-  hidden_dim: 128        # v31: 96→128, 提升模型容量
-  out_dim: 128           # v31: 96→128
+  hidden_dim: 128
+  out_dim: 128
   num_layers: 2
-  dropout: 0.4           # v31: 0.5→0.4, 降低正则化强度
+  dropout: 0.4
   num_heads: 2
-  prot_proj_dropout: 0.3  # v31: 0.4→0.3, 降低蛋白特征正则化
-  prot_proj_inner_dropout: 0.25  # v31: 0.3→0.25
-  pathway_proj_dropout: 0.25    # v31: 0.3→0.25
+  prot_proj_dropout: 0.3
+  prot_proj_inner_dropout: 0.25
+  pathway_proj_dropout: 0.25
   pheno_head_dropout: 0.3
   score_clamp: 10.0
-  decoder_type: "residue_bilinear"  # v43: 启用残基感知双线性注意力解码器，mmap加载避免OOM
+  decoder_type: "residue_bilinear"
 sage:
-  epochs: 20             # v32-fast: 30→20, 单种子快速筛选
-  lr: 0.0003             # v31: 5e-4→3e-4, 更稳定收敛
-  patience: 5            # v31-review: val_freq=5 后按验证次数计数，等效原 12×2≈24 epoch 窗口
+  epochs: 20
+  lr: 0.0003
+  patience: 5
   batch_size: 256
   num_neighbors:
   - 32
   - 16
   two_stage: true
-  pretrain_epochs: 10    # v32-fast: 15→10, 单种子快速筛选
-  pretrain_lr: 0.00045   # v31: 7.5e-4→4.5e-4
+  pretrain_epochs: 10
+  pretrain_lr: 0.00045
 hgt:
-  epochs: 20             # v32-fast: 30→20
-  lr: 0.0006             # v31: 1e-3→6e-4, 降低训练不稳定性
-  patience: 5            # v31-review: val_freq=5 后按验证次数计数，等效原 12×2≈24 epoch 窗口
+  epochs: 20
+  lr: 0.0006
+  patience: 5
   batch_size: 128
   num_neighbors:
   - 32
   - 16
   two_stage: true
-  pretrain_epochs: 10    # v32-fast: 15→10
-  pretrain_lr: 0.0009    # v31: 1.5e-3→9e-4
+  pretrain_epochs: 10
+  pretrain_lr: 0.0009
 two_stage:
   head_ratio: 0.2
   lambda_hhi: 1.0
@@ -49,35 +49,35 @@ curriculum:
   hard_ratio: 0.3
   moderate_pathway_weight: 0.3
   medium_neg_ratio: 0.3
-  hard_neg_ratio: 0.1
+  hard_neg_ratio: 0.2
 negative_sampling:
-  use_topology_neg: true           # v42: 启用PPI拓扑驱动的难负样本（度中心性/聚类系数/共同邻居），强化化合物冷启动训练
-  use_esm_similarity_neg: true     # v42: 启用ESM-2余弦相似度难负样本（结构相似蛋白），提供更强对比信号
-  topo_neighbors_top_k: 50         # 拓扑负样本每个蛋白保留的候选数
-  esm_similarity_top_k: 50         # ESM-2相似度负样本每个蛋白保留的候选数
+  use_topology_neg: true
+  use_esm_similarity_neg: true
+  topo_neighbors_top_k: 50
+  esm_similarity_top_k: 50
 loss:
-  focal_gamma: 2.0
-  focal_alpha: 0.75
+  focal_gamma: 2.5
+  focal_alpha: 0.85
   label_smoothing_pos: 0.9
   label_smoothing_neg: 0.1
-  bpr_weight: 0.6        # v31: 0.5→0.6, 强化排序损失
-  bce_weight: 0.4        # v31: 0.5→0.4, 降低BCE权重
-  infonce_weight: 0.1    # InfoNCE已在代码中禁用(use_infonce=False)
+  bpr_weight: 0.65
+  bce_weight: 0.35
+  infonce_weight: 0.1
   infonce_temperature: 0.07
 training:
-  weight_decay: 0.00005  # v31: 1e-4→5e-5, 降低权重衰减
+  weight_decay: 0.00005
   grad_clip_norm: 1.0
-  warmup_ratio: 0.15     # v31: 0.1→0.15, 更长warmup
+  warmup_ratio: 0.15
   pheno_lambda: 0.05
   dropedge_ppi: 0.15
   dropedge_pathway: 0.1
   flag_step: 0.01
 validation:
-  val_freq: 5            # v31-review: 2→5, HGT验证是主要瓶颈，降低频率可节省约40%总时间
-  pretrain_val_freq: 10  # v32-fast: 5→10, 降低预训练验证开销
+  val_freq: 5
+  pretrain_val_freq: 10
   mem_refresh_freq: 5
 prediction:
-  tree_ensemble_weight: 0.6  # v40: 树模型 v7 (86基因) 集成权重
+  tree_ensemble_weight: 0.6
 memory_bank:
   memory_bank_size: 8192
   infonce_mem_sample: 256

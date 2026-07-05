@@ -1,8 +1,5 @@
 """训练组件模块 — 可复用的训练辅助类
 
-v39-refactor: 从 trainer.py 的 train_sage / train_hgt 中提取共用逻辑，
-封装为独立的组件类，提升可测试性和复用性。
-
 Classes:
     Validator: 验证逻辑、早停、最佳模型管理
     MemoryBankManager: Memory Bank 更新与全局刷新
@@ -291,10 +288,13 @@ class LRSchedulerFactory:
             LambdaLR 调度器。
         """
         warmup_epochs = max(1, int(epochs * warmup_ratio))
+        warmup_epochs = min(warmup_epochs, epochs)
 
         def lr_lambda(e: int) -> float:
-            if e < warmup_epochs:
+            if warmup_epochs > 0 and e < warmup_epochs:
                 return e / warmup_epochs
+            if epochs <= warmup_epochs:
+                return 1.0
             progress = (e - warmup_epochs) / (epochs - warmup_epochs)
             return 0.5 * (1 + np.cos(np.pi * progress)) * 1.0 + 1e-6
 

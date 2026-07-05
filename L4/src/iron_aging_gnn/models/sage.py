@@ -132,7 +132,7 @@ class SAGELinkPredictor(nn.Module):
             self.decoder = BilinearDecoder(out_dim, rank=64)
         elif decoder_type == "residue_bilinear":
             self.decoder = ResidueAwareBilinearDecoder(
-                comp_dim=out_dim, residue_dim=prot_feat_dim, rank=64, hidden_dim=128, dropout=pheno_head_dropout
+                comp_dim=out_dim, residue_dim=640, rank=64, hidden_dim=128, dropout=pheno_head_dropout
             )
         else:
             raise ValueError(f"不支持的 decoder_type: {decoder_type}")
