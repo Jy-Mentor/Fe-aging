@@ -168,15 +168,16 @@ def sample_hetero_subgraph(
     sg["compound", "interacts", "protein"].edge_index = _build_edges(
         ("compound", "interacts", "protein"), comp_map, prot_map)
 
-    # 化合物-化合物相似性边
-    sg["compound", "similar_to", "compound"].edge_index = _build_edges(
-        ("compound", "similar_to", "compound"), comp_map, comp_map)
-    comp_sim_sl, comp_sim_dl = sg["compound", "similar_to", "compound"].edge_index.tolist()
-    if comp_sim_sl:
-        sg["compound", "rev_similar_to", "compound"].edge_index = torch.tensor(
-            [comp_sim_dl, comp_sim_sl], dtype=torch.long)
-    else:
-        sg["compound", "rev_similar_to", "compound"].edge_index = torch.zeros((2, 0), dtype=torch.long)
+    # 化合物-化合物相似性边（仅在原始图中存在该边类型时才添加）
+    if comp_sim_adj:
+        sg["compound", "similar_to", "compound"].edge_index = _build_edges(
+            ("compound", "similar_to", "compound"), comp_map, comp_map)
+        comp_sim_sl, comp_sim_dl = sg["compound", "similar_to", "compound"].edge_index.tolist()
+        if comp_sim_sl:
+            sg["compound", "rev_similar_to", "compound"].edge_index = torch.tensor(
+                [comp_sim_dl, comp_sim_sl], dtype=torch.long)
+        else:
+            sg["compound", "rev_similar_to", "compound"].edge_index = torch.zeros((2, 0), dtype=torch.long)
 
     # 冷启动化合物在 hetero_adj 中无 CPI 出边，验证时临时添加 seed -> candidate 蛋白边，
     # 仅用于 HGT 消息传递，不用于标签构造。

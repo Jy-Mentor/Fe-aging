@@ -2637,8 +2637,8 @@ def _validate_hgt_minibatch(
             if not prot_sorted:
                 continue
 
-            sg["compound"].x = hetero_data["compound"].x[torch.tensor(comp_sorted, device=DEVICE)]
-            sg["protein"].x = hetero_data["protein"].x[torch.tensor(prot_sorted, device=DEVICE)]
+            sg["compound"].x = hetero_data["compound"].x[torch.tensor(comp_sorted)].to(DEVICE)
+            sg["protein"].x = hetero_data["protein"].x[torch.tensor(prot_sorted)].to(DEVICE)
             if path_sorted:
                 path_global_tensor = torch.tensor(sg._path_global, device=DEVICE)
                 path_global_tensor = torch.clamp(path_global_tensor, min=0,
@@ -2725,6 +2725,23 @@ def _validate_hgt_minibatch(
                         n_sample = min(n_rand, len(rand_candidates))
                         rand_idx = rand_candidates[torch.randperm(len(rand_candidates), device=DEVICE)[:n_sample]]
                         for ri in rand_idx:
+                            all_y_true.append(0)
+                            all_y_score.append(torch.sigmoid(scores[ri]).item())
+                # v45 fix: 增加更多随机负样本以平衡硬负样本偏置
+                n_rand_extra = min(20, n_batch_prots - len(valid_pos) - n_hard)
+                if n_rand_extra > 0:
+                    extra_rand_mask = torch.ones(n_batch_prots, device=DEVICE)
+                    for p in valid_pos:
+                        extra_rand_mask[p] = 0
+                    if n_hard > 0:
+                        for hi in hard_indices:
+                            if hi.item() < n_batch_prots:
+                                extra_rand_mask[hi] = 0
+                    extra_candidates = torch.where(extra_rand_mask > 0)[0]
+                    if len(extra_candidates) > 0:
+                        n_sample = min(n_rand_extra, len(extra_candidates))
+                        extra_rand_idx = extra_candidates[torch.randperm(len(extra_candidates), device=DEVICE)[:n_sample]]
+                        for ri in extra_rand_idx:
                             all_y_true.append(0)
                             all_y_score.append(torch.sigmoid(scores[ri]).item())
 
@@ -2875,12 +2892,12 @@ def _predict_hgt_target_proteins_minibatch(
                 missing_targets.update(batch_targets)
                 continue
 
-            comp_tensor = torch.tensor(comp_sorted, device=DEVICE)
+            comp_tensor = torch.tensor(comp_sorted)
             if seed_compounds == [0] and 0 not in cpi_adj:
                 sg["compound"].x = torch.zeros(len(comp_sorted), hetero_data["compound"].x.shape[1], device=DEVICE)
             else:
-                sg["compound"].x = hetero_data["compound"].x[comp_tensor]
-            sg["protein"].x = hetero_data["protein"].x[torch.tensor(prot_sorted, device=DEVICE)]
+                sg["compound"].x = hetero_data["compound"].x[comp_tensor].to(DEVICE)
+            sg["protein"].x = hetero_data["protein"].x[torch.tensor(prot_sorted)].to(DEVICE)
             if path_sorted:
                 path_global_tensor = torch.tensor(sg._path_global, device=DEVICE)
                 path_global_tensor = torch.clamp(path_global_tensor, min=0, max=hgt_model.pathway_embed.num_embeddings - 1)
@@ -3560,7 +3577,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
                 prot_to_residue_idx,
                 residue_max_len,
             ) = load_residue_esm2_features(
-                graphs, residue_pt_path=residue_pt_path, residue_device="cpu"
+                graphs, residue_pt_path=residue_pt_path, max_len_cap=ESM_MAX_LEN, residue_device="cpu"
             )
         except Exception as _e:
             logger.warning(

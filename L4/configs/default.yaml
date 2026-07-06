@@ -1,10 +1,10 @@
-# v43 优化配置 (2026-07-05)
-# 目标: 化合物冷启动发现 + residue_bilinear + 拓扑/ESM难负样本 + Memory Bank
-# 策略: 大容量 + 低学习率 + 长训练 + 强化排序损失 + 残基层面交互
+﻿# v44 8GB显存安全配置 (2026-07-06)
+# 目标: 化合物冷启动发现 + residue_bilinear + 拓扑/ESM难负样本
+# 策略: 降配 hidden_dim=64 + 小batch + 低max_len + CPU残基驻留
 random_seed: 42
 model:
-  hidden_dim: 128
-  out_dim: 128
+  hidden_dim: 64
+  out_dim: 64
   num_layers: 2
   dropout: 0.4
   num_heads: 2
@@ -16,26 +16,26 @@ model:
   decoder_type: "residue_bilinear"
 sage:
   epochs: 20
-  lr: 0.0003
-  patience: 5
-  batch_size: 256
-  num_neighbors:
-  - 32
-  - 16
-  two_stage: true
-  pretrain_epochs: 10
-  pretrain_lr: 0.00045
-hgt:
-  epochs: 20
-  lr: 0.0006
+  lr: 0.0005
   patience: 5
   batch_size: 128
   num_neighbors:
-  - 32
   - 16
+  - 8
   two_stage: true
   pretrain_epochs: 10
-  pretrain_lr: 0.0009
+  pretrain_lr: 0.00075
+hgt:
+  epochs: 20
+  lr: 0.0008
+  patience: 5
+  batch_size: 32
+  num_neighbors:
+  - 16
+  - 8
+  two_stage: true
+  pretrain_epochs: 10
+  pretrain_lr: 0.0012
 two_stage:
   head_ratio: 0.2
   lambda_hhi: 1.0
@@ -79,5 +79,10 @@ validation:
 prediction:
   tree_ensemble_weight: 0.6
 memory_bank:
-  memory_bank_size: 8192
-  infonce_mem_sample: 256
+  memory_bank_size: 4096
+  infonce_mem_sample: 128
+esm2:
+  esm_max_len: 256
+  residue_device: "cpu"
+decoder:
+  max_residue_batch: 4

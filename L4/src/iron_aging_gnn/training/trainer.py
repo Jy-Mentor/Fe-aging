@@ -705,12 +705,9 @@ def train_hgt(
                 model.eval()
                 torch.cuda.empty_cache()
                 with torch.no_grad(), autocast(enabled=use_amp):
-                    vh = val_hetero.to(device) if val_hetero is not None else hetero_data
-                    vh["pathway"].x = model.pathway_embed(
-                        torch.arange(max(graphs["n_pathways"], 1), device=device))
-                    x_dict_full = {k: v.clone() for k, v in vh.x_dict.items()}
+                    hd = val_hetero if val_hetero is not None else hetero_data
                     val_metrics = _validate_hgt_fn(
-                        model, vh, val_compounds, all_compound_to_pos,
+                        model, hd, val_compounds, all_compound_to_pos,
                         n_compounds, n_proteins, hetero_adj=val_hetero_adj)
                 logger.info(
                     f"  HGT pretrain epoch {epoch:3d} | loss={avg_loss:.4f} | "
@@ -744,10 +741,10 @@ def train_hgt(
 
         if epoch % 2 == 0 and val_compounds:
             torch.cuda.empty_cache()
-            val_hetero_dev = val_hetero.to(device) if val_hetero is not None else hetero_data
+            hd = val_hetero if val_hetero is not None else hetero_data
             with autocast(enabled=use_amp):
                 val_metrics = _validate_hgt_fn(
-                model, val_hetero_dev, val_compounds,
+                model, hd, val_compounds,
                 all_compound_to_pos, n_compounds, n_proteins,
                 hetero_adj=val_hetero_adj)
             val_auc = val_metrics["auc"]

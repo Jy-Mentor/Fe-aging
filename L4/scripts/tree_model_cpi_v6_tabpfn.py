@@ -511,7 +511,7 @@ def scaffold_split(pair_smiles, y, test_size=0.2, random_state=42):
     sorted_scaffolds = sorted(unique_scaffolds, key=lambda s: scaffold_sizes[s], reverse=True)
     test_scaffolds = set(rng.choice(sorted_scaffolds, test_n_scaffolds, replace=False))
 
-    smiles_to_scaffold = dict(zip(unique_smiles, scaffolds))
+    smiles_to_scaffold = dict(zip(unique_smiles, scaffolds, strict=False))
     test_smiles = {s for s, sc in smiles_to_scaffold.items() if sc in test_scaffolds}
 
     test_mask = np.array([s in test_smiles for s in pair_smiles])
@@ -567,7 +567,7 @@ def diversity_constrained_negative_sampling(
     n_tanimoto_hard = int(n_neg_target * hard_ratio)
     n_esm_hard = n_neg_target - n_random - n_tanimoto_hard
 
-    gene_neg_counts = {gi: 0 for gi in range(n_genes)}
+    gene_neg_counts = dict.fromkeys(range(n_genes), 0)
     max_per_gene = max(1, n_neg_target // n_genes + 1)
 
     neg_idx_set = set()
@@ -637,7 +637,7 @@ def diversity_constrained_negative_sampling(
     while n_random_collected < n_random and n_random_collected < max_attempts:
         batch_comp = rng.randint(0, n_compounds, size=batch_size)
         batch_gene = rng.randint(0, n_genes, size=batch_size)
-        for ci, gi in zip(batch_comp, batch_gene):
+        for ci, gi in zip(batch_comp, batch_gene, strict=False):
             pair = (int(ci), int(gi))
             if pair in pos_idx_set or pair in neg_idx_set:
                 continue
@@ -1329,7 +1329,7 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
         n_models=("model", "nunique"),
         top_3_genes=("score", lambda x: "|".join(
             [f"{g}({s:.2f})" for g, s in sorted(
-                zip(list(pred_df.loc[x.index, "gene"]), list(x)),
+                zip(list(pred_df.loc[x.index, "gene"]), list(x), strict=False),
                 key=lambda v: v[1], reverse=True
             )[:3]]
         )),
