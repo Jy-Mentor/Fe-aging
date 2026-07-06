@@ -1,41 +1,48 @@
-﻿# v44 8GB显存安全配置 (2026-07-06)
-# 目标: 化合物冷启动发现 + residue_bilinear + 拓扑/ESM难负样本
-# 策略: 降配 hidden_dim=64 + 小batch + 低max_len + CPU残基驻留
+﻿﻿# v48 准确率修复优化配置 (2026-07-06)
+# 目标: 解决低准确率问题 — Focal gamma调低, HGT batch增大, 学习率对齐, dropout/dropedge降低
+# 策略:
+#   - Focal gamma=2.5→1.5: 极度不平衡下避免梯度被压垮
+#   - BPR detach仅在预训练: 微调阶段不带detach, 负样本嵌入同时优化
+#   - HGT batch_size=4→6: 更好梯度估计
+#   - HGT num_neighbors=[4,2]→[6,3]: 更多图上下文
+#   - HGT lr=0.0008→0.0005: 与SAGE对齐, 防止微调灾难性遗忘
+#   - dropout=0.4→0.3, dropedge_ppi=0.15→0.05: 小batch下保留更多信号
+#   - grad_clip_norm=1.0→3.0: 宽松裁剪保护梯度流动
 random_seed: 42
 model:
   hidden_dim: 64
   out_dim: 64
   num_layers: 2
-  dropout: 0.4
+  dropout: 0.3
   num_heads: 2
-  prot_proj_dropout: 0.3
-  prot_proj_inner_dropout: 0.25
-  pathway_proj_dropout: 0.25
-  pheno_head_dropout: 0.3
+  prot_proj_dropout: 0.2
+  prot_proj_inner_dropout: 0.2
+  pathway_proj_dropout: 0.2
+  pheno_head_dropout: 0.25
   score_clamp: 10.0
   decoder_type: "residue_bilinear"
 sage:
-  epochs: 20
+  epochs: 25
   lr: 0.0005
-  patience: 5
+  patience: 7
   batch_size: 128
   num_neighbors:
   - 16
   - 8
   two_stage: true
-  pretrain_epochs: 10
+  pretrain_epochs: 15
   pretrain_lr: 0.00075
 hgt:
-  epochs: 20
-  lr: 0.0008
-  patience: 5
-  batch_size: 4
+  epochs: 25
+  lr: 0.0005
+  patience: 7
+  batch_size: 6
   num_neighbors:
-  - 4
-  - 2
+  - 6
+  - 3
   two_stage: true
-  pretrain_epochs: 10
-  pretrain_lr: 0.0012
+  pretrain_epochs: 15
+  pretrain_lr: 0.00075
 two_stage:
   head_ratio: 0.2
   lambda_hhi: 1.0
@@ -44,38 +51,38 @@ two_stage:
   pretrain_lr_multiplier: 1.5
   pretrain_lr_decay: 0.5
 curriculum:
-  random_ratio: 0.3
+  random_ratio: 0.4
   moderate_ratio: 0.4
-  hard_ratio: 0.3
+  hard_ratio: 0.2
   moderate_pathway_weight: 0.3
-  medium_neg_ratio: 0.3
-  hard_neg_ratio: 0.2
+  medium_neg_ratio: 0.25
+  hard_neg_ratio: 0.15
 negative_sampling:
   use_topology_neg: true
   use_esm_similarity_neg: true
   topo_neighbors_top_k: 50
   esm_similarity_top_k: 50
 loss:
-  focal_gamma: 2.5
-  focal_alpha: 0.85
+  focal_gamma: 1.5
+  focal_alpha: 0.75
   label_smoothing_pos: 0.9
   label_smoothing_neg: 0.1
-  bpr_weight: 0.65
-  bce_weight: 0.35
+  bpr_weight: 0.50
+  bce_weight: 0.50
   infonce_weight: 0.1
   infonce_temperature: 0.07
 training:
-  weight_decay: 0.00005
-  grad_clip_norm: 1.0
-  warmup_ratio: 0.15
+  weight_decay: 0.0001
+  grad_clip_norm: 3.0
+  warmup_ratio: 0.10
   pheno_lambda: 0.05
-  dropedge_ppi: 0.15
-  dropedge_pathway: 0.1
-  flag_step: 0.01
+  dropedge_ppi: 0.05
+  dropedge_pathway: 0.05
+  flag_step: 0.0
 validation:
-  val_freq: 5
-  pretrain_val_freq: 10
-  mem_refresh_freq: 5
+  val_freq: 3
+  pretrain_val_freq: 5
+  mem_refresh_freq: 3
 prediction:
   tree_ensemble_weight: 0.6
 memory_bank:

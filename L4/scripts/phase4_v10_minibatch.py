@@ -1644,12 +1644,14 @@ def _compute_cpi_loss(
     focal_alpha: float = 0.75,
     _state: _CpiLossState | None = None,
     use_residue_decoder: bool = True,
+    bpr_detach_neg: bool = True,
 ) -> torch.Tensor:
     """v21: 共享的 CPI 损失计算（Focal + BPR + 课程负采样）— InfoNCE 默认关闭
     v20: 新增 bpr_weight 参数支持消融实验
     v23-topo: 新增基于PPI拓扑的难负样本选项，可替代通路共现中度负样本。
     v44: OOM/NaN 状态改为 _CpiLossState 局部实例，避免模块级全局状态污染。
     v47: 新增 use_residue_decoder — 预训练阶段跳过残基解码器以节省显存。
+    v48: 新增 bpr_detach_neg — 微调阶段设为False以同时优化负样本嵌入。
 
     统一 SAGE 与 HGT 训练循环中的负采样与损失计算逻辑，避免重复代码。
 
@@ -1673,6 +1675,7 @@ def _compute_cpi_loss(
         prot_to_topo_hard_neighbors: 蛋白 -> 拓扑难负样本局部索引集合。
         _state: 运行期状态实例；未提供时自动创建。
         use_residue_decoder: 为False时跳过残基解码器（预训练阶段降显存）。
+        bpr_detach_neg: BPR负样本是否detach。预训练True（显存保护），微调False（优化负样本嵌入）。
 
     Returns:
         loss 标量张量
@@ -1963,8 +1966,9 @@ def _compute_cpi_loss(
     bpr_unsafe = ~bpr_safe
     if bpr_unsafe.any():
         bpr_neg_scores[bpr_unsafe] = (all_scores[pos_indices[bpr_unsafe]] + mask[pos_indices[bpr_unsafe]]).min(dim=1).values
-    # detach BPR 负样本 — BPR 仅需对正样本传播梯度，负样本 detach 可减半残基解码器显存
-    bpr_loss = -torch.log(torch.sigmoid(pos_score - bpr_neg_scores.detach()) + EPS).mean()
+    # BPR 负样本 detach 控制 — 预训练时 detach（显存保护/粗粒度），微调时保留梯度（优化负样本嵌入）
+    bpr_neg_for_loss = bpr_neg_scores.detach() if bpr_detach_neg else bpr_neg_scores
+    bpr_loss = -torch.log(torch.sigmoid(pos_score - bpr_neg_for_loss) + EPS).mean()
 
     loss = CPI_LOSS_WEIGHT * (pos_loss + neg_loss) + bpr_weight * bpr_loss
 

@@ -97,7 +97,7 @@ class HGTLinkPredictor(nn.Module):
                 nn.init.constant_(gate.bias, 2.0)
                 self.gates.append(gate)
 
-        self.out_proj = nn.Linear(hidden_dim, out_dim)
+        self.out_proj = nn.Identity() if hidden_dim == out_dim else nn.Linear(hidden_dim, out_dim, bias=False)
 
         # 可插拔解码器
         if decoder_type == "mlp":

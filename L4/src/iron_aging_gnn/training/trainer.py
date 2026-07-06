@@ -180,6 +180,8 @@ def train_sage(
         stage_memory_bank: MemoryBank,
         stage_epochs: int,
         stage_scaler: GradScaler = None,
+        stage_use_residue_decoder: bool = True,
+        stage_bpr_detach_neg: bool = True,
     ) -> tuple[float, int]:
         model.train()
         total_loss = 0.0
@@ -278,6 +280,8 @@ def train_sage(
                 prot_to_topo_hard_neighbors=prot_to_topo_hard_neighbors,
                 focal_gamma=focal_gamma,
                 focal_alpha=focal_alpha,
+                use_residue_decoder=stage_use_residue_decoder,
+                bpr_detach_neg=stage_bpr_detach_neg,
             )
 
             if use_pheno:
@@ -335,7 +339,8 @@ def train_sage(
         for epoch in range(1, pretrain_epochs + 1):
             total_loss, n_batches = _train_one_epoch(
                 epoch, pretrain_compounds, pretrain_optimizer, pretrain_memory_bank, pretrain_epochs,
-                stage_scaler=pretrain_scaler, stage_use_residue_decoder=False)
+                stage_scaler=pretrain_scaler, stage_use_residue_decoder=False,
+                stage_bpr_detach_neg=True)
             if n_batches == 0:
                 continue
             avg_loss = total_loss / n_batches
@@ -563,6 +568,7 @@ def train_hgt(
         stage_use_pheno: bool = False,
         stage_scaler: GradScaler = None,
         stage_use_residue_decoder: bool = True,
+        stage_bpr_detach_neg: bool = True,
     ) -> tuple[float, int]:
         model.train()
         total_loss = 0.0
@@ -654,6 +660,7 @@ def train_hgt(
                 focal_gamma=focal_gamma,
                 focal_alpha=focal_alpha,
                 use_residue_decoder=stage_use_residue_decoder,
+                bpr_detach_neg=stage_bpr_detach_neg,
             )
 
             if stage_use_pheno:
@@ -706,7 +713,8 @@ def train_hgt(
         for epoch in range(1, pretrain_epochs + 1):
             total_loss, n_batches = _train_one_epoch(
                 epoch, pretrain_compounds, pretrain_optimizer, pretrain_memory_bank, pretrain_epochs,
-                stage_scaler=pretrain_scaler, stage_use_residue_decoder=False)
+                stage_scaler=pretrain_scaler, stage_use_residue_decoder=False,
+                stage_bpr_detach_neg=True)
             if n_batches == 0:
                 continue
             avg_loss = total_loss / n_batches
