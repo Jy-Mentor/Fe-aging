@@ -29,10 +29,10 @@ hgt:
   epochs: 20
   lr: 0.0008
   patience: 5
-  batch_size: 32
+  batch_size: 8
   num_neighbors:
-  - 16
   - 8
+  - 4
   two_stage: true
   pretrain_epochs: 10
   pretrain_lr: 0.0012

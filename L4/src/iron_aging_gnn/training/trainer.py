@@ -576,6 +576,8 @@ def train_hgt(
             if not prot_sorted:
                 continue
 
+            torch.cuda.empty_cache()
+
             sg["compound"].x = hetero_data["compound"].x[torch.tensor(comp_sorted, device=device)]
             sg["protein"].x = hetero_data["protein"].x[torch.tensor(prot_sorted, device=device)]
             if flag_step > 0:
