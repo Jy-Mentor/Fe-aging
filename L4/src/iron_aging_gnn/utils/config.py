@@ -73,8 +73,16 @@ class ModelConfig(BaseModel):
     pathway_proj_dropout: float = Field(default=0.3, ge=0.0, le=0.9, description="通路投影器 Dropout")
     pheno_head_dropout: float = Field(default=0.3, ge=0.0, le=0.9, description="表型分类头 Dropout")
     score_clamp: float = Field(default=10.0, ge=1.0, description="分数裁剪范围 [-score_clamp, score_clamp]")
-    decoder_type: str = Field(default="mlp", description="解码器类型：mlp / dot / bilinear")
+    decoder_type: str = Field(default="mlp", description="解码器类型：mlp / dot / bilinear / residue_bilinear")
     temperature: float = Field(default=5.0, gt=0.0, description="解码温度系数 T，固定为 5.0 不参与梯度")
+
+
+class DecoderConfig(BaseModel):
+    """解码器专用配置（目前仅 residue_bilinear 使用）。"""
+
+    max_residue_batch: int = Field(default=2, ge=1, description="残基路径前向分块大小")
+    init_scheme: str = Field(default="orthogonal", description="初始化策略: xavier / kaiming / orthogonal")
+    final_bias_init: float = Field(default=-0.5, description="最终打分层偏置初始值（类别不平衡先验）")
 
 
 class SageConfig(BaseModel):
@@ -292,6 +300,7 @@ class Config(BaseModel):
     prediction: PredictionConfig = Field(default_factory=PredictionConfig)
     numerical: NumericalConfig = Field(default_factory=NumericalConfig)
     negative_sampling: NegativeSamplingConfig = Field(default_factory=NegativeSamplingConfig)
+    decoder: DecoderConfig = Field(default_factory=DecoderConfig)
     ferrogenesis_genes: list[str] = Field(
         default_factory=lambda: list(_DEFAULT_FERRORAGING_GENES),
         description="铁衰老靶标基因列表",
@@ -380,6 +389,7 @@ def _deep_merge_defaults(raw: dict) -> dict:
         "memory_bank": MemoryBankConfig,
         "prediction": PredictionConfig,
         "numerical": NumericalConfig,
+        "decoder": DecoderConfig,
     }
 
     merged = {}

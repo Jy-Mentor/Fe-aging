@@ -31,8 +31,7 @@ def sample_homo_subgraph(
     """GraphSAGE 风格邻居采样：固定每层邻居数，避免邻居爆炸"""
     if num_neighbors is None:
         num_neighbors = [32, 16]
-    if seed is not None:
-        random.seed(seed)
+    _rng = random.Random(seed) if seed is not None else random
     nodes = set(seed_compounds)
     frontier = set(seed_compounds)
 
@@ -41,7 +40,7 @@ def sample_homo_subgraph(
         for node in frontier:
             nbrs = homo_adj.get(node, [])
             if len(nbrs) > hop_neighbors:
-                nbrs = random.sample(nbrs, hop_neighbors)
+                nbrs = _rng.sample(nbrs, hop_neighbors)
             next_frontier.update(nbrs)
         nodes.update(next_frontier)
         frontier = next_frontier
@@ -89,8 +88,7 @@ def sample_hetero_subgraph(
     """
     if num_neighbors is None:
         num_neighbors = [32, 16]
-    if seed is not None:
-        random.seed(seed)
+    _rng = random.Random(seed) if seed is not None else random
     compounds = set(seed_compounds)
     proteins = set(seed_proteins) if seed_proteins else set()
     pathways = set()
@@ -102,7 +100,7 @@ def sample_hetero_subgraph(
         if c in cpi_adj:
             nbrs = cpi_adj[c]
             if len(nbrs) > num_neighbors[0]:
-                nbrs = random.sample(nbrs, num_neighbors[0])
+                nbrs = _rng.sample(nbrs, num_neighbors[0])
             proteins.update(nbrs)
 
     # 1-hop: 化合物 → 化合物（相似性边，解决冷启动孤立问题）
@@ -112,7 +110,7 @@ def sample_hetero_subgraph(
             if c in comp_sim_adj:
                 nbrs = comp_sim_adj[c]
                 if len(nbrs) > num_neighbors[0]:
-                    nbrs = random.sample(nbrs, num_neighbors[0])
+                    nbrs = _rng.sample(nbrs, num_neighbors[0])
                 compounds.update(nbrs)
 
     # 2-hop: 蛋白 → 蛋白 + 蛋白 → 通路 + 蛋白 → 疾病
@@ -123,17 +121,17 @@ def sample_hetero_subgraph(
         if p in ppi_adj:
             nbrs = ppi_adj[p]
             if len(nbrs) > num_neighbors[1]:
-                nbrs = random.sample(nbrs, num_neighbors[1])
+                nbrs = _rng.sample(nbrs, num_neighbors[1])
             proteins.update(nbrs)
         if p in pt_adj:
             nbrs = pt_adj[p]
             if len(nbrs) > num_neighbors[1]:
-                nbrs = random.sample(nbrs, num_neighbors[1])
+                nbrs = _rng.sample(nbrs, num_neighbors[1])
             pathways.update(nbrs)
         if p in pd_adj:
             nbrs = pd_adj[p]
             if len(nbrs) > num_neighbors[1]:
-                nbrs = random.sample(nbrs, num_neighbors[1])
+                nbrs = _rng.sample(nbrs, num_neighbors[1])
             diseases.update(nbrs)
 
     comp_sorted = sorted(compounds)
@@ -157,7 +155,6 @@ def sample_hetero_subgraph(
         """从采样子图中构建边索引。仅遍历采样的源节点（src_map），避免全图扫描。"""
         sl, dl = [], []
         adj = hetero_adj.get(et, {})
-        dst_map_inv = {v: k for k, v in dst_map.items()}  # 反向映射用于快速检查
         dst_set = set(dst_map.keys())
         for src_key, src_idx in src_map.items():
             if src_key not in adj:

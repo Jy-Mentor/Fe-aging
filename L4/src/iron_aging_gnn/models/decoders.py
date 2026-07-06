@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import gc
 import logging
+import math
 
 import torch
 import torch.nn as nn
@@ -27,6 +28,21 @@ class MLPDecoder(nn.Module):
             nn.Dropout(dropout),
             nn.Linear(hidden_dim, 1),
         )
+        self._init_weights()
+
+    def _init_weights(self) -> None:
+        """受控初始化：隐藏层 Kaiming，输出层小增益，避免初始预测过度乐观。"""
+        for i, m in enumerate(self.net.modules()):
+            if isinstance(m, nn.Linear):
+                if i == len(list(self.net.modules())) - 1:
+                    # 输出层：小增益 + 零偏置
+                    nn.init.xavier_uniform_(m.weight, gain=0.01)
+                    if m.bias is not None:
+                        nn.init.zeros_(m.bias)
+                else:
+                    nn.init.kaiming_uniform_(m.weight, a=0, mode="fan_in", nonlinearity="relu")
+                    if m.bias is not None:
+                        nn.init.zeros_(m.bias)
 
     def forward(self, comp_emb: torch.Tensor, prot_emb: torch.Tensor) -> torch.Tensor:
         """Args: comp_emb (N, d), prot_emb (N, d). Returns: (N,) logits."""
@@ -59,6 +75,14 @@ class BilinearDecoder(nn.Module):
         self.U = nn.Linear(out_dim, rank, bias=False)
         self.V = nn.Linear(out_dim, rank, bias=False)
         self.bias = nn.Parameter(torch.zeros(1))
+        self._init_weights()
+
+    def _init_weights(self) -> None:
+        """双线性投影正交初始化，低秩交互更稳定。"""
+        for linear in (self.U, self.V):
+            if linear.weight is not None:
+                nn.init.orthogonal_(linear.weight, gain=1.0)
+        nn.init.zeros_(self.bias)
 
     def forward(self, comp_emb: torch.Tensor, prot_emb: torch.Tensor) -> torch.Tensor:
         """Args: comp_emb (N, d), prot_emb (N, d). Returns: (N,) logits."""
@@ -88,7 +112,8 @@ class ResidueAwareBilinearDecoder(nn.Module):
 
     def __init__(self, comp_dim: int, residue_dim: int = 640, rank: int = 64,
                  hidden_dim: int = 128, dropout: float = 0.3, max_len: int = 512,
-                 max_residue_batch: int = 4):
+                 max_residue_batch: int = 4, init_scheme: str = "orthogonal",
+                 final_bias_init: float = -0.5):
         super().__init__()
         self.comp_dim = comp_dim
         self.residue_dim = residue_dim
@@ -96,6 +121,8 @@ class ResidueAwareBilinearDecoder(nn.Module):
         self.hidden_dim = hidden_dim
         self.max_len = max_len
         self.max_residue_batch = max_residue_batch
+        self.init_scheme = init_scheme
+        self.final_bias_init = final_bias_init
 
         # 化合物 query 投影到双线性秩空间
         self.U = nn.Linear(comp_dim, rank, bias=False)
@@ -128,7 +155,86 @@ class ResidueAwareBilinearDecoder(nn.Module):
         self._residue_lengths = torch.zeros(1, dtype=torch.long)
         self._residue_is_mmap = False
         self._unknown_idx: int = -1
+        # _prot_to_residue_idx[i] 存储图蛋白局部索引 i 对应的 residue 文件索引；
+        # -1 表示缺失，查询时会被替换为 unknown placeholder。
         self.register_buffer("_prot_to_residue_idx", torch.zeros(1, dtype=torch.long))
+
+        self._init_weights()
+
+    def _init_weights(self) -> None:
+        """受控初始化：缓解训练初期数值不稳定，同时保留足够梯度信号。
+
+        初始化策略:
+          - U/V/W 双线性投影使用 init_scheme 指定初始化（xavier/orthogonal/kaiming），
+            默认 orthogonal，使低秩交互矩阵更稳定。
+          - residue_agg / score_mlp 隐藏层使用 Kaiming (ReLU) 或 Xavier，稳定残基变换。
+          - score_mlp 最后一层固定使用小增益 (gain=0.1) 的 Xavier，与 scheme 无关，
+            确保训练初期残基注意力路径的输出不会压过 fast bilinear 路径；
+            同时 gain=0.1 保留足够梯度，使残基路径能够参与学习。
+          - 最终打分偏置初始化为 small negative value（默认 -0.5），对类别不平衡
+            （正样本极少）起到温和先验作用，避免初始预测过度乐观。
+        """
+        scheme = self.init_scheme.lower()
+
+        def _init_linear(linear: nn.Linear, is_final: bool = False) -> None:
+            if linear.weight is None:
+                return
+            if is_final:
+                # 最终输出层：统一小增益，避免初始阶段残基路径信号过强
+                nn.init.xavier_uniform_(linear.weight, gain=0.1)
+            elif scheme == "xavier":
+                nn.init.xavier_uniform_(linear.weight, gain=1.0)
+            elif scheme == "kaiming":
+                nn.init.kaiming_uniform_(linear.weight, a=0, mode="fan_in", nonlinearity="relu")
+            elif scheme == "orthogonal":
+                nn.init.orthogonal_(linear.weight, gain=1.0)
+            else:
+                raise ValueError(f"不支持的 init_scheme: {scheme}")
+            if linear.bias is not None and not is_final:
+                nn.init.zeros_(linear.bias)
+
+        # 双线性投影：保持输入/输出方差平衡
+        for linear in (self.U, self.V, self.W):
+            _init_linear(linear, is_final=False)
+
+        # 残基聚合 MLP
+        for m in self.residue_agg.modules():
+            if isinstance(m, nn.Linear):
+                _init_linear(m, is_final=False)
+
+        # score_mlp 中间层
+        for m in self.score_mlp.modules():
+            if isinstance(m, nn.Linear) and m is not self.score_mlp[-1]:
+                _init_linear(m, is_final=False)
+
+        # score_mlp 最后一层：小增益 + 负偏置
+        final_linear = self.score_mlp[-1]
+        if isinstance(final_linear, nn.Linear):
+            _init_linear(final_linear, is_final=True)
+            if final_linear.bias is not None:
+                nn.init.constant_(final_linear.bias, self.final_bias_init)
+
+    def load_pretrained_state(self, state_dict: dict, strict: bool = True) -> None:
+        """加载预训练 decoder 权重（例如从已收敛的 bilinear 模型迁移）。
+
+        用于支持 decoder 预训练权重加载方案：
+          - 若预训练权重中缺少 score_mlp/residue_agg（从 bilinear 升级到 residue_bilinear），
+            自动跳过这些层，保持其受控初始化。
+          - 若预训练权重的 U/V/W 维度一致，则直接加载；维度不一致时记录警告。
+
+        Args:
+            state_dict: 预训练状态字典。
+            strict: 是否严格匹配；对 residue_bilinear 扩展层建议传 strict=False。
+        """
+        missing, unexpected = self.load_state_dict(state_dict, strict=strict)
+        if missing:
+            logger.warning(
+                "ResidueAwareBilinearDecoder 加载预训练权重时缺失以下键（将保持受控初始化）: %s",
+                missing,
+            )
+        if unexpected:
+            logger.warning("ResidueAwareBilinearDecoder 加载预训练权重时遇到未知键: %s", unexpected)
+        logger.info("ResidueAwareBilinearDecoder 预训练权重加载完成")
 
     def register_residue_buffers(self, embeddings: torch.Tensor, offsets: torch.Tensor,
                                  lengths: torch.Tensor, max_len: int = 1024,
@@ -193,11 +299,14 @@ class ResidueAwareBilinearDecoder(nn.Module):
         device = prot_indices.device
         n = prot_indices.shape[0]
 
-        residue_idx = self._prot_to_residue_idx[prot_indices].cpu()
-        missing_mask = residue_idx < 0
+        # 将缺失索引(-1/越界)替换为 unknown_idx，避免 _prot_to_residue_idx 索引异常。
+        n_residue_proteins = self._prot_to_residue_idx.shape[0]
+        safe_indices = prot_indices.clamp(0, n_residue_proteins - 1).long()
+        residue_idx = self._prot_to_residue_idx[safe_indices].cpu()
+        missing_mask = ((prot_indices < 0) | (prot_indices >= n_residue_proteins)).cpu() | (residue_idx < 0)
         if missing_mask.any():
             logger.warning(
-                "_gather_residues: %d/%d 蛋白索引无残基特征映射（值为 -1），已回退到 unknown placeholder",
+                "_gather_residues: %d/%d 蛋白索引无残基特征映射，已回退到 unknown placeholder",
                 missing_mask.sum().item(), residue_idx.shape[0],
             )
         residue_idx = residue_idx.clamp(0, self._unknown_idx)

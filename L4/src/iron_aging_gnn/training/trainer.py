@@ -116,9 +116,10 @@ def train_sage(
     if num_neighbors is None:
         num_neighbors = [32, 16]
     model = model.to(device)
-    for p in model.parameters():
-        if p.dim() >= 2:
-            nn.init.xavier_uniform_(p)
+    # v49-fix: 禁止在此处无条件重初始化模型参数。
+    # SAGE/HGT 模型构造函数与 ResidueAwareBilinearDecoder._init_weights 已实施受控初始化，
+    # 此处 Xavier 重初始化会覆盖解码器的精心初始化（score_mlp 末层小增益等），
+    # 导致训练初期数值不稳定、验证指标恶化，并破坏预训练权重加载。
 
     if hasattr(torch, 'compile') and device.type == 'cuda':
         try:
@@ -505,9 +506,7 @@ def train_hgt(
     if num_neighbors is None:
         num_neighbors = [32, 16]
     model = model.to(device)
-    for p in model.parameters():
-        if p.dim() >= 2:
-            nn.init.xavier_uniform_(p)
+    # v49-fix: 禁止在此处无条件重初始化模型参数（原因同 train_sage）。
 
     if hasattr(torch, 'compile') and device.type == 'cuda':
         try:

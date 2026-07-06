@@ -1,13 +1,11 @@
-﻿# v48 准确率修复优化配置 (2026-07-06)
-# 目标: 解决低准确率问题 — Focal gamma调低, HGT batch增大, 学习率对齐, dropout/dropedge降低
+# v49 准确率修复优化配置 (2026-07-06)
+# 目标: 修复 residue_bilinear 残基索引映射错误、decoder初始化被覆盖、训练/验证指标计算偏差
 # 策略:
-#   - Focal gamma=2.5→1.5: 极度不平衡下避免梯度被压垮
-#   - BPR detach仅在预训练: 微调阶段不带detach, 负样本嵌入同时优化
-#   - HGT batch_size=4→6: 更好梯度估计
-#   - HGT num_neighbors=[4,2]: 避免异质子图采样CPU开销过大
-#   - HGT lr=0.0008→0.0005: 与SAGE对齐, 防止微调灾难性遗忘
-#   - dropout=0.4→0.3, dropedge_ppi=0.15→0.05: 小batch下保留更多信号
-#   - grad_clip_norm=1.0→3.0: 宽松裁剪保护梯度流动
+#   - 修复训练/验证中 prot_residue_indices 传入局部索引而非全局索引的 bug
+#   - HGT 化合物冷启动验证邻接表仅移除 val_comp->val_prot 的 CPI 边，保留到训练蛋白的边
+#   - 禁止 trainer.py 无条件覆盖 decoder 精心设计的初始化，保留 score_mlp 末层小增益
+#   - 温度参数 T=5.0→2.0，在缓解概率过度压缩的同时避免 T=1.0 时的验证指标恶化
+#   - Focal gamma=2.0 标准值，BPR 继续关闭以验证修复效果
 random_seed: 42
 model:
   hidden_dim: 64
@@ -20,6 +18,7 @@ model:
   pathway_proj_dropout: 0.2
   pheno_head_dropout: 0.25
   score_clamp: 10.0
+  temperature: 2.0
   decoder_type: "residue_bilinear"
 sage:
   epochs: 25
@@ -33,15 +32,15 @@ sage:
   pretrain_epochs: 15
   pretrain_lr: 0.00075
 hgt:
-  epochs: 25
+  epochs: 20
   lr: 0.0005
   patience: 7
-  batch_size: 12
+  batch_size: 64
   num_neighbors:
   - 3
   - 2
   two_stage: true
-  pretrain_epochs: 15
+  pretrain_epochs: 10
   pretrain_lr: 0.00075
 two_stage:
   head_ratio: 0.2
@@ -96,3 +95,5 @@ esm2:
   residue_device: "cpu"
 decoder:
   max_residue_batch: 2
+  init_scheme: "orthogonal"
+  final_bias_init: -0.5

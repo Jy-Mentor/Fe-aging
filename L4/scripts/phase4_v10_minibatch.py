@@ -59,6 +59,7 @@ from iron_aging_gnn.graph.topology_negative_sampling import (  # noqa: E402
     build_topology_hard_neighbors,
     build_topology_medium_neighbors,
 )
+from iron_aging_gnn.evaluation import compute_early_enrichment_metrics  # noqa: E402
 from iron_aging_gnn.models import MemoryBank, SAGELinkPredictor, HGTLinkPredictor  # noqa: E402
 from iron_aging_gnn.training.trainer import train_sage, train_hgt  # noqa: E402
 from iron_aging_gnn.utils.config import Config, load_config  # noqa: E402
@@ -200,6 +201,9 @@ ESM_SIMILARITY_TOP_K = _cfg.negative_sampling.esm_similarity_top_k if _cfg else 
 FLAG_STEP = _cfg.training.flag_step if _cfg else 0.01
 SCORE_CLAMP = _cfg.model.score_clamp if _cfg else 10
 DECODER_TYPE = _cfg.model.decoder_type if _cfg else "mlp"
+DECODER_INIT_SCHEME = _cfg.decoder.init_scheme if _cfg else "xavier"
+DECODER_FINAL_BIAS_INIT = _cfg.decoder.final_bias_init if _cfg else -0.5
+MAX_RESIDUE_BATCH = _cfg.decoder.max_residue_batch if _cfg else 2
 
 MEMORY_BANK_SIZE = _cfg.memory_bank.memory_bank_size if _cfg else 8192
 INFONCE_WARMUP_RATIO = _cfg.two_stage.infonce_warmup_ratio if _cfg else 0.15
@@ -1689,7 +1693,8 @@ def _compute_cpi_loss(
         assert all(isinstance(k, int) for k in prot_map.keys()),             "_compute_cpi_loss: prot_map 键必须是整数局部蛋白索引"
         assert all(0 <= v < n_batch_prots for v in prot_map.values()),             f"_compute_cpi_loss: prot_map 值越界，应在 [0, {n_batch_prots}) 内"
 
-    # 构建 batch 蛋白位置 -> 图蛋白局部索引的逆映射，用于 residue_bilinear 解码器
+    # 构建 batch 蛋白位置 -> 图蛋白局部索引的逆映射，用于 residue_bilinear 解码器。
+    # residue_bilinear 的 _prot_to_residue_idx 以图蛋白局部索引（0~n_proteins-1）为键。
     prot_inv_map = {v: k for k, v in prot_map.items()} if prot_map else {}
 
     def _get_residue_indices(batch_positions: torch.Tensor) -> torch.Tensor | None:
@@ -1794,7 +1799,9 @@ def _compute_cpi_loss(
         # 仅对 safe_rows 采样，避免全零行触发 RuntimeError
         rand_dst = torch.multinomial(valid_mask[safe_rows], 1).squeeze(-1)
         # 随机负样本尝试使用残基路径，OOM 时降级为 fast bilinear
-        rand_residue_idx = _get_residue_indices(rand_dst)
+        # v49-fix: 随机负样本同样尊重 use_residue_decoder，避免预训练阶段只更新残基路径参数
+        # 而正样本走 fast bilinear 导致残基路径无约束、破坏训练稳定性。
+        rand_residue_idx = _get_residue_indices(rand_dst) if use_residue_decoder else None
         try:
             hard_neg_scores[safe_rows] = model.decode(
                 comp_emb[unique_src[safe_rows]], prot_emb[rand_dst],
@@ -2293,19 +2300,27 @@ def _build_val_comp_cold_hetero_adj(
     hetero_adj,
     n_compounds: int,
     val_comp_set: set,
+    val_prot_set: set = None,
 ):
-    """v31: 构建化合物冷启动验证异质邻接表
+    """v49: 构建化合物冷启动验证异质邻接表
 
-    仅移除验证集化合物相关的 CPI 边，保留蛋白侧所有拓扑（PPI / 通路 / 疾病）。
-    用于 HGT mini-batch 化合物冷启动验证，与 _build_val_comp_cold_hetero_data 语义一致。
+    仅移除验证集化合物到验证集蛋白的 CPI 边，保留：
+      - 验证化合物到训练蛋白的 CPI 边（允许化合物获得合理嵌入）
+      - 蛋白侧所有拓扑（PPI / 通路 / 疾病）
+    这样验证化合物不是完全孤立节点，同时避免答案泄漏。
     """
     val_adj = {}
+    val_prot_set = set() if val_prot_set is None else val_prot_set
     for et, adj in hetero_adj.items():
         new_adj = defaultdict(list)
         for src, dsts in adj.items():
             if et == ("compound", "interacts", "protein") and src in val_comp_set:
-                continue
-            new_adj[src].extend(dsts)
+                # 只删除到验证蛋白的 CPI 边，保留到训练蛋白的边
+                for dst in dsts:
+                    if dst not in val_prot_set:
+                        new_adj[src].append(dst)
+            else:
+                new_adj[src].extend(dsts)
         val_adj[et] = new_adj
     return val_adj
 
@@ -2330,118 +2345,21 @@ def _build_val_safe_hetero_adj(
 #     EF > 1 表示模型富集能力优于随机，EF 越大越好
 #     Bender et al. (2021) "A practical guide to large-scale docking", Nature Protocols.
 def _compute_ranking_metrics(score_matrix, valid_pos_list, ks=(10, 20, 50)):
-    """从预计算得分矩阵中计算 Precision@K 和 Enrichment Factor (EF)。
-
-    Args:
-        score_matrix: (n_val, n_candidates) 得分矩阵（未经过 sigmoid 的原始分数）
-        valid_pos_list: list of lists，每个元素为该化合物正样本的局部列索引
-        ks: 用于 Precision@K 的 K 值列表
-
-    Returns:
-        dict: 包含 precision@K, ef@1%, ef@5% 指标
-    """
-    n_candidates = score_matrix.shape[1]
-    precision_at_k = {k: [] for k in ks}
-    ef_1pct_hits = 0
-    ef_5pct_hits = 0
-    total_positives = 0
-
-    top_1pct_n = max(1, int(n_candidates * 0.01))
-    top_5pct_n = max(1, int(n_candidates * 0.05))
-
-    for idx, valid_pos in enumerate(valid_pos_list):
-        if not valid_pos:
-            continue
-        scores = score_matrix[idx]
-        _, sorted_indices = torch.sort(scores, descending=True)
-        sorted_indices_cpu = sorted_indices.cpu().tolist()
-
-        valid_pos_set = set(valid_pos)
-        n_pos = len(valid_pos)
-        total_positives += n_pos
-
-        for k in ks:
-            k_actual = min(k, n_candidates)
-            top_k = sorted_indices_cpu[:k_actual]
-            hits = sum(1 for p in top_k if p in valid_pos_set)
-            precision_at_k[k].append(hits / k_actual)
-
-        ef_1pct_hits += sum(1 for p in sorted_indices_cpu[:top_1pct_n] if p in valid_pos_set)
-        ef_5pct_hits += sum(1 for p in sorted_indices_cpu[:top_5pct_n] if p in valid_pos_set)
-
-    n_compounds = len([v for v in valid_pos_list if v])
-    result = {}
-    for k in ks:
-        result[f"precision@{k}"] = float(np.mean(precision_at_k[k])) if precision_at_k[k] else 0.0
-
-    if total_positives > 0 and n_candidates > 0:
-        ef_1pct = (ef_1pct_hits / total_positives) / 0.01
-        ef_5pct = (ef_5pct_hits / total_positives) / 0.05
-        result["ef@1%"] = float(ef_1pct)
-        result["ef@5%"] = float(ef_5pct)
-    else:
-        result["ef@1%"] = 1.0
-        result["ef@5%"] = 1.0
-
-    return result
+    """委托至标准化 metrics 模块计算 Precision@K / Recall@K / Hit@K / NDCG@K / EF。"""
+    from iron_aging_gnn.evaluation.metrics import compute_ranking_metrics
+    return compute_ranking_metrics(score_matrix, valid_pos_list, ks=ks)
 
 
 def _compute_roce(y_true, y_score):
-    """计算 ROCE (ROC Enrichment) — 早期富集评估指标。
-
-    从二分类标签和预测分数中提取 ROC 曲线，计算在指定假阳性率
-    (0.5%, 1.0%, 2.0%, 5.0%) 下的富集因子。
-
-    Args:
-        y_true: 真实标签 (0/1)
-        y_score: 预测分数（概率值）
-
-    Returns:
-        dict: ROCE@0.5%, ROCE@1.0%, ROCE@2.0%, ROCE@5.0%
-    """
-    from sklearn.metrics import roc_curve
-    result = {}
-    fpr, tpr, _ = roc_curve(y_true, y_score)
-    for pct in [0.5, 1.0, 2.0, 5.0]:
-        fp_rate = pct / 100.0
-        idx = np.argmin(np.abs(fpr - fp_rate))
-        if fpr[idx] > 1e-8:
-            roce = tpr[idx] / fpr[idx]
-        else:
-            roce = 0.0
-        result[f"ROCE@{pct}%"] = float(roce)
-    return result
+    """委托至标准化 metrics 模块计算 ROCE。"""
+    from iron_aging_gnn.evaluation.metrics import compute_roce
+    return compute_roce(y_true, y_score)
 
 
 def _compute_bedroc(y_true, y_score, alpha=20.0):
-    """BEDROC (Boltzmann-Enhanced Discrimination of ROC) — 早期富集评估指标。
-
-    Truchon & Bayly, J. Chem. Inf. Model. 2007, 47, 488-508.
-    直接委托 RDKit CalcBEDROC 实现，避免手写公式偏差。
-
-    Args:
-        y_true: 真实标签 (0/1)
-        y_score: 预测分数
-        alpha: 早期富集权重 (默认 20.0)
-
-    Returns:
-        float: BEDROC 值
-    """
-    from rdkit.ML.Scoring.Scoring import CalcBEDROC
-
-    n = len(y_true)
-    n_act = int(np.sum(y_true))
-    if n_act == 0:
-        return 0.0
-    if n_act == n:
-        return 1.0
-
-    order = np.argsort(y_score)[::-1]
-    scores = [
-        [float(y_score[order[i]]), bool(y_true[order[i]])]
-        for i in range(n)
-    ]
-    return float(CalcBEDROC(scores, col=1, alpha=alpha))
+    """委托至标准化 metrics 模块计算 BEDROC。"""
+    from iron_aging_gnn.evaluation.metrics import compute_bedroc
+    return compute_bedroc(y_true, y_score, alpha=alpha)
 
 
 def _validate_sage(model, x, homo_edge_index, val_compounds, all_compound_to_pos, n_compounds):
@@ -2547,19 +2465,12 @@ def _validate_sage(model, x, homo_edge_index, val_compounds, all_compound_to_pos
             if len(y_true_arr) < 2 or len(set(y_true_arr)) < 2:
                 return {"auc": 0.5, "aupr": 0.5, "n_valid_compounds": n_valid}
 
-        # 计算排名指标（Precision@K, EF@1%, EF@5%）和 ROCE
-        result = {
-            "auc": float(roc_auc_score(y_true_arr, y_score_arr)),
-            "aupr": float(average_precision_score(y_true_arr, y_score_arr)),
-            "n_valid_compounds": n_valid,
-        }
-        if valid_pos_list:
-            ranking = _compute_ranking_metrics(score_matrix, valid_pos_list)
-            result.update(ranking)
-        roce = _compute_roce(y_true_arr, y_score_arr)
-        result.update(roce)
-        bedroc = _compute_bedroc(y_true_arr, y_score_arr)
-        result["BEDROC"] = bedroc
+        # v50: 使用标准化指标模块统一计算 AUC/AUPR/EF/ROCE/BEDROC
+        result = compute_early_enrichment_metrics(
+            y_true_arr, y_score_arr,
+            score_matrix=score_matrix, valid_pos_list=valid_pos_list,
+        )
+        result["n_valid_compounds"] = n_valid
         return result
 
 
@@ -2687,11 +2598,8 @@ def _validate_hgt_minibatch(
                     continue
                 n_valid_compounds += 1
 
-                # prot_residue_indices 必须使用全局蛋白索引（用于在残基级 ESM-2
-                # 特征中查找正确的蛋白），而非子图局部索引。prot_sorted 是子图内部
-                # 0~n_batch_prots-1 的局部索引，prot_map 才是 局部→全局 的映射。
-                # 旧 v36 代码直接把 prot_sorted 传给 residue_indices，导致残基注意力
-                # 路径查询了错误的蛋白身份，使 HGT 化合物冷启动 AUC/AUPR 被严重压低。
+                # prot_residue_indices 必须传入图蛋白全局索引（0~n_proteins-1），
+                # 与 _prot_to_residue_idx 的键一致；局部索引 p 通过 prot_map 映射回全局索引。
                 prot_global_tensor = torch.tensor(
                     [prot_inv_map_local.get(p, -1) for p in range(n_batch_prots)],
                     device=DEVICE, dtype=torch.long
@@ -2783,32 +2691,34 @@ def _validate_hgt_minibatch(
         except Exception as e:
             logger.warning(f"  [HGT val diag] 诊断打印异常: {e}")
 
-        result = {
-            "auc": float(roc_auc_score(y_true_arr, y_score_arr)),
-            "aupr": float(average_precision_score(y_true_arr, y_score_arr)),
-            "n_valid_compounds": n_valid_compounds,
-        }
-
-        # 计算排名指标（Precision@K, EF@1%, EF@5%）和 ROCE
+        # v50: 使用标准化指标模块统一计算 AUC/AUPR/EF/ROCE/BEDROC
         # HGT mini-batch 各 batch 蛋白候选集不同，排名指标按 batch 独立计算后平均
+        result = compute_early_enrichment_metrics(
+            y_true_arr, y_score_arr,
+        )
         if all_batch_ranking:
             precision_sums = {k: 0.0 for k in all_batch_ranking[0] if k.startswith("precision@")}
+            recall_sums = {k: 0.0 for k in all_batch_ranking[0] if k.startswith("recall@")}
+            hit_sums = {k: 0.0 for k in all_batch_ranking[0] if k.startswith("hit@")}
+            ndcg_sums = {k: 0.0 for k in all_batch_ranking[0] if k.startswith("ndcg@")}
             ef_sums = {k: 0.0 for k in all_batch_ranking[0] if k.startswith("ef@")}
             n_batches = len(all_batch_ranking)
             for batch_r in all_batch_ranking:
                 for k, v in batch_r.items():
                     if k in precision_sums:
                         precision_sums[k] += v
+                    elif k in recall_sums:
+                        recall_sums[k] += v
+                    elif k in hit_sums:
+                        hit_sums[k] += v
+                    elif k in ndcg_sums:
+                        ndcg_sums[k] += v
                     elif k in ef_sums:
                         ef_sums[k] += v
-            for k, v in precision_sums.items():
-                result[k] = v / n_batches
-            for k, v in ef_sums.items():
-                result[k] = v / n_batches
-        roce = _compute_roce(y_true_arr, y_score_arr)
-        result.update(roce)
-        bedroc = _compute_bedroc(y_true_arr, y_score_arr)
-        result["BEDROC"] = bedroc
+            for sums in (precision_sums, recall_sums, hit_sums, ndcg_sums, ef_sums):
+                for k, v in sums.items():
+                    result[k] = v / n_batches
+        result["n_valid_compounds"] = n_valid_compounds
         return result
 
 
@@ -3529,7 +3439,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
     graphs["hetero_data_val"] = _build_val_comp_cold_hetero_data(
         graphs["hetero_data"], val_comp_set)
     graphs["hetero_adj_val"] = _build_val_comp_cold_hetero_adj(
-        graphs["hetero_adj"], graphs["n_compounds"], val_comp_set)
+        graphs["hetero_adj"], graphs["n_compounds"], val_comp_set, val_proteins)
     # 构建训练安全邻接表 — 训练阶段完全隐藏验证蛋白，杜绝 PPI 网络信息泄露
     graphs["homo_adj_train"] = _build_train_safe_homo_adj(
         graphs["homo_adj"], graphs["n_compounds"], val_comp_set, val_proteins)
@@ -3666,6 +3576,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
         _validate_sage_fn=_validate_sage, _compute_cpi_loss_fn=_compute_cpi_loss)
 
     try:
+        L4_RESULTS.mkdir(parents=True, exist_ok=True)
         torch.save({"state_dict": sage_model.state_dict(), "version": "v42", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "sage_best_v42.pt")
         logger.info("  SAGE 模型已保存到 sage_best_v42.pt")
     except Exception:
@@ -3748,6 +3659,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             use_amp=False)
 
         try:
+            L4_RESULTS.mkdir(parents=True, exist_ok=True)
             torch.save({"state_dict": hgt_model.state_dict(), "version": "v42", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "hgt_best_v42.pt")
             logger.info("  HGT 模型已保存到 hgt_best_v42.pt")
         except Exception:

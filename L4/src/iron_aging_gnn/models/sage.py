@@ -44,7 +44,10 @@ class SAGELinkPredictor(nn.Module):
                  pathway_proj_dropout: float = _PATHWAY_PROJ_DROPOUT,
                  pheno_head_dropout: float = _PHENO_HEAD_DROPOUT,
                  temperature: float = _TEMPERATURE,
-                 decoder_type: str = "mlp"):
+                 decoder_type: str = "mlp",
+                 decoder_init_scheme: str = "xavier",
+                 decoder_final_bias_init: float = -0.5,
+                 decoder_max_residue_batch: int = 2):
         """初始化 SAGE 链接预测模型。
 
         Args:
@@ -62,6 +65,9 @@ class SAGELinkPredictor(nn.Module):
             pheno_head_dropout: 表型头 Dropout。
             temperature: 解码温度系数 T。
             decoder_type: 解码器类型：mlp / dot / bilinear / residue_bilinear。
+            decoder_init_scheme: residue_bilinear 初始化策略 (xavier/kaiming/orthogonal)。
+            decoder_final_bias_init: residue_bilinear 最终打分层偏置初始值。
+            decoder_max_residue_batch: residue_bilinear 残基路径前向分块大小。
         """
         super().__init__()
         self.comp_feat_dim = comp_feat_dim
@@ -138,7 +144,11 @@ class SAGELinkPredictor(nn.Module):
             self.decoder = BilinearDecoder(out_dim, rank=64)
         elif decoder_type == "residue_bilinear":
             self.decoder = ResidueAwareBilinearDecoder(
-                comp_dim=out_dim, residue_dim=640, rank=64, hidden_dim=128, dropout=pheno_head_dropout
+                comp_dim=out_dim, residue_dim=640, rank=64, hidden_dim=128,
+                dropout=pheno_head_dropout,
+                max_residue_batch=decoder_max_residue_batch,
+                init_scheme=decoder_init_scheme,
+                final_bias_init=decoder_final_bias_init,
             )
         else:
             raise ValueError(f"不支持的 decoder_type: {decoder_type}")
