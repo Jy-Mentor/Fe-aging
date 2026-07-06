@@ -29,10 +29,10 @@ hgt:
   epochs: 20
   lr: 0.0008
   patience: 5
-  batch_size: 8
+  batch_size: 4
   num_neighbors:
-  - 8
   - 4
+  - 2
   two_stage: true
   pretrain_epochs: 10
   pretrain_lr: 0.0012
@@ -85,4 +85,4 @@ esm2:
   esm_max_len: 256
   residue_device: "cpu"
 decoder:
-  max_residue_batch: 4
+  max_residue_batch: 2

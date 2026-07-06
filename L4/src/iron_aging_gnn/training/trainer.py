@@ -162,7 +162,7 @@ def train_sage(
                     f"正样本={n_pos_pheno}, 负样本={n_neg_pheno}, "
                     f"pos_weight={pos_weight:.1f}, lambda={pheno_lambda}")
 
-    optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay, foreach=False)
     scheduler = LRSchedulerFactory.create_cosine_warmup(optimizer, epochs, warmup_ratio)
     scaler = GradScaler(enabled=use_amp)
 
@@ -297,8 +297,11 @@ def train_sage(
                     loss = loss + pheno_lambda * pheno_loss
 
             stage_optimizer.zero_grad()
+            # 清缓存后再 backward，最大化可用显存
+            torch.cuda.empty_cache()
             stage_scaler.scale(loss).backward()
             gradient_monitor.check_and_clip(model, scaler=stage_scaler, optimizer=stage_optimizer)
+            torch.cuda.empty_cache()
             stage_scaler.step(stage_optimizer)
             stage_scaler.update()
 
@@ -320,7 +323,7 @@ def train_sage(
                     f"total_pretrain={len(pretrain_compounds)}")
 
         pretrain_lr_actual = pretrain_lr if pretrain_lr is not None else lr * pretrain_lr_multiplier
-        pretrain_optimizer = torch.optim.AdamW(model.parameters(), lr=pretrain_lr_actual, weight_decay=weight_decay)
+        pretrain_optimizer = torch.optim.AdamW(model.parameters(), lr=pretrain_lr_actual, weight_decay=weight_decay, foreach=False)
         pretrain_scaler = GradScaler(enabled=use_amp)
         def pretrain_lr_lambda(e):
             return 1.0 - pretrain_lr_decay * (e / pretrain_epochs)
@@ -332,7 +335,7 @@ def train_sage(
         for epoch in range(1, pretrain_epochs + 1):
             total_loss, n_batches = _train_one_epoch(
                 epoch, pretrain_compounds, pretrain_optimizer, pretrain_memory_bank, pretrain_epochs,
-                stage_scaler=pretrain_scaler)
+                stage_scaler=pretrain_scaler, stage_use_residue_decoder=False)
             if n_batches == 0:
                 continue
             avg_loss = total_loss / n_batches
@@ -527,7 +530,7 @@ def train_hgt(
     prot_to_topo_medium_neighbors = graphs.get("prot_to_topo_medium_neighbors")
     prot_to_topo_hard_neighbors = graphs.get("prot_to_topo_hard_neighbors")
 
-    optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay, foreach=False)
     scheduler = LRSchedulerFactory.create_cosine_warmup(optimizer, epochs, warmup_ratio)
     scaler = GradScaler(enabled=use_amp)
 
@@ -559,6 +562,7 @@ def train_hgt(
         stage_epochs: int,
         stage_use_pheno: bool = False,
         stage_scaler: GradScaler = None,
+        stage_use_residue_decoder: bool = True,
     ) -> tuple[float, int]:
         model.train()
         total_loss = 0.0
@@ -649,6 +653,7 @@ def train_hgt(
                 prot_to_topo_hard_neighbors=prot_to_topo_hard_neighbors,
                 focal_gamma=focal_gamma,
                 focal_alpha=focal_alpha,
+                use_residue_decoder=stage_use_residue_decoder,
             )
 
             if stage_use_pheno:
@@ -663,8 +668,11 @@ def train_hgt(
                     pheno_loss = pheno_bce(pheno_logits, pheno_label_batch)
                     loss = loss + pheno_lambda * pheno_loss
 
+            # 清缓存后再 backward，最大化可用显存
+            torch.cuda.empty_cache()
             stage_scaler.scale(loss).backward()
             gradient_monitor.check_and_clip(model, scaler=stage_scaler, optimizer=stage_optimizer)
+            torch.cuda.empty_cache()
             stage_scaler.step(stage_optimizer)
             stage_scaler.update()
 
@@ -686,7 +694,7 @@ def train_hgt(
                     f"total_pretrain={len(pretrain_compounds)}")
 
         pretrain_lr_actual = pretrain_lr if pretrain_lr is not None else lr * pretrain_lr_multiplier
-        pretrain_optimizer = torch.optim.AdamW(model.parameters(), lr=pretrain_lr_actual, weight_decay=weight_decay)
+        pretrain_optimizer = torch.optim.AdamW(model.parameters(), lr=pretrain_lr_actual, weight_decay=weight_decay, foreach=False)
         pretrain_scaler = GradScaler(enabled=use_amp)
         def pretrain_lr_lambda(e):
             return 1.0 - pretrain_lr_decay * (e / pretrain_epochs)
@@ -698,7 +706,7 @@ def train_hgt(
         for epoch in range(1, pretrain_epochs + 1):
             total_loss, n_batches = _train_one_epoch(
                 epoch, pretrain_compounds, pretrain_optimizer, pretrain_memory_bank, pretrain_epochs,
-                stage_scaler=pretrain_scaler)
+                stage_scaler=pretrain_scaler, stage_use_residue_decoder=False)
             if n_batches == 0:
                 continue
             avg_loss = total_loss / n_batches

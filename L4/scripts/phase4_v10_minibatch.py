@@ -1643,11 +1643,13 @@ def _compute_cpi_loss(
     focal_gamma: float = 2.0,
     focal_alpha: float = 0.75,
     _state: _CpiLossState | None = None,
+    use_residue_decoder: bool = True,
 ) -> torch.Tensor:
     """v21: 共享的 CPI 损失计算（Focal + BPR + 课程负采样）— InfoNCE 默认关闭
     v20: 新增 bpr_weight 参数支持消融实验
     v23-topo: 新增基于PPI拓扑的难负样本选项，可替代通路共现中度负样本。
     v44: OOM/NaN 状态改为 _CpiLossState 局部实例，避免模块级全局状态污染。
+    v47: 新增 use_residue_decoder — 预训练阶段跳过残基解码器以节省显存。
 
     统一 SAGE 与 HGT 训练循环中的负采样与损失计算逻辑，避免重复代码。
 
@@ -1670,6 +1672,7 @@ def _compute_cpi_loss(
         prot_to_topo_medium_neighbors: 蛋白 -> 拓扑中度负样本局部索引集合。
         prot_to_topo_hard_neighbors: 蛋白 -> 拓扑难负样本局部索引集合。
         _state: 运行期状态实例；未提供时自动创建。
+        use_residue_decoder: 为False时跳过残基解码器（预训练阶段降显存）。
 
     Returns:
         loss 标量张量
@@ -1695,8 +1698,8 @@ def _compute_cpi_loss(
             device=batch_positions.device, dtype=torch.long
         )
 
-    # 正样本
-    pos_residue_idx = _get_residue_indices(pos_dst)
+    # 正样本（预训练阶段跳过残基解码器以节省显存）
+    pos_residue_idx = _get_residue_indices(pos_dst) if use_residue_decoder else None
     try:
         pos_score = model.decode(comp_emb[pos_src], prot_emb[pos_dst], prot_residue_indices=pos_residue_idx) / T
     except torch.cuda.OutOfMemoryError as e:
@@ -1935,10 +1938,8 @@ def _compute_cpi_loss(
         bpr_valid_mask[bpr_safe] = bpr_valid_mask[bpr_safe] / bpr_row_sum[bpr_safe].unsqueeze(1)
         # 仅对 bpr_safe 行采样，避免全零行触发 RuntimeError
         bpr_neg_dst = torch.multinomial(bpr_valid_mask[bpr_safe], 1).squeeze(-1)
-        # BPR 负样本尝试使用残基注意力路径（与正样本一致以真正训练残基解码器），
-        # 但在显存不足时降级为 fast bilinear（与 all_scores 路径一致），并明确打印警告。
-        # 这是工程妥协而非掩盖错误：BPR 只占总损失的 bpr_weight*1.0(0.4)，部分降级不会毁掉训练。
-        bpr_neg_residue_idx = _get_residue_indices(bpr_neg_dst)
+        # BPR 负样本（预训练阶段跳过残基解码器以节省显存）
+        bpr_neg_residue_idx = _get_residue_indices(bpr_neg_dst) if use_residue_decoder else None
         try:
             bpr_neg_scores[bpr_safe] = model.decode(
                 comp_emb[pos_src[bpr_safe]], prot_emb[bpr_neg_dst],
@@ -1962,7 +1963,8 @@ def _compute_cpi_loss(
     bpr_unsafe = ~bpr_safe
     if bpr_unsafe.any():
         bpr_neg_scores[bpr_unsafe] = (all_scores[pos_indices[bpr_unsafe]] + mask[pos_indices[bpr_unsafe]]).min(dim=1).values
-    bpr_loss = -torch.log(torch.sigmoid(pos_score - bpr_neg_scores) + EPS).mean()
+    # detach BPR 负样本 — BPR 仅需对正样本传播梯度，负样本 detach 可减半残基解码器显存
+    bpr_loss = -torch.log(torch.sigmoid(pos_score - bpr_neg_scores.detach()) + EPS).mean()
 
     loss = CPI_LOSS_WEIGHT * (pos_loss + neg_loss) + bpr_weight * bpr_loss
 

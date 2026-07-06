@@ -10,6 +10,7 @@ Classes:
 from __future__ import annotations
 
 import logging
+import math
 
 import numpy as np
 import torch
@@ -238,7 +239,7 @@ class GradientMonitor:
         self.warn_threshold = warn_threshold
 
     def check_and_clip(self, model: nn.Module, scaler: torch.cuda.amp.GradScaler | None = None, optimizer: torch.optim.Optimizer | None = None) -> float:
-        """检查梯度范数并按 grad_clip_norm 裁剪。
+        """检查梯度范数并按 grad_clip_norm 裁剪（CPU 计算避免 GPU OOM）。
 
         Args:
             model: 待检查的模型。
@@ -251,19 +252,68 @@ class GradientMonitor:
         if scaler is not None:
             scaler.unscale_(optimizer if optimizer is not None else model.parameters())
 
-        total_norm = self._compute_norm(model)
-        if total_norm > self.warn_threshold:
+        # 先处理 NaN/Inf
+        n_sanitized = self._sanitize_nan_gradients(model)
+        if n_sanitized > 0:
+            logger.warning(f"梯度 NaN/Inf 已清零: {n_sanitized} 个参数")
+
+        # CPU 安全梯度裁剪 — 避免 clip_grad_norm_ 的 GPU 级联范数开销
+        total_norm = self._safe_clip_grad_norm_(model, self.grad_clip_norm)
+
+        if total_norm > self.warn_threshold and not math.isnan(total_norm):
             logger.warning(f"梯度范数异常: {total_norm:.1f} > {self.warn_threshold:.1f}")
 
-        torch.nn.utils.clip_grad_norm_(model.parameters(), self.grad_clip_norm)
         return total_norm
 
+    @staticmethod
+    def _safe_clip_grad_norm_(model: nn.Module, max_norm: float) -> float:
+        """CPU 安全梯度裁剪 — 逐参数计算范数，避免 GPU 大张量级联。
+
+        Args:
+            model: 待裁剪的模型。
+            max_norm: 最大梯度范数。
+
+        Returns:
+            梯度总范数。
+        """
+        total_sq_norm = 0.0
+        for p in model.parameters():
+            if p.grad is not None:
+                param_norm_sq = p.grad.data.detach().cpu().pow(2).sum().item()
+                total_sq_norm += param_norm_sq
+        total_norm = total_sq_norm ** 0.5
+        if total_norm > max_norm:
+            scale = max_norm / (total_norm + 1e-6)
+            for p in model.parameters():
+                if p.grad is not None:
+                    p.grad.data.mul_(scale)
+        return total_norm
+
+    @staticmethod
+    def _sanitize_nan_gradients(model: nn.Module) -> int:
+        """将梯度中的 NaN/Inf 值清零，防止优化器状态损坏。
+
+        Returns:
+            被清零的参数数量。
+        """
+        n_sanitized = 0
+        for p in model.parameters():
+            if p.grad is not None:
+                if torch.isnan(p.grad).any() or torch.isinf(p.grad).any():
+                    p.grad = torch.where(
+                        torch.isnan(p.grad) | torch.isinf(p.grad),
+                        torch.zeros_like(p.grad),
+                        p.grad,
+                    )
+                    n_sanitized += 1
+        return n_sanitized
+
     def _compute_norm(self, model: nn.Module) -> float:
-        """计算模型梯度总范数。"""
+        """计算模型梯度总范数（CPU 计算以避免 GPU OOM）。"""
         total_norm = 0.0
         for p in model.parameters():
             if p.grad is not None:
-                param_norm = p.grad.data.norm(2).item()
+                param_norm = p.grad.data.detach().cpu().norm(2).item()
                 total_norm += param_norm ** 2
         return total_norm ** 0.5
 

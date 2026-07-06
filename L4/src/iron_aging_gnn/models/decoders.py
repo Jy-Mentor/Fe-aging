@@ -181,7 +181,7 @@ class ResidueAwareBilinearDecoder(nn.Module):
         gc.collect()
 
     def _gather_residues(self, prot_indices: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
-        """根据蛋白全局索引收集残基特征并填充到 [N, L, d]（向量化版本）。
+        """根据蛋白全局索引收集残基特征并填充到 [N, L, d]（逐蛋白循环，避免 CPU OOM）。
 
         Args:
             prot_indices: (N,) 蛋白全局索引（0-based，对应图蛋白节点）
@@ -201,24 +201,43 @@ class ResidueAwareBilinearDecoder(nn.Module):
                 missing_mask.sum().item(), residue_idx.shape[0],
             )
         residue_idx = residue_idx.clamp(0, self._unknown_idx)
-        unknown_mask = missing_mask | (residue_idx == self._unknown_idx)
+        unknown_mask = (missing_mask | (residue_idx == self._unknown_idx)).cpu()
 
-        lengths = self._residue_lengths[residue_idx].clamp(1, self.max_len)
-        offsets = self._residue_offsets[residue_idx]
+        residue_max_len = self.max_len
+        residue_dim = self.residue_dim
+        total_residues = self._residue_embeddings.shape[0]
+        L = residue_max_len
+        d = residue_dim
 
-        # 向量化：构造位置网格 [n, max_len] 并一次性 gather 所有残基
-        pos_grid = torch.arange(self.max_len, device=offsets.device).unsqueeze(0).expand(n, -1)
-        residue_mask = pos_grid < lengths.unsqueeze(1)
-        residue_mask[unknown_mask] = False
-        residue_mask[unknown_mask, 0] = True
+        residue_feats_list: list[torch.Tensor] = []
+        residue_mask_list: list[torch.Tensor] = []
 
-        gather_indices = (offsets.unsqueeze(1) + pos_grid).clamp(
-            0, self._residue_embeddings.shape[0] - 1
-        )
-        residue_feats = self._residue_embeddings[gather_indices].to(device)
-        residue_mask = residue_mask.to(device)
-        residue_feats[~residue_mask] = 0.0
+        for i in range(n):
+            idx = int(residue_idx[i].item())
+            prot_len = min(int(self._residue_lengths[idx].item()), residue_max_len)
+            offset = int(self._residue_offsets[idx].item())
+            end = min(offset + residue_max_len, total_residues)
 
+            # 逐蛋白 gather，每次只分配 ~640KB 在 CPU 上，立即搬 GPU
+            feat = self._residue_embeddings[offset:end].to(device)  # (L_actual, d)
+            L_actual = feat.shape[0]
+            if L_actual < L:
+                pad = torch.zeros(L - L_actual, d, device=device, dtype=feat.dtype)
+                feat = torch.cat([feat, pad], dim=0)
+
+            mask = torch.zeros(L, dtype=torch.bool, device=device)
+            mask[:min(prot_len, L)] = True
+
+            if unknown_mask[i]:
+                mask[:] = False
+                mask[0] = True
+                feat[1:] = 0.0
+
+            residue_feats_list.append(feat)
+            residue_mask_list.append(mask)
+
+        residue_feats = torch.stack(residue_feats_list, dim=0)
+        residue_mask = torch.stack(residue_mask_list, dim=0)
         return residue_feats, residue_mask
 
     def _forward_chunk(self, comp_emb: torch.Tensor, prot_emb: torch.Tensor,
