@@ -1721,11 +1721,13 @@ def _compute_cpi_loss(
     batch_comp_emb = comp_emb[unique_src]
     # 全蛋白 pair-matrix 规模极大，残基注意力会导致 8GB 显存图内存爆炸；
     # 此处退化为 GNN 全局嵌入点积，仅对正样本/难负样本启用残基解码器。
-    all_scores = model.decode(
-        batch_comp_emb.unsqueeze(1).expand(-1, n_batch_prots, -1).reshape(-1, model.out_dim),
-        prot_emb.repeat(n_unique, 1),
-        prot_residue_indices=None,
-    ).reshape(n_unique, n_batch_prots) / T
+    # v46: 用 torch.no_grad() 包裹，all_scores 仅用于 hard neg 选择，不需要梯度
+    with torch.no_grad():
+        all_scores = model.decode(
+            batch_comp_emb.unsqueeze(1).expand(-1, n_batch_prots, -1).reshape(-1, model.out_dim),
+            prot_emb.repeat(n_unique, 1),
+            prot_residue_indices=None,
+        ).reshape(n_unique, n_batch_prots) / T
 
     # 向量化正样本mask构建 — 使用预计算 compound_to_prot_locals 映射表
     mask = torch.zeros(n_unique, n_batch_prots, device=DEVICE)
