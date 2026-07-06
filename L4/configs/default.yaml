@@ -1,10 +1,10 @@
-﻿﻿# v48 准确率修复优化配置 (2026-07-06)
+﻿# v48 准确率修复优化配置 (2026-07-06)
 # 目标: 解决低准确率问题 — Focal gamma调低, HGT batch增大, 学习率对齐, dropout/dropedge降低
 # 策略:
 #   - Focal gamma=2.5→1.5: 极度不平衡下避免梯度被压垮
 #   - BPR detach仅在预训练: 微调阶段不带detach, 负样本嵌入同时优化
 #   - HGT batch_size=4→6: 更好梯度估计
-#   - HGT num_neighbors=[4,2]→[6,3]: 更多图上下文
+#   - HGT num_neighbors=[4,2]: 避免异质子图采样CPU开销过大
 #   - HGT lr=0.0008→0.0005: 与SAGE对齐, 防止微调灾难性遗忘
 #   - dropout=0.4→0.3, dropedge_ppi=0.15→0.05: 小batch下保留更多信号
 #   - grad_clip_norm=1.0→3.0: 宽松裁剪保护梯度流动
@@ -36,10 +36,10 @@ hgt:
   epochs: 25
   lr: 0.0005
   patience: 7
-  batch_size: 6
+  batch_size: 12
   num_neighbors:
-  - 6
   - 3
+  - 2
   two_stage: true
   pretrain_epochs: 15
   pretrain_lr: 0.00075
