@@ -3738,7 +3738,8 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             grad_clip_norm=GRAD_CLIP_NORM,
             pretrain_lr_multiplier=PRETRAIN_LR_MULTIPLIER, pretrain_lr_decay=PRETRAIN_LR_DECAY,
             use_topology_neg=USE_TOPOLOGY_NEG,
-            _validate_hgt_fn=_validate_hgt, _compute_cpi_loss_fn=_compute_cpi_loss)
+            _validate_hgt_fn=_validate_hgt, _compute_cpi_loss_fn=_compute_cpi_loss,
+            use_amp=False)
 
         try:
             torch.save({"state_dict": hgt_model.state_dict(), "version": "v42", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "hgt_best_v42.pt")
