@@ -154,13 +154,18 @@ def sample_hetero_subgraph(
     sg._disease_global = disease_global
 
     def _build_edges(et, src_map, dst_map):
+        """从采样子图中构建边索引。仅遍历采样的源节点（src_map），避免全图扫描。"""
         sl, dl = [], []
-        for s, ds in hetero_adj.get(et, {}).items():
-            if s in src_map:
-                for d in ds:
-                    if d in dst_map:
-                        sl.append(src_map[s])
-                        dl.append(dst_map[d])
+        adj = hetero_adj.get(et, {})
+        dst_map_inv = {v: k for k, v in dst_map.items()}  # 反向映射用于快速检查
+        dst_set = set(dst_map.keys())
+        for src_key, src_idx in src_map.items():
+            if src_key not in adj:
+                continue
+            for dst_key in adj[src_key]:
+                if dst_key in dst_set:
+                    sl.append(src_idx)
+                    dl.append(dst_map[dst_key])
         if sl:
             return torch.tensor([sl, dl], dtype=torch.long)
         return torch.zeros((2, 0), dtype=torch.long)
