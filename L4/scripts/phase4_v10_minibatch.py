@@ -2939,14 +2939,18 @@ def predict_tcm(
     tcm_feat_precomputed: torch.Tensor | None = None,
     tree_predictions: pd.DataFrame | None = None,  # 树模型预测分数
     tree_weight: float = 0.6,  # 树模型集成权重
+    sage_w: float = 0.5,  # v56: SAGE 集成权重（动态或等权回退）
+    hgt_w: float = 0.5,  # v56: HGT 集成权重
 ) -> pd.DataFrame:
-    """v40: SAGE + HGT + 树模型三方集成预测 — 等权集成 + 多样性约束 + MC Dropout
+    """v40: SAGE + HGT + 树模型三方集成预测 — 动态加权 + 多样性约束 + MC Dropout
 
     Args:
         diversity_penalty: 余弦相似度惩罚系数（0~1，越大越惩罚相似预测）
         mc_samples: MC Dropout 采样次数（0=禁用，推荐30）
         tree_predictions: 树模型预测 DataFrame (MOL_ID, SMILES, gene, score)
         tree_weight: 树模型在最终集成中的权重（0~1）
+        sage_w: SAGE 分支集成权重（v56: 基于验证 AUPR 动态计算）
+        hgt_w: HGT 分支集成权重
     """
     n_iterations = max(1, mc_samples)
     use_mc = mc_samples > 0
@@ -2975,10 +2979,11 @@ def predict_tcm(
     gene_to_idx = graphs["gene_to_idx"]
     homo_edge_index = graphs["homo_edge_index"]
 
-    # 等权集成 — 不依赖蛋白冷启动 AUPR
-    sage_w = 0.5
-    hgt_w = 0.5
-    logger.info(f"  集成权重: SAGE={sage_w:.3f}, HGT={hgt_w:.3f}（等权集成）")
+    # v56: 动态集成权重 — 基于验证 AUPR 加权
+    if sage_w == 0.5 and hgt_w == 0.5:
+        logger.info(f"  集成权重: SAGE={sage_w:.3f}, HGT={hgt_w:.3f}（等权回退）")
+    else:
+        logger.info(f"  集成权重: SAGE={sage_w:.3f}, HGT={hgt_w:.3f}（基于验证 AUPR 动态加权）")
 
     # 预构建基因→蛋白局部索引映射
     gene_index_map = []  # [(gene, local_p_idx), ...]
@@ -3310,6 +3315,18 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
     prot_feat, gene_to_seq = load_protein_features()  # 启用 ESM-2 预训练蛋白嵌入 (640维), hf-mirror.com 镜像下载
     tcm_df = load_tcm_pool()
     _t0 = _log_step_time(_t0, "数据加载完成")
+
+    # v56: TCM 候选池与训练集完全隔离 — 从 CPI 中剔除所有 TCM 化合物
+    tcm_smiles_col = "SMILES_std" if "SMILES_std" in tcm_df.columns else (
+        "SMILES" if "SMILES" in tcm_df.columns else "canonical_smiles")
+    tcm_smiles_set = set(tcm_df[tcm_smiles_col].dropna().astype(str))
+    n_cpi_before = len(cpi_df)
+    cpi_df = cpi_df[~cpi_df["canonical_smiles"].isin(tcm_smiles_set)].copy()
+    n_cpi_removed = n_cpi_before - len(cpi_df)
+    if n_cpi_removed > 0:
+        logger.warning(f"  v56: 从 CPI 训练集剔除 {n_cpi_removed} 条 TCM 重叠记录（剩余 {len(cpi_df)} 条）")
+    else:
+        logger.info(f"  v56: TCM 与 CPI 训练集无重叠，无需剔除")
 
     # 加载铁死亡表型分类数据集
     pheno_df = None
@@ -3720,7 +3737,35 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
     else:
         logger.info(f">>> 训练 HGT（v41: HGTConv + {DECODER_TYPE} + 两阶段迁移学习 + FocalLoss + 课程负采样）")
         _log_gpu_memory("HGT 训练前")
-    if skip_hgt:
+    hgt_model_path = L4_RESULTS / "hgt_best_v42.pt"
+    if skip_hgt and hgt_model_path.exists():
+        logger.info(f">>> 跳过 HGT 训练，加载已有模型: {hgt_model_path}")
+        hgt_node_feat_dims = {
+            "compound": graphs["feat_dim"],
+            "protein": graphs["prot_esm_dim"],
+            "pathway": 1,
+            "pathway_count": graphs["n_pathways"],
+            "disease_count": graphs.get("n_diseases", 0),
+        }
+        hgt_model = HGTLinkPredictor(
+            hidden_dim=HIDDEN_DIM, out_dim=OUT_DIM, num_heads=NUM_HEADS, num_layers=NUM_LAYERS,
+            dropout=DROPOUT, metadata=graphs["hetero_data"].metadata(),
+            compound_feat_dim=graphs["feat_dim"], node_feat_dims=hgt_node_feat_dims,
+            pheno_head_dropout=PHENO_HEAD_DROPOUT,
+            temperature=TEMPERATURE,
+            decoder_type=DECODER_TYPE)
+        if DECODER_TYPE == "residue_bilinear" and residue_embeddings is not None:
+            hgt_model.set_residue_features(
+                residue_embeddings, residue_offsets, residue_lengths,
+                prot_to_residue_idx=prot_to_residue_idx,
+                max_len=residue_max_len,
+                residue_device="cpu",
+            )
+        hgt_checkpoint = torch.load(hgt_model_path, map_location=DEVICE, weights_only=False)
+        hgt_model.load_state_dict(hgt_checkpoint["state_dict"])
+        hgt_model = hgt_model.to(DEVICE)
+        hgt_history = []
+    elif skip_hgt:
         hgt_model = None
         hgt_history = []
     else:
@@ -3790,14 +3835,23 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
         logger.info("  HGT GPU 内存已释放")
 
     # 蛋白冷启动评估已移除（被独立评估脚本替代）
-    # 集成权重固定为等权
-    sage_best_val_aupr = 0.5
-    hgt_best_val_aupr = 0.5
-    logger.info("  v42: 蛋白冷启动评估已移除，集成权重设为等权 (0.5/0.5)")
+    # v56: 动态集成权重 — 基于验证 AUPR 加权
+    # 训练时从训练历史提取；skip 时从已知最佳结果读取
+    if skip_sage and skip_hgt:
+        sage_aupr = 0.7870  # SAGE v55 best_val_aupr（硬编码回退）
+        hgt_aupr = 0.1251   # HGT v53 best_val_aupr（硬编码回退）
+        logger.info(f"  v56: 动态集成权重（skip模式）— SAGE AUPR={sage_aupr:.4f}, HGT AUPR={hgt_aupr:.4f}")
+    else:
+        sage_aupr = max((h.get("aupr", 0.5) for h in sage_history), default=0.5) if sage_history else 0.5
+        hgt_aupr = max((h.get("aupr", 0.5) for h in hgt_history), default=0.5) if hgt_history else 0.5
+        logger.info(f"  v56: 动态集成权重（训练模式）— SAGE AUPR={sage_aupr:.4f}, HGT AUPR={hgt_aupr:.4f}")
+    sage_w = sage_aupr / (sage_aupr + hgt_aupr) if (sage_aupr + hgt_aupr) > 0 else 0.5
+    hgt_w = hgt_aupr / (sage_aupr + hgt_aupr) if (sage_aupr + hgt_aupr) > 0 else 0.5
+    logger.info(f"  v56: 集成权重 SAGE={sage_w:.4f}, HGT={hgt_w:.4f}")
 
     # 加载树模型 v7 TCM 预测用于集成
     tree_pred_df = None
-    tree_pred_path = L4_RESULTS / "tree_v6_tcm_predictions_v7.csv"
+    tree_pred_path = L4_ROOT / "results" / "tree_v6_tcm_predictions_v7.csv"
     if tree_pred_path.exists():
         tree_pred_df = pd.read_csv(tree_pred_path, low_memory=False)
         logger.info(f"v40: 树模型预测加载: {len(tree_pred_df)} 条 "
@@ -3855,7 +3909,8 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
         mc_samples=MC_SAMPLES,
         tcm_feat_precomputed=tcm_feat_precomputed,
         tree_predictions=tree_pred_df,  # 树模型预测集成
-        tree_weight=TREE_ENSEMBLE_WEIGHT)  # 树模型权重
+        tree_weight=TREE_ENSEMBLE_WEIGHT,  # 树模型权重
+        sage_w=sage_w, hgt_w=hgt_w)  # v56: 动态集成权重
 
     # 铁死亡概率预测 — SAGE + HGT 双分支平均
     final_ferroptosis_prob = None
@@ -3945,6 +4000,15 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
         + COMPOSITE_MAX_WEIGHT * _norm(weighted_max)
         + COMPOSITE_HITS_WEIGHT * _norm(weighted_hits)
     )
+
+    # v56: TCM 训练集泄漏惩罚 — 重叠化合物降低 20% 排名分数
+    if "in_train" in pred_df.columns:
+        in_train_mask = pred_df["in_train"].values
+        n_in_train_penalty = in_train_mask.sum()
+        if n_in_train_penalty > 0:
+            # 对 in_train 化合物应用 0.8 倍惩罚，避免训练集过拟合导致的虚高排名
+            composite[in_train_mask] = composite[in_train_mask] * 0.8
+            logger.warning(f"  v56: {n_in_train_penalty} 个 in_train 化合物 composite_score 已降权 20%")
 
     # 不确定性调整 — 优先选择高分且低不确定度的化合物
     # v44: 改为温和惩罚，最大惩罚 50%，避免高不确定性高潜力分子被完全抑制。

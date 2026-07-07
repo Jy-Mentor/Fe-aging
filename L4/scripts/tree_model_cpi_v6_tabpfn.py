@@ -572,9 +572,16 @@ def diversity_constrained_negative_sampling(
 
     neg_idx_set = set()
 
+    def _tanimoto_numpy(a, b):
+        """对二进制 numpy 向量计算 Tanimoto 相似度"""
+        a = np.asarray(a, dtype=bool)
+        b = np.asarray(b, dtype=bool)
+        intersection = np.logical_and(a, b).sum()
+        union = np.logical_or(a, b).sum()
+        return float(intersection) / float(union) if union > 0 else 0.0
+
     # 1) Tanimoto 难负样本：选择与正样本化合物结构相似但无交互的化合物-蛋白对
     if n_tanimoto_hard > 0 and compound_ecfp4 is not None:
-        from rdkit import DataStructs
         pos_comp_set = {smi for smi, _ in pos_pairs}
         pos_comp_indices = [smiles_to_idx[s] for s in pos_comp_set if s in smiles_to_idx]
         non_pos_comps = [i for i in range(n_compounds) if i not in pos_comp_indices]
@@ -591,7 +598,7 @@ def diversity_constrained_negative_sampling(
                 non_pos_fp = compound_ecfp4[non_pos_i]
                 max_sim = 0.0
                 for pos_i in pos_comp_indices[:min(len(pos_comp_indices), 100)]:
-                    sim = DataStructs.TanimotoSimilarity(compound_ecfp4[pos_i], non_pos_fp)
+                    sim = _tanimoto_numpy(compound_ecfp4[pos_i], non_pos_fp)
                     if sim > max_sim:
                         max_sim = sim
                 if max_sim >= 0.6:
@@ -801,7 +808,7 @@ def train_ensemble(
                 subsample=xgb_params.get("subsample", 0.8),
                 colsample_bytree=xgb_params.get("colsample_bytree", 0.8),
                 scale_pos_weight=scale_pos_weight,
-                random_state=random_seed, n_jobs=-1, verbosity=0,
+                random_state=random_seed, n_jobs=1, verbosity=0,
             )
             r = evaluate_model(xgb_model, X_train, y_train, X_test, y_test, "XGBoost")
             if r:
@@ -1110,51 +1117,15 @@ def run_mode_cv_ablation(mode, cpi_df, all_smiles, X_binary_all, X_rdkit_raw_all
 
     import xgboost as xgb
     scale_pos_weight = (y == 0).sum() / max(y.sum(), 1)
+    # v56-fix: 移除 GridSearchCV（3^8=6561 组合 × 3-fold = 19683 拟合），
+    # 其超参结果未传递给 run_full_pipeline，且 n_jobs=-1 多进程导致内存爆炸。
+    # 消融实验使用默认 XGBoost 参数，仅比较蛋白嵌入模式差异。
     base_model = xgb.XGBClassifier(
         n_estimators=200, max_depth=8, learning_rate=0.05,
         subsample=0.8, colsample_bytree=0.8,
+        reg_alpha=0.1, reg_lambda=1.0, min_child_weight=5,
         scale_pos_weight=scale_pos_weight,
-        random_state=random_seed, n_jobs=-1, verbosity=0,
-    )
-
-    # GridSearchCV 超参数调优（仅在第一个 fold 上运行，避免过拟合）
-    logger.info("  GridSearchCV 超参数调优 (fold 1, 3-fold 内交叉)...")
-    param_grid = {
-        "n_estimators": [100, 200, 300],
-        "max_depth": [4, 6, 8],
-        "learning_rate": [0.01, 0.03, 0.05],
-        "subsample": [0.7, 0.8, 0.9],
-        "colsample_bytree": [0.6, 0.7, 0.8],
-        "reg_alpha": [0, 0.1, 1.0],
-        "reg_lambda": [0.1, 1.0, 10.0],
-        "min_child_weight": [1, 5, 10],
-    }
-    from sklearn.model_selection import GridSearchCV
-    first_fold_train, first_fold_test = scaffold_split(
-        pair_smiles, y, test_size=0.2, random_state=random_seed,
-    )
-    X_fold0, _, _, _ = build_fold_features(
-        pair_smiles, pair_genes, first_fold_train,
-        X_binary_all, X_rdkit_raw_all, all_smiles,
-        protein_embeddings_raw, prot_target_dim=128,
-    )
-    X_gs_train, y_gs_train = X_fold0[first_fold_train], y[first_fold_train]
-    grid_search = GridSearchCV(
-        xgb.XGBClassifier(
-            scale_pos_weight=scale_pos_weight,
-            random_state=random_seed, n_jobs=-1, verbosity=0,
-        ),
-        param_grid, cv=3, scoring="average_precision",
-        n_jobs=-1, verbose=0,
-    )
-    grid_search.fit(X_gs_train, y_gs_train)
-    best_params = grid_search.best_params_
-    logger.info(f"  最优参数: {best_params}")
-    logger.info(f"  最佳验证 AUPR: {grid_search.best_score_:.4f}")
-    base_model = xgb.XGBClassifier(
-        **best_params,
-        scale_pos_weight=scale_pos_weight,
-        random_state=random_seed, n_jobs=-1, verbosity=0,
+        random_state=random_seed, n_jobs=1, verbosity=0,
     )
 
     results = []
@@ -1292,7 +1263,7 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
         n_estimators=200, max_depth=8, learning_rate=0.05,
         subsample=0.8, colsample_bytree=0.8,
         scale_pos_weight=scale_pos_weight,
-        random_state=random_seed, n_jobs=-1, verbosity=0,
+        random_state=random_seed, n_jobs=1, verbosity=0,
     )
 
     logger.info(f"  全量训练 XGBoost ({len(X_full)} 样本)...")
