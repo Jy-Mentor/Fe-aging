@@ -25,6 +25,8 @@ logger = logging.getLogger(__name__)
 
 def _compute_ecfp4(smiles_iter: list[str]) -> np.ndarray:
     fps = np.zeros((len(smiles_iter), ECFP4_NBITS), dtype=np.float32)
+    n_parse_fail = 0
+    n_fp_fail = 0
     for i, smi in enumerate(smiles_iter):
         mol = None
         try:
@@ -34,6 +36,7 @@ def _compute_ecfp4(smiles_iter: list[str]) -> np.ndarray:
             logger.warning(f"ECFP4 SMILES 解析失败 索引 {i}: {smi!r}, 错误: {e}")
             mol = None
         if mol is None:
+            n_parse_fail += 1
             continue
         try:
             fp = AllChem.GetMorganFingerprintAsBitVect(mol, 2, nBits=ECFP4_NBITS)
@@ -41,11 +44,22 @@ def _compute_ecfp4(smiles_iter: list[str]) -> np.ndarray:
                 fps[i, bit] = 1.0
         except Exception as e:
             logger.warning(f"ECFP4 指纹生成失败 索引 {i}: {smi!r}, 错误: {e}")
+            n_fp_fail += 1
+    total_fail = n_parse_fail + n_fp_fail
+    if total_fail > 0:
+        logger.warning(
+            f"ECFP4 处理完成: {len(smiles_iter)} 个化合物, "
+            f"SMILES 解析失败 {n_parse_fail} 个, 指纹生成失败 {n_fp_fail} 个"
+        )
+    if len(smiles_iter) > 0 and total_fail == len(smiles_iter):
+        raise ValueError("ECFP4 指纹生成全部失败，请检查输入 SMILES 格式")
     return fps
 
 
 def _compute_maccs(smiles_iter: list[str]) -> np.ndarray:
     fps = []
+    n_parse_fail = 0
+    n_fp_fail = 0
     for i, smi in enumerate(smiles_iter):
         mol = None
         try:
@@ -55,6 +69,7 @@ def _compute_maccs(smiles_iter: list[str]) -> np.ndarray:
             logger.warning(f"MACCS SMILES 解析失败 索引 {i}: {smi!r}, 错误: {e}")
             mol = None
         if mol is None:
+            n_parse_fail += 1
             fps.append(np.zeros(167, dtype=np.float32))
             continue
         try:
@@ -64,13 +79,24 @@ def _compute_maccs(smiles_iter: list[str]) -> np.ndarray:
             fps.append(arr)
         except Exception as e:
             logger.warning(f"MACCS 指纹生成失败 索引 {i}: {smi!r}, 错误: {e}")
+            n_fp_fail += 1
             fps.append(np.zeros(167, dtype=np.float32))
+    total_fail = n_parse_fail + n_fp_fail
+    if total_fail > 0:
+        logger.warning(
+            f"MACCS 处理完成: {len(smiles_iter)} 个化合物, "
+            f"SMILES 解析失败 {n_parse_fail} 个, 指纹生成失败 {n_fp_fail} 个"
+        )
+    if len(smiles_iter) > 0 and total_fail == len(smiles_iter):
+        raise ValueError("MACCS 指纹生成全部失败，请检查输入 SMILES 格式")
     return np.array(fps, dtype=np.float32)
 
 
 def _compute_rdkit_descriptors(smiles_iter: list[str]) -> np.ndarray:
     desc_funcs = {name: getattr(Descriptors, name) for name in RDKIT_DESCRIPTOR_NAMES}
     rows = []
+    n_parse_fail = 0
+    n_desc_fail = 0
     for i, smi in enumerate(smiles_iter):
         mol = None
         try:
@@ -80,6 +106,7 @@ def _compute_rdkit_descriptors(smiles_iter: list[str]) -> np.ndarray:
             logger.warning(f"RDKit 描述符 SMILES 解析失败 索引 {i}: {smi!r}, 错误: {e}")
             mol = None
         if mol is None:
+            n_parse_fail += 1
             rows.append([np.nan] * len(RDKIT_DESCRIPTOR_NAMES))
             continue
         vals = []
@@ -88,8 +115,16 @@ def _compute_rdkit_descriptors(smiles_iter: list[str]) -> np.ndarray:
                 vals.append(float(desc_funcs[name](mol)))
             except Exception as e:
                 logger.warning(f"RDKit 描述符计算失败 索引 {i} 描述符 {name}: {e}")
+                n_desc_fail += 1
                 vals.append(np.nan)
         rows.append(vals)
+    if n_parse_fail > 0 or n_desc_fail > 0:
+        logger.warning(
+            f"RDKit 描述符处理完成: {len(smiles_iter)} 个化合物, "
+            f"SMILES 解析失败 {n_parse_fail} 个, 单个描述符计算失败 {n_desc_fail} 个"
+        )
+    if len(smiles_iter) > 0 and n_parse_fail == len(smiles_iter):
+        raise ValueError("RDKit 描述符生成全部失败，请检查输入 SMILES 格式")
     return np.array(rows, dtype=np.float32)
 
 

@@ -259,7 +259,7 @@
 1. TDC: https://ar5iv.labs.arxiv.org/html/2102.09548
 2. IBM/BMS DTI Benchmark: https://ar5iv.labs.arxiv.org/html/2401.17174
 3. DeepPurpose: https://pmc.ncbi.nlm.nih.gov/articles/PMC8016467/
-4. DrugBAN (Nature MI): https://www.nature.com/articles/s41467-025-57536-9
+4. GraphBAN (Nature Communications, 2025): https://www.nature.com/articles/s41467-025-57536-9
 5. PMMR: https://pmc.ncbi.nlm.nih.gov/articles/PMC11751634/
 6. DDB Negative Sampling: https://pmc.ncbi.nlm.nih.gov/articles/PMC12065207/
 7. TPPNI Topology Negative Sampling: https://pmc.ncbi.nlm.nih.gov/articles/PMC12080959/

@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 """
 交叉引用 CPIExtract 数据与铁衰老缺失基因
 """
@@ -50,7 +53,7 @@ all_genes_c2p = set(c2p['hgnc_symbol'].dropna().str.upper())
 all_genes_p2c = set(p2c['hgnc_symbol'].dropna().str.upper())
 all_genes = all_genes_c2p | all_genes_p2c
 
-core_upper = set(g.upper() for g in CORE_GENES)
+core_upper = {g.upper() for g in CORE_GENES}
 hits = core_upper & all_genes
 missing = core_upper - all_genes
 

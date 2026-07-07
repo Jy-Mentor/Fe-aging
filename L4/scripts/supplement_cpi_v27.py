@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+import logging
+logger = logging.getLogger(__name__)
+
 """
 CPI数据补充脚本 v27
 从BindingDB和DrugBank数据中补充铁衰老96基因中缺失的CPI记录
@@ -173,7 +176,8 @@ def validate_smiles(smiles):
             return None
         # 返回规范化的SMILES
         return Chem.MolToSmiles(mol, canonical=True)
-    except:
+    except Exception:
+        logger.exception("捕获到异常并继续执行（原 except '' 静默吞掉）")
         return None
 
 # ========== 8. 从BindingDB提取补充数据 ==========
@@ -326,7 +330,7 @@ print("\n[9] 生成补充CPI数据文件...")
 if supplement_records:
     supp_df = pd.DataFrame(supplement_records)
     # 确保列顺序
-    columns = ['gene', 'smiles', 'uniprot', 'source', 'activity_value_nm', 
+    columns = ['gene', 'smiles', 'uniprot', 'source', 'activity_value_nm',
                'activity_type', 'compound_name', 'target_name', 'pmid', 'doi']
     # 只保留存在的列
     columns = [c for c in columns if c in supp_df.columns]
@@ -337,7 +341,7 @@ if supplement_records:
     print(f"    总补充记录数: {len(supp_df)}")
 else:
     print("    警告: 没有找到任何补充记录!")
-    supp_df = pd.DataFrame(columns=['gene', 'smiles', 'uniprot', 'source', 'activity_value_nm', 
+    supp_df = pd.DataFrame(columns=['gene', 'smiles', 'uniprot', 'source', 'activity_value_nm',
                                      'activity_type', 'compound_name', 'target_name', 'pmid', 'doi'])
     supp_df.to_csv(OUTPUT_FILE, index=False)
 

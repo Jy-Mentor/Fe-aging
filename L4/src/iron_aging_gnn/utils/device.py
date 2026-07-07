@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 """设备选择工具
 ============
 自动检测可用 GPU，支持手动指定设备。

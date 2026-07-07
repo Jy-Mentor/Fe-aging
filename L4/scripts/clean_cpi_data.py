@@ -62,8 +62,8 @@ def canonicalize_smiles(smiles: str) -> str:
             return ""
         return Chem.MolToSmiles(mol, canonical=True, isomericSmiles=True)
     except Exception:
+        logger.exception("捕获到异常并继续执行（原 except 'Exception' 静默吞掉）")
         return ""
-
 
 def main():
     logger.info("=" * 60)

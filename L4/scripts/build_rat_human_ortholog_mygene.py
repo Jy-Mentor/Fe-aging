@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
+from __future__ import annotations
+
+import logging
+logger = logging.getLogger(__name__)
+
 """构建 rat → human 同源基因映射缓存（基于 mygene.info + NCBI HomoloGene）。
 
 v32: 替换 map_probes_to_genes.py 中简单的 uppercase fallback，减少错误映射。
 输入：L1/results/GSE61616_DE_gene_level.csv 中的 rat gene symbols
 输出：L1/results/rat_to_human_ortholog_mygene.csv
 """
-from __future__ import annotations
 
 import pickle
 import sys
@@ -129,7 +133,7 @@ def load_map() -> dict[str, str]:
     if not CACHE_FILE.exists():
         raise FileNotFoundError(f"ortholog cache not found: {CACHE_FILE}")
     df = pd.read_csv(CACHE_FILE)
-    return dict(zip(df["rat_symbol"], df["human_symbol"]))
+    return dict(zip(df["rat_symbol"], df["human_symbol"], strict=False))
 
 
 if __name__ == "__main__":

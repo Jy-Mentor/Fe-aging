@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 """
 通过 ChEMBL API 查询铁衰老缺失基因的化合物活性数据
 """
@@ -39,10 +42,7 @@ combined_path = PROJECT_ROOT / "L4" / "results" / "experimental_actives_detail_c
 if combined_path.exists():
     combined = pd.read_csv(combined_path)
     gene_col = [c for c in combined.columns if 'gene' in c.lower()][0] if any('gene' in c.lower() for c in combined.columns) else None
-    if gene_col:
-        existing_genes = set(combined[gene_col].dropna().str.upper())
-    else:
-        existing_genes = set()
+    existing_genes = set(combined[gene_col].dropna().str.upper()) if gene_col else set()
 else:
     existing_genes = set()
 

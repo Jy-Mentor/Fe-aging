@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+import logging
+logger = logging.getLogger(__name__)
+
 """数据文件审计：真实性、准确性、完整性检查"""
 import numpy as np
 import pandas as pd

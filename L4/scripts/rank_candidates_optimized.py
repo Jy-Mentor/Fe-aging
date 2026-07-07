@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 """
 优化候选化合物排序脚本
 
@@ -33,7 +36,7 @@ def load_hub_genes(path: Path) -> tuple[set[str], dict[str, float]]:
     hub_df = pd.read_csv(path)
     hub_df['Gene'] = hub_df['Gene'].astype(str).str.strip()
     # 使用 Hub_Rank 的倒数作为中心性权重；Hub_Rank 越小越核心
-    hub_weight = dict(zip(hub_df['Gene'], 1.0 / hub_df['Hub_Rank'].astype(float)))
+    hub_weight = dict(zip(hub_df['Gene'], 1.0 / hub_df['Hub_Rank'].astype(float), strict=False))
     return set(hub_df['Gene']), hub_weight
 
 
@@ -130,8 +133,8 @@ def main():
     df_new['rank_new'] = np.arange(1, len(df_new) + 1)
 
     # 合并新旧排名
-    rank_map_old = dict(zip(df_old['MOL_ID'], df_old['rank_old']))
-    rank_map_new = dict(zip(df_new['MOL_ID'], df_new['rank_new']))
+    rank_map_old = dict(zip(df_old['MOL_ID'], df_old['rank_old'], strict=False))
+    rank_map_new = dict(zip(df_new['MOL_ID'], df_new['rank_new'], strict=False))
 
     df['rank_old'] = df['MOL_ID'].map(rank_map_old)
     df['rank_new'] = df['MOL_ID'].map(rank_map_new)

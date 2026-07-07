@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+import logging
+logger = logging.getLogger(__name__)
+
 """
 验证 BEDROC 不同公式实现：
   1. 当前 v6.1 代码实现（与 RDKit 一致）
@@ -61,10 +64,7 @@ def bedroc_user_request(y_true, y_prob, alpha=20.0):
         rie_min = np.exp(alpha / n) * (1.0 - np.exp(-alpha)) / (R_a * (np.exp(alpha / n) - 1.0))
         rie_max = (1.0 - np.exp(-alpha * R_a)) / (R_a * (1.0 - np.exp(-alpha / n)))
         diff = rie_max - rie_min
-        if abs(diff) < 1e-15:
-            bedroc = np.nan
-        else:
-            bedroc = (rie - rie_min) / diff
+        bedroc = np.nan if abs(diff) < 1e-15 else (rie - rie_min) / diff
         results[label] = {
             "RIE": rie,
             "RIE_min": rie_min,

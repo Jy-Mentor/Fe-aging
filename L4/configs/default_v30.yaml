@@ -62,7 +62,6 @@ training:
   pheno_lambda: 0.05
   dropedge_ppi: 0.15
   dropedge_pathway: 0.1
-  flag_step: 0.01
 validation:
   val_freq: 2
   pretrain_val_freq: 5

@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 """
 整理文献挖掘的CPI数据 — v2: 手动整理SMILES，不依赖PubChem API
 """
@@ -122,12 +125,12 @@ def main():
         iron_gene_file = Path(r'd:\铁衰老 绝不重蹈覆辙\铁衰老基因.txt')
         if iron_gene_file.exists():
             with open(iron_gene_file, 'r', encoding='utf-8') as f:
-                iron_genes = set(line.strip() for line in f if line.strip())
+                iron_genes = {line.strip() for line in f if line.strip()}
         else:
             iron_genes = set()
 
         iron_in = combined_new[combined_new['gene'].isin(iron_genes)]
-        new_iron_genes = set(row['gene'] for row in new_rows) & iron_genes
+        new_iron_genes = {row['gene'] for row in new_rows} & iron_genes
         print(f"\n合并后: {len(combined_new)} 条, {combined_new.gene.nunique()} 基因")
         if iron_genes:
             print(f"铁衰老基因: {iron_in.gene.nunique()}/{len(iron_genes)}")

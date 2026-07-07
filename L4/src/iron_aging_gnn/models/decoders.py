@@ -1,7 +1,7 @@
 """DTI/CPI 解码器集合
 
 参考:
-  - GraphBAN (Nature Communications, 2025): 双线性注意力用于化合物-蛋白交互建模
+  - Hadipour et al. (2025) "GraphBAN: An Inductive Graph-Based Approach for Enhanced Prediction of Compound-Protein Interactions", Nature Communications, DOI:10.1038/s41467-025-57536-9
 """
 
 from __future__ import annotations
@@ -21,6 +21,13 @@ class MLPDecoder(nn.Module):
     """MLP 解码器：拼接化合物与蛋白嵌入后预测交互分数。"""
 
     def __init__(self, out_dim: int, hidden_dim: int = 64, dropout: float = 0.3):
+        """初始化 MLP 解码器。
+
+        Args:
+            out_dim: 输入嵌入维度（化合物与蛋白拼接后维度为 2*out_dim）
+            hidden_dim: 隐藏层维度
+            dropout: Dropout 比率
+        """
         super().__init__()
         self.net = nn.Sequential(
             nn.Linear(out_dim * 2, hidden_dim),
@@ -71,6 +78,12 @@ class BilinearDecoder(nn.Module):
     """
 
     def __init__(self, out_dim: int, rank: int = 64):
+        """初始化低秩双线性解码器。
+
+        Args:
+            out_dim: 输入嵌入维度
+            rank: 低秩交互维度
+        """
         super().__init__()
         self.U = nn.Linear(out_dim, rank, bias=False)
         self.V = nn.Linear(out_dim, rank, bias=False)
@@ -98,7 +111,7 @@ class ResidueAwareBilinearDecoder(nn.Module):
     输入为化合物全局嵌入 [N, d_comp] 与蛋白逐残基特征 [N, L, d_residue]，
     通过化合物嵌入作为 query，对蛋白残基做注意力加权，实现化合物-残基层面交互。
 
-    基于 GraphBAN 双线性注意力思想，适配 packed 残基存储格式。
+    基于 GraphBAN 双线性注意力思想（Hadipour et al., Nat. Commun. 2025, DOI:10.1038/s41467-025-57536-9），适配 packed 残基存储格式。
 
     Args:
         comp_dim: 化合物嵌入维度
@@ -114,6 +127,19 @@ class ResidueAwareBilinearDecoder(nn.Module):
                  hidden_dim: int = 128, dropout: float = 0.3, max_len: int = 512,
                  max_residue_batch: int = 4, init_scheme: str = "orthogonal",
                  final_bias_init: float = -0.5):
+        """初始化残基感知双线性注意力解码器。
+
+        Args:
+            comp_dim: 化合物嵌入维度
+            residue_dim: 蛋白残基特征维度（ESM-2 为 640）
+            rank: 双线性低秩维度
+            hidden_dim: 残基聚合后 MLP 隐藏维度
+            dropout: Dropout 比率
+            max_len: 单个蛋白最大残基数
+            max_residue_batch: 分块前向的最大 batch 大小
+            init_scheme: 初始化策略
+            final_bias_init: 输出偏置初始值
+        """
         super().__init__()
         self.comp_dim = comp_dim
         self.residue_dim = residue_dim

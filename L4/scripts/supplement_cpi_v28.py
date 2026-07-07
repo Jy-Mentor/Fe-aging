@@ -83,9 +83,7 @@ def validate_smiles(smi):
     mol = Chem.MolFromSmiles(smi)
     if mol is None:
         return False
-    if mol.GetNumHeavyAtoms() == 0:
-        return False
-    return True
+    return mol.GetNumHeavyAtoms() != 0
 
 # 统计每个基因的CPI记录数
 gene_counts = {}
@@ -177,7 +175,7 @@ if len(bindingdb_missing) > 0:
     
     # 过滤活性值 < 10000 nM (10μM)
     bindingdb_filtered = bindingdb_filtered[
-        bindingdb_filtered["standard_value_nM"].notna() & 
+        bindingdb_filtered["standard_value_nM"].notna() &
         (bindingdb_filtered["standard_value_nM"] < 10000)
     ].copy()
     logger.info(f"  活性值 < 10μM 过滤后: {len(bindingdb_filtered)} 条")
@@ -371,9 +369,9 @@ if all_supplements:
     
     # 去除与主CPI数据重复的 gene+SMILES
     main_cpi["gene_upper"] = main_cpi["gene"].str.strip().str.upper()
-    main_cpi_pairs = set(zip(main_cpi["gene_upper"], main_cpi["canonical_smiles"]))
+    main_cpi_pairs = set(zip(main_cpi["gene_upper"], main_cpi["canonical_smiles"], strict=False))
     
-    merged["pair"] = list(zip(merged["gene"], merged["smiles"]))
+    merged["pair"] = list(zip(merged["gene"], merged["smiles"], strict=False))
     n_before = len(merged)
     merged = merged[~merged["pair"].isin(main_cpi_pairs)].copy()
     n_removed = n_before - len(merged)

@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 import pandas as pd
 nodes = pd.read_csv(r'd:\铁衰老 绝不重蹈覆辙\L4\data\primekg\nodes.tab', sep='\t', low_memory=False)
 print('Node types:', nodes['node_type'].unique())

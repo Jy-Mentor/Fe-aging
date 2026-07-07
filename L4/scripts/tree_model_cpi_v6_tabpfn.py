@@ -697,10 +697,7 @@ def compute_metrics(y_true, y_prob):
     for pct in [0.5, 1.0, 2.0, 5.0]:
         fp_rate = pct / 100.0
         idx = np.argmin(np.abs(fpr - fp_rate))
-        if fpr[idx] > 1e-8:
-            roce = tpr[idx] / fpr[idx]
-        else:
-            roce = 0.0
+        roce = tpr[idx] / fpr[idx] if fpr[idx] > 1e-08 else 0.0
         metrics[f"ROCE@{pct}%"] = roce
 
     return metrics

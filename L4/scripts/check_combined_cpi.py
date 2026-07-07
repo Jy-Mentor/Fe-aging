@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 """检查当前combined CPI文件的基因覆盖情况"""
 import pandas as pd
 

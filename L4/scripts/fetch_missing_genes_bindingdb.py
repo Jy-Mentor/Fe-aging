@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+import logging
+logger = logging.getLogger(__name__)
+
 """
 对45个缺失铁衰老基因进行BindingDB最后尝试 + 多源搜索
 如仍无数据，则生成兜底方案：用已训练模型对缺失基因进行迁移预测
@@ -93,10 +95,12 @@ def search_bindingdb_rest(gene_name, uniprot_id, timeout=30):
                                 "pubmed_id": str(item.get("pmid", "")),
                                 "source": "BindingDB_REST"
                             })
-            except:
-                pass
-    except:
-        pass
+            except Exception:
+                logger.exception("捕获到异常并继续执行（原 except '' 静默吞掉）")
+
+    except Exception:
+        logger.exception("捕获到异常并继续执行（原 except '' 静默吞掉）")
+
     return records
 
 def search_bindingdb_tsv(gene_name, timeout=30):
@@ -108,8 +112,9 @@ def search_bindingdb_tsv(gene_name, timeout=30):
         resp = requests.get(url, timeout=timeout)
         if resp.status_code == 200 and "SMILES" in resp.text:
             print(f"    TSV页面有数据，但需要解析")
-    except:
-        pass
+    except Exception:
+        logger.exception("捕获到异常并继续执行（原 except '' 静默吞掉）")
+
     return records
 
 def search_chembl_again(gene_name, uniprot_id, timeout=30):
@@ -160,10 +165,12 @@ def search_chembl_again(gene_name, uniprot_id, timeout=30):
                                         "pubmed_id": str(act.get("document_chembl_id", "")),
                                         "source": "ChEMBL_API"
                                     })
-                            except:
-                                pass
-            except:
-                pass
+                            except Exception:
+                                logger.exception("捕获到异常并继续执行（原 except '' 静默吞掉）")
+
+            except Exception:
+                logger.exception("捕获到异常并继续执行（原 except '' 静默吞掉）")
+
             time.sleep(0.2)
     except Exception as e:
         print(f"    ChEMBL异常: {e}")

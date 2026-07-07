@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+import logging
+logger = logging.getLogger(__name__)
+
 import sys, os, subprocess, time
 from pathlib import Path
 
@@ -35,25 +38,22 @@ def main():
     print('=' * 60)
     print('  Iron Aging GNN - Quality Gate')
     print('=' * 60)
+    python_exe = sys.executable
     checks = [
-        ('Ruff Lint', 'ruff check .'),
-        ('Smoke Test', 'python smoke_test.py'),
-        ('Model Input', 'python validate_model_inputs.py'),
+        ('Ruff Lint', f'{python_exe} -m ruff check .'),
+        ('Smoke Test', f'{python_exe} smoke_test.py'),
+        ('Model Input', f'{python_exe} validate_model_inputs.py'),
     ]
     results = {}
     for name, cmd in checks:
         results[name] = run_check(name, cmd)
     sep = '=' * 60
-    print(f'
-{sep}
-  Summary
-{sep}')
+    print(f'\n{sep}\n  Summary\n{sep}')
     passed = sum(1 for v in results.values() if v)
     total = len(results)
     for name, ok in results.items():
         print(f'  [{"PASS" if ok else "FAIL"}] {name}')
-    print(f'
-  {passed}/{total} passed')
+    print(f'\n  {passed}/{total} passed')
     return 0 if passed == total else 1
 
 if __name__ == '__main__':

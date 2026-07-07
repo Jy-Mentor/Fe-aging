@@ -212,7 +212,7 @@ def append_protein_features(sequences: dict):
         })
 
         aac_dict = {"gene_symbol": gene}
-        aac_dict.update({f"AAC_{aa}": v for aa, v in zip(AA_ORDER, aac_vec)})
+        aac_dict.update({f"AAC_{aa}": v for aa, v in zip(AA_ORDER, aac_vec, strict=False)})
         new_rows_aac.append(aac_dict)
 
         pseaac_dict = {"gene_symbol": gene}

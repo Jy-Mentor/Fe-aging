@@ -13,7 +13,7 @@ logger.info("=== 检查1: 导入主脚本模块 ===")
 try:
     import importlib.util
     spec = importlib.util.spec_from_file_location(
-        "phase4", 
+        "phase4",
         os.path.join(os.path.dirname(__file__), "phase4_v10_minibatch.py")
     )
     p4 = importlib.util.module_from_spec(spec)
@@ -64,7 +64,7 @@ try:
     
     gene_to_pathways = p4.load_kegg_pathways()
     n_genes = len(gene_to_pathways)
-    n_pathways = len(set(p for paths in gene_to_pathways.values() for p in paths))
+    n_pathways = len({p for paths in gene_to_pathways.values() for p in paths})
     logger.info(f"  KEGG通路: {n_genes} 基因, {n_pathways} 通路")
     
     logger.info("数据加载成功 ✓")

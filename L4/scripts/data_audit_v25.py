@@ -41,6 +41,7 @@ def check_rdkit():
         from rdkit.Chem import AllChem
         return True, Chem, AllChem
     except ImportError:
+        logger.exception("捕获到异常并继续执行（原 except 'ImportError' 静默吞掉）")
         return False, None, None
 
 # ============================================================
@@ -277,10 +278,7 @@ def audit_esm2_embeddings():
     if name_keys:
         name_arr = data[name_keys[0]]
         lines.append(f"- 蛋白列表键: `{name_keys[0]}`, 数量={len(name_arr)}")
-        if hasattr(name_arr[0], 'decode'):
-            names = [n.decode('utf-8') for n in name_arr]
-        else:
-            names = list(name_arr)
+        names = [n.decode('utf-8') for n in name_arr] if hasattr(name_arr[0], 'decode') else list(name_arr)
         lines.append(f"- 前10个蛋白名: {names[:10]}")
     
     data.close()

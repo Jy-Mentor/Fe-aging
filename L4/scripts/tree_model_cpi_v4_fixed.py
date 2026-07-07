@@ -313,8 +313,8 @@ def get_scaffold(smiles):
         scaffold = Chem.MolToSmiles(scaffold_mol) if scaffold_mol else ""
         return scaffold if scaffold else "NO_SCAFFOLD"
     except Exception:
+        logger.exception("捕获到异常并继续执行（原 except 'Exception' 静默吞掉）")
         return "INVALID"
-
 
 def scaffold_split(pair_smiles, y, test_size=0.2, random_state=42):
     """按化合物 Bemis-Murcko 骨架拆分"""
@@ -331,7 +331,7 @@ def scaffold_split(pair_smiles, y, test_size=0.2, random_state=42):
     sorted_scaffolds = sorted(unique_scaffolds, key=lambda s: scaffold_sizes[s], reverse=True)
     test_scaffolds = set(rng.choice(sorted_scaffolds, test_n_scaffolds, replace=False))
 
-    smiles_to_scaffold = dict(zip(unique_smiles, scaffolds))
+    smiles_to_scaffold = dict(zip(unique_smiles, scaffolds, strict=False))
     test_smiles = {s for s, sc in smiles_to_scaffold.items() if sc in test_scaffolds}
 
     test_mask = np.array([s in test_smiles for s in pair_smiles])
@@ -376,7 +376,7 @@ def diversity_constrained_negative_sampling(
     n_neg_target = len(pos_pairs) * neg_ratio
 
     # 多样性约束：每个蛋白被选为负样本的次数尽量均衡
-    gene_neg_counts = {gi: 0 for gi in range(n_genes)}
+    gene_neg_counts = dict.fromkeys(range(n_genes), 0)
     max_per_gene = max(1, n_neg_target // n_genes + 1)
 
     neg_idx_set = set()
@@ -386,7 +386,7 @@ def diversity_constrained_negative_sampling(
     while len(neg_idx_set) < n_neg_target and len(neg_idx_set) < max_attempts:
         batch_comp = rng.randint(0, n_compounds, size=batch_size)
         batch_gene = rng.randint(0, n_genes, size=batch_size)
-        for ci, gi in zip(batch_comp, batch_gene):
+        for ci, gi in zip(batch_comp, batch_gene, strict=False):
             pair = (ci, gi)
             if pair in pos_idx_set or pair in neg_idx_set:
                 continue
@@ -458,10 +458,7 @@ def compute_metrics(y_true, y_prob):
         # 找到最接近目标 FPR 的索引
         idx = np.argmin(np.abs(fpr - fp_rate))
         # ROCE = TPR / FPR（富集倍数）
-        if fpr[idx] > 1e-8:
-            roce = tpr[idx] / fpr[idx]
-        else:
-            roce = 0.0
+        roce = tpr[idx] / fpr[idx] if fpr[idx] > 1e-08 else 0.0
         metrics[f"ROCE@{pct}%"] = roce
 
     return metrics
@@ -539,6 +536,7 @@ class CascadeForestFixed:
                 n_jobs=-1, verbose=-1,
             )))
         except ImportError:
+            logger.exception("捕获到异常并继续执行（原 except 'ImportError' 静默吞掉）")
             pass
 
         estimators.append(("ET", ExtraTreesClassifier(
@@ -664,10 +662,7 @@ class CascadeForestFixed:
                 prob = rf.predict_proba(X_window)[:, 1:2]
                 scanned_feats.append(prob)
 
-        if scanned_feats:
-            scanned = np.hstack(scanned_feats)
-        else:
-            scanned = np.zeros((n_samples, 1), dtype=np.float32)
+        scanned = np.hstack(scanned_feats) if scanned_feats else np.zeros((n_samples, 1), dtype=np.float32)
 
         X_current = np.hstack([X, scanned])
         all_probs = []
@@ -716,7 +711,9 @@ def optuna_optimize_extended(X_train, y_train, X_val, y_val,
                 try:
                     import lightgbm as lgb
                 except ImportError:
+                    logger.exception("捕获到异常并继续执行（原 except 'ImportError' 静默吞掉）")
                     return 0.0
+
                 params = {
                     "n_estimators": trial.suggest_int("n_estimators", 100, 300),
                     "max_depth": trial.suggest_int("max_depth", 5, 15),
@@ -743,7 +740,9 @@ def optuna_optimize_extended(X_train, y_train, X_val, y_val,
                 try:
                     import xgboost as xgb
                 except ImportError:
+                    logger.exception("捕获到异常并继续执行（原 except 'ImportError' 静默吞掉）")
                     return 0.0
+
                 scale_pos_weight = (y_train == 0).sum() / max(y_train.sum(), 1)
                 params = {
                     "n_estimators": trial.suggest_int("n_estimators", 100, 300),
@@ -1287,7 +1286,7 @@ def main():
         n_genes_above_50=("score", lambda x: (x >= 0.5).sum()),
         top_3_genes=("score", lambda x: "|".join(
             [f"{g}({s:.2f})" for g, s in sorted(
-                zip(list(pred_df.loc[x.index, "gene"]), list(x)),
+                zip(list(pred_df.loc[x.index, "gene"]), list(x), strict=False),
                 key=lambda v: v[1], reverse=True
             )[:3]]
         )),

@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+import logging
+logger = logging.getLogger(__name__)
+
 """
 CPI数据补充脚本 v27 - 最终版
 1. 从ChEMBL数据中交叉引用DrugBank药物的SMILES
@@ -122,6 +125,7 @@ def validate_smiles(smiles):
             return None
         return Chem.MolToSmiles(mol, canonical=True)
     except Exception:
+        logger.exception("捕获到异常并继续执行（原 except 'Exception' 静默吞掉）")
         return None
 
 # ========== 7. 从PubChem获取SMILES ==========
@@ -139,7 +143,9 @@ def get_smiles_from_pubchem(drug_name):
                 if props and 'CanonicalSMILES' in props[0]:
                     return props[0]['CanonicalSMILES']
     except Exception as e:
+        logger.exception("捕获到异常并继续执行（原 except 'Exception as e' 静默吞掉）")
         pass
+
     return None
 
 # ========== 8. 尝试从ChEMBL和PubChem获取SMILES ==========
@@ -346,10 +352,7 @@ report_lines.append("")
 report_lines.append("=" * 70)
 report_lines.append("仍缺失CPI数据的基因 (96 - 已有CPI - 本次补充)")
 report_lines.append("=" * 70)
-if supplement_records:
-    supplemented_genes = set(supp_df['gene'].unique())
-else:
-    supplemented_genes = set()
+supplemented_genes = set(supp_df['gene'].unique()) if supplement_records else set()
 all_covered = main_genes_with_smiles | supplemented_genes
 still_missing = genes_96 - all_covered
 report_lines.append(f"  仍缺失: {len(still_missing)} 个基因")

@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+import logging
+logger = logging.getLogger(__name__)
+
 r"""
 扩展 GSE61616 疾病节点 (disease_gene_edges.csv)。
 

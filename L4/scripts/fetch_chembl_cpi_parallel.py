@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+import logging
+logger = logging.getLogger(__name__)
+
 """
 并行从ChEMBL API补充铁衰老基因CPI数据
 ChEMBL API比BindingDB更可靠，5进程并行查询
@@ -49,8 +51,9 @@ def get_missing_genes():
     if os.path.exists(EXP_CPI_FILE):
         try:
             covered |= set(pd.read_csv(EXP_CPI_FILE, low_memory=False)['gene'].dropna().unique())
-        except:
-            pass
+        except Exception:
+            logger.exception("捕获到异常并继续执行（原 except '' 静默吞掉）")
+
     if os.path.exists(OUTPUT_DIR):
         for f in os.listdir(OUTPUT_DIR):
             if f.startswith("cpi_supplement_v") and f.endswith(".csv"):
@@ -58,8 +61,9 @@ def get_missing_genes():
                     df = pd.read_csv(os.path.join(OUTPUT_DIR, f))
                     if 'gene' in df.columns:
                         covered |= set(df['gene'].dropna().unique())
-                except:
-                    pass
+                except Exception:
+                    logger.exception("捕获到异常并继续执行（原 except '' 静默吞掉）")
+
     return sorted(genes_96 - covered)
 
 
@@ -74,8 +78,9 @@ def get_chembl_target_id(uniprot_id, timeout=20):
             targets = data.get("targets", [])
             if targets:
                 return targets[0]["target_chembl_id"]
-    except:
-        pass
+    except Exception:
+        logger.exception("捕获到异常并继续执行（原 except '' 静默吞掉）")
+
     return None
 
 
@@ -115,8 +120,9 @@ def get_chembl_activities(target_chembl_id, timeout=30):
                             })
                     except (ValueError, TypeError):
                         pass
-    except:
-        pass
+    except Exception:
+        logger.exception("捕获到异常并继续执行（原 except '' 静默吞掉）")
+
     return records
 
 

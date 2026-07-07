@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 """铁衰老项目常量定义"""
 
 # 铁衰老靶标列表

@@ -347,7 +347,7 @@ class MTPUNN(nn.Module):
 
     def forward(self, x):
         h = x
-        for block, skip in zip(self.blocks, self.skip_projections):
+        for block, skip in zip(self.blocks, self.skip_projections, strict=False):
             h = block(h) + skip(h)
         logits = torch.cat([head(h) for head in self.heads], dim=1)
         return torch.sigmoid(logits)

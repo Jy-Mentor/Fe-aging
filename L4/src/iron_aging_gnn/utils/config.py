@@ -1,9 +1,12 @@
+from __future__ import annotations
+
+import logging
+logger = logging.getLogger(__name__)
+
 """铁衰老 GNN 项目配置系统
 =======================
 基于 pydantic 的严格类型配置类，支持从 YAML 文件加载配置并合并默认值。
 """
-
-from __future__ import annotations
 
 from pathlib import Path
 
@@ -256,7 +259,6 @@ class TrainingConfig(BaseModel):
     pheno_lambda: float = Field(default=0.05, ge=0.0, le=1.0, description="表型分类损失权重")
     dropedge_ppi: float = Field(default=0.15, ge=0.0, le=1.0, description="PPI 边 DropEdge 概率")
     dropedge_pathway: float = Field(default=0.10, ge=0.0, le=1.0, description="通路边 DropEdge 概率")
-    flag_step: float = Field(default=0.01, ge=0.0, description="Gaussian Feature Augmentation 扰动幅度")
 
 
 class MemoryBankConfig(BaseModel):

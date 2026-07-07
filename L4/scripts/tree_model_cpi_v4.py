@@ -255,10 +255,7 @@ def build_multifingerprint_features(smiles_list):
     logger.info(f"    RDKit2D: {fp.shape}")
 
     # 拼接二进制指纹
-    if binary_fps:
-        X_binary = np.hstack(binary_fps).astype(np.float32)
-    else:
-        X_binary = np.empty((n, 0), dtype=np.float32)
+    X_binary = np.hstack(binary_fps).astype(np.float32) if binary_fps else np.empty((n, 0), dtype=np.float32)
 
     # 处理二进制指纹的 NaN（理论上二进制指纹不会有 NaN）
     X_binary = np.nan_to_num(X_binary, nan=0.0)
@@ -333,8 +330,8 @@ def get_scaffold(smiles):
         scaffold = Chem.MolToSmiles(scaffold_mol) if scaffold_mol else ""
         return scaffold if scaffold else "NO_SCAFFOLD"
     except Exception:
+        logger.exception("捕获到异常并继续执行（原 except 'Exception' 静默吞掉）")
         return "INVALID"
-
 
 def scaffold_split(pair_smiles, y, test_size=0.2, random_state=42):
     """按化合物 Bemis-Murcko 骨架拆分"""
@@ -351,7 +348,7 @@ def scaffold_split(pair_smiles, y, test_size=0.2, random_state=42):
     sorted_scaffolds = sorted(unique_scaffolds, key=lambda s: scaffold_sizes[s], reverse=True)
     test_scaffolds = set(rng.choice(sorted_scaffolds, test_n_scaffolds, replace=False))
 
-    smiles_to_scaffold = dict(zip(unique_smiles, scaffolds))
+    smiles_to_scaffold = dict(zip(unique_smiles, scaffolds, strict=False))
     test_smiles = {s for s, sc in smiles_to_scaffold.items() if sc in test_scaffolds}
 
     test_mask = np.array([s in test_smiles for s in pair_smiles])
@@ -402,14 +399,14 @@ def sample_negatives(
 
     if diversity_constraint:
         # 拓扑多样性约束：每个蛋白被选为负样本的次数尽量均衡
-        gene_neg_counts = {gi: 0 for gi in range(n_genes)}
+        gene_neg_counts = dict.fromkeys(range(n_genes), 0)
         max_per_gene = max(1, n_neg_target // n_genes + 1)
         neg_idx_set = set()
         batch_size = n_neg_target * 10
         while len(neg_idx_set) < n_neg_target:
             batch_comp = rng.randint(0, n_compounds, size=batch_size)
             batch_gene = rng.randint(0, n_genes, size=batch_size)
-            for ci, gi in zip(batch_comp, batch_gene):
+            for ci, gi in zip(batch_comp, batch_gene, strict=False):
                 pair = (ci, gi)
                 if pair in pos_idx_set or pair in neg_idx_set:
                     continue
@@ -430,7 +427,7 @@ def sample_negatives(
             if (ci, gi) not in pos_idx_set and (ci, gi) not in neg_idx_set:
                 neg_idx_set.add((ci, gi))
         neg_pairs = [(str(all_smiles[ci]), cpi_genes_in_emb[gi]) for ci, gi in neg_idx_set]
-        coverage = len(set(gi for _, gi in neg_idx_set))
+        coverage = len({gi for _, gi in neg_idx_set})
 
     logger.info(f"  负样本: {len(neg_pairs)} 对, 蛋白覆盖: {coverage}/{n_genes}")
     return neg_pairs
@@ -654,6 +651,7 @@ class StackingEnsemble:
                 n_jobs=-1, verbose=-1,
             )))
         except ImportError:
+            logger.exception("捕获到异常并继续执行（原 except 'ImportError' 静默吞掉）")
             pass
 
         models.append(("ET", ExtraTreesClassifier(
@@ -814,7 +812,7 @@ def shap_analysis(model, X, n_samples=500, feature_names=None, output_path=None)
         logger.warning("SHAP 或 matplotlib 未安装，跳过可解释性分析")
         return None
 
-    logger.info("  SHAP TreeExplainer 分析 (n_samples={})...".format(n_samples))
+    logger.info(f"  SHAP TreeExplainer 分析 (n_samples={n_samples})...")
 
     if hasattr(model, "estimators_"):
         explainer = shap.TreeExplainer(model)
@@ -897,7 +895,9 @@ def train_ensemble(X, y, pair_smiles, n_folds=5, random_seed=42):
         )
         r = evaluate_model(rf, X_train, y_train, X_test, y_test, "RandomForest")
         if r:
-            r["fold"] = fold; fold_results.append(r); results.append(r)
+            r["fold"] = fold
+            fold_results.append(r)
+            results.append(r)
             logger.info(f"    AUC={r['AUC']:.4f}, AUPR={r['AUPR']:.4f}, "
                         f"F1={r['F1']:.4f}, MCC={r['MCC']:.4f}")
 
@@ -914,7 +914,9 @@ def train_ensemble(X, y, pair_smiles, n_folds=5, random_seed=42):
             )
             r = evaluate_model(xgb_model, X_train, y_train, X_test, y_test, "XGBoost")
             if r:
-                r["fold"] = fold; fold_results.append(r); results.append(r)
+                r["fold"] = fold
+                fold_results.append(r)
+                results.append(r)
                 logger.info(f"    AUC={r['AUC']:.4f}, AUPR={r['AUPR']:.4f}, "
                             f"F1={r['F1']:.4f}, MCC={r['MCC']:.4f}")
         except ImportError:
@@ -932,7 +934,9 @@ def train_ensemble(X, y, pair_smiles, n_folds=5, random_seed=42):
             )
             r = evaluate_model(lgb_model, X_train, y_train, X_test, y_test, "LightGBM")
             if r:
-                r["fold"] = fold; fold_results.append(r); results.append(r)
+                r["fold"] = fold
+                fold_results.append(r)
+                results.append(r)
                 logger.info(f"    AUC={r['AUC']:.4f}, AUPR={r['AUPR']:.4f}, "
                             f"F1={r['F1']:.4f}, MCC={r['MCC']:.4f}")
         except ImportError:
@@ -950,7 +954,9 @@ def train_ensemble(X, y, pair_smiles, n_folds=5, random_seed=42):
             )
             r = evaluate_model(cb_model, X_train, y_train, X_test, y_test, "CatBoost")
             if r:
-                r["fold"] = fold; fold_results.append(r); results.append(r)
+                r["fold"] = fold
+                fold_results.append(r)
+                results.append(r)
                 logger.info(f"    AUC={r['AUC']:.4f}, AUPR={r['AUPR']:.4f}, "
                             f"F1={r['F1']:.4f}, MCC={r['MCC']:.4f}")
         except ImportError:
@@ -961,7 +967,9 @@ def train_ensemble(X, y, pair_smiles, n_folds=5, random_seed=42):
         stacking = StackingEnsemble(n_estimators=200, random_state=random_seed)
         r = evaluate_model(stacking, X_train, y_train, X_test, y_test, "StackingEnsemble")
         if r:
-            r["fold"] = fold; fold_results.append(r); results.append(r)
+            r["fold"] = fold
+            fold_results.append(r)
+            results.append(r)
             logger.info(f"    AUC={r['AUC']:.4f}, AUPR={r['AUPR']:.4f}, "
                         f"F1={r['F1']:.4f}, MCC={r['MCC']:.4f}")
 
@@ -1006,7 +1014,8 @@ def train_ensemble(X, y, pair_smiles, n_folds=5, random_seed=42):
             voting = VotingClassifier(estimators=estimators, voting="soft", n_jobs=-1)
             r = evaluate_model(voting, X_train, y_train, X_test, y_test, "VotingEnsemble")
             if r:
-                r["fold"] = fold; results.append(r)
+                r["fold"] = fold
+                results.append(r)
                 logger.info(f"    AUC={r['AUC']:.4f}, AUPR={r['AUPR']:.4f}, "
                             f"F1={r['F1']:.4f}, MCC={r['MCC']:.4f}")
 
@@ -1312,7 +1321,9 @@ def main():
                 random_state=42, n_jobs=-1, verbosity=0,
             )))
         except ImportError:
+            logger.exception("捕获到异常并继续执行（原 except 'ImportError' 静默吞掉）")
             pass
+
         try:
             import lightgbm as lgb
             estimators.append(("LightGBM", lgb.LGBMClassifier(
@@ -1320,7 +1331,9 @@ def main():
                 class_weight="balanced", random_state=42, n_jobs=-1, verbose=-1,
             )))
         except ImportError:
+            logger.exception("捕获到异常并继续执行（原 except 'ImportError' 静默吞掉）")
             pass
+
         estimators.append(("RF", RandomForestClassifier(
             n_estimators=200, max_depth=20, min_samples_leaf=10,
             class_weight="balanced", n_jobs=-1, random_state=42,
@@ -1395,7 +1408,7 @@ def main():
         n_genes_above_50=("score", lambda x: (x >= 0.5).sum()),
         top_3_genes=("score", lambda x: "|".join(
             [f"{g}({s:.2f})" for g, s in sorted(
-                zip(list(pred_df.loc[x.index, "gene"]), list(x)),
+                zip(list(pred_df.loc[x.index, "gene"]), list(x), strict=False),
                 key=lambda v: v[1], reverse=True
             )[:3]]
         )),

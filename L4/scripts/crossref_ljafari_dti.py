@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 """交叉引用 ljafari DTI dataset 与铁衰老缺失基因"""
 import pandas as pd
 

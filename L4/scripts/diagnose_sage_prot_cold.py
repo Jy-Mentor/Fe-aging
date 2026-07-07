@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+import logging
+logger = logging.getLogger(__name__)
+
 """诊断 SAGE 蛋白冷启动 AUPR 异常高的原因"""
 import sys
 from pathlib import Path
@@ -34,11 +37,11 @@ def main():
 
     # 化合物冷启动拆分（与主脚本一致）
     all_compounds = sorted(graphs["smi_to_idx"].values())
-    all_proteins = sorted(set(
+    all_proteins = sorted({
         graphs["gene_to_idx"][g] - n_compounds
         for g in graphs["gene_to_idx"]
         if graphs["gene_to_idx"][g] >= n_compounds
-    ))
+    })
     random.seed(42)
     random.shuffle(all_compounds)
     random.shuffle(all_proteins)

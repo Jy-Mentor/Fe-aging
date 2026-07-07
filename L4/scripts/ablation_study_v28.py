@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 消融实验运行器 v28 — 多进程架构 + 统计显著性检验 + 标准化报告
 
@@ -1114,8 +1114,8 @@ def run_ablation(
                 if hetero_key in graphs_serializable_v:
                     try:
                         graphs_serializable_v[hetero_key] = graphs_serializable_v[hetero_key].cpu()
-                    except Exception:
-                        pass
+                    except Exception as e:
+                        logger.warning(f"图序列化时无法将 {hetero_key} 移回 CPU: {e}")
 
             graphs_pickle_v = pickle.dumps(graphs_serializable_v, protocol=pickle.HIGHEST_PROTOCOL)
             logger.info(f"无v29图数据序列化完成: {len(graphs_pickle_v) / 1024 / 1024:.1f} MB")

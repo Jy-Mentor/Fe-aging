@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+import logging
+logger = logging.getLogger(__name__)
+
 """
 CPI数据补充脚本 v27 - 聚焦版
 只针对 drugbank_supplemental.csv 中的 ACSL4, SOD1, IGFBP7 三个基因
@@ -32,7 +35,8 @@ def validate_smiles(smiles):
         if mol is None:
             return None
         return Chem.MolToSmiles(mol, canonical=True)
-    except:
+    except Exception:
+        logger.exception("捕获到异常并继续执行（原 except '' 静默吞掉）")
         return None
 
 def get_smiles_from_pubchem(drug_name):
@@ -49,8 +53,9 @@ def get_smiles_from_pubchem(drug_name):
                     smi = props[0].get('CanonicalSMILES') or props[0].get('ConnectivitySMILES')
                     if smi:
                         return smi
-    except:
-        pass
+    except Exception:
+        logger.exception("捕获到异常并继续执行（原 except '' 静默吞掉）")
+
     return None
 
 print("=" * 70)

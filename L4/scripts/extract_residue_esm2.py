@@ -120,10 +120,10 @@ def main() -> None:
     mask = np.zeros((n, max_l), dtype=bool)
     gene_arr = np.empty(n, dtype=object)
     for idx, (g, e) in enumerate(emb_dict.items()):
-        l = e.shape[0]
-        if l > 0:
-            padded[idx, :l] = e
-            mask[idx, :l] = True
+        seq_len = e.shape[0]
+        if seq_len > 0:
+            padded[idx, :seq_len] = e
+            mask[idx, :seq_len] = True
         gene_arr[idx] = g
 
     np.savez_compressed(out_padded, embeddings=padded, mask=mask, genes=gene_arr)

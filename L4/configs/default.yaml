@@ -87,8 +87,6 @@ training:
   pheno_lambda: 0.05
   dropedge_ppi: 0.05
   dropedge_pathway: 0.05
-  # 关闭flag_step，确保预训练阶段输入稳定
-  flag_step: 0.0
 validation:
   val_freq: 3
   pretrain_val_freq: 5

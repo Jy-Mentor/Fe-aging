@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+import logging
+logger = logging.getLogger(__name__)
+
 """
 多源CPI数据补充脚本：从ChEMBL和PubChem为45个缺失铁衰老基因挖掘CPI数据。
 顺序查询 + time.sleep 控制速率，不使用 multiprocessing。
@@ -322,7 +324,7 @@ def process_gene_pubchem(gene_name):
         return all_records
 
     # 收集所有CID，批量查询SMILES
-    unique_cids = list(set(r["cid"] for r in all_assay_results))
+    unique_cids = list({r["cid"] for r in all_assay_results})
     print(f"  [{gene_name}] PubChem: {len(all_assay_results)} 条IC50, {len(unique_cids)} 个唯一CID, 查询SMILES...")
 
     cid_smiles = pubchem_batch_smiles(unique_cids)

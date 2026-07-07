@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+import logging
+logger = logging.getLogger(__name__)
+
 """
 从BindingDB TSV下载补充铁衰老基因的CPI数据
 BindingDB REST API不可用，使用TSV下载方式替代
@@ -95,7 +97,7 @@ def download_and_filter_bindingdb(target_uniprots, gene_uniprot_map):
     uniprot_to_gene = {v: k for k, v in gene_uniprot_map.items()}
     
     records = []
-    gene_stats = {gene: 0 for gene in gene_uniprot_map.keys()}
+    gene_stats = dict.fromkeys(gene_uniprot_map.keys(), 0)
     
     print(f"  目标UniProt ID数: {len(target_uniprots)}")
     print(f"  开始下载BindingDB TSV文件...")

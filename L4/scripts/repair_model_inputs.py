@@ -67,10 +67,10 @@ def canonicalize_smiles(smiles: str) -> str:
             return ""
         return Chem.MolToSmiles(mol, canonical=True, isomericSmiles=True)
     except Exception:
+        logger.exception("捕获到异常并继续执行（原 except 'Exception' 静默吞掉）")
         return ""
 
-
-def load_ferroaging_genes() -> Set[str]:
+def load_ferroaging_genes() -> set[str]:
     """加载铁衰老基因集。"""
     path = L1_RESULTS / "ferroaging_genes_96.csv"
     if not path.exists():
@@ -82,7 +82,7 @@ def load_ferroaging_genes() -> Set[str]:
     return genes
 
 
-def check_cpi_data() -> Dict[str, Any]:
+def check_cpi_data() -> dict[str, Any]:
     """检查 CPI 清洗后数据。"""
     path = L4_RESULTS / "experimental_actives_detail_cleaned.csv"
     logger.info("=" * 60)
@@ -126,7 +126,7 @@ def check_cpi_data() -> Dict[str, Any]:
 
     # 验证 canonical_smiles 是否可被 RDKit 解析
     invalid = 0
-    sample_invalid: List[str] = []
+    sample_invalid: list[str] = []
     for smi in df["canonical_smiles"].dropna().unique()[:5000]:
         if canonicalize_smiles(smi) == "":
             invalid += 1
@@ -154,7 +154,7 @@ def check_cpi_data() -> Dict[str, Any]:
     return report
 
 
-def repair_tcm_pool(cpi_df: pd.DataFrame) -> Dict[str, Any]:
+def repair_tcm_pool(cpi_df: pd.DataFrame) -> dict[str, Any]:
     """检查并修复 TCM 候选池与 CPI 训练集的数据泄漏。"""
     input_path = L3_RESULTS / "tcm_compound_pool_tox_filtered.csv"
     output_path = L3_RESULTS / "tcm_compound_pool_tox_filtered_noleak.csv"
@@ -232,7 +232,7 @@ def repair_tcm_pool(cpi_df: pd.DataFrame) -> Dict[str, Any]:
     return report
 
 
-def check_protein_features(warm_targets: Set[str]) -> Dict[str, Any]:
+def check_protein_features(warm_targets: set[str]) -> dict[str, Any]:
     """检查蛋白特征表完整性。"""
     path = L2_RESULTS / "target_protein_features.csv"
     logger.info("=" * 60)
@@ -276,7 +276,7 @@ def check_protein_features(warm_targets: Set[str]) -> Dict[str, Any]:
     return report
 
 
-def check_kegg_pathways() -> Dict[str, Any]:
+def check_kegg_pathways() -> dict[str, Any]:
     """检查 L2 已下载的 KEGG 通路注释。"""
     path = L2_RESULTS / "kegg_pathways" / "kegg_human_pathway_genes.tsv"
     logger.info("=" * 60)
@@ -308,7 +308,7 @@ def check_kegg_pathways() -> Dict[str, Any]:
     return report
 
 
-def check_ppi_network() -> Dict[str, Any]:
+def check_ppi_network() -> dict[str, Any]:
     """检查扩展后的 PPI 网络。"""
     extended_path = L1_RESULTS / "ppi_network_extended_edges.csv"
     original_path = L1_RESULTS / "ppi_network_edges.csv"

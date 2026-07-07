@@ -69,7 +69,7 @@ def load_predictions() -> pd.DataFrame:
     return df
 
 
-def load_ppi_hub_weights() -> Dict[str, float]:
+def load_ppi_hub_weights() -> dict[str, float]:
     """加载扩展 PPI hub 权重 (Degree Centrality)
 
     优先使用 L1/results/ppi_network_extended_hub_genes.csv（7225 基因，铁衰老种子
@@ -100,9 +100,9 @@ def load_ppi_hub_weights() -> Dict[str, float]:
 
 def build_decision_matrix(
     pred_df: pd.DataFrame,
-    target_genes: List[str],
-    hub_weights: Dict[str, float],
-) -> Tuple[np.ndarray, List[str], pd.DataFrame]:
+    target_genes: list[str],
+    hub_weights: dict[str, float],
+) -> tuple[np.ndarray, list[str], pd.DataFrame]:
     """
     构建决策矩阵
 
@@ -167,7 +167,7 @@ def build_decision_matrix(
 # 排名方法
 # ============================================================
 
-def rank_sum(matrix: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+def rank_sum(matrix: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Rank-sum 排名融合（主方案）
 
@@ -260,7 +260,7 @@ def entropy_weight(matrix: np.ndarray) -> np.ndarray:
     return w
 
 
-def topsis(matrix: np.ndarray, weights: Optional[np.ndarray] = None) -> np.ndarray:
+def topsis(matrix: np.ndarray, weights: np.ndarray | None = None) -> np.ndarray:
     """
     TOPSIS 多准则决策（对比方案）
 
@@ -312,11 +312,11 @@ def borda_rank(matrix: np.ndarray) -> np.ndarray:
 
 def sensitivity_analysis_rank_sum(
     matrix: np.ndarray,
-    criteria_names: List[str],
-    compounds: List[str],
+    criteria_names: list[str],
+    compounds: list[str],
     n_top: int = 50,
     n_perturbations: int = 100,
-) -> Dict:
+) -> dict:
     """
     敏感性分析（针对 Rank-sum 主方案）
 
@@ -435,7 +435,7 @@ def sensitivity_analysis_rank_sum(
         "n_stable_top20": len(top20_stable),
         "n_stable_top50": len(top50_stable),
         # 熵权法权重
-        "entropy_weights": {name: float(w) for name, w in zip(criteria_names, ew)},
+        "entropy_weights": {name: float(w) for name, w in zip(criteria_names, ew, strict=False)},
     }
 
     if bcp_ranks:
@@ -526,7 +526,7 @@ def main():
 
     # 4. 对比方案: TOPSIS (熵权法)
     ew = entropy_weight(matrix.copy())
-    logger.info(f"熵权法权重: {dict(zip(criteria_names, ew.round(4)))}")
+    logger.info(f"熵权法权重: {dict(zip(criteria_names, ew.round(4), strict=False))}")
     closeness = topsis(matrix, ew)
     logger.info(f"TOPSIS贴近度: mean={closeness.mean():.4f}, "
                  f"std={closeness.std():.4f}")

@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+import logging
+logger = logging.getLogger(__name__)
+
 """
 并行从BindingDB REST API + 本地TSV分片补充铁衰老基因CPI数据
 策略：70个基因分5组，5个进程并行查询BindingDB API
@@ -99,9 +101,10 @@ def query_bindingdb_api(uniprot_id, gene_name, timeout=30):
         
         try:
             data = resp.json()
-        except:
+        except Exception:
+            logger.exception("捕获到异常并继续执行（原 except '' 静默吞掉）")
             return records
-        
+
         # 解析返回数据
         if isinstance(data, dict) and "getLigandsByUniprotIDResponse" in data:
             ligands = data["getLigandsByUniprotIDResponse"].get("affinities", [])
@@ -130,7 +133,9 @@ def query_bindingdb_api(uniprot_id, gene_name, timeout=30):
                     except (ValueError, TypeError):
                         pass
     except Exception:
+        logger.exception("捕获到异常并继续执行（原 except 'Exception' 静默吞掉）")
         pass
+
     return records
 
 
@@ -150,7 +155,9 @@ def query_uniprot_api(gene_name, timeout=30):
             if results:
                 return results[0].get("primaryAccession", "")
     except Exception:
+        logger.exception("捕获到异常并继续执行（原 except 'Exception' 静默吞掉）")
         pass
+
     return ""
 
 

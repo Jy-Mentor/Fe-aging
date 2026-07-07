@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 """
 整理文献挖掘的CPI数据，通过PubChem获取SMILES并合并到combined数据集
 """
@@ -62,9 +65,9 @@ def get_smiles_from_pubchem(compound_name, cas_no=None):
                 smi = props[0]["CanonicalSMILES"]
                 if Chem.MolFromSmiles(smi):
                     return smi
-    except:
-        pass
-    
+    except Exception:
+        logger.exception("捕获到异常并继续执行（原 except '' 静默吞掉）")
+
     # Method 2: search by CAS
     if cas_no and cas_no != "NA":
         try:
@@ -77,9 +80,9 @@ def get_smiles_from_pubchem(compound_name, cas_no=None):
                     smi = props[0]["CanonicalSMILES"]
                     if Chem.MolFromSmiles(smi):
                         return smi
-        except:
-            pass
-    
+        except Exception:
+            logger.exception("捕获到异常并继续执行（原 except '' 静默吞掉）")
+
     return None
 
 def main():
@@ -153,9 +156,9 @@ def main():
         
         # 统计
         with open(r'd:\铁衰老 绝不重蹈覆辙\铁衰老基因.txt','r',encoding='utf-8') as f:
-            iron_genes = set(line.strip() for line in f if line.strip())
+            iron_genes = {line.strip() for line in f if line.strip()}
         iron_in = combined_new[combined_new['gene'].isin(iron_genes)]
-        new_iron_genes = set(row['gene'] for row in new_rows) & iron_genes
+        new_iron_genes = {row['gene'] for row in new_rows} & iron_genes
         print(f"\n合并后: {len(combined_new)} 条, {combined_new.gene.nunique()} 基因")
         print(f"铁衰老基因: {iron_in.gene.nunique()}/{len(iron_genes)}")
         print(f"新增铁衰老基因: {sorted(new_iron_genes)}")

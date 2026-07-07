@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 """
 交叉引用 dhimmel/bindingdb 数据与铁衰老缺失基因
 """
@@ -50,7 +53,7 @@ if not hits:
 # 也检查 DrugBank-collapsed 文件
 df2 = pd.read_csv(r'd:\铁衰老 绝不重蹈覆辙\L4\data\github_sources\dhimmel_bindingdb\data\bindings-drugbank-gene.tsv', sep='\t')
 all_genes2 = set(df2['gene_symbol'].dropna().str.upper())
-missing_upper = set(g.upper() for g in gene_uniprot.keys())
+missing_upper = {g.upper() for g in gene_uniprot.keys()}
 hits2 = all_genes2 & missing_upper
 print(f"\nDrugBank-collapsed hits: {hits2}")
 

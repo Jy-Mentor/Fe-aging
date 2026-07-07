@@ -7,7 +7,7 @@ Phase 4: CIRI铁衰老中药单体ML筛选 - 模型构建与预测 (优化版 v3
   2. 活性指纹预计算: 缓存ECFP4指纹, 避免重复RDKit转换
   3. Tanimoto相似性匹配: 精确SMILES + 相似性(>0.7)补充正样本
   4. 多模型训练: Random Forest + XGBoost + 逻辑回归基线
-  5. 靶标分层: 
+  5. 靶标分层:
      - 富样本靶标(≥20阳性): 独立建模
      - 少样本靶标(1-19阳性): 少样本学习
      - 冷启动靶标(0阳性): 指纹相似性排序(向量化)
@@ -611,10 +611,7 @@ def _vectorized_tanimoto(ref_fingerprints, query_fingerprints, top_k=1):
         tanimoto = np.where(union > 0, intersection / union, 0.0)
 
     # 取每个查询的最大相似度
-    if top_k == 1:
-        scores = tanimoto.max(axis=1)
-    else:
-        scores = np.sort(tanimoto, axis=1)[:, -top_k:]
+    scores = tanimoto.max(axis=1) if top_k == 1 else np.sort(tanimoto, axis=1)[:, -top_k:]
 
     return np.nan_to_num(scores, nan=0.0)
 
@@ -861,10 +858,7 @@ def generate_report(results_df, top_df, pred_df, actives, compound_data):
     # 模型性能
     lines.append(f"\n## 3. 模型性能")
     has_model_col = "has_model" in results_df.columns
-    if has_model_col:
-        modeled = results_df[results_df["has_model"] == True]
-    else:
-        modeled = pd.DataFrame()
+    modeled = results_df[results_df["has_model"]] if has_model_col else pd.DataFrame()
     if len(modeled) > 0 and "RF_AUC_mean" in modeled.columns:
         aucs = modeled["RF_AUC_mean"].dropna().values
         if len(aucs) > 0:

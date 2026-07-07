@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 """
 task_review_hook.py — 任务完成审查钩子模块
 

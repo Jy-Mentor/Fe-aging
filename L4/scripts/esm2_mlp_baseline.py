@@ -97,12 +97,12 @@ def evaluate(
     model: nn.Module,
     comp_feats: np.ndarray,
     prot_feats: np.ndarray,
-    compound_to_pos: Dict[int, set],
-    eval_compounds: List[int],
-    eval_proteins: Set[int],
+    compound_to_pos: dict[int, set],
+    eval_compounds: list[int],
+    eval_proteins: set[int],
     n_compounds: int,
     n_proteins: int,
-    prot_global_to_local: Dict[int, int],
+    prot_global_to_local: dict[int, int],
     tag: str = "",
 ) -> dict:
     """评估化合物冷启动 + 蛋白冷启动"""
@@ -280,16 +280,13 @@ def main():
         for c, p in train_pos_pairs:
             pos_set = compound_to_pos.get(c, set())
             neg_candidates = [bp for bp in train_proteins if bp not in pos_set]
-            if len(neg_candidates) > 10:
-                neg_samples = random.sample(neg_candidates, 10)
-            else:
-                neg_samples = neg_candidates
+            neg_samples = random.sample(neg_candidates, 10) if len(neg_candidates) > 10 else neg_candidates
             for np_ in neg_samples:
                 train_neg_pairs.append((c, np_))
 
         all_train_pairs = train_pos_pairs + train_neg_pairs
         all_labels = [1.0] * len(train_pos_pairs) + [0.0] * len(train_neg_pairs)
-        random.shuffle(list(zip(all_train_pairs, all_labels)))
+        random.shuffle(list(zip(all_train_pairs, all_labels, strict=False)))
 
         # Mini-batch 训练
         indices = list(range(len(all_train_pairs)))

@@ -135,28 +135,41 @@ RDKIT_DESCRIPTOR_NAMES = [
 ECFP4_NBITS = 2048
 
 
-def _compute_ecfp4(smiles_iter: List[str]) -> np.ndarray:
+def _compute_ecfp4(smiles_iter: list[str]) -> np.ndarray:
     """计算 ECFP4 (Morgan radius=2, 2048 bits)"""
     fps = np.zeros((len(smiles_iter), ECFP4_NBITS), dtype=np.float32)
+    n_parse_fail = 0
+    n_fp_fail = 0
     for i, smi in enumerate(smiles_iter):
         mol = None
         try:
             if pd.notna(smi):
                 mol = Chem.MolFromSmiles(str(smi))
-        except Exception:
+        except Exception as e:
+            logger.warning(f"ECFP4 SMILES 解析失败 索引 {i}: {smi!r}, 错误: {e}")
             mol = None
         if mol is None:
+            n_parse_fail += 1
             continue
         try:
             fp = AllChem.GetMorganFingerprintAsBitVect(mol, 2, nBits=ECFP4_NBITS)
             for bit in fp.GetOnBits():
                 fps[i, bit] = 1.0
-        except Exception:
-            pass
+        except Exception as e:
+            n_fp_fail += 1
+            logger.warning(f"ECFP4 指纹生成失败 索引 {i}: {smi!r}, 错误: {e}")
+    total_fail = n_parse_fail + n_fp_fail
+    if total_fail > 0:
+        logger.warning(
+            f"ECFP4 处理完成: {len(smiles_iter)} 个化合物, "
+            f"SMILES 解析失败 {n_parse_fail} 个, 指纹生成失败 {n_fp_fail} 个"
+        )
+    if len(smiles_iter) > 0 and total_fail == len(smiles_iter):
+        raise ValueError("ECFP4 指纹生成全部失败，请检查输入 SMILES 格式")
     return fps
 
 
-def _compute_maccs(smiles_iter: List[str]) -> np.ndarray:
+def _compute_maccs(smiles_iter: list[str]) -> np.ndarray:
     fps = []
     for smi in smiles_iter:
         mol = None
@@ -178,7 +191,7 @@ def _compute_maccs(smiles_iter: List[str]) -> np.ndarray:
     return np.array(fps, dtype=np.float32)
 
 
-def _compute_rdkit_descriptors(smiles_iter: List[str]) -> np.ndarray:
+def _compute_rdkit_descriptors(smiles_iter: list[str]) -> np.ndarray:
     desc_funcs = {name: getattr(Descriptors, name) for name in RDKIT_DESCRIPTOR_NAMES}
     rows = []
     for smi in smiles_iter:
@@ -202,9 +215,9 @@ def _compute_rdkit_descriptors(smiles_iter: List[str]) -> np.ndarray:
 
 
 def build_compound_features(
-    smiles_list: List[str],
-    stats: Optional[Tuple[np.ndarray, np.ndarray, np.ndarray]] = None,
-) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    smiles_list: list[str],
+    stats: tuple[np.ndarray, np.ndarray, np.ndarray] | None = None,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """
     v7: ECFP4 (2048) + MACCS (167) + RDKit 描述符 (17) = 2232 维
     """
@@ -237,7 +250,7 @@ def build_compound_features(
 # ============================================================
 # 2. 蛋白特征
 # ============================================================
-def compute_aac(sequences: List[str]) -> np.ndarray:
+def compute_aac(sequences: list[str]) -> np.ndarray:
     amino_acids = "ACDEFGHIKLMNPQRSTVWY"
     aa_to_idx = {aa: i for i, aa in enumerate(amino_acids)}
     aac_matrix = np.zeros((len(sequences), 20), dtype=np.float32)
@@ -308,10 +321,10 @@ def load_ppi_network() -> pd.DataFrame:
     return df
 
 
-def load_kegg_pathways() -> Dict[str, List[str]]:
+def load_kegg_pathways() -> dict[str, list[str]]:
     kegg_path = L2_RESULTS / "kegg_pathways" / "kegg_human_pathway_genes.tsv"
     fallback_path = L1_RESULTS / "string_enrichment.csv"
-    gene_to_pathways: Dict[str, List[str]] = {}
+    gene_to_pathways: dict[str, list[str]] = {}
 
     if kegg_path.exists():
         df = pd.read_csv(kegg_path, sep="\t", low_memory=False)
@@ -338,7 +351,8 @@ def load_kegg_pathways() -> Dict[str, List[str]]:
         genes_str = row["inputGenes"]
         try:
             genes = eval(genes_str)
-        except Exception:
+        except Exception as e:
+            logger.warning(f"KEGG 回退通路基因解析失败: {genes_str!r}, 错误: {e}")
             continue
         for g in genes:
             g = g.strip().upper()
@@ -350,11 +364,11 @@ def load_kegg_pathways() -> Dict[str, List[str]]:
     return gene_to_pathways
 
 
-def load_protein_features() -> Tuple[Dict[str, np.ndarray], Dict[str, str]]:
+def load_protein_features() -> tuple[dict[str, np.ndarray], dict[str, str]]:
     pf_path = L2_RESULTS / "target_protein_features.csv"
     pseaac_path = L2_RESULTS / "protein_pseaac.csv"
-    prot_feat: Dict[str, np.ndarray] = {}
-    gene_to_seq: Dict[str, str] = {}
+    prot_feat: dict[str, np.ndarray] = {}
+    gene_to_seq: dict[str, str] = {}
 
     if pf_path.exists():
         df = pd.read_csv(pf_path)
@@ -367,7 +381,7 @@ def load_protein_features() -> Tuple[Dict[str, np.ndarray], Dict[str, str]]:
     seqs = [gene_to_seq[g] for g in genes]
     aac = compute_aac(seqs)
 
-    pseaac_data: Dict[str, np.ndarray] = {}
+    pseaac_data: dict[str, np.ndarray] = {}
     if pseaac_path.exists():
         df_pseaac = pd.read_csv(pseaac_path)
         if "Unnamed: 0" in df_pseaac.columns:
@@ -418,9 +432,9 @@ def load_tcm_pool() -> pd.DataFrame:
 def build_cpi_homogeneous_graph(
     cpi_df: pd.DataFrame,
     ppi_df: pd.DataFrame,
-    prot_feat: Dict[str, np.ndarray],
+    prot_feat: dict[str, np.ndarray],
     compound_feat_dim: int,
-) -> Tuple[torch.Tensor, torch.Tensor, int, Dict[str, int], Dict[str, int], np.ndarray]:
+) -> tuple[torch.Tensor, torch.Tensor, int, dict[str, int], dict[str, int], np.ndarray]:
     """
     构建同质图（GAT 用）：
       节点 = 化合物 ∪ 蛋白（含全部 PPI 基因）
@@ -454,13 +468,11 @@ def build_cpi_homogeneous_graph(
         if gene in prot_feat:
             prot_matrix[idx] = prot_feat[gene]
         else:
-            # PPI 独有基因：用 gene hash 种子随机初始化，通过图传播学习
-            seed = hash(gene) % (2**31)
-            rng = np.random.RandomState(seed)
-            prot_matrix[idx] = rng.randn(prot_feat_dim).astype(np.float32) * 0.01
+            # PPI 独有基因：缺失特征必须零填充，禁止随机初始化伪造数据
+            prot_matrix[idx] = 0.0
             n_no_feat += 1
     if n_no_feat > 0:
-        logger.info(f"  无蛋白特征基因（随机初始化）: {n_no_feat}")
+        logger.warning(f"  无蛋白特征基因（缺失特征，已用零填充）: {n_no_feat}")
 
     # 统一维度（pad 较小维度）
     feat_dim = max(comp_feat.shape[1], prot_feat_dim)
@@ -506,12 +518,12 @@ def build_cpi_homogeneous_graph(
 def build_heterogeneous_graph(
     cpi_df: pd.DataFrame,
     ppi_df: pd.DataFrame,
-    gene_to_pathways: Dict[str, List[str]],
-    prot_feat: Dict[str, np.ndarray],
-    smi_to_idx: Dict[str, int],
-    gene_to_idx: Dict[str, int],
+    gene_to_pathways: dict[str, list[str]],
+    prot_feat: dict[str, np.ndarray],
+    smi_to_idx: dict[str, int],
+    gene_to_idx: dict[str, int],
     n_compounds: int,
-    comp_feat: Optional[np.ndarray] = None,
+    comp_feat: np.ndarray | None = None,
 ) -> HeteroData:
     """
     构建异质图（HGT 用）：
@@ -528,18 +540,14 @@ def build_heterogeneous_graph(
     for gene, idx in gene_to_idx.items():
         local_idx = idx - n_compounds
         if 0 <= local_idx < n_proteins:
-            if gene in prot_feat:
-                prot_matrix[local_idx] = prot_feat[gene]
-            else:
-                seed = hash(gene) % (2**31)
-                rng = np.random.RandomState(seed)
-                prot_matrix[local_idx] = rng.randn(prot_feat_dim).astype(np.float32) * 0.01
+            # 缺失特征必须零填充，禁止随机初始化伪造数据
+            prot_matrix[local_idx] = prot_feat.get(gene, 0.0)
 
     if np.isnan(prot_matrix).any():
         prot_matrix = np.nan_to_num(prot_matrix, nan=0.0)
 
     # 通路节点（v8: 用可学习嵌入，只需存储通路 ID 索引）
-    all_pathways = sorted(set(pid for paths in gene_to_pathways.values() for pid in paths))
+    all_pathways = sorted({pid for paths in gene_to_pathways.values() for pid in paths})
     pathway_to_idx = {p: i for i, p in enumerate(all_pathways)}
     n_pathways = len(all_pathways)
     pathway_feat = np.zeros((max(n_pathways, 1), 1), dtype=np.float32)
@@ -675,7 +683,7 @@ class GATLinkPredictor(nn.Module):
         v9: GATv2 → GIN → GATv2 混合前向传播
         """
         h = x
-        for conv, norm, drop in zip(self.convs, self.norms, self.dropouts):
+        for conv, norm, drop in zip(self.convs, self.norms, self.dropouts, strict=False):
             h = conv(h, edge_index)
             h = norm(h)
             h = F.elu(h)
@@ -704,7 +712,7 @@ class HGTLinkPredictor(nn.Module):
     def __init__(self, hidden_dim: int = 128, out_dim: int = 64,
                  num_heads: int = 4, num_layers: int = 2, dropout: float = 0.3,
                  metadata=None, compound_feat_dim: int = 200,
-                 node_feat_dims: Optional[Dict[str, int]] = None):
+                 node_feat_dims: dict[str, int] | None = None):
         super().__init__()
         self.out_dim = out_dim
 
@@ -738,7 +746,7 @@ class HGTLinkPredictor(nn.Module):
             node_types, edge_types = metadata
             for _ in range(num_layers):
                 self.convs.append(HGTConv(
-                    {nt: hidden_dim for nt in node_types},
+                    dict.fromkeys(node_types, hidden_dim),
                     hidden_dim, metadata,
                     heads=num_heads,
                 ))
@@ -798,7 +806,7 @@ class HGTLinkPredictor(nn.Module):
 # ============================================================
 # 7. 训练（v7: 冷启动拆分 + 硬负样本验证 + AUPR）
 # ============================================================
-def _compute_metrics(y_true: np.ndarray, y_score: np.ndarray) -> Dict[str, float]:
+def _compute_metrics(y_true: np.ndarray, y_score: np.ndarray) -> dict[str, float]:
     """v9: 计算 AUC, AUPR, Precision@K, EF@1%, EF@5%, ROCE"""
     metrics = {}
     if len(np.unique(y_true)) < 2:
@@ -841,7 +849,7 @@ def _compute_metrics(y_true: np.ndarray, y_score: np.ndarray) -> Dict[str, float
     from sklearn.metrics import roc_curve
     fpr_vals, tpr_vals, _ = roc_curve(y_true, y_score)
     roce_val = 0.0
-    for f, t in zip(fpr_vals, tpr_vals):
+    for f, t in zip(fpr_vals, tpr_vals, strict=False):
         if f >= fpr_target:
             roce_val = float(t)
             break
@@ -858,7 +866,7 @@ def train_gat(
     epochs: int = 200,
     lr: float = 1e-3,
     patience: int = 20,
-) -> Tuple[GATLinkPredictor, List[dict]]:
+) -> tuple[GATLinkPredictor, list[dict]]:
     """
     v9: GATv2+GIN 混合架构 + BCE+BPR 联合损失 + 三级负样本
     """
@@ -1064,8 +1072,8 @@ def train_gat(
 
 def _manual_sample_subgraph(
     data: HeteroData,
-    seed_compounds: List[int],
-    num_neighbors: List[int],
+    seed_compounds: list[int],
+    num_neighbors: list[int],
 ) -> HeteroData:
     """手动邻居采样，创建子图（无需 torch-sparse/pyg-lib）
     
@@ -1100,10 +1108,7 @@ def _manual_sample_subgraph(
     for c in seed_compounds:
         if c in cpi_adj:
             neighbors = cpi_adj[c]
-            if len(neighbors) > num_neighbors[0]:
-                sampled = random.sample(neighbors, num_neighbors[0])
-            else:
-                sampled = neighbors
+            sampled = random.sample(neighbors, num_neighbors[0]) if len(neighbors) > num_neighbors[0] else neighbors
             protein_nodes.update(sampled)
     
     # 2-hop: 蛋白 -> 蛋白 (PPI) + 蛋白 -> 通路
@@ -1188,7 +1193,7 @@ def train_hgt(
     epochs: int = 200,
     lr: float = 1e-3,
     patience: int = 20,
-) -> Tuple[HGTLinkPredictor, List[dict]]:
+) -> tuple[HGTLinkPredictor, list[dict]]:
     """
     v9: 手动邻居采样 + BCE+BPR 联合损失 + 三级负样本
     - 手动实现 2-hop 邻居采样，无需 torch-sparse/pyg-lib
@@ -1264,7 +1269,7 @@ def train_hgt(
         adj[et] = adj_dict
     logger.info("  adjacency tables built")
 
-    def _build_subgraph(seed_comps: List[int]) -> HeteroData:
+    def _build_subgraph(seed_comps: list[int]) -> HeteroData:
         """手动采样子图"""
         compounds = set(seed_comps)
         proteins = set()
@@ -1520,15 +1525,15 @@ def train_hgt(
 # ============================================================
 def predict_tcm(
     gat_model: GATLinkPredictor,
-    hgt_model: Optional[HGTLinkPredictor],
+    hgt_model: HGTLinkPredictor | None,
     x: torch.Tensor,
     edge_index: torch.Tensor,
-    hetero_data: Optional[HeteroData],
-    tcm_smiles: List[str],
-    target_genes: List[str],
-    compound_stats: Tuple,
-    smi_to_idx: Dict[str, int],
-    gene_to_idx: Dict[str, int],
+    hetero_data: HeteroData | None,
+    tcm_smiles: list[str],
+    target_genes: list[str],
+    compound_stats: tuple,
+    smi_to_idx: dict[str, int],
+    gene_to_idx: dict[str, int],
     n_compounds: int,
     gat_weight: float = 0.5,
 ) -> pd.DataFrame:
@@ -1619,9 +1624,9 @@ def predict_tcm(
 # ============================================================
 def rank_and_export(
     pred_df: pd.DataFrame,
-    target_genes: List[str],
+    target_genes: list[str],
     top_n: int = 500,
-) -> Tuple[pd.DataFrame, pd.DataFrame]:
+) -> tuple[pd.DataFrame, pd.DataFrame]:
     gene_cols = [g for g in target_genes if g in pred_df.columns]
     scores = pred_df[gene_cols].values
 
@@ -1689,14 +1694,14 @@ def _df_to_markdown(df: pd.DataFrame, max_rows: int = 30) -> str:
 
 
 def generate_report(
-    gat_history: List[dict],
-    hgt_history: List[dict],
+    gat_history: list[dict],
+    hgt_history: list[dict],
     top_df: pd.DataFrame,
     total_time: float,
     n_tcm: int,
     n_targets: int,
     output_path: Path,
-    check_results: Optional[Dict] = None,
+    check_results: dict | None = None,
 ):
     lines = [
         "# Phase 4 v9: GATv2+GIN + HGT HGTLoader — 拓扑-语义双视角互补融合",
@@ -1780,14 +1785,14 @@ def pipeline_self_check(
     tcm_df: pd.DataFrame,
     cpi_df: pd.DataFrame,
     ppi_df: pd.DataFrame,
-    prot_feat: Dict[str, np.ndarray],
-    gene_to_pathways: Dict[str, List[str]],
-    warm_targets: List[str],
-    input_files: Optional[Dict[str, str]] = None,
-) -> Dict:
+    prot_feat: dict[str, np.ndarray],
+    gene_to_pathways: dict[str, list[str]],
+    warm_targets: list[str],
+    input_files: dict[str, str] | None = None,
+) -> dict:
     logger.info("=" * 60)
     logger.info("开始管线自检...")
-    results: Dict[str, Any] = {"meta": {"timestamp": datetime.now().isoformat(), "severity": "UNKNOWN"},
+    results: dict[str, Any] = {"meta": {"timestamp": datetime.now().isoformat(), "severity": "UNKNOWN"},
                                "errors": [], "warnings": []}
 
     if input_files:
@@ -1837,7 +1842,7 @@ def pipeline_self_check(
 
     # 6. KEGG
     logger.info("[自检 6/8] KEGG 通路...")
-    all_pathways = set(pid for paths in gene_to_pathways.values() for pid in paths)
+    all_pathways = {pid for paths in gene_to_pathways.values() for pid in paths}
     results["kegg_pathways"] = {"genes": len(gene_to_pathways), "pathways": len(all_pathways),
                                 "passed": len(gene_to_pathways) > 0}
 
@@ -1993,8 +1998,8 @@ def main():
 
     # 添加 TCM 名称
     if "MOL_ID" in tcm_df.columns and "molecule_name" in tcm_df.columns:
-        name_map = dict(zip(tcm_df["SMILES_std"], tcm_df["molecule_name"]))
-        mol_id_map = dict(zip(tcm_df["SMILES_std"], tcm_df["MOL_ID"]))
+        name_map = dict(zip(tcm_df["SMILES_std"], tcm_df["molecule_name"], strict=False))
+        mol_id_map = dict(zip(tcm_df["SMILES_std"], tcm_df["MOL_ID"], strict=False))
         pred_df["molecule_name"] = pred_df["SMILES"].map(name_map).fillna("")
         pred_df["MOL_ID"] = pred_df["SMILES"].map(mol_id_map).fillna("")
 

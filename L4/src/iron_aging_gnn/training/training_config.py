@@ -1,3 +1,8 @@
+from __future__ import annotations
+
+import logging
+logger = logging.getLogger(__name__)
+
 """训练配置数据类 — 封装 train_sage / train_hgt 的 30+ 参数
 
 使用方式:
@@ -5,8 +10,6 @@
     config = TrainingConfig(epochs=50, lr=1e-3)  # 覆盖部分参数
     config = TrainingConfig.from_config(cfg)     # 从 pydantic Config 构建
 """
-
-from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
@@ -88,7 +91,6 @@ class TrainingConfig:
     # ============================================================
     # 其他
     # ============================================================
-    flag_step: float = 0.01
     use_amp: bool = True
 
     @property
@@ -149,7 +151,6 @@ class TrainingConfig:
             # Memory Bank
             memory_bank_size=cfg.memory_bank.memory_bank_size,
             # 其他
-            flag_step=cfg.training.flag_step,
             use_amp=True,
         )
 
@@ -187,6 +188,5 @@ class TrainingConfig:
             "dropedge_pathway": self.dropedge_pathway,
             "dropedge_cpi": self.dropedge_cpi,
             "memory_bank_size": self.memory_bank_size,
-            "flag_step": self.flag_step,
             "use_amp": self.use_amp,
         }

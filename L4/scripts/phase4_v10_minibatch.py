@@ -210,7 +210,6 @@ USE_ESM_SIMILARITY_NEG = _cfg.negative_sampling.use_esm_similarity_neg if _cfg e
 TOPO_NEIGHBORS_TOP_K = _cfg.negative_sampling.topo_neighbors_top_k if _cfg else 50
 ESM_SIMILARITY_TOP_K = _cfg.negative_sampling.esm_similarity_top_k if _cfg else 50
 
-FLAG_STEP = _cfg.training.flag_step if _cfg else 0.01
 SCORE_CLAMP = _cfg.model.score_clamp if _cfg else 10
 DECODER_TYPE = _cfg.model.decoder_type if _cfg else "mlp"
 DECODER_INIT_SCHEME = _cfg.decoder.init_scheme if _cfg else "xavier"
@@ -825,10 +824,9 @@ def load_protein_features(use_esm2: bool = True) -> tuple[dict[str, np.ndarray],
         esm_dim = next(iter(esm2_embeddings.values())).shape[0]
         missing_genes = set(genes) - set(esm2_embeddings.keys())
         if missing_genes:
-            logger.warning(f"ESM-2 缺失 {len(missing_genes)} 个基因的嵌入，用随机初始化填充")
-            rng = np.random.RandomState(42)
+            logger.warning(f"ESM-2 缺失 {len(missing_genes)} 个基因的嵌入，已用零填充（禁止随机初始化）")
             for g in missing_genes:
-                esm2_embeddings[g] = rng.randn(esm_dim).astype(np.float32) * 0.01
+                esm2_embeddings[g] = np.zeros(esm_dim, dtype=np.float32)
 
         prot_feat = esm2_embeddings
         logger.info(f"蛋白特征 (ESM-2): {len(prot_feat)} 基因, dim={esm_dim}")
@@ -1109,12 +1107,10 @@ def build_graphs_and_adj(
         if gene in prot_feat:
             prot_matrix[idx] = prot_feat[gene]
         else:
-            seed = hash(gene) % (2**31)
-            rng = np.random.RandomState(seed)
-            prot_matrix[idx] = rng.randn(prot_feat_dim).astype(np.float32) * 0.01
+            prot_matrix[idx] = 0.0
             n_no_feat += 1
     if n_no_feat > 0:
-        logger.info(f"  无蛋白特征基因（随机初始化）: {n_no_feat}")
+        logger.warning(f"  无蛋白特征基因（缺失特征，已用零填充）: {n_no_feat}")
 
     # ---- v17-ESM2: 通路隶属关系特征 ----
     # 为 SAGE 模型添加通路信息的独立投影器
@@ -2439,7 +2435,7 @@ def _validate_sage(model, x, homo_edge_index, val_compounds, all_compound_to_pos
                         pos_comp_emb, pos_prot_emb, prot_residue_indices=pos_dst_t
                     ).reshape(-1) / T
                     pos_residue_scores = torch.clamp(pos_residue_scores, -SCORE_CLAMP, SCORE_CLAMP)
-                    for s, d, score in zip(pos_src_list, pos_dst_list, pos_residue_scores):
+                    for s, d, score in zip(pos_src_list, pos_dst_list, pos_residue_scores, strict=False):
                         pos_key_to_residue_score[(int(s), int(d))] = torch.sigmoid(score).item()
                 except torch.cuda.OutOfMemoryError as e:
                     logger.warning(f"_validate_sage: 正样本残基路径 OOM，验证回退到 fast bilinear: {e}")
@@ -2926,7 +2922,7 @@ def _predict_hgt_target_proteins_minibatch(
                     missing_targets.add(p_local)
 
     if missing_targets:
-        logger.warning(f"  HGT mini-batch 推理缺失 {len(missing_targets)} 个目标蛋白嵌入，已置零: {sorted(list(missing_targets))[:10]}")
+        logger.warning(f"  HGT mini-batch 推理缺失 {len(missing_targets)} 个目标蛋白嵌入，已置零: {sorted(missing_targets)[:10]}")
 
     return full_prot_emb[target_local_indices]
 

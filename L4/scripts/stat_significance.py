@@ -83,11 +83,11 @@ def _prepare_data():
 
     # 拆分
     all_compounds = sorted(graphs["smi_to_idx"].values())
-    all_proteins = sorted(set(
+    all_proteins = sorted({
         graphs["gene_to_idx"][g] - graphs["n_compounds"]
         for g in graphs["gene_to_idx"]
         if graphs["gene_to_idx"][g] >= graphs["n_compounds"]
-    ))
+    })
     import random
     random.seed(42)
     random.shuffle(all_compounds)
@@ -175,11 +175,11 @@ def _prepare_data():
     graphs["hetero_data_prot_cold"] = hetero_data_prot_cold
     graphs["hetero_data_train"] = hetero_data_train
 
-    compound_to_pos_serializable = {str(k): sorted(list(v)) for k, v in compound_to_pos.items()}
+    compound_to_pos_serializable = {str(k): sorted(v) for k, v in compound_to_pos.items()}
     split_params = {
         "train_compounds": train_compounds,
         "val_compounds": val_compounds,
-        "val_proteins": sorted(list(val_proteins)),
+        "val_proteins": sorted(val_proteins),
         "compound_to_pos": compound_to_pos_serializable,
         "n_compounds": graphs["n_compounds"],
         "n_proteins": graphs["n_proteins"],

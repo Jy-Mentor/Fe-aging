@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 import requests
 
 # The main page redirects to /rwd/bind/index.jsp
@@ -9,7 +12,7 @@ try:
 except Exception as e:
     print(f"rwd/bind WSDL error: {e}")
 
-# Try the API on bdb99.ucsd.edu  
+# Try the API on bdb99.ucsd.edu
 url2 = "https://bdb99.ucsd.edu/axis2/services/BDBService?wsdl"
 try:
     resp2 = requests.get(url2, timeout=30, verify=False)

@@ -8,7 +8,7 @@
 
 参考:
   - Hu et al. (2020) "Heterogeneous Graph Transformer", WWW
-  - GraphBAN (Nature Communications, 2025): 双线性注意力用于化合物-蛋白交互建模
+  - Hadipour et al. (2025) "GraphBAN: An Inductive Graph-Based Approach for Enhanced Prediction of Compound-Protein Interactions", Nature Communications, DOI:10.1038/s41467-025-57536-9
 """
 
 from __future__ import annotations

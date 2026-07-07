@@ -211,8 +211,8 @@ def _compute_scaffold(smiles):
             return str(smiles)
         return MurckoScaffold.MurckoScaffoldSmiles(mol=mol, includeChirality=False)
     except Exception:
+        logger.exception("捕获到异常并继续执行（原 except 'Exception' 静默吞掉）")
         return str(smiles)
-
 
 # ============================================================
 # 数据加载
@@ -437,7 +437,7 @@ def load_activity_data(valid_genes):
     # 计算所有正样本指纹并缓存
     unique_smiles = positives["canonical_smiles"].unique()
     _, unique_fps = _compute_ecfp4(unique_smiles)
-    smile_to_fp = dict(zip(unique_smiles, unique_fps))
+    smile_to_fp = dict(zip(unique_smiles, unique_fps, strict=False))
     positives["fp"] = positives["canonical_smiles"].map(smile_to_fp).apply(lambda x: x.tolist())
     positives["fp"] = positives["fp"].apply(np.array)
 
@@ -811,10 +811,7 @@ def train_per_target_models(datasets):
 
         for name, builder in builders.items():
             try:
-                if name == "XGB":
-                    model = builder(scale_pos_weight=scale_pos_weight)
-                else:
-                    model = builder()
+                model = builder(scale_pos_weight=scale_pos_weight) if name == "XGB" else builder()
                 auc, auc_std, aupr, aupr_std = _cv_evaluate(
                     model,
                     ds["X"],

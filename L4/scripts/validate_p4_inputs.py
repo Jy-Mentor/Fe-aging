@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+import logging
+logger = logging.getLogger(__name__)
+
 """P4输入文件完整性验证"""
 import pandas as pd
 import numpy as np

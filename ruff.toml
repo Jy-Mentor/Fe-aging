@@ -52,7 +52,6 @@ ignore = [
     "N812",  # `import torch.nn.functional as F` 为 PyTorch 社区惯例
     "PTH",   # pathlib 迁移保留，不强制
     "SIM102",  # 允许清晰的双层 if
-    "SIM105",  # 允许 try-except-pass 模式
     "SIM114",  # 允许重复 elif 分支保持可读性
     "SIM118",  # 允许显式 dict.keys()/values()
     "UP015",  # 允许显式 mode 参数

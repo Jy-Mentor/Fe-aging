@@ -196,23 +196,28 @@ def build_multifingerprint_features(smiles_list, rdkit_scaler=None):
     binary_labels = []
 
     fp = compute_ecfp(smiles_list, radius=2, nbits=2048)
-    binary_fps.append(fp); binary_labels.append("ECFP4")
+    binary_fps.append(fp)
+    binary_labels.append("ECFP4")
     logger.info(f"    ECFP4: {fp.shape} (binary, no scaling)")
 
     fp = compute_ecfp(smiles_list, radius=3, nbits=2048)
-    binary_fps.append(fp); binary_labels.append("ECFP6")
+    binary_fps.append(fp)
+    binary_labels.append("ECFP6")
     logger.info(f"    ECFP6: {fp.shape} (binary, no scaling)")
 
     fp = compute_maccs(smiles_list)
-    binary_fps.append(fp); binary_labels.append("MACCS")
+    binary_fps.append(fp)
+    binary_labels.append("MACCS")
     logger.info(f"    MACCS: {fp.shape} (binary, no scaling)")
 
     fp = compute_atom_pairs(smiles_list, nbits=1024)
-    binary_fps.append(fp); binary_labels.append("AtomPairs")
+    binary_fps.append(fp)
+    binary_labels.append("AtomPairs")
     logger.info(f"    AtomPairs: {fp.shape} (binary, no scaling)")
 
     fp = compute_avalon(smiles_list, nbits=1024)
-    binary_fps.append(fp); binary_labels.append("Avalon")
+    binary_fps.append(fp)
+    binary_labels.append("Avalon")
     logger.info(f"    Avalon: {fp.shape} (binary, no scaling)")
 
     X_binary = np.hstack(binary_fps).astype(np.float32)
@@ -292,6 +297,7 @@ def get_scaffold(smiles):
         scaffold = Chem.MolToSmiles(scaffold_mol) if scaffold_mol else ""
         return scaffold if scaffold else "NO_SCAFFOLD"
     except Exception:
+        logger.exception("捕获到异常并继续执行（原 except 'Exception' 静默吞掉）")
         return "INVALID"
 
 def scaffold_split(pair_smiles, y, test_size=0.2, random_state=42):
@@ -308,7 +314,7 @@ def scaffold_split(pair_smiles, y, test_size=0.2, random_state=42):
     sorted_scaffolds = sorted(unique_scaffolds, key=lambda s: scaffold_sizes[s], reverse=True)
     test_scaffolds = set(rng.choice(sorted_scaffolds, test_n_scaffolds, replace=False))
 
-    smiles_to_scaffold = dict(zip(unique_smiles, scaffolds))
+    smiles_to_scaffold = dict(zip(unique_smiles, scaffolds, strict=False))
     test_smiles = {s for s, sc in smiles_to_scaffold.items() if sc in test_scaffolds}
     test_mask = np.array([s in test_smiles for s in pair_smiles])
     train_idx = np.where(~test_mask)[0]
@@ -347,7 +353,7 @@ def diversity_constrained_negative_sampling(
     n_genes = len(cpi_genes_in_emb)
     n_neg_target = len(pos_pairs) * neg_ratio
 
-    gene_neg_counts = {gi: 0 for gi in range(n_genes)}
+    gene_neg_counts = dict.fromkeys(range(n_genes), 0)
     max_per_gene = max(1, n_neg_target // n_genes + 1)
 
     neg_idx_set = set()
@@ -357,7 +363,7 @@ def diversity_constrained_negative_sampling(
     while len(neg_idx_set) < n_neg_target and len(neg_idx_set) < max_attempts:
         batch_comp = rng.randint(0, n_compounds, size=batch_size)
         batch_gene = rng.randint(0, n_genes, size=batch_size)
-        for ci, gi in zip(batch_comp, batch_gene):
+        for ci, gi in zip(batch_comp, batch_gene, strict=False):
             pair = (ci, gi)
             if pair in pos_idx_set or pair in neg_idx_set:
                 continue
@@ -419,10 +425,7 @@ def compute_metrics(y_true, y_prob):
     for pct in [0.5, 1.0, 2.0, 5.0]:
         fp_rate = pct / 100.0
         idx = np.argmin(np.abs(fpr - fp_rate))
-        if fpr[idx] > 1e-8:
-            roce = tpr[idx] / fpr[idx]
-        else:
-            roce = 0.0
+        roce = tpr[idx] / fpr[idx] if fpr[idx] > 1e-08 else 0.0
         metrics[f"ROCE@{pct}%"] = roce
 
     return metrics
@@ -503,7 +506,9 @@ class StackingEnsemble:
                 n_jobs=-1, verbose=-1,
             )))
         except ImportError:
+            logger.exception("捕获到异常并继续执行（原 except 'ImportError' 静默吞掉）")
             pass
+
         try:
             import xgboost as xgb
             models.append(("XGB", xgb.XGBClassifier(
@@ -511,7 +516,9 @@ class StackingEnsemble:
                 random_state=self.random_state, n_jobs=-1, verbosity=0,
             )))
         except ImportError:
+            logger.exception("捕获到异常并继续执行（原 except 'ImportError' 静默吞掉）")
             pass
+
         return models
 
     def fit(self, X, y):
@@ -578,16 +585,21 @@ def optuna_optimize_all_models(X_train, y_train, X_val, y_val, n_trials=30, rand
         import lightgbm as lgb
         model_types.append("lgb")
     except ImportError:
+        logger.exception("捕获到异常并继续执行（原 except 'ImportError' 静默吞掉）")
         pass
+
     try:
         import xgboost as xgb
         model_types.append("xgb")
     except ImportError:
+        logger.exception("捕获到异常并继续执行（原 except 'ImportError' 静默吞掉）")
         pass
+
     try:
         from catboost import CatBoostClassifier
         model_types.append("cb")
     except ImportError:
+        logger.exception("捕获到异常并继续执行（原 except 'ImportError' 静默吞掉）")
         pass
 
     best_params_per_model = {}
@@ -855,7 +867,9 @@ def train_ensemble(X, y, pair_smiles, best_params_per_model=None, n_folds=5, ran
         )
         r = evaluate_model(rf, X_train, y_train, X_test, y_test, "RandomForest")
         if r:
-            r["fold"] = fold; fold_results.append(r); results.append(r)
+            r["fold"] = fold
+            fold_results.append(r)
+            results.append(r)
             logger.info(f"    AUC={r['AUC']:.4f}, AUPR={r['AUPR']:.4f}, F1={r['F1']:.4f}")
 
         # 2. XGBoost
@@ -875,7 +889,9 @@ def train_ensemble(X, y, pair_smiles, best_params_per_model=None, n_folds=5, ran
             )
             r = evaluate_model(xgb_model, X_train, y_train, X_test, y_test, "XGBoost")
             if r:
-                r["fold"] = fold; fold_results.append(r); results.append(r)
+                r["fold"] = fold
+                fold_results.append(r)
+                results.append(r)
                 logger.info(f"    AUC={r['AUC']:.4f}, AUPR={r['AUPR']:.4f}, F1={r['F1']:.4f}")
         except ImportError:
             logger.warning("XGBoost 未安装")
@@ -895,7 +911,9 @@ def train_ensemble(X, y, pair_smiles, best_params_per_model=None, n_folds=5, ran
             )
             r = evaluate_model(lgb_model, X_train, y_train, X_test, y_test, "LightGBM")
             if r:
-                r["fold"] = fold; fold_results.append(r); results.append(r)
+                r["fold"] = fold
+                fold_results.append(r)
+                results.append(r)
                 logger.info(f"    AUC={r['AUC']:.4f}, AUPR={r['AUPR']:.4f}, F1={r['F1']:.4f}")
         except ImportError:
             logger.warning("LightGBM 未安装")
@@ -915,7 +933,9 @@ def train_ensemble(X, y, pair_smiles, best_params_per_model=None, n_folds=5, ran
             )
             r = evaluate_model(cb_model, X_train, y_train, X_test, y_test, "CatBoost")
             if r:
-                r["fold"] = fold; fold_results.append(r); results.append(r)
+                r["fold"] = fold
+                fold_results.append(r)
+                results.append(r)
                 logger.info(f"    AUC={r['AUC']:.4f}, AUPR={r['AUPR']:.4f}, F1={r['F1']:.4f}")
         except ImportError:
             logger.warning("CatBoost 未安装")
@@ -925,7 +945,9 @@ def train_ensemble(X, y, pair_smiles, best_params_per_model=None, n_folds=5, ran
         stacking = StackingEnsemble(n_folds=5, random_state=random_seed)
         r = evaluate_model(stacking, X_train, y_train, X_test, y_test, "StackingEnsemble")
         if r:
-            r["fold"] = fold; fold_results.append(r); results.append(r)
+            r["fold"] = fold
+            fold_results.append(r)
+            results.append(r)
             logger.info(f"    AUC={r['AUC']:.4f}, AUPR={r['AUPR']:.4f}, F1={r['F1']:.4f}")
 
     return pd.DataFrame(results)
@@ -1019,7 +1041,8 @@ def main():
 
     pos_pairs = []
     for _, row in cpi_df.iterrows():
-        smi = str(row["canonical_smiles"]); gene = str(row["gene"])
+        smi = str(row["canonical_smiles"])
+        gene = str(row["gene"])
         if smi in smiles_to_idx and gene in protein_embeddings:
             pos_pairs.append((smi, gene))
     logger.info(f"  正样本: {len(pos_pairs)} 对")
@@ -1040,7 +1063,8 @@ def main():
         ci = smiles_to_idx[smi]
         X[i, :comp_dim] = compound_features[ci]
         X[i, comp_dim:] = protein_embeddings[gene]
-        pair_smiles.append(smi); pair_genes.append(gene)
+        pair_smiles.append(smi)
+        pair_genes.append(gene)
 
     pair_smiles = np.array(pair_smiles)
     logger.info(f"  数据集: {n_pairs} 样本, {feat_dim} 特征, 正比例={y.mean():.3f}")
@@ -1178,7 +1202,7 @@ def main():
         n_genes_above_50=("score", lambda x: (x >= 0.5).sum()),
         top_3_genes=("score", lambda x: "|".join(
             [f"{g}({s:.2f})" for g, s in sorted(
-                zip(list(pred_df.loc[x.index, "gene"]), list(x)),
+                zip(list(pred_df.loc[x.index, "gene"]), list(x), strict=False),
                 key=lambda v: v[1], reverse=True
             )[:3]]
         )),

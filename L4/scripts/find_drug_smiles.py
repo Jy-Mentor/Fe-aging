@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 import pandas as pd
 
 # Check if ChEMBL data has SMILES for the DrugBank drugs by name
@@ -7,7 +10,7 @@ main_cpi = pd.read_csv(r'd:\铁衰老 绝不重蹈覆辙\L4\results\experimental
 # Target drug names from DrugBank
 target_drugs = {
     'DB00159': 'Icosapent',
-    'DB00412': 'Rosiglitazone', 
+    'DB00412': 'Rosiglitazone',
     'DB00197': 'Troglitazone',
     'DB00030': 'Insulin human',
     'DB01629': '5-fluorouridine',

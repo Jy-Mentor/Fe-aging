@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 """
 诊断脚本：追踪 96 个铁衰老基因在管线各层的过滤状态
 输出每层筛掉哪些基因、原因是什么
@@ -47,7 +50,7 @@ if prot_feat_path.exists():
     elif "Gene" in prot_feat_df.columns:
         PROT_FEAT_GENES = set(prot_feat_df["Gene"].dropna().unique())
     else:
-        PROT_FEAT_GENES = set(str(c) for c in prot_feat_df.iloc[:, 0].dropna().unique())
+        PROT_FEAT_GENES = {str(c) for c in prot_feat_df.iloc[:, 0].dropna().unique()}
 else:
     PROT_FEAT_GENES = set()
 
@@ -79,7 +82,7 @@ ppi_df = pd.read_csv(L1_RESULTS / "ppi_network_extended_edges.csv")
 ppi_genes = set()
 for col in ["gene_a", "gene_b", "source", "target"]:
     if col in ppi_df.columns:
-        ppi_genes |= set(str(x).strip().upper() for x in ppi_df[col].dropna())
+        ppi_genes |= {str(x).strip().upper() for x in ppi_df[col].dropna()}
 
 print(f"\n第3层: PPI 网络过滤")
 print(f"  PPI 网络中: {len(ppi_genes)} 个基因")

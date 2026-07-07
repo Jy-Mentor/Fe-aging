@@ -125,7 +125,6 @@ training:
   pheno_lambda: 0.05
   dropedge_ppi: 0.15
   dropedge_pathway: 0.10
-  flag_step: 0.01
 
 # ---- Memory Bank ----
 memory_bank:

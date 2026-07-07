@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 铁衰老项目 - 数据补充脚本 v25
 根据数据真实性验证报告，执行以下补充操作:
@@ -203,7 +202,7 @@ def task2_cpi_leakage():
         
         overlap_smiles = []
         overlap_mol_ids = []
-        for i, (smi, smi_ns) in enumerate(zip(tcm_smiles, tcm_smiles_nostereo)):
+        for i, (smi, smi_ns) in enumerate(zip(tcm_smiles, tcm_smiles_nostereo, strict=False)):
             if smi_ns in cpi_smiles_set:
                 overlap_smiles.append(smi)
                 overlap_mol_ids.append(tcm_df.iloc[i].get("MOL_ID", f"row_{i}"))
@@ -227,8 +226,8 @@ def task2_cpi_leakage():
                 smi_ns = get_canonical_nostereo(smi)
                 mol_id = overlap_mol_ids[i]
                 cpi_info = cpi_smiles_detail.get(smi_ns, [])
-                genes = list(set([x["gene"] for x in cpi_info]))
-                sources = list(set([x["source"] for x in cpi_info]))
+                genes = list({x["gene"] for x in cpi_info})
+                sources = list({x["source"] for x in cpi_info})
                 leakage_lines.append(f"  [{i+1}] MOL_ID={mol_id}")
                 leakage_lines.append(f"      SMILES: {smi}")
                 leakage_lines.append(f"      CPI训练集中关联基因: {genes}")
@@ -296,7 +295,7 @@ def task3_kegg_pathway_supplement():
         kegg_pathway_info = {}
         for gene in genes_in_kegg:
             gene_pathways = kegg_df[kegg_df["gene_symbol"] == gene]
-            pathways = list(zip(gene_pathways["pathway_id"], gene_pathways["pathway_name"]))
+            pathways = list(zip(gene_pathways["pathway_id"], gene_pathways["pathway_name"], strict=False))
             kegg_pathway_info[gene] = pathways
         
         # 尝试从Reactome API补充

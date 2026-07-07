@@ -378,6 +378,7 @@ def train_evaluate_models_v4(X, y_reg, y_cls, w, target_gene, n_positives, n_hig
                 scores = cross_val_score(model, X, y, cv=cv, scoring=scoring)
             return float(np.mean(scores)), float(np.std(scores))
         except Exception as e:
+            logger.exception("捕获到异常并继续执行（原 except 'Exception as e' 静默吞掉）")
             return None, str(e)[:80]
 
     # --- 回归模型 (预测相似度) ---
@@ -403,6 +404,7 @@ def train_evaluate_models_v4(X, y_reg, y_cls, w, target_gene, n_positives, n_hig
             results["XGBR_MSE_std"] = round(s, 4)
             logger.info(f"  XGBR MSE: {-m:.4f} +/- {s:.4f}")
     except ImportError:
+        logger.exception("捕获到异常并继续执行（原 except 'ImportError' 静默吞掉）")
         pass
 
     # SVR
@@ -446,6 +448,7 @@ def train_evaluate_models_v4(X, y_reg, y_cls, w, target_gene, n_positives, n_hig
             results["XGBC_AUC_std"] = round(s, 4)
             logger.info(f"  XGBC AUC: {m:.4f} +/- {s:.4f}")
     except ImportError:
+        logger.exception("捕获到异常并继续执行（原 except 'ImportError' 静默吞掉）")
         pass
 
     # LR

@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 import pandas as pd
 import numpy as np
 from rdkit import Chem
@@ -52,7 +55,7 @@ combined_new = combined_new.drop_duplicates(subset=['gene', 'canonical_smiles'])
 
 # 6. Stats
 with open(r'd:\铁衰老 绝不重蹈覆辙\铁衰老基因.txt','r',encoding='utf-8') as f:
-    iron_genes = set(line.strip() for line in f if line.strip())
+    iron_genes = {line.strip() for line in f if line.strip()}
 iron_in = combined_new[combined_new['gene'].isin(iron_genes)]
 print(f'\nMerged: {len(combined_new)} rows, {combined_new.gene.nunique()} genes')
 print(f'Iron-aging genes: {iron_in.gene.nunique()}/{len(iron_genes)}')

@@ -362,8 +362,8 @@ def get_scaffold(smiles):
         scaffold = rdMolDescriptors.MurckoScaffoldSmiles(mol)
         return scaffold if scaffold else "NO_SCAFFOLD"
     except Exception:
+        logger.exception("捕获到异常并继续执行（原 except 'Exception' 静默吞掉）")
         return "INVALID"
-
 
 def scaffold_split(pair_smiles, y, test_size=0.2, random_state=42):
     """按化合物 Bemis-Murcko 骨架拆分，确保同一骨架的化合物不在train/test间泄漏"""
@@ -383,7 +383,7 @@ def scaffold_split(pair_smiles, y, test_size=0.2, random_state=42):
     test_scaffolds = set(rng.choice(sorted_scaffolds, test_n_scaffolds, replace=False))
 
     # 化合物级别的 train/test 分配
-    smiles_to_scaffold = dict(zip(unique_smiles, scaffolds))
+    smiles_to_scaffold = dict(zip(unique_smiles, scaffolds, strict=False))
     test_smiles = {s for s, sc in smiles_to_scaffold.items() if sc in test_scaffolds}
 
     # 对 pair 级别分配
@@ -447,7 +447,7 @@ def build_dataset(
     while len(neg_idx_set) < n_neg_target:
         batch_comp = rng.randint(0, n_compounds, size=batch_size)
         batch_gene = rng.randint(0, n_genes, size=batch_size)
-        for ci, gi in zip(batch_comp, batch_gene):
+        for ci, gi in zip(batch_comp, batch_gene, strict=False):
             pair = (ci, gi)
             if pair not in pos_idx_set and pair not in neg_idx_set:
                 neg_idx_set.add(pair)
@@ -858,7 +858,7 @@ def main():
         n_genes_above_50=("score", lambda x: (x >= 0.5).sum()),
         top_3_genes=("score", lambda x: "|".join(
             [f"{g}({s:.2f})" for g, s in sorted(
-                zip(list(pred_df.loc[x.index, "gene"]), list(x)),
+                zip(list(pred_df.loc[x.index, "gene"]), list(x), strict=False),
                 key=lambda v: v[1], reverse=True
             )[:3]]
         )),

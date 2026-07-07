@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 import requests
 
 # The ByUniProtids.jsp page is 11MB - let's look at the structure

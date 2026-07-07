@@ -38,9 +38,7 @@ def _is_degenerate(y_true: np.ndarray, y_score: np.ndarray) -> bool:
     if not np.isfinite(y_score).all():
         return True
     # 所有预测分数相同（含退化的常数输出）时，AUC/ROCE 无区分能力
-    if len(np.unique(y_score)) <= 1:
-        return True
-    return False
+    return len(np.unique(y_score)) <= 1
 
 
 def safe_roc_auc_score(

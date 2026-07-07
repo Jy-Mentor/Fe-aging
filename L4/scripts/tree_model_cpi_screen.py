@@ -297,7 +297,7 @@ def build_dataset(
         # 批量生成随机索引
         batch_comp = rng.randint(0, n_compounds, size=batch_size)
         batch_gene = rng.randint(0, n_genes, size=batch_size)
-        for ci, gi in zip(batch_comp, batch_gene):
+        for ci, gi in zip(batch_comp, batch_gene, strict=False):
             pair = (ci, gi)
             if pair not in pos_idx_set and pair not in neg_idx_set:
                 neg_idx_set.add(pair)
@@ -671,7 +671,7 @@ def main():
         n_genes_above_50=("score", lambda x: (x >= 0.5).sum()),
         top_3_genes=("score", lambda x: "|".join(
             [f"{g}({s:.2f})" for g, s in sorted(
-                zip(list(x), list(pred_df.loc[x.index, "score"])),
+                zip(list(x), list(pred_df.loc[x.index, "score"]), strict=False),
                 key=lambda v: v[1], reverse=True
             )[:3]]
         )),

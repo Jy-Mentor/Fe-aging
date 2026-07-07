@@ -72,7 +72,6 @@ def train_sage(
     batch_size: int = 256,
     num_neighbors: list[int] = None,
     prot_to_path_neighbors: dict[int, set] | None = None,
-    flag_step: float = 0.01,
     two_stage: bool = False,
     pretrain_epochs: int = 0,
     pretrain_lr: float | None = None,
@@ -214,9 +213,6 @@ def train_sage(
             edge_index = drop_edge(edge_index, p=dropedge_ppi)
 
             sub_x = x[torch.tensor(node_list, device=device)]
-            if flag_step > 0:
-                sub_x = sub_x + flag_step * torch.randn_like(sub_x)
-                sub_x = sub_x.detach()
             n_compounds_in_sub = sum(1 for n in node_list if n < n_compounds)
             with autocast('cuda', enabled=use_amp):
                 node_emb = model(sub_x, edge_index, n_compounds=n_compounds_in_sub)
@@ -420,7 +416,8 @@ def train_sage(
                         try:
                             pheno_auc = roc_auc_score(val_pheno_labels_t.cpu().numpy(),
                                                       torch.sigmoid(val_pheno_logits).cpu().numpy())
-                        except ValueError:
+                        except ValueError as e:
+                            logger.warning(f"表型 AUC 计算退化（仅一类标签）: {e}，回退为 0.5")
                             pheno_auc = 0.5
 
             hist_entry = {"epoch": epoch, "loss": avg_loss, **m}
@@ -481,7 +478,6 @@ def train_hgt(
     batch_size: int = 128,
     num_neighbors: list[int] = None,
     prot_to_path_neighbors: dict[int, set] | None = None,
-    flag_step: float = 0.01,
     two_stage: bool = False,
     pretrain_epochs: int = 0,
     pretrain_lr: float | None = None,
@@ -624,11 +620,6 @@ def train_hgt(
 
             sg["compound"].x = hetero_data["compound"].x[torch.tensor(comp_sorted, device=device)]
             sg["protein"].x = hetero_data["protein"].x[torch.tensor(prot_sorted, device=device)]
-            if flag_step > 0:
-                sg["compound"].x = sg["compound"].x + flag_step * torch.randn_like(sg["compound"].x)
-                sg["protein"].x = sg["protein"].x + flag_step * torch.randn_like(sg["protein"].x)
-                sg["compound"].x = sg["compound"].x.detach()
-                sg["protein"].x = sg["protein"].x.detach()
             if path_sorted:
                 path_global_tensor = torch.tensor(sg._path_global, device=device)
                 path_global_tensor = torch.clamp(path_global_tensor, min=0,

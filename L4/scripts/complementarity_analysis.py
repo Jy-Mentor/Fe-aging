@@ -62,7 +62,7 @@ def cka_similarity(X: np.ndarray, Y: np.ndarray) -> float:
     return hsic / (var_x * var_y)
 
 
-def get_protein_degrees(homo_adj: Dict[int, List[int]], n_compounds: int, all_proteins: List[int]) -> Dict[int, int]:
+def get_protein_degrees(homo_adj: dict[int, list[int]], n_compounds: int, all_proteins: list[int]) -> dict[int, int]:
     """计算每个蛋白的 PPI 度"""
     degrees = {}
     for p in all_proteins:
@@ -97,11 +97,11 @@ def main():
 
     # ── 拆分 ──
     all_compounds = sorted(graphs["smi_to_idx"].values())
-    all_proteins = sorted(set(
+    all_proteins = sorted({
         graphs["gene_to_idx"][g] - n_compounds
         for g in graphs["gene_to_idx"]
         if graphs["gene_to_idx"][g] >= n_compounds
-    ))
+    })
     import random
     random.seed(42)
     random.shuffle(all_compounds)

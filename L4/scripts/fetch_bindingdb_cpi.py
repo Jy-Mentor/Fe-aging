@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+import logging
+logger = logging.getLogger(__name__)
+
 """
 从BindingDB API补充铁衰老基因的CPI数据
 """
@@ -38,7 +40,7 @@ KNOWN_UNIPROT_MAP = {
     "LGMN": "Q99538", "NOX4": "Q9NPH5", "PTGS2": "P35354",
     "KDM6B": "O15054", "LCN2": "P80188", "SAT1": "P21673",
     "TFRC": "P02786", "KEAP1": "Q14145", "IL1B": "P01584",
-    "CXCL10": "P02778", "CD74": "P04233", "CTSB": "P07858",
+    "CXCL10": "P02778", "CTSB": "P07858",
     "S100A8": "P05109", "LPCAT3": "Q6P1A2", "ACVR1B": "P36896",
     "EPHA2": "P29317", "ERN1": "O75460", "DPP4": "P27487",
     "MAPK14": "Q16539", "NLRP3": "Q96P20", "MPO": "P05164",
@@ -140,7 +142,7 @@ def query_bindingdb_by_uniprot(uniprot_id, gene_symbol):
                 print(f"  [警告] {gene_symbol} 返回XML格式，尝试解析...")
                 # 简单的XML解析
                 return records
-            except:
+            except Exception:
                 print(f"  [警告] 无法解析BindingDB响应 for {gene_symbol}")
                 return records
         
@@ -191,9 +193,10 @@ def parse_bindingdb_affinity(aff_data, gene_symbol, uniprot_id):
             # 可能是JSON字符串
             try:
                 aff_data = json.loads(aff_data)
-            except:
+            except Exception:
+                logger.exception("捕获到异常并继续执行（原 except '' 静默吞掉）")
                 return None
-        
+
         smiles = None
         ic50_value = None
         ic50_unit = "nM"
@@ -217,7 +220,9 @@ def parse_bindingdb_affinity(aff_data, gene_symbol, uniprot_id):
                 "source": "BindingDB"
             }
     except Exception as e:
+        logger.exception("捕获到异常并继续执行（原 except 'Exception as e' 静默吞掉）")
         pass
+
     return None
 
 
@@ -274,7 +279,7 @@ def main():
     else:
         # 创建空文件保持格式
         df_result = pd.DataFrame(columns=[
-            "gene", "uniprot_id", "canonical_smiles", 
+            "gene", "uniprot_id", "canonical_smiles",
             "activity_value", "activity_unit", "activity_type",
             "pubmed_id", "source"
         ])

@@ -1,23 +1,19 @@
 {
-  "name": "生理学复习练习",
-  "short_name": "生理学复习",
-  "start_url": "./physiology_quiz.html",
+  "name": "中国近现代史纲要 - 复习练习",
+  "short_name": "纲要题库",
+  "description": "中国近现代史纲要复习练习，共300道单选题，支持错题重练与收藏",
+  "start_url": "./history_quiz.html",
   "display": "standalone",
-  "background_color": "#f4f8fa",
+  "orientation": "portrait",
+  "background_color": "#f5f7fa",
   "theme_color": "#1a6b8a",
-  "orientation": "portrait-primary",
-  "scope": "./",
   "lang": "zh-CN",
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='24' fill='%231a6b8a'/%3E%3Ctext x='96' y='120' font-size='96' text-anchor='middle' fill='white' font-family='Arial'%3E📚%3C/text%3E%3C/svg%3E",
-      "sizes": "192x192",
-      "type": "image/svg+xml"
-    },
-    {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='48' fill='%231a6b8a'/%3E%3Ctext x='256' y='320' font-size='256' text-anchor='middle' fill='white' font-family='Arial'%3E📚%3C/text%3E%3C/svg%3E",
-      "sizes": "512x512",
-      "type": "image/svg+xml"
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231a6b8a'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='white' font-family='sans-serif'>史</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
   ]
 }

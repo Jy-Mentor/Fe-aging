@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 铁衰老项目 - 数据真实性全面校验脚本
 验证所有关键数据文件的真实性、完整性和一致性
@@ -8,10 +7,14 @@
 import os
 import sys
 import re
+import logging
 import numpy as np
 import pandas as pd
 from datetime import datetime
 from collections import defaultdict
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+logger = logging.getLogger(__name__)
 
 # ── RDKit: 用于 SMILES 校验 ──
 try:
@@ -19,7 +22,7 @@ try:
     HAS_RDKIT = True
 except ImportError:
     HAS_RDKIT = False
-    print("WARNING: RDKit not available, SMILES validation will be skipped")
+    logger.warning("RDKit not available, SMILES validation will be skipped")
 
 # ============================================================
 # 配置
@@ -63,10 +66,7 @@ def log(msg, level="INFO"):
         "H3":  "  ",
     }
     prefix = prefix_map.get(level, "  ")
-    if level in ("H1", "H2"):
-        line = prefix + "\n" + msg
-    else:
-        line = f"{prefix}{msg}"
+    line = prefix + "\n" + msg if level in ("H1", "H2") else f"{prefix}{msg}"
     print(line)
     report_lines.append(line)
 
@@ -100,7 +100,8 @@ def is_valid_smiles(smi):
     try:
         mol = Chem.MolFromSmiles(smi.strip())
         return mol is not None
-    except Exception:
+    except Exception as e:
+        logger.warning(f"SMILES 校验异常: {smi!r}, 错误: {e}")
         return False
 
 

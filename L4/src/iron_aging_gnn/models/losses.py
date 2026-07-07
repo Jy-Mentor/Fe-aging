@@ -147,9 +147,9 @@ def compute_cpi_loss(
     prot_to_topo_hard_neighbors: dict[int, set] | None = None,
 ) -> torch.Tensor:
     """.. deprecated:: v25
-        此函数已废弃。实际逻辑请使用 ``L4/scripts/phase4_v10_minibatch.py``
-        中的 ``_compute_cpi_loss``（v37+），该版本新增了 ``compound_to_prot_locals``
-        向量化 mask、``_get_residue_indices`` 残基索引辅助、以及 OOM 降级处理。
+    此函数已废弃。实际逻辑请使用 ``L4/scripts/phase4_v10_minibatch.py``
+    中的 ``_compute_cpi_loss``（v37+），该版本新增了 ``compound_to_prot_locals``
+    向量化 mask、``_get_residue_indices`` 残基索引辅助、以及 OOM 降级处理。
     """
     n_batch_prots = prot_emb.shape[0]
     T = model.temperature
