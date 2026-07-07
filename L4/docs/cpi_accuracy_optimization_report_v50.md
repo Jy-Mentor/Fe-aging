@@ -150,15 +150,18 @@ C:\Users\Jy-Mentor-7\anaconda3\envs\gat_env\python.exe -u `
 
 | 实验 | best val_auc | best val_aupr | 训练时间 | 备注 |
 |------|--------------|---------------|----------|------|
-| Baseline (bilinear) | **0.6291** | **0.1192** | 6.4 min | 第 2 epoch 后指标在 0.60~0.63 区间波动，未继续提升 |
-| Optimized (residue_bilinear) | **0.6959** | **0.1699** | 17.1 min | 第 6 epoch 达到最佳，后续回落到 0.53 |
+| v50 Baseline (bilinear) | **0.6291** | **0.1192** | 6.4 min | 第 2 epoch 后指标在 0.60~0.63 区间波动，未继续提升 |
+| v50 Optimized (residue_bilinear) | **0.6959** | **0.1699** | 17.1 min | 第 6 epoch 达到最佳，后续回落到 0.53 |
+| v51 Baseline (bilinear) | **0.6625** | **0.1308** | 6.9 min | v51 代码下 bilinear 也有小幅提升，预训练 val_auc=0.7086 |
+| v51 Optimized (residue_bilinear) | **0.8977** | **0.8032** | 18.8 min | 学习率调度 + decoder 一致性修复后，AUC 稳定，无崩溃 |
 
 关键观察：
 
-1. **残基注意力带来显著增益**：Optimized 相比 Baseline，best val_auc 提升 **+0.0668**（10.6%），best val_aupr 提升 **+0.0507**（42.6%）。这表明将 ESM-2 逐残基特征 `[L, 640]` 引入化合物-残基交叉注意力，确实能改善 CPI 排序能力。
-2. **AUC 波动仍未消除**：residue_bilinear 在第 6 epoch 达到 0.6959 后，第 8/10 epoch 分别降至 0.5286/0.5335。训练 loss 持续下降（0.0882 → 0.0514 → 0.0388），但验证 AUC 出现明显过拟合，说明模型在记忆训练集负样本分布，而非学习可泛化的排序规则。
-3. **梯度 NaN/Inf 偶发**：两个实验均出现 `梯度 NaN/Inf 已清零: 1 个参数` 警告，主要由 AMP 混合精度或残基路径数值不稳定引起，已靠 GradientMonitor 兜底，但仍是潜在风险。
-4. **详细排名指标未完整保存**：两次运行均写入 `model_performance_v41.csv`，后一次覆盖了前一次，导致 Baseline 的 EF/ROCE/BEDROC 详细指标丢失。后续需为不同实验指定独立输出文件名。
+1. **v51 基础修复本身有收益**：在相同 v51 代码下，bilinear Baseline 从 v50 的 0.6291/0.1192 提升至 0.6625/0.1308（AUC +5.3%，AUPR +9.7%），说明学习率调度和验证 decoder 路径一致性对全局嵌入双线性也有帮助。
+2. **残基注意力仍是主要增益来源**：v51 Optimized 相比 v51 Baseline，best val_auc 提升 **+0.2352**（+35.5%），best val_aupr 提升 **+0.6724**（+514.1%），证明 ESM-2 逐残基特征 `[L, 640]` 是排序能力跃升的关键。
+3. **v50 的 AUC 崩溃已被消除**：v50 residue_bilinear 在第 6 epoch 达到 0.6959 后跌至 0.53；v51 residue_bilinear 在第 6 epoch 短暂回落至 0.7655 后迅速恢复，最终达到 0.8977。
+4. **梯度 NaN/Inf 偶发**：实验仍出现 `梯度 NaN/Inf 已清零` 警告，主要由 AMP 混合精度或残基路径数值不稳定引起，已靠 GradientMonitor 兜底，但仍是潜在风险。
+5. **详细排名指标未完整保存**：多次运行均写入 `model_performance_v41.csv`，后一次覆盖前一次。后续需为不同实验指定独立输出文件名。
 
 ### 4.3 AUC 波动的根因定位
 
@@ -266,4 +269,4 @@ SAGE 微调阶段指标变化：
 - `L4/configs/default.yaml`
 - `L4/scripts/phase4_v10_minibatch.py`
 - `L4/docs/cpi_accuracy_optimization_report_v50.md`（本报告）
-- 实验日志：`L4/logs/gnn_v50_bilinear_baseline.log`、`L4/logs/gnn_v50_residue_optim.log`、`L4/logs/phase4_v41_hgt_diag.log`
+- 实验日志：`L4/logs/gnn_v50_bilinear_baseline.log`、`L4/logs/gnn_v50_residue_optim.log`、`L4/logs/phase4_v41_hgt_diag.log`、`L4/logs/gnn_v51_bilinear_baseline.log`

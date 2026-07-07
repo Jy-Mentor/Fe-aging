@@ -204,7 +204,7 @@ def train_sage(
         total_batches = (len(shuffled_compounds) + batch_size - 1) // batch_size
         for batch_start in range(0, len(shuffled_compounds), batch_size):
             if n_batches == 0 and batch_start % (batch_size * 50) == 0:
-                logger.info(f"  HGT epoch {epoch}: starting batch at compound {batch_start}/{len(shuffled_compounds)}")
+                logger.info(f"  SAGE epoch {epoch}: starting batch at compound {batch_start}/{len(shuffled_compounds)}")
             batch_seeds = shuffled_compounds[batch_start:batch_start + batch_size]
 
             node_list, node_to_local, edge_index = sample_homo_subgraph(
