@@ -303,10 +303,9 @@ def load_protein_features(use_esm2: bool = True) -> tuple[dict[str, np.ndarray],
         esm_dim = next(iter(esm2_embeddings.values())).shape[0]
         missing_genes = set(genes) - set(esm2_embeddings.keys())
         if missing_genes:
-            logger.warning(f"ESM-2 缺失 {len(missing_genes)} 个基因的嵌入，用随机初始化填充")
-            rng = np.random.RandomState(42)
+            logger.warning(f"ESM-2 缺失 {len(missing_genes)} 个基因的嵌入，已用零填充")
             for g in missing_genes:
-                esm2_embeddings[g] = rng.randn(esm_dim).astype(np.float32) * 0.01
+                esm2_embeddings[g] = np.zeros(esm_dim, dtype=np.float32)
 
         prot_feat = esm2_embeddings
         logger.info(f"蛋白特征 (ESM-2): {len(prot_feat)} 基因, dim={esm_dim}")
@@ -330,14 +329,19 @@ def load_protein_features(use_esm2: bool = True) -> tuple[dict[str, np.ndarray],
         if pseaac_data:
             pseaac_dim = len(next(iter(pseaac_data.values())))
 
+        n_missing_pseaac = 0
         for i, g in enumerate(genes):
             aac_vec = aac[i]
             if g in pseaac_data:
                 prot_feat[g] = np.concatenate([aac_vec, pseaac_data[g]])
             elif pseaac_dim > 0:
                 prot_feat[g] = np.concatenate([aac_vec, np.zeros(pseaac_dim, dtype=np.float32)])
+                n_missing_pseaac += 1
             else:
                 prot_feat[g] = aac_vec
+
+        if n_missing_pseaac > 0:
+            logger.warning(f"PseAAC 缺失 {n_missing_pseaac} 个基因的特征，已用零填充")
 
         if not prot_feat:
             for i, g in enumerate(genes):

@@ -140,12 +140,10 @@ def build_graphs_and_adj(
         if gene in prot_feat:
             prot_matrix[idx] = prot_feat[gene]
         else:
-            seed = hash(gene) % (2**31)
-            rng = np.random.RandomState(seed)
-            prot_matrix[idx] = rng.randn(prot_feat_dim).astype(np.float32) * 0.01
+            prot_matrix[idx] = 0.0
             n_no_feat += 1
     if n_no_feat > 0:
-        logger.info(f"  无蛋白特征基因（随机初始化）: {n_no_feat}")
+        logger.warning(f"  无蛋白特征基因（缺失特征，已用零填充）: {n_no_feat}")
 
     # 通路隶属关系特征 — 为 SAGE 模型添加通路信息，弥补蛋白冷启动场景下拓扑缺失
     # 将每个蛋白的 KEGG 通路隶属关系编码为 one-hot 向量，拼接到 ESM-2 嵌入后
