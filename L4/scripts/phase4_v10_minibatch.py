@@ -3248,6 +3248,28 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             else:
                 logger.warning(f"CLI 覆盖项 {key} 不是全局常量，已忽略")
 
+    # 动态日志文件名：根据运行模式、decoder 类型和种子生成，避免 SAGE/HGT 日志相互覆盖
+    log_parts = ["phase4_v41"]
+    if skip_sage and not skip_hgt:
+        log_parts.append("hgt_only")
+    elif skip_hgt and not skip_sage:
+        log_parts.append("sage_only")
+    else:
+        log_parts.append("full")
+    log_parts.append(f"decoder_{DECODER_TYPE}")
+    log_parts.append(f"seed_{RANDOM_SEED}")
+    log_file = L4_LOGS / f"{'_'.join(log_parts)}.log"
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s [%(levelname)s] %(message)s",
+        handlers=[
+            logging.FileHandler(log_file, encoding="utf-8", mode="w"),
+            logging.StreamHandler(sys.stdout),
+        ],
+        force=True,
+    )
+    logger.info(f"日志已重定向到: {log_file}")
+
     start_time = time.time()
     logger.info("=" * 60)
     logger.info("Phase 4 v37: SAGE + HGT Mini-Batch — 工业级重构（配置系统/tqdm/GPU监控/类型注解）")
