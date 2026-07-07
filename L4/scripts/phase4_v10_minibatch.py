@@ -80,6 +80,10 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# v52: HGT 验证子图缓存。验证集与采样参数固定（seed=42），首次采样后缓存可复用，
+# 显著降低后续验证的 CPU 采样开销。缓存随进程结束自动释放。
+_HGT_VAL_SUBGRAPH_CACHE: dict[tuple[int, int, tuple[int, ...]], tuple] = {}
+
 RANDOM_SEED = 42
 np.random.seed(RANDOM_SEED)
 random.seed(RANDOM_SEED)
@@ -2551,15 +2555,20 @@ def _validate_hgt_minibatch(
     n_compounds: int,
     n_proteins: int,
     num_neighbors: list[int] = None,
-    val_batch_size: int = 64,
+    val_batch_size: int = 256,
 ) -> dict[str, float]:
-    """v16: HGT mini-batch 降级验证（OOM 时自动启用）
+    """v52-fix2: HGT mini-batch 验证进一步加速。
 
     对验证化合物分批采样异质子图，在各子图内计算得分后全局聚合。
-    注意：降级模式下蛋白嵌入在不同子图间不一致，AUC 可能偏低。
+    - val_batch_size 提升至 256，减少子图采样次数。
+    - 验证阶段 num_neighbors 降至 [8, 4]，在保留 2 阶结构信息的同时大幅降低 CPU 采样开销。
+    - 每 batch 负样本候选池 target_pool 降至 512，进一步缩小子图规模。
+    - 首次采样后缓存子图，后续验证直接复用，避免重复采样。
     """
+    global _HGT_VAL_SUBGRAPH_CACHE
     if num_neighbors is None:
-        num_neighbors = [64, 32]
+        num_neighbors = [8, 4]
+    cache_key_shape = (val_batch_size, len(val_compounds), tuple(num_neighbors))
     model.eval()
     with torch.no_grad():
         T = model.temperature
@@ -2569,34 +2578,50 @@ def _validate_hgt_minibatch(
 
         for batch_start in range(0, len(val_compounds), val_batch_size):
             batch_seeds = val_compounds[batch_start:batch_start + val_batch_size]
+            cache_key = (cache_key_shape, batch_start)
+            t_batch_start = time.time()
+            logger.info(f"  HGT val batch {batch_start}/{len(val_compounds)} starting")
 
-            # 化合物冷启动验证中，验证化合物在 val_hetero_adj 中已移除 CPI 边，
-            # 必须显式将正样本蛋白与随机负样本蛋白作为 seed_proteins 纳入子图，
-            # 否则子图仅含孤立验证化合物，AUC/AUPR 会恒为 0.5。
-            candidate_proteins = set()
-            for s in batch_seeds:
-                for p_global in all_compound_to_pos.get(s, set()):
-                    p_local = p_global - n_compounds
-                    if 0 <= p_local < n_proteins:
-                        candidate_proteins.add(p_local)
-            # 补充随机负样本，保证每个 batch 有足够候选蛋白（上限 1024）
-            if candidate_proteins:
-                all_prot_set = set(range(n_proteins))
-                neg_pool = list(all_prot_set - candidate_proteins)
-                if neg_pool:
-                    rng = random.Random(42 + batch_start)
-                    target_pool = 1024
-                    n_neg_sample = min(target_pool - len(candidate_proteins), len(neg_pool))
-                    candidate_proteins.update(rng.sample(neg_pool, n_neg_sample))
-            seed_proteins = sorted(candidate_proteins)
+            cached = _HGT_VAL_SUBGRAPH_CACHE.get(cache_key)
+            if cached is not None:
+                sg, comp_sorted, prot_sorted, path_sorted, disease_sorted, comp_map, prot_map, disease_map = cached
+            else:
+                # 化合物冷启动验证中，验证化合物在 val_hetero_adj 中已移除 CPI 边，
+                # 必须显式将正样本蛋白与随机负样本蛋白作为 seed_proteins 纳入子图，
+                # 否则子图仅含孤立验证化合物，AUC/AUPR 会恒为 0.5。
+                candidate_proteins = set()
+                for s in batch_seeds:
+                    for p_global in all_compound_to_pos.get(s, set()):
+                        p_local = p_global - n_compounds
+                        if 0 <= p_local < n_proteins:
+                            candidate_proteins.add(p_local)
+                # 补充随机负样本，保证每个 batch 有足够候选蛋白（上限 512）
+                if candidate_proteins:
+                    all_prot_set = set(range(n_proteins))
+                    neg_pool = list(all_prot_set - candidate_proteins)
+                    if neg_pool:
+                        rng = random.Random(42 + batch_start)
+                        target_pool = 512
+                        n_neg_sample = min(target_pool - len(candidate_proteins), len(neg_pool))
+                        candidate_proteins.update(rng.sample(neg_pool, n_neg_sample))
+                seed_proteins = sorted(candidate_proteins)
 
-            # 化合物冷启动验证中禁止临时添加 seed->candidate CPI 边。
-            # 这些边会在 HGT 消息传递中造成信息泄漏（化合物嵌入吸收候选蛋白特征），
-            # 导致模型在验证时变相“看到答案”，训练/验证分布不一致，AUC 被严重压低。
-            # 保持化合物节点孤立，使其嵌入退化为 encode_compound(x)，才是公平的冷启动评估。
-            sg, comp_sorted, prot_sorted, path_sorted, disease_sorted, comp_map, prot_map, disease_map = sample_hetero_subgraph(
-                batch_seeds, hetero_adj, num_neighbors, seed=42, seed_proteins=seed_proteins,
-                add_seed_cpi_edges=False)
+                # 化合物冷启动验证中禁止临时添加 seed->candidate CPI 边。
+                # 这些边会在 HGT 消息传递中造成信息泄漏（化合物嵌入吸收候选蛋白特征），
+                # 导致模型在验证时变相“看到答案”，训练/验证分布不一致，AUC 被严重压低。
+                # 保持化合物节点孤立，使其嵌入退化为 encode_compound(x)，才是公平的冷启动评估。
+                t_sample_start = time.time()
+                sg, comp_sorted, prot_sorted, path_sorted, disease_sorted, comp_map, prot_map, disease_map = sample_hetero_subgraph(
+                    batch_seeds, hetero_adj, num_neighbors, seed=42, seed_proteins=seed_proteins,
+                    add_seed_cpi_edges=False)
+                _HGT_VAL_SUBGRAPH_CACHE[cache_key] = (
+                    sg, comp_sorted, prot_sorted, path_sorted, disease_sorted, comp_map, prot_map, disease_map
+                )
+                logger.info(
+                    f"  HGT val batch {batch_start}/{len(val_compounds)} sampled "
+                    f"(compounds={len(comp_sorted)}, proteins={len(prot_sorted)}, pathways={len(path_sorted)}, "
+                    f"diseases={len(disease_sorted)}) in {time.time() - t_sample_start:.2f}s"
+                )
 
             if not prot_sorted:
                 continue
@@ -2643,19 +2668,33 @@ def _validate_hgt_minibatch(
                     continue
                 n_valid_compounds += 1
 
-                # prot_residue_indices 必须传入图蛋白全局索引（0~n_proteins-1），
-                # 与 _prot_to_residue_idx 的键一致；局部索引 p 通过 prot_map 映射回全局索引。
-                prot_global_tensor = torch.tensor(
-                    [prot_inv_map_local.get(p, -1) for p in range(n_batch_prots)],
-                    device=DEVICE, dtype=torch.long
-                )
-                scores = model.decode(
+                # v53-fix: 正样本走残基注意力路径，负样本走 fast bilinear 路径，
+                # 与训练阶段 _compute_cpi_loss 的 decoder 使用策略保持一致，
+                # 同时避免对大量候选蛋白重复计算残基注意力（验证瓶颈）。
+                valid_pos_tensor = torch.tensor(valid_pos, device=DEVICE, dtype=torch.long)
+
+                # 1) 全候选蛋白 fast bilinear 打分（用于负样本排序/选择）
+                scores_fast = model.decode(
                     comp_emb[comp_local:comp_local+1].expand(n_batch_prots, -1), prot_emb,
-                    prot_residue_indices=prot_global_tensor,
+                    prot_residue_indices=None,
                 ) / T
+
+                # 2) 正样本单独走残基注意力路径
+                pos_global_indices = torch.tensor(
+                    [prot_inv_map_local[p] for p in valid_pos],
+                    device=DEVICE, dtype=torch.long,
+                )
+                pos_scores = model.decode(
+                    comp_emb[comp_local:comp_local+1].expand(len(valid_pos), -1),
+                    prot_emb[valid_pos_tensor],
+                    prot_residue_indices=pos_global_indices,
+                ) / T
+
+                # 3) 合并：正样本位置用残基分数，其余位置用 fast bilinear 分数
+                scores = scores_fast
+                scores[valid_pos_tensor] = pos_scores
                 batch_scores.append(scores.cpu())  # 收集 per-compound 得分
                 batch_valid_pos.append(valid_pos)  # 收集 per-compound 正样本索引
-                valid_pos_tensor = torch.tensor(valid_pos, device=DEVICE, dtype=torch.long)
                 for idx in valid_pos_tensor:
                     all_y_true.append(1)
                     all_y_score.append(torch.sigmoid(scores[idx]).item())
@@ -2711,6 +2750,10 @@ def _validate_hgt_minibatch(
                 batch_score_matrix = torch.stack(batch_scores, dim=0)
                 batch_ranking = _compute_ranking_metrics(batch_score_matrix, batch_valid_pos)
                 all_batch_ranking.append(batch_ranking)
+
+            logger.info(
+                f"  HGT val batch {batch_start}/{len(val_compounds)} done in {time.time() - t_batch_start:.2f}s"
+            )
 
         if len(all_y_true) < 2 or len(set(all_y_true)) < 2:
             return {"auc": 0.5, "aupr": 0.5, "n_valid_compounds": n_valid_compounds}

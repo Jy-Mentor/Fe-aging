@@ -209,7 +209,7 @@ class HGTLinkPredictor(nn.Module):
         """
         # AMP autocast 下 decoder 权重为 float32，输入可能为 float16，
         # 显式转 float32 并关闭 autocast，避免 mat1/mat2 dtype 不匹配。
-        with torch.cuda.amp.autocast(enabled=False):
+        with torch.amp.autocast('cuda', enabled=False):
             comp_emb = comp_emb.float()
             prot_emb = prot_emb.float()
             if prot_residue_indices is not None:
@@ -242,7 +242,7 @@ class HGTLinkPredictor(nn.Module):
     def predict_phenotype(self, compound_embeds: torch.Tensor) -> torch.Tensor:
         """预测化合物的铁死亡表型（二分类：是否铁死亡调节剂）"""
         # 表型头权重为 float32，AMP 下输入可能为 float16，需统一 dtype。
-        with torch.cuda.amp.autocast(enabled=False):
+        with torch.amp.autocast('cuda', enabled=False):
             return self.pheno_head(compound_embeds.float())
 
     def free_residue_features(self) -> None:

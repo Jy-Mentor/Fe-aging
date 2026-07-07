@@ -70,7 +70,7 @@ class Validator:
     ) -> dict:
         """SAGE 验证 — 全图前向 + 验证函数。"""
         model.eval()
-        with torch.no_grad(), torch.cuda.amp.autocast(enabled=use_amp):
+        with torch.no_grad(), torch.amp.autocast('cuda', enabled=use_amp):
             metrics = self.validate_fn(
                 model, x, edge_index,
                 val_compounds, compound_to_pos, n_compounds,
@@ -174,7 +174,7 @@ class MemoryBankManager:
         """SAGE 全局刷新 — 全图前向，收集训练蛋白嵌入。"""
         model.eval()
         try:
-            with torch.no_grad(), torch.cuda.amp.autocast(enabled=use_amp):
+            with torch.no_grad(), torch.amp.autocast('cuda', enabled=use_amp):
                 full_node_emb = model(x, edge_index, n_compounds=n_compounds)
                 full_prot_emb = full_node_emb[n_compounds:]
                 if val_proteins is not None and len(val_proteins) > 0:
@@ -204,7 +204,7 @@ class MemoryBankManager:
         """HGT 全局刷新 — 全图前向，收集训练蛋白嵌入。"""
         model.eval()
         try:
-            with torch.no_grad(), torch.cuda.amp.autocast(enabled=use_amp):
+            with torch.no_grad(), torch.amp.autocast('cuda', enabled=use_amp):
                 hgt_out = model(hetero_data.x_dict, hetero_data.edge_index_dict)
                 full_prot_emb = hgt_out["protein"]
                 if val_proteins is not None and len(val_proteins) > 0:
@@ -238,7 +238,7 @@ class GradientMonitor:
         self.grad_clip_norm = grad_clip_norm
         self.warn_threshold = warn_threshold
 
-    def check_and_clip(self, model: nn.Module, scaler: torch.cuda.amp.GradScaler | None = None, optimizer: torch.optim.Optimizer | None = None) -> float:
+    def check_and_clip(self, model: nn.Module, scaler: torch.amp.GradScaler | None = None, optimizer: torch.optim.Optimizer | None = None) -> float:
         """检查梯度范数并按 grad_clip_norm 裁剪（CPU 计算避免 GPU OOM）。
 
         Args:

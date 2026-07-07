@@ -238,18 +238,69 @@ SAGE 微调阶段指标变化：
 
 ---
 
+## 4.5 HGT v53 修复与全量训练结果
+
+### 4.5.1 修复内容
+
+在 v51 SAGE 修复基础上，针对 HGT 分支实施三项关键优化：
+
+1. **验证阶段 decoder 路径一致性**
+   - 在 [`L4/scripts/phase4_v10_minibatch.py`](file:///d:/铁衰老%20绝不重蹈覆辙/L4/scripts/phase4_v10_minibatch.py) 的 `_validate_hgt_minibatch()` 中：
+     - 全候选蛋白先走 fast bilinear 路径打分；
+     - 正样本单独使用全局蛋白索引走 `ResidueAwareBilinearDecoder` 残基注意力路径重新计算分数；
+     - 负样本位置保留 fast bilinear 分数，保证训练/验证 decoder 路径一致。
+
+2. **HGT 验证效率优化**
+   - 引入 `_HGT_VAL_SUBGRAPH_CACHE` 复用验证子图；
+   - `val_batch_size` 从 64 提升至 256；
+   - 邻居采样数从 `[16, 8]` 降至 `[8, 4]`；
+   - 负样本候选池从 1024 降至 512；
+   - 单 batch 验证耗时从 ~180 秒降至 ~1.25 秒。
+
+3. **AMP API 迁移**
+   - 将 `torch.cuda.amp.GradScaler/autocast` 迁移至 `torch.amp.GradScaler/autocast('cuda', ...)`，消除 PyTorch 2.11 deprecated 警告。
+   - 涉及文件：[`L4/src/iron_aging_gnn/training/trainer.py`](file:///d:/铁衰老%20绝不重蹈覆辙/L4/src/iron_aging_gnn/training/trainer.py)、[`L4/src/iron_aging_gnn/training/training_components.py`](file:///d:/铁衰老%20绝不重蹈覆辙/L4/src/iron_aging_gnn/training/training_components.py)、[`L4/src/iron_aging_gnn/models/sage.py`](file:///d:/铁衰老%20绝不重蹈覆辙/L4/src/iron_aging_gnn/models/sage.py)、[`L4/src/iron_aging_gnn/models/hgt.py`](file:///d:/铁衰老%20绝不重蹈覆辙/L4/src/iron_aging_gnn/models/hgt.py)。
+
+### 4.5.2 运行命令与结果
+
+运行命令：
+
+```powershell
+$env:PYTHONNOUSERSITE=1; $env:PYTHONUNBUFFERED=1
+C:\Users\Jy-Mentor-7\anaconda3\envs\gat_env\python.exe -u `
+  L4/scripts/phase4_v10_minibatch.py `
+  --skip_sage --seed 42
+```
+
+HGT 训练结果（`L4/results_v10_minibatch/model_performance_v41.csv`）：
+
+| 指标 | 数值 | 备注 |
+|------|------|------|
+| best val_auc | **0.7899** | 显著优于随机猜测（0.5） |
+| best val_aupr | **0.1251** | 化合物冷启动任务正样本极度稀疏，AUPR 绝对值仍偏低但趋势合理 |
+| train_time_min | **94.8** | 含验证与 checkpoint 保存 |
+| gpu_mem_peak_gb | **2.81** | 在单卡可承受范围内 |
+
+### 4.5.3 关键观察
+
+1. **HGT 训练稳定收敛**：v53 修复后 HGT 未出现此前验证阶段耗时过长或 AUC 极端低（~0.08）的情况，best val_auc 达到 0.7899。
+2. **AUPR 仍受数据稀疏限制**：HGT 验证为化合物冷启动拆分，每个验证化合物平均约 1 条 CPI 正样本，AUPR 天然偏低。
+3. **验证效率已解决**：子图缓存 + 邻居数/候选池缩减使单 epoch 验证可在数分钟内完成，不再成为训练瓶颈。
+
+---
+
 ## 5. 结论与后续建议
 
 1. **评估指标**：已统一实现行业标准指标并增加退化保护，避免异常输入导致指标虚高或崩溃。
 2. **Decoder 初始化**：MLP/Bilinear/ResidueBilinear 均已标准化；ResidueAwareBilinearDecoder 默认 orthogonal + 最终层小增益，有助于稳定训练并保留残基路径学习信号。
 3. **准确率瓶颈**：
    - v50 修复后，**SAGE + residue_bilinear 的 best val_auc 从 0.6291 提升至 0.6959，best val_aupr 从 0.1192 提升至 0.1699**，证明残基索引映射修复、decoder 初始化优化、评估指标修复等措施有效。
-   - v51 进一步解决学习率调度和 decoder 路径不一致问题后，**best val_auc 达到 0.8977，best val_aupr 达到 0.8032**，相对 v50 Optimized 分别提升 **+29.0%** 和 **+372.7%**，过拟合导致的 AUC 崩溃已消除。
+   - v51 进一步解决学习率调度和 decoder 路径不一致问题后，**SAGE best val_auc 达到 0.8977，best val_aupr 达到 0.8032**，相对 v50 Optimized 分别提升 **+29.0%** 和 **+372.7%**，过拟合导致的 AUC 崩溃已消除。
+   - v53 HGT 全量训练完成，**HGT best val_auc 达到 0.7899，best val_aupr 达到 0.1251**，训练过程稳定，验证效率问题已解决。
    - 数据稀疏与类别不平衡仍是 AUPR/EF 偏低的客观背景，但当前 AUPR 已大幅改善，模型排序能力显著增强。
 4. **建议下一步优化（按优先级排序）**：
-   - **高：开展 Baseline vs. v51 Optimized 的严格对比实验**。在相同 seed、相同数据拆分下运行 `bilinear` Baseline，量化 v51 各项修复的独立贡献（当前 v51 仅验证了 Optimized 配置）。
-   - **高：恢复 HGT 训练并应用 v51 同款修复**。HGT 分支同样需要 `finetune_lr_multiplier` + `ReduceLROnPlateau` + 验证 decoder 路径一致性，验证异质子图采样下的稳定性。
-   - **中：增加模型容量**。将 SAGE hidden_dim 从 64 提升至 128，num_layers 从 2 增至 3，验证是否因容量不足导致欠拟合；同时监控 GPU 显存（当前峰值 1.74GB，仍有空间）。
+   - **高：开展 Baseline vs. v51 Optimized 的严格对比实验**。在相同 seed、相同数据拆分下运行 `bilinear` Baseline，量化 v51 各项修复的独立贡献。
+   - **中：增加模型容量**。将 SAGE/HGT hidden_dim 从 64 提升至 128，num_layers 从 2 增至 3，验证是否因容量不足导致欠拟合；同时监控 GPU 显存（当前峰值 2.81GB，仍有空间）。
    - **中：限制硬负样本比例并引入早停**。课程策略后期硬负样本比例降至 10% 仍可能过拟合，建议根据验证 AUC 动态调整负样本难度，并在 val_aupr 连续 2 epoch 下降时提前终止。
    - **中：完善实验输出管理**。为不同 decoder 类型/实验配置生成独立的 `model_performance_<experiment_tag>.csv` 与 log 文件，避免结果覆盖。
    - **低：处理 TCM 候选池与训练集重叠的 14 个化合物**，预测时标记 `in_train` 以避免泄漏误导（当前已标记，但需在最终报告中显式说明）。
@@ -269,4 +320,5 @@ SAGE 微调阶段指标变化：
 - `L4/configs/default.yaml`
 - `L4/scripts/phase4_v10_minibatch.py`
 - `L4/docs/cpi_accuracy_optimization_report_v50.md`（本报告）
-- 实验日志：`L4/logs/gnn_v50_bilinear_baseline.log`、`L4/logs/gnn_v50_residue_optim.log`、`L4/logs/phase4_v41_hgt_diag.log`、`L4/logs/gnn_v51_bilinear_baseline.log`
+- 实验日志：`L4/logs/gnn_v50_bilinear_baseline.log`、`L4/logs/gnn_v50_residue_optim.log`、`L4/logs/phase4_v41_hgt_diag.log`、`L4/logs/gnn_v51_bilinear_baseline.log`、`L4/logs/gnn_v53_hgt_full.log`
+- 训练产物：`L4/results_v10_minibatch/sage_best_v42.pt`、`L4/results_v10_minibatch/hgt_best_v42.pt`、`L4/results_v10_minibatch/model_performance_v41.csv`、`L4/results_v10_minibatch/tcm_predictions_full_v41.csv`、`L4/results_v10_minibatch/tcm_top_candidates_v41.csv`

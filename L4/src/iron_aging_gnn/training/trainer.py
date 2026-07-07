@@ -15,7 +15,7 @@ import random
 import torch
 import torch.nn as nn
 from sklearn.metrics import roc_auc_score
-from torch.cuda.amp import GradScaler, autocast
+from torch.amp import GradScaler, autocast
 
 from ..graph import (
     drop_edge,
@@ -176,7 +176,7 @@ def train_sage(
         )
     else:
         scheduler = LRSchedulerFactory.create_cosine_warmup(optimizer, epochs, warmup_ratio)
-    scaler = GradScaler(enabled=use_amp)
+    scaler = GradScaler('cuda', enabled=use_amp)
 
     memory_bank_mgr = MemoryBankManager(memory_bank_size, model.out_dim, str(device))
     memory_bank = memory_bank_mgr.memory_bank
@@ -218,7 +218,7 @@ def train_sage(
                 sub_x = sub_x + flag_step * torch.randn_like(sub_x)
                 sub_x = sub_x.detach()
             n_compounds_in_sub = sum(1 for n in node_list if n < n_compounds)
-            with autocast(enabled=use_amp):
+            with autocast('cuda', enabled=use_amp):
                 node_emb = model(sub_x, edge_index, n_compounds=n_compounds_in_sub)
 
             if _check_tensor_nan(node_emb, "SAGE node_emb"):
@@ -343,7 +343,7 @@ def train_sage(
 
         pretrain_lr_actual = pretrain_lr if pretrain_lr is not None else lr * pretrain_lr_multiplier
         pretrain_optimizer = torch.optim.AdamW(model.parameters(), lr=pretrain_lr_actual, weight_decay=weight_decay, foreach=False)
-        pretrain_scaler = GradScaler(enabled=use_amp)
+        pretrain_scaler = GradScaler('cuda', enabled=use_amp)
         def pretrain_lr_lambda(e):
             return 1.0 - pretrain_lr_decay * (e / pretrain_epochs)
         pretrain_scheduler = torch.optim.lr_scheduler.LambdaLR(pretrain_optimizer, pretrain_lr_lambda)
@@ -362,7 +362,7 @@ def train_sage(
 
             if validator.should_validate(epoch, is_pretrain=True) and val_compounds:
                 model.eval()
-                with torch.no_grad(), autocast(enabled=use_amp):
+                with torch.no_grad(), autocast('cuda', enabled=use_amp):
                     val_metrics = _validate_sage_fn(
                         model, x, _homo_edge_index_val,
                         val_compounds, all_compound_to_pos, n_compounds)
@@ -410,7 +410,7 @@ def train_sage(
             if use_pheno:
                 val_pheno_indices = [c for c in val_compounds if c in pheno_comp_set]
                 if len(val_pheno_indices) > 5:
-                    with torch.no_grad(), autocast(enabled=use_amp):
+                    with torch.no_grad(), autocast('cuda', enabled=use_amp):
                         full_node_emb_val = model(x, _homo_edge_index_val,
                                                   n_compounds=n_compounds)
                         val_pheno_emb = full_node_emb_val[torch.tensor(val_pheno_indices, device=device)]
@@ -569,7 +569,7 @@ def train_hgt(
         )
     else:
         scheduler = LRSchedulerFactory.create_cosine_warmup(optimizer, epochs, warmup_ratio)
-    scaler = GradScaler(enabled=use_amp)
+    scaler = GradScaler('cuda', enabled=use_amp)
 
     memory_bank_mgr = MemoryBankManager(memory_bank_size, model.out_dim, str(device))
     memory_bank = memory_bank_mgr.memory_bank
@@ -655,7 +655,7 @@ def train_hgt(
 
             stage_optimizer.zero_grad()
 
-            with autocast(enabled=use_amp):
+            with autocast('cuda', enabled=use_amp):
                 hgt_out = model(sg.x_dict, sg.edge_index_dict)
             prot_emb = hgt_out["protein"]
             comp_emb = hgt_out["compound"]
@@ -736,7 +736,7 @@ def train_hgt(
 
         pretrain_lr_actual = pretrain_lr if pretrain_lr is not None else lr * pretrain_lr_multiplier
         pretrain_optimizer = torch.optim.AdamW(model.parameters(), lr=pretrain_lr_actual, weight_decay=weight_decay, foreach=False)
-        pretrain_scaler = GradScaler(enabled=use_amp)
+        pretrain_scaler = GradScaler('cuda', enabled=use_amp)
         def pretrain_lr_lambda(e):
             return 1.0 - pretrain_lr_decay * (e / pretrain_epochs)
         pretrain_scheduler = torch.optim.lr_scheduler.LambdaLR(pretrain_optimizer, pretrain_lr_lambda)
@@ -756,7 +756,7 @@ def train_hgt(
             if validator.should_validate(epoch, is_pretrain=True) and val_compounds:
                 model.eval()
                 torch.cuda.empty_cache()
-                with torch.no_grad(), autocast(enabled=use_amp):
+                with torch.no_grad(), autocast('cuda', enabled=use_amp):
                     hd = val_hetero if val_hetero is not None else hetero_data
                     val_metrics = _validate_hgt_fn(
                         model, hd, val_compounds, all_compound_to_pos,
@@ -794,7 +794,7 @@ def train_hgt(
         if epoch % 2 == 0 and val_compounds:
             torch.cuda.empty_cache()
             hd = val_hetero if val_hetero is not None else hetero_data
-            with autocast(enabled=use_amp):
+            with autocast('cuda', enabled=use_amp):
                 val_metrics = _validate_hgt_fn(
                 model, hd, val_compounds,
                 all_compound_to_pos, n_compounds, n_proteins,
