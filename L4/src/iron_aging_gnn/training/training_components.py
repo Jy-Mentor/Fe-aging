@@ -370,3 +370,37 @@ class LRSchedulerFactory:
             return 1.0 - decay_rate * (e / epochs)
 
         return torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda)
+
+    @staticmethod
+    def create_plateau(
+        optimizer: torch.optim.Optimizer,
+        patience: int = 2,
+        factor: float = 0.5,
+        min_lr: float = 1e-6,
+        mode: str = "max",
+        metric_name: str = "aupr",
+    ) -> torch.optim.lr_scheduler.ReduceLROnPlateau:
+        """创建 ReduceLROnPlateau 调度器（用于微调阶段抑制过拟合）。
+
+        Args:
+            optimizer: 优化器实例。
+            patience: 验证指标未提升的耐心 epoch 数。
+            factor: 学习率衰减系数。
+            min_lr: 最小学习率。
+            mode: "max" 表示指标越大越好（AUC/AUPR），"min" 表示越小越好（loss）。
+            metric_name: 监控的指标名称（仅用于日志）。
+
+        Returns:
+            ReduceLROnPlateau 调度器。
+        """
+        logger.info(
+            f"  微调阶段使用 ReduceLROnPlateau: mode={mode}, patience={patience}, "
+            f"factor={factor}, min_lr={min_lr}, metric={metric_name}"
+        )
+        return torch.optim.lr_scheduler.ReduceLROnPlateau(
+            optimizer,
+            mode=mode,
+            patience=patience,
+            factor=factor,
+            min_lr=min_lr,
+        )

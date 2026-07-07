@@ -31,6 +31,10 @@ sage:
   two_stage: true
   pretrain_epochs: 15
   pretrain_lr: 0.00075
+  finetune_lr_multiplier: 0.5
+  use_plateau_scheduler: true
+  plateau_patience: 1
+  plateau_factor: 0.5
 hgt:
   epochs: 20
   lr: 0.0005
@@ -42,6 +46,10 @@ hgt:
   two_stage: true
   pretrain_epochs: 10
   pretrain_lr: 0.00075
+  finetune_lr_multiplier: 0.5
+  use_plateau_scheduler: true
+  plateau_patience: 2
+  plateau_factor: 0.5
 two_stage:
   head_ratio: 0.2
   lambda_hhi: 1.0

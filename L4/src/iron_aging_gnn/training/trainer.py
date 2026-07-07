@@ -99,6 +99,10 @@ def train_sage(
     grad_clip_norm: float = 1.0,
     pretrain_lr_multiplier: float = 1.5,
     pretrain_lr_decay: float = 0.5,
+    finetune_lr_multiplier: float = 0.5,
+    use_plateau_scheduler: bool = False,
+    plateau_patience: int = 2,
+    plateau_factor: float = 0.5,
     _validate_sage_fn=None,
     _compute_cpi_loss_fn=None,
     use_amp: bool = True,
@@ -163,8 +167,15 @@ def train_sage(
                     f"正样本={n_pos_pheno}, 负样本={n_neg_pheno}, "
                     f"pos_weight={pos_weight:.1f}, lambda={pheno_lambda}")
 
-    optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay, foreach=False)
-    scheduler = LRSchedulerFactory.create_cosine_warmup(optimizer, epochs, warmup_ratio)
+    finetune_lr_actual = lr * finetune_lr_multiplier if (two_stage and pretrain_epochs > 0) else lr
+    logger.info(f"  SAGE 微调初始学习率: {finetune_lr_actual:.2e} (lr={lr:.2e}, multiplier={finetune_lr_multiplier})")
+    optimizer = torch.optim.AdamW(model.parameters(), lr=finetune_lr_actual, weight_decay=weight_decay, foreach=False)
+    if use_plateau_scheduler:
+        scheduler = LRSchedulerFactory.create_plateau(
+            optimizer, patience=plateau_patience, factor=plateau_factor, mode="max", metric_name="aupr"
+        )
+    else:
+        scheduler = LRSchedulerFactory.create_cosine_warmup(optimizer, epochs, warmup_ratio)
     scaler = GradScaler(enabled=use_amp)
 
     memory_bank_mgr = MemoryBankManager(memory_bank_size, model.out_dim, str(device))
@@ -437,6 +448,14 @@ def train_sage(
                     val_proteins=val_proteins, use_amp=use_amp,
                 )
 
+            if use_plateau_scheduler:
+                prev_lr = optimizer.param_groups[0]["lr"]
+                scheduler.step(m["aupr"])
+                new_lr = optimizer.param_groups[0]["lr"]
+                if new_lr != prev_lr:
+                    logger.info(f"  SAGE 微调 lr {prev_lr:.2e} -> {new_lr:.2e} (plateau, val_aupr={m['aupr']:.4f})")
+
+    if not use_plateau_scheduler:
         scheduler.step()
 
     if validator.load_best_state(model):
@@ -489,6 +508,10 @@ def train_hgt(
     grad_clip_norm: float = 1.0,
     pretrain_lr_multiplier: float = 1.5,
     pretrain_lr_decay: float = 0.5,
+    finetune_lr_multiplier: float = 0.5,
+    use_plateau_scheduler: bool = False,
+    plateau_patience: int = 2,
+    plateau_factor: float = 0.5,
     _validate_hgt_fn=None,
     _compute_cpi_loss_fn=None,
     use_amp: bool = True,
@@ -537,8 +560,15 @@ def train_hgt(
     prot_to_topo_medium_neighbors = graphs.get("prot_to_topo_medium_neighbors")
     prot_to_topo_hard_neighbors = graphs.get("prot_to_topo_hard_neighbors")
 
-    optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay, foreach=False)
-    scheduler = LRSchedulerFactory.create_cosine_warmup(optimizer, epochs, warmup_ratio)
+    finetune_lr_actual = lr * finetune_lr_multiplier if (two_stage and pretrain_epochs > 0) else lr
+    logger.info(f"  HGT 微调初始学习率: {finetune_lr_actual:.2e} (lr={lr:.2e}, multiplier={finetune_lr_multiplier})")
+    optimizer = torch.optim.AdamW(model.parameters(), lr=finetune_lr_actual, weight_decay=weight_decay, foreach=False)
+    if use_plateau_scheduler:
+        scheduler = LRSchedulerFactory.create_plateau(
+            optimizer, patience=plateau_patience, factor=plateau_factor, mode="max", metric_name="aupr"
+        )
+    else:
+        scheduler = LRSchedulerFactory.create_cosine_warmup(optimizer, epochs, warmup_ratio)
     scaler = GradScaler(enabled=use_amp)
 
     memory_bank_mgr = MemoryBankManager(memory_bank_size, model.out_dim, str(device))
@@ -793,6 +823,14 @@ def train_hgt(
                     val_proteins=val_proteins, use_amp=use_amp,
                 )
 
+            if use_plateau_scheduler:
+                prev_lr = optimizer.param_groups[0]["lr"]
+                scheduler.step(val_aupr)
+                new_lr = optimizer.param_groups[0]["lr"]
+                if new_lr != prev_lr:
+                    logger.info(f"  HGT 微调 lr {prev_lr:.2e} -> {new_lr:.2e} (plateau, val_aupr={val_aupr:.4f})")
+
+    if not use_plateau_scheduler:
         scheduler.step()
 
     if validator.load_best_state(model):

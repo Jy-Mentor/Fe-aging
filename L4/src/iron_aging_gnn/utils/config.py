@@ -96,6 +96,19 @@ class SageConfig(BaseModel):
     two_stage: bool = Field(default=True, description="是否启用两阶段迁移学习")
     pretrain_epochs: int = Field(default=10, ge=1, description="预训练轮数")
     pretrain_lr: float = Field(default=7.5e-4, gt=0.0, description="预训练学习率")
+    finetune_lr_multiplier: float = Field(
+        default=0.5, gt=0.0, le=1.0,
+        description="微调阶段初始学习率相对于主学习率的倍数（加载预训练 checkpoint 后使用）",
+    )
+    use_plateau_scheduler: bool = Field(
+        default=True, description="微调阶段是否使用 ReduceLROnPlateau 替代 cosine warmup",
+    )
+    plateau_patience: int = Field(
+        default=2, ge=1, description="ReduceLROnPlateau 耐心值（按验证 epoch 计）",
+    )
+    plateau_factor: float = Field(
+        default=0.5, gt=0.0, le=1.0, description="ReduceLROnPlateau 衰减系数",
+    )
 
 
 class HgtConfig(BaseModel):
@@ -109,6 +122,19 @@ class HgtConfig(BaseModel):
     two_stage: bool = Field(default=True, description="是否启用两阶段迁移学习")
     pretrain_epochs: int = Field(default=10, ge=1, description="预训练轮数")
     pretrain_lr: float = Field(default=1.5e-3, gt=0.0, description="预训练学习率")
+    finetune_lr_multiplier: float = Field(
+        default=0.5, gt=0.0, le=1.0,
+        description="微调阶段初始学习率相对于主学习率的倍数（加载预训练 checkpoint 后使用）",
+    )
+    use_plateau_scheduler: bool = Field(
+        default=True, description="微调阶段是否使用 ReduceLROnPlateau 替代 cosine warmup",
+    )
+    plateau_patience: int = Field(
+        default=2, ge=1, description="ReduceLROnPlateau 耐心值（按验证 epoch 计）",
+    )
+    plateau_factor: float = Field(
+        default=0.5, gt=0.0, le=1.0, description="ReduceLROnPlateau 衰减系数",
+    )
 
 
 class TwoStageConfig(BaseModel):

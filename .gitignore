@@ -170,6 +170,7 @@ L4/temp_patches/
 L4/scripts/_archive_temp/
 L4/scripts/grover_repo/
 _*.py
+!__init__.py
 _*.txt
 *.bak*
 

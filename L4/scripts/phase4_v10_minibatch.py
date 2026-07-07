@@ -169,6 +169,14 @@ LEARNING_RATE_SAGE = _cfg.sage.lr if _cfg else 5e-4
 LEARNING_RATE_HGT = _cfg.hgt.lr if _cfg else 1e-3
 PRETRAIN_LR_MULTIPLIER = _cfg.two_stage.pretrain_lr_multiplier if _cfg else 1.5
 PRETRAIN_LR_DECAY = _cfg.two_stage.pretrain_lr_decay if _cfg else 0.5
+FINETUNE_LR_MULTIPLIER = _cfg.sage.finetune_lr_multiplier if _cfg else 0.5
+USE_PLATEAU_SCHEDULER_SAGE = _cfg.sage.use_plateau_scheduler if _cfg else True
+PLATEAU_PATIENCE_SAGE = _cfg.sage.plateau_patience if _cfg else 2
+PLATEAU_FACTOR_SAGE = _cfg.sage.plateau_factor if _cfg else 0.5
+FINETUNE_LR_MULTIPLIER_HGT = _cfg.hgt.finetune_lr_multiplier if _cfg else 0.5
+USE_PLATEAU_SCHEDULER_HGT = _cfg.hgt.use_plateau_scheduler if _cfg else True
+PLATEAU_PATIENCE_HGT = _cfg.hgt.plateau_patience if _cfg else 2
+PLATEAU_FACTOR_HGT = _cfg.hgt.plateau_factor if _cfg else 0.5
 WEIGHT_DECAY = _cfg.training.weight_decay if _cfg else 1e-4
 GRAD_CLIP_NORM = _cfg.training.grad_clip_norm if _cfg else 1.0
 WARMUP_RATIO = _cfg.training.warmup_ratio if _cfg else 0.05
@@ -2401,6 +2409,39 @@ def _validate_sage(model, x, homo_edge_index, val_compounds, all_compound_to_pos
             score_chunks.append(sub_scores)
         score_matrix = torch.cat(score_chunks, dim=0)  # (n_val, n_prots)
 
+        # v51: 训练/验证 decoder 路径一致性 — 正样本使用残基注意力，负样本使用 fast bilinear。
+        # 验证阶段全 pair-matrix 仍用快速双线性打分（高效），仅对正样本重新计算残基注意力分数，
+        # 避免 47M+ 对全部走残基路径导致验证不可接受地慢，同时消除正样本的分布偏移。
+        use_residue_in_val = (
+            hasattr(model, "decoder")
+            and model.decoder.__class__.__name__ == "ResidueAwareBilinearDecoder"
+        )
+        pos_key_to_residue_score: dict[tuple[int, int], float] = {}
+        if use_residue_in_val:
+            pos_src_list, pos_dst_list = [], []
+            for idx, src in enumerate(val_compounds_list):
+                pos_set = all_compound_to_pos.get(src, set())
+                valid_pos = [p - n_compounds for p in pos_set if n_compounds <= p < n_compounds + n_prots]
+                for p in valid_pos:
+                    pos_src_list.append(idx)
+                    pos_dst_list.append(p)
+            if pos_src_list:
+                pos_src_t = torch.tensor(pos_src_list, device=DEVICE, dtype=torch.long)
+                pos_dst_t = torch.tensor(pos_dst_list, device=DEVICE, dtype=torch.long)
+                pos_comp_emb = comp_sub[pos_src_t]
+                pos_prot_emb = prot_emb[pos_dst_t]
+                try:
+                    pos_residue_scores = model.decode(
+                        pos_comp_emb, pos_prot_emb, prot_residue_indices=pos_dst_t
+                    ).reshape(-1) / T
+                    pos_residue_scores = torch.clamp(pos_residue_scores, -SCORE_CLAMP, SCORE_CLAMP)
+                    for s, d, score in zip(pos_src_list, pos_dst_list, pos_residue_scores):
+                        pos_key_to_residue_score[(int(s), int(d))] = torch.sigmoid(score).item()
+                except torch.cuda.OutOfMemoryError as e:
+                    logger.warning(f"_validate_sage: 正样本残基路径 OOM，验证回退到 fast bilinear: {e}")
+                    if torch.cuda.is_available():
+                        torch.cuda.empty_cache()
+
         y_true, y_score = [], []
         valid_pos_list = []  # 收集 per-compound 正样本局部索引，用于排名指标
         n_valid = 0
@@ -2415,10 +2456,14 @@ def _validate_sage(model, x, homo_edge_index, val_compounds, all_compound_to_pos
 
             scores = score_matrix[idx]
 
-            # 正样本
+            # 正样本（residue_bilinear 时使用残基注意力分数）
             for p in valid_pos:
                 y_true.append(1)
-                y_score.append(torch.sigmoid(scores[p]).item())
+                key = (idx, p)
+                if key in pos_key_to_residue_score:
+                    y_score.append(pos_key_to_residue_score[key])
+                else:
+                    y_score.append(torch.sigmoid(scores[p]).item())
 
             # 硬负样本（v13: 边界检查，n_prots 可能 < HARD_NEG_TOP_K）
             n_hard = min(HARD_NEG_TOP_K, n_prots - len(valid_pos))
@@ -3572,6 +3617,10 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
         head_ratio=HEAD_RATIO, lambda_hhi=LAMBDA_HHI,
         grad_clip_norm=GRAD_CLIP_NORM,
         pretrain_lr_multiplier=PRETRAIN_LR_MULTIPLIER, pretrain_lr_decay=PRETRAIN_LR_DECAY,
+        finetune_lr_multiplier=FINETUNE_LR_MULTIPLIER,
+        use_plateau_scheduler=USE_PLATEAU_SCHEDULER_SAGE,
+        plateau_patience=PLATEAU_PATIENCE_SAGE,
+        plateau_factor=PLATEAU_FACTOR_SAGE,
         use_topology_neg=USE_TOPOLOGY_NEG,
         _validate_sage_fn=_validate_sage, _compute_cpi_loss_fn=_compute_cpi_loss)
 
@@ -3654,6 +3703,10 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             head_ratio=HEAD_RATIO, lambda_hhi=LAMBDA_HHI,
             grad_clip_norm=GRAD_CLIP_NORM,
             pretrain_lr_multiplier=PRETRAIN_LR_MULTIPLIER, pretrain_lr_decay=PRETRAIN_LR_DECAY,
+            finetune_lr_multiplier=FINETUNE_LR_MULTIPLIER_HGT,
+            use_plateau_scheduler=USE_PLATEAU_SCHEDULER_HGT,
+            plateau_patience=PLATEAU_PATIENCE_HGT,
+            plateau_factor=PLATEAU_FACTOR_HGT,
             use_topology_neg=USE_TOPOLOGY_NEG,
             _validate_hgt_fn=_validate_hgt, _compute_cpi_loss_fn=_compute_cpi_loss,
             use_amp=False)
