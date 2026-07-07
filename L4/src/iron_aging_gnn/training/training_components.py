@@ -175,7 +175,10 @@ class MemoryBankManager:
         model.eval()
         try:
             with torch.no_grad(), torch.amp.autocast('cuda', enabled=use_amp):
-                full_node_emb = model(x, edge_index, n_compounds=n_compounds)
+                # v54-fix: 调用方现在传入 CPU 张量，刷新前再移动到 GPU
+                x_dev = x.to(self.device)
+                edge_index_dev = edge_index.to(self.device)
+                full_node_emb = model(x_dev, edge_index_dev, n_compounds=n_compounds)
                 full_prot_emb = full_node_emb[n_compounds:]
                 if val_proteins is not None and len(val_proteins) > 0:
                     train_prot_mask = torch.ones(

@@ -3017,9 +3017,10 @@ def predict_tcm(
                 n_targets = target_local_indices.shape[0]
                 sage_tcm_exp = sage_tcm_emb.unsqueeze(1).expand(-1, n_targets, -1).reshape(-1, sage_tcm_emb.shape[-1])
                 sage_prot_exp = sage_prot_emb[target_local_indices].unsqueeze(0).expand(n_tcm_sage, -1, -1).reshape(-1, sage_prot_emb.shape[-1])
-                sage_prot_residue_idx = target_local_indices.repeat(n_tcm_sage)
+                # v55-fix: TCM 预测阶段使用 fast bilinear 路径，避免对 7 万+ 化合物-蛋白对
+                # 逐对计算残基注意力导致预测耗时爆炸。训练/验证仍通过 _validate_sage 走残基路径。
                 sage_target_scores = torch.sigmoid(
-                    sage_model.decode(sage_tcm_exp, sage_prot_exp, prot_residue_indices=sage_prot_residue_idx) / sage_T
+                    sage_model.decode(sage_tcm_exp, sage_prot_exp) / sage_T
                 ).reshape(n_tcm_sage, n_targets)
 
                 if hgt_model is not None:

@@ -187,12 +187,12 @@ class SAGELinkPredictor(nn.Module):
             raise ValueError(
                 f"蛋白输入维度 {prot_x.shape[-1]} < prot_esm_dim {self.prot_esm_dim}"
             )
-        comp_x_actual = comp_x[:, :self.comp_feat_dim]
-        prot_esm = prot_x[:, :self.prot_esm_dim]
+        comp_x_actual = comp_x[:, :self.comp_feat_dim].float()
+        prot_esm = prot_x[:, :self.prot_esm_dim].float()
         prot_h = self.prot_feat_proj(prot_esm)
 
         if use_pathway and self.pathway_proj is not None and self.n_pathways > 0:
-            prot_pathway = prot_x[:, self.prot_esm_dim:self.prot_esm_dim + self.n_pathways]
+            prot_pathway = prot_x[:, self.prot_esm_dim:self.prot_esm_dim + self.n_pathways].float()
             prot_h = prot_h + self.pathway_proj(prot_pathway)
 
         comp_h = self.comp_proj(comp_x_actual)

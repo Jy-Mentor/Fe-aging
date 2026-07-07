@@ -104,7 +104,7 @@ def train_sage(
     plateau_factor: float = 0.5,
     _validate_sage_fn=None,
     _compute_cpi_loss_fn=None,
-    use_amp: bool = True,
+    use_amp: bool = False,
 ) -> tuple[SAGELinkPredictor, list[dict]]:
     """GraphSAGE mini-batch 训练
 
@@ -119,6 +119,13 @@ def train_sage(
     if num_neighbors is None:
         num_neighbors = [32, 16]
     model = model.to(device)
+    # v55-fix: RTX 50 系 / cu128 在 WDDM 下对 TF32 Tensor Core 存在稳定性问题，
+    # 可能触发 CUBLAS_STATUS_EXECUTION_FAILED（错误信息中显示 CUDA_R_16F）。
+    # 禁用 TF32 强制使用 float32 稳定路径。
+    if device.type == 'cuda':
+        torch.backends.cuda.matmul.allow_tf32 = False
+        torch.backends.cudnn.allow_tf32 = False
+        logger.info("  禁用 CUDA TF32，使用 float32 稳定计算路径")
     # v49-fix: 禁止在此处无条件重初始化模型参数。
     # SAGE/HGT 模型构造函数与 ResidueAwareBilinearDecoder._init_weights 已实施受控初始化，
     # 此处 Xavier 重初始化会覆盖解码器的精心初始化（score_mlp 末层小增益等），
@@ -135,13 +142,15 @@ def train_sage(
         except Exception as e:
             logger.warning(f'torch.compile failed for SAGE: {e}, continuing without compilation')
 
-    x = graphs["x"].to(device)
+    # v54-fix: 完整节点特征矩阵保留在 CPU，仅按 batch 子图取到 GPU，
+    # 避免 8GB 显存 (WDDM) 在启动阶段移动全图特征即 OOM。
+    x = graphs["x"]
     homo_adj = graphs.get("homo_adj_train", graphs["homo_adj"])
     n_compounds = graphs["n_compounds"]
     all_compound_to_pos = compound_to_pos
 
-    _homo_edge_index_val = graphs.get("homo_edge_index_val", graphs["homo_edge_index"]).to(device)
-    _homo_edge_index_train = graphs.get("homo_edge_index_train", graphs["homo_edge_index"]).to(device)
+    _homo_edge_index_val = graphs.get("homo_edge_index_val", graphs["homo_edge_index"])
+    _homo_edge_index_train = graphs.get("homo_edge_index_train", graphs["homo_edge_index"])
 
     precomputed_pos = {src: sorted(pos_set) for src, pos_set in compound_to_pos.items() if pos_set}
     compound_to_prot_locals = {c: [p - n_compounds for p in pos_set] for c, pos_set in precomputed_pos.items()}
@@ -212,7 +221,7 @@ def train_sage(
             edge_index = edge_index.to(device)
             edge_index = drop_edge(edge_index, p=dropedge_ppi)
 
-            sub_x = x[torch.tensor(node_list, device=device)]
+            sub_x = x[torch.tensor(node_list)].to(device).float()
             n_compounds_in_sub = sum(1 for n in node_list if n < n_compounds)
             with autocast('cuda', enabled=use_amp):
                 node_emb = model(sub_x, edge_index, n_compounds=n_compounds_in_sub)
