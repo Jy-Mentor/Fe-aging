@@ -248,7 +248,8 @@ def sample_hetero_subgraph(
     else:
         sg["disease", "involves", "protein"].edge_index = torch.zeros((2, 0), dtype=torch.long)
 
-    # disease节点特征（无原始特征，用零向量，模型内disease_embed生成嵌入）
-    sg["disease"].x = torch.zeros(len(disease_sorted), 1, dtype=torch.float32)
+    # v60-fix: disease 节点使用全局疾病索引，经 HGT disease_embed 映射为唯一嵌入。
+    # 调用方（训练/验证）会再次覆盖 sg["disease"].x，此处保持一致语义。
+    sg["disease"].x = torch.tensor(disease_global, dtype=torch.float32).unsqueeze(1)
 
     return sg, comp_sorted, prot_sorted, path_sorted, disease_sorted, comp_map, prot_map, disease_map

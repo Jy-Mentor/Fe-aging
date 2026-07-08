@@ -343,7 +343,9 @@ def build_graphs_and_adj(
         hetero_data["protein", "associated_with", "disease"].edge_index = torch.tensor(pd_edges, dtype=torch.long)
         rev_pd = [pd_edges[1][:], pd_edges[0][:]]
         hetero_data["disease", "involves", "protein"].edge_index = torch.tensor(rev_pd, dtype=torch.long)
-        hetero_data["disease"].x = torch.zeros(n_diseases, 1, dtype=torch.float32)
+        # v60-fix: disease 节点使用独立整数索引，经 HGT disease_embed 映射为唯一嵌入，
+        # 避免所有 disease 节点共享同一零向量导致不可区分。
+        hetero_data["disease"].x = torch.arange(n_diseases, dtype=torch.float32).unsqueeze(1)
         logger.info(f"disease edges = {len(pd_edges[0])}")
 
     logger.info(f"异质图: compound({n_compounds}) protein({n_proteins}) pathway({n_pathways}) disease({n_diseases}) | "

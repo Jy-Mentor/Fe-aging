@@ -97,17 +97,13 @@ class SAGELinkPredictor(nn.Module):
             nn.Linear(256, hidden_dim),
         )
 
-        # 通路特征独立投影器
+        # v60: 通路可训练低维嵌入替代 one-hot + MLP 投影器。
+        # 输入仍为蛋白 one-hot 通路隶属向量，但通过 nn.Embedding 权重矩阵相乘
+        # 直接映射到 hidden_dim，避免深层 MLP 处理高维稀疏特征。
         if n_pathways > 0:
-            self.pathway_proj = nn.Sequential(
-                nn.Linear(n_pathways, 128),
-                nn.LayerNorm(128),
-                nn.ReLU(),
-                nn.Dropout(pathway_proj_dropout),
-                nn.Linear(128, hidden_dim),
-            )
+            self.pathway_embed = nn.Embedding(max(n_pathways, 1), hidden_dim)
         else:
-            self.pathway_proj = None
+            self.pathway_embed = None
 
         self.prot_dropout = nn.Dropout(prot_proj_dropout)
 
@@ -191,9 +187,11 @@ class SAGELinkPredictor(nn.Module):
         prot_esm = prot_x[:, :self.prot_esm_dim].float()
         prot_h = self.prot_feat_proj(prot_esm)
 
-        if use_pathway and self.pathway_proj is not None and self.n_pathways > 0:
+        # v60: one-hot 通路向量通过可训练嵌入矩阵映射到 hidden_dim。
+        # 对每个蛋白，其多个通路嵌入自动求和（one-hot 的 1 所在行对应嵌入相加）。
+        if use_pathway and self.pathway_embed is not None and self.n_pathways > 0:
             prot_pathway = prot_x[:, self.prot_esm_dim:self.prot_esm_dim + self.n_pathways].float()
-            prot_h = prot_h + self.pathway_proj(prot_pathway)
+            prot_h = prot_h + (prot_pathway @ self.pathway_embed.weight)
 
         comp_h = self.comp_proj(comp_x_actual)
         h = torch.cat([comp_h, prot_h], dim=0)

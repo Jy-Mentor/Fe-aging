@@ -202,6 +202,8 @@ def train_sage(
         stage_scaler: GradScaler = None,
         stage_use_residue_decoder: bool = True,
         stage_bpr_detach_neg: bool = True,
+        cumulative_epoch_offset: int = 0,
+        total_epochs: int = None,
     ) -> tuple[float, int]:
         model.train()
         total_loss = 0.0
@@ -288,8 +290,8 @@ def train_sage(
                 precomputed_pos=precomputed_pos,
                 n_compounds=n_compounds,
                 prot_to_path_neighbors=prot_to_path_neighbors,
-                epoch=epoch,
-                stage_epochs=stage_epochs,
+                epoch=epoch + cumulative_epoch_offset,
+                stage_epochs=total_epochs if total_epochs is not None else stage_epochs,
                 memory_bank=stage_memory_bank,
                 compound_to_prot_locals=compound_to_prot_locals,
                 use_infonce=use_infonce,
@@ -360,7 +362,8 @@ def train_sage(
             total_loss, n_batches = _train_one_epoch(
                 epoch, pretrain_compounds, pretrain_optimizer, pretrain_memory_bank, pretrain_epochs,
                 stage_scaler=pretrain_scaler, stage_use_residue_decoder=False,
-                stage_bpr_detach_neg=True)
+                stage_bpr_detach_neg=True,
+                cumulative_epoch_offset=0, total_epochs=pretrain_epochs + epochs)
             if n_batches == 0:
                 continue
             avg_loss = total_loss / n_batches
@@ -398,7 +401,8 @@ def train_sage(
     # ============================================================
     for epoch in range(1, epochs + 1):
         total_loss, n_batches = _train_one_epoch(
-            epoch, train_compounds, optimizer, memory_bank, epochs, stage_scaler=scaler)
+            epoch, train_compounds, optimizer, memory_bank, epochs, stage_scaler=scaler,
+            cumulative_epoch_offset=pretrain_epochs, total_epochs=pretrain_epochs + epochs)
 
         if n_batches == 0:
             continue
@@ -606,6 +610,8 @@ def train_hgt(
         stage_scaler: GradScaler = None,
         stage_use_residue_decoder: bool = True,
         stage_bpr_detach_neg: bool = True,
+        cumulative_epoch_offset: int = 0,
+        total_epochs: int = None,
     ) -> tuple[float, int]:
         model.train()
         total_loss = 0.0
@@ -681,8 +687,8 @@ def train_hgt(
                 precomputed_pos=precomputed_pos,
                 n_compounds=n_compounds,
                 prot_to_path_neighbors=prot_to_path_neighbors,
-                epoch=epoch,
-                stage_epochs=stage_epochs,
+                epoch=epoch + cumulative_epoch_offset,
+                stage_epochs=total_epochs if total_epochs is not None else stage_epochs,
                 memory_bank=stage_memory_bank,
                 compound_to_prot_locals=compound_to_prot_locals,
                 use_infonce=use_infonce,
@@ -748,7 +754,8 @@ def train_hgt(
             total_loss, n_batches = _train_one_epoch(
                 epoch, pretrain_compounds, pretrain_optimizer, pretrain_memory_bank, pretrain_epochs,
                 stage_scaler=pretrain_scaler, stage_use_residue_decoder=False,
-                stage_bpr_detach_neg=True)
+                stage_bpr_detach_neg=True,
+                cumulative_epoch_offset=0, total_epochs=pretrain_epochs + epochs)
             if n_batches == 0:
                 continue
             avg_loss = total_loss / n_batches
@@ -784,7 +791,8 @@ def train_hgt(
     for epoch in range(1, epochs + 1):
         total_loss, n_batches = _train_one_epoch(
             epoch, train_compounds, optimizer, memory_bank, epochs,
-            stage_use_pheno=use_pheno, stage_scaler=scaler)
+            stage_use_pheno=use_pheno, stage_scaler=scaler,
+            cumulative_epoch_offset=pretrain_epochs, total_epochs=pretrain_epochs + epochs)
 
         if n_batches == 0:
             continue
