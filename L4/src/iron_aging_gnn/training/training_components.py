@@ -179,6 +179,10 @@ class MemoryBankManager:
                 x_dev = x.to(self.device)
                 edge_index_dev = edge_index.to(self.device)
                 full_node_emb = model(x_dev, edge_index_dev, n_compounds=n_compounds)
+                # v64: 全图前向传播完成后立即释放输入特征矩阵和边索引，减少峰值显存
+                del x_dev, edge_index_dev
+                if torch.cuda.is_available():
+                    torch.cuda.empty_cache()
                 full_prot_emb = full_node_emb[n_compounds:]
                 if val_proteins is not None and len(val_proteins) > 0:
                     train_prot_mask = torch.ones(

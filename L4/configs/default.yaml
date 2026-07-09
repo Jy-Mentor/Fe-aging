@@ -17,7 +17,7 @@ model:
   pathway_proj_dropout: 0.2
   pheno_head_dropout: 0.25
   score_clamp: 10.0
-  temperature: 2.0
+  temperature: 1.0
   decoder_type: "residue_bilinear"
 sage:
   # v60-fix: SAGE 保持轻量配置，避免容量翻倍导致收敛困难；HGT 单独使用 model 级 128/3 配置。
@@ -53,6 +53,21 @@ hgt:
   use_plateau_scheduler: true
   plateau_patience: 2
   plateau_factor: 0.5
+simplehgn:
+  epochs: 20
+  lr: 0.001
+  patience: 7
+  batch_size: 128
+  num_neighbors:
+  - 32
+  - 16
+  val_num_neighbors:
+  - 8
+  - 4
+  val_batch_size: 256
+  two_stage: true
+  pretrain_epochs: 10
+  pretrain_lr: 0.0015
 two_stage:
   head_ratio: 0.2
   lambda_hhi: 1.0

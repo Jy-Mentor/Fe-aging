@@ -77,7 +77,7 @@ class ModelConfig(BaseModel):
     pheno_head_dropout: float = Field(default=0.3, ge=0.0, le=0.9, description="表型分类头 Dropout")
     score_clamp: float = Field(default=10.0, ge=1.0, description="分数裁剪范围 [-score_clamp, score_clamp]")
     decoder_type: str = Field(default="mlp", description="解码器类型：mlp / dot / bilinear / residue_bilinear")
-    temperature: float = Field(default=5.0, gt=0.0, description="解码温度系数 T，固定为 5.0 不参与梯度")
+    temperature: float = Field(default=1.0, gt=0.0, description="解码温度系数 T")
 
 
 class DecoderConfig(BaseModel):
@@ -138,6 +138,21 @@ class HgtConfig(BaseModel):
     plateau_factor: float = Field(
         default=0.5, gt=0.0, le=1.0, description="ReduceLROnPlateau 衰减系数",
     )
+
+
+class SimpleHgnConfig(BaseModel):
+    """SimpleHGN 分支训练超参数。"""
+
+    epochs: int = Field(default=15, ge=1, description="训练轮数")
+    lr: float = Field(default=1e-3, gt=0.0, description="学习率")
+    patience: int = Field(default=5, ge=1, description="早停耐心值")
+    batch_size: int = Field(default=128, ge=1, description="批次大小")
+    num_neighbors: list[int] = Field(default=[32, 16], description="邻域采样邻居数（每层）")
+    val_num_neighbors: list[int] = Field(default=[8, 4], description="验证时邻域采样邻居数")
+    val_batch_size: int = Field(default=256, ge=1, description="验证批次大小")
+    two_stage: bool = Field(default=True, description="是否启用两阶段迁移学习")
+    pretrain_epochs: int = Field(default=10, ge=1, description="预训练轮数")
+    pretrain_lr: float = Field(default=1.5e-3, gt=0.0, description="预训练学习率")
 
 
 class TwoStageConfig(BaseModel):
@@ -263,6 +278,7 @@ class TrainingConfig(BaseModel):
     pheno_lambda: float = Field(default=0.05, ge=0.0, le=1.0, description="表型分类损失权重")
     dropedge_ppi: float = Field(default=0.15, ge=0.0, le=1.0, description="PPI 边 DropEdge 概率")
     dropedge_pathway: float = Field(default=0.10, ge=0.0, le=1.0, description="通路边 DropEdge 概率")
+    dropedge_cpi: float = Field(default=0.0, ge=0.0, le=1.0, description="CPI 边 DropEdge 概率")
 
 
 class MemoryBankConfig(BaseModel):
@@ -322,6 +338,7 @@ class Config(BaseModel):
     model: ModelConfig = Field(default_factory=ModelConfig)
     sage: SageConfig = Field(default_factory=SageConfig)
     hgt: HgtConfig = Field(default_factory=HgtConfig)
+    simplehgn: SimpleHgnConfig = Field(default_factory=SimpleHgnConfig)
     two_stage: TwoStageConfig = Field(default_factory=TwoStageConfig)
     curriculum: CurriculumConfig = Field(default_factory=CurriculumConfig)
     loss: LossConfig = Field(default_factory=LossConfig)

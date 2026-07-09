@@ -318,16 +318,20 @@ def train_sage(
                 if len(pheno_local_indices) > 0:
                     pheno_emb = node_emb[torch.tensor(pheno_local_indices, device=device)]
                     pheno_logits = model.predict_phenotype(pheno_emb).squeeze(-1)
-                    pheno_target = torch.tensor(pheno_batch_labels, dtype=torch.float32, device=device)
-                    pheno_loss = bce_loss_fn(pheno_logits, pheno_target)
-                    loss = loss + pheno_lambda * pheno_loss
+                    # v63: NaN 检查表型预测输出
+                    if not _check_tensor_nan(pheno_logits, "SAGE pheno_logits"):
+                        pheno_target = torch.tensor(pheno_batch_labels, dtype=torch.float32, device=device)
+                        pheno_loss = bce_loss_fn(pheno_logits, pheno_target)
+                        loss = loss + pheno_lambda * pheno_loss
 
             stage_optimizer.zero_grad()
-            # 清缓存后再 backward，最大化可用显存
-            torch.cuda.empty_cache()
+            # v63: 每 10 个 batch 清理一次缓存，避免每 batch 同步 CUDA 流降低吞吐
+            if n_batches % 10 == 0:
+                torch.cuda.empty_cache()
             stage_scaler.scale(loss).backward()
             gradient_monitor.check_and_clip(model, scaler=stage_scaler, optimizer=stage_optimizer)
-            torch.cuda.empty_cache()
+            if n_batches % 10 == 0:
+                torch.cuda.empty_cache()
             stage_scaler.step(stage_optimizer)
             stage_scaler.update()
 
@@ -411,8 +415,15 @@ def train_sage(
 
         if epoch % 2 == 0 and val_compounds:
             model.eval()
-            val_metrics = _validate_sage_fn(model, x, _homo_edge_index_val, val_compounds, all_compound_to_pos,
-                                         n_compounds)
+            # v64: 验证前清理 GPU 缓存，确保全图前向传播有足够连续显存
+            torch.cuda.empty_cache()
+            # v63: 请求 _validate_sage 返回全图嵌入，供表型验证复用，避免重复 GPU 前向传播
+            val_result = _validate_sage_fn(model, x, _homo_edge_index_val, val_compounds, all_compound_to_pos,
+                                         n_compounds, return_embeddings=use_pheno)
+            if use_pheno:
+                val_metrics, full_node_emb_val = val_result
+            else:
+                val_metrics = val_result
             m = val_metrics
 
             pheno_auc = None
@@ -420,18 +431,20 @@ def train_sage(
                 val_pheno_indices = [c for c in val_compounds if c in pheno_comp_set]
                 if len(val_pheno_indices) > 5:
                     with torch.no_grad(), autocast('cuda', enabled=use_amp):
-                        full_node_emb_val = model(x, _homo_edge_index_val,
-                                                  n_compounds=n_compounds)
                         val_pheno_emb = full_node_emb_val[torch.tensor(val_pheno_indices, device=device)]
                         val_pheno_logits = model.predict_phenotype(val_pheno_emb).squeeze(-1)
-                        val_pheno_labels = [pheno_idx_to_label[c] for c in val_pheno_indices]
-                        val_pheno_labels_t = torch.tensor(val_pheno_labels, dtype=torch.float32, device=device)
-                        try:
-                            pheno_auc = roc_auc_score(val_pheno_labels_t.cpu().numpy(),
-                                                      torch.sigmoid(val_pheno_logits).cpu().numpy())
-                        except ValueError as e:
-                            logger.warning(f"表型 AUC 计算退化（仅一类标签）: {e}，回退为 0.5")
+                        # v63: NaN 检查表型预测输出
+                        if _check_tensor_nan(val_pheno_logits, "SAGE pheno_logits"):
                             pheno_auc = 0.5
+                        else:
+                            val_pheno_labels = [pheno_idx_to_label[c] for c in val_pheno_indices]
+                            val_pheno_labels_t = torch.tensor(val_pheno_labels, dtype=torch.float32, device=device)
+                            try:
+                                pheno_auc = roc_auc_score(val_pheno_labels_t.cpu().numpy(),
+                                                          torch.sigmoid(val_pheno_logits).cpu().numpy())
+                            except ValueError as e:
+                                logger.warning(f"表型 AUC 计算退化（仅一类标签）: {e}，回退为 0.5")
+                                pheno_auc = 0.5
 
             hist_entry = {"epoch": epoch, "loss": avg_loss, **m}
             if pheno_auc is not None:
@@ -452,7 +465,9 @@ def train_sage(
                 logger.info(f"  SAGE 早停 (epoch {epoch}, patience_counter={validator.patience_counter})")
                 break
 
-            if epoch % 5 == 0:
+            if memory_bank_mgr.should_refresh(epoch):
+                # v64: Memory Bank 全局刷新前清理 GPU 缓存
+                torch.cuda.empty_cache()
                 memory_bank_mgr.refresh_global_sage(
                     model, x, _homo_edge_index_train, n_compounds,
                     val_proteins=val_proteins, use_amp=use_amp,
@@ -464,9 +479,8 @@ def train_sage(
                 new_lr = optimizer.param_groups[0]["lr"]
                 if new_lr != prev_lr:
                     logger.info(f"  SAGE 微调 lr {prev_lr:.2e} -> {new_lr:.2e} (plateau, val_aupr={m['aupr']:.4f})")
-
-    if not use_plateau_scheduler:
-        scheduler.step()
+            else:
+                scheduler.step()
 
     if validator.load_best_state(model):
         best_entry = validator.get_best_entry(history)
@@ -523,7 +537,7 @@ def train_hgt(
     plateau_factor: float = 0.5,
     _validate_hgt_fn=None,
     _compute_cpi_loss_fn=None,
-    use_amp: bool = True,
+    use_amp: bool = False,
 ) -> tuple[nn.Module, list[dict]]:
     """HGT/RGCN mini-batch 训练（适用于任何支持 x_dict/edge_index_dict 前向的模型）
 
@@ -631,7 +645,8 @@ def train_hgt(
             if not prot_sorted:
                 continue
 
-            torch.cuda.empty_cache()
+            if n_batches % 10 == 0:
+                torch.cuda.empty_cache()
 
             sg["compound"].x = hetero_data["compound"].x[torch.tensor(comp_sorted, device=device)]
             sg["protein"].x = hetero_data["protein"].x[torch.tensor(prot_sorted, device=device)]
@@ -654,10 +669,6 @@ def train_hgt(
                     sg[et].edge_index = drop_edge(sg[et].edge_index, p=dropedge_ppi)
                 elif "pathway" in str(et) or "belongs_to" in str(et) or "includes" in str(et):
                     sg[et].edge_index = drop_edge(sg[et].edge_index, p=dropedge_pathway)
-
-            cpi_et = ("compound", "interacts", "protein")
-            if cpi_et in sg.edge_index_dict and dropedge_cpi > 0:
-                sg[cpi_et].edge_index = drop_edge(sg[cpi_et].edge_index, p=dropedge_cpi)
 
             stage_optimizer.zero_grad()
 
@@ -712,14 +723,18 @@ def train_hgt(
                     matched_pos = torch.searchsorted(pheno_sorted_idx, pheno_global_indices)
                     pheno_label_batch = pheno_sorted_labels[matched_pos]
                     pheno_logits = model.predict_phenotype(pheno_comp_emb).squeeze(-1)
-                    pheno_loss = pheno_bce(pheno_logits, pheno_label_batch)
-                    loss = loss + pheno_lambda * pheno_loss
+                    # v63: NaN 检查表型预测输出
+                    if not _check_tensor_nan(pheno_logits, "HGT pheno_logits"):
+                        pheno_loss = pheno_bce(pheno_logits, pheno_label_batch)
+                        loss = loss + pheno_lambda * pheno_loss
 
-            # 清缓存后再 backward，最大化可用显存
-            torch.cuda.empty_cache()
+            # v63: 每 10 个 batch 清理一次缓存，避免每 batch 同步 CUDA 流降低吞吐
+            if n_batches % 10 == 0:
+                torch.cuda.empty_cache()
             stage_scaler.scale(loss).backward()
             gradient_monitor.check_and_clip(model, scaler=stage_scaler, optimizer=stage_optimizer)
-            torch.cuda.empty_cache()
+            if n_batches % 10 == 0:
+                torch.cuda.empty_cache()
             stage_scaler.step(stage_optimizer)
             stage_scaler.update()
 
@@ -837,9 +852,8 @@ def train_hgt(
                 new_lr = optimizer.param_groups[0]["lr"]
                 if new_lr != prev_lr:
                     logger.info(f"  HGT 微调 lr {prev_lr:.2e} -> {new_lr:.2e} (plateau, val_aupr={val_aupr:.4f})")
-
-    if not use_plateau_scheduler:
-        scheduler.step()
+            else:
+                scheduler.step()
 
     if validator.load_best_state(model):
         best_entry = validator.get_best_entry(history)
@@ -896,7 +910,7 @@ def train_rgcn(
     plateau_factor: float = 0.5,
     _validate_rgcn_fn=None,
     _compute_cpi_loss_fn=None,
-    use_amp: bool = True,
+    use_amp: bool = False,
 ) -> tuple[RGCNLinkPredictor, list[dict]]:
     """RGCN mini-batch 训练（接口与 train_hgt 完全一致）
 
@@ -992,7 +1006,7 @@ def train_simplehgn(
     plateau_factor: float = 0.5,
     _validate_simplehgn_fn=None,
     _compute_cpi_loss_fn=None,
-    use_amp: bool = True,
+    use_amp: bool = False,
 ) -> tuple[SimpleHGNLinkPredictor, list[dict]]:
     """SimpleHGN mini-batch 训练（接口与 train_hgt 完全一致）
 

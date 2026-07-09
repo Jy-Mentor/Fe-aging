@@ -91,7 +91,7 @@ class TrainingConfig:
     # ============================================================
     # 其他
     # ============================================================
-    use_amp: bool = True
+    use_amp: bool = False
 
     @property
     def pheno_enabled(self) -> bool:
@@ -151,7 +151,7 @@ class TrainingConfig:
             # Memory Bank
             memory_bank_size=cfg.memory_bank.memory_bank_size,
             # 其他
-            use_amp=True,
+            use_amp=False,
         )
 
     def to_dict(self) -> dict:

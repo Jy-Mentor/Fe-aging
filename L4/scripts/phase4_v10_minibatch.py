@@ -192,6 +192,7 @@ GRAD_CLIP_NORM = _cfg.training.grad_clip_norm if _cfg else 1.0
 WARMUP_RATIO = _cfg.training.warmup_ratio if _cfg else 0.05
 DROPPEDGE_PPI = _cfg.training.dropedge_ppi if _cfg else 0.15
 DROPPEDGE_PATHWAY = _cfg.training.dropedge_pathway if _cfg else 0.1
+DROPPEDGE_CPI = _cfg.training.dropedge_cpi if _cfg else 0.0
 EPOCHS = _cfg.sage.epochs if _cfg else 15
 EPOCHS_HGT = _cfg.hgt.epochs if _cfg else 15
 PATIENCE = _cfg.sage.patience if _cfg else 5
@@ -2426,8 +2427,12 @@ def _compute_bedroc(y_true, y_score, alpha=20.0):
     return compute_bedroc(y_true, y_score, alpha=alpha)
 
 
-def _validate_sage(model, x, homo_edge_index, val_compounds, all_compound_to_pos, n_compounds):
-    """v18: SAGE 验证 — 批量 MLP 解码器评分，避免 Python 循环反复 forward
+def _validate_sage(model, x, homo_edge_index, val_compounds, all_compound_to_pos, n_compounds,
+                   return_embeddings: bool = False):
+    """v63: SAGE 验证 — 批量 MLP 解码器评分，避免 Python 循环反复 forward
+    
+    return_embeddings=True 时返回 (metrics_dict, node_emb_tensor)，
+    供调用方复用全图嵌入，避免重复 GPU 前向传播（修复问题 A）。
     
     论文引用:
       - GraphSAGE: Hamilton et al. (2017) "Inductive Representation Learning on Large Graphs", NeurIPS.
@@ -2437,6 +2442,11 @@ def _validate_sage(model, x, homo_edge_index, val_compounds, all_compound_to_pos
         x_dev = x.to(DEVICE)
         edge_index = homo_edge_index.to(DEVICE)
         node_emb = model(x_dev, edge_index)  # n_compounds=None 使用 self.n_compounds
+        # v64: 全图前向传播完成后立即释放输入特征矩阵和边索引，
+        # 减少峰值显存，避免与后续双维度分块评分争抢显存。
+        del x_dev, edge_index
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
         prot_emb = node_emb[n_compounds:]
         comp_emb = node_emb[:n_compounds]
         T = model.temperature
@@ -2445,7 +2455,8 @@ def _validate_sage(model, x, homo_edge_index, val_compounds, all_compound_to_pos
         val_compounds_list = list(val_compounds)
         n_val = len(val_compounds_list)
         if n_val == 0:
-            return {"auc": 0.5, "aupr": 0.5, "n_valid_compounds": 0}
+            r = {"auc": 0.5, "aupr": 0.5, "n_valid_compounds": 0}
+            return (r, node_emb) if return_embeddings else r
 
         # v58: 双维度分块 — 同时沿化合物和蛋白维度分块，避免 RTX 5060 8GB 显存碎片化 OOM。
         # 化合物 128 × 蛋白 6846 = 876K pairs，单次 expand+reshape 产生 ~450MB 中间张量，
@@ -2489,7 +2500,7 @@ def _validate_sage(model, x, homo_edge_index, val_compounds, all_compound_to_pos
             pos_src_list, pos_dst_list = [], []
             for idx, src in enumerate(val_compounds_list):
                 pos_set = all_compound_to_pos.get(src, set())
-                valid_pos = [p - n_compounds for p in pos_set if n_compounds <= p < n_compounds + n_prots]
+                valid_pos = [p - n_compounds for p in pos_set if n_compounds <= p < n_compounds + n_proteins]
                 for p in valid_pos:
                     pos_src_list.append(idx)
                     pos_dst_list.append(p)
@@ -2565,7 +2576,8 @@ def _validate_sage(model, x, homo_edge_index, val_compounds, all_compound_to_pos
                         y_score.append(torch.sigmoid(scores[ri]).item())
 
         if len(y_true) < 2 or len(set(y_true)) < 2:
-            return {"auc": 0.5, "aupr": 0.5, "n_valid_compounds": n_valid}
+            r = {"auc": 0.5, "aupr": 0.5, "n_valid_compounds": n_valid}
+            return (r, node_emb) if return_embeddings else r
 
         y_true_arr = np.array(y_true)
         y_score_arr = np.array(y_score)
@@ -2576,7 +2588,8 @@ def _validate_sage(model, x, homo_edge_index, val_compounds, all_compound_to_pos
             y_true_arr = y_true_arr[valid_idx]
             y_score_arr = y_score_arr[valid_idx]
             if len(y_true_arr) < 2 or len(set(y_true_arr)) < 2:
-                return {"auc": 0.5, "aupr": 0.5, "n_valid_compounds": n_valid}
+                r = {"auc": 0.5, "aupr": 0.5, "n_valid_compounds": n_valid}
+                return (r, node_emb) if return_embeddings else r
 
         # v50: 使用标准化指标模块统一计算 AUC/AUPR/EF/ROCE/BEDROC
         result = compute_early_enrichment_metrics(
@@ -2584,7 +2597,7 @@ def _validate_sage(model, x, homo_edge_index, val_compounds, all_compound_to_pos
             score_matrix=score_matrix, valid_pos_list=valid_pos_list,
         )
         result["n_valid_compounds"] = n_valid
-        return result
+        return (result, node_emb) if return_embeddings else result
 
 
 def _validate_hgt(
@@ -2596,18 +2609,212 @@ def _validate_hgt(
     n_proteins: int,
     hetero_adj: dict | None = None,
 ) -> dict[str, float]:
-    """v31: HGT 强制 mini-batch 验证（禁止在完整异质图上执行全图前向计算）
+    """v62: HGT 全图前向验证 — 一次全图前向传播，然后批量解码。
 
-    硬性约束: HGT 验证必须采用 mini-batch 子图采样，避免全图推理的 OOM 风险
-    与蛋白嵌入不一致问题。该函数直接委托给 _validate_hgt_minibatch。
+    修复 v31 的 mini-batch 子图采样导致的化合物孤立问题：
+    - mini-batch 子图中验证化合物无 CPI 边，嵌入退化为纯特征投影
+    - 蛋白质通过 PPI/通路/疾病边有结构信息
+    - 化合物与蛋白质嵌入不在同一表示空间，AUC/AUPR 系统性崩塌
+
+    v62 改为全图前向传播（异构全图 < 40MB，6.8GB GPU 绰绰有余）：
+    - 使用 hetero_data.edge_index_dict（val CPI 边已移除）做一次全图编码
+    - 所有节点（含验证化合物）通过 PPI 网络间接参与消息传递
+    - 与 SAGE 验证逻辑一致，化合物与蛋白质嵌入在同一表示空间
     """
-    if hetero_adj is None:
-        logger.error("  HGT mini-batch 验证失败: hetero_adj 未传入")
-        return {"auc": 0.5, "aupr": 0.5, "n_valid_compounds": 0}
+    model.eval()
+    with torch.no_grad():
+        # 1) 全图前向传播
+        hetero_data = hetero_data.to(DEVICE)
+        hgt_out = model(hetero_data.x_dict, hetero_data.edge_index_dict)
+        comp_emb = hgt_out["compound"]  # (n_compounds, d)
+        prot_emb = hgt_out["protein"]   # (n_proteins, d)
+        T = model.temperature
 
-    return _validate_hgt_minibatch(
-        model, hetero_data, hetero_adj, val_compounds,
-        all_compound_to_pos, n_compounds, n_proteins)
+        val_compounds_list = list(val_compounds)
+        n_val = len(val_compounds_list)
+        if n_val == 0:
+            return {"auc": 0.5, "aupr": 0.5, "n_valid_compounds": 0}
+
+        # 2) 双维度分块批量解码（与 SAGE 验证一致）
+        comp_sub = comp_emb[val_compounds_list]  # (n_val, d)
+        comp_batch = 32
+        prot_batch = 1024
+        score_chunks = []
+        for c_start in range(0, n_val, comp_batch):
+            c_end = min(c_start + comp_batch, n_val)
+            sub_comp = comp_sub[c_start:c_end]
+            n_c = c_end - c_start
+            row_chunks = []
+            for p_start in range(0, n_proteins, prot_batch):
+                p_end = min(p_start + prot_batch, n_proteins)
+                sub_prot = prot_emb[p_start:p_end]
+                n_p = p_end - p_start
+                comp_exp = sub_comp.repeat_interleave(n_p, dim=0)
+                prot_exp = sub_prot.repeat(n_c, 1)
+                sub_scores = model.decode(
+                    comp_exp, prot_exp, prot_residue_indices=None
+                ).reshape(n_c, n_p) / T
+                row_chunks.append(sub_scores)
+                if torch.cuda.is_available():
+                    torch.cuda.empty_cache()
+            score_chunks.append(torch.cat(row_chunks, dim=1))
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+        score_matrix = torch.cat(score_chunks, dim=0)  # (n_val, n_proteins)
+
+        # 3) 正样本残基注意力分数（与 SAGE 验证一致）
+        use_residue_in_val = (
+            hasattr(model, "decoder")
+            and model.decoder.__class__.__name__ == "ResidueAwareBilinearDecoder"
+        )
+        pos_key_to_residue_score: dict[tuple[int, int], float] = {}
+        if use_residue_in_val:
+            pos_src_list, pos_dst_list = [], []
+            for idx, src in enumerate(val_compounds_list):
+                pos_set = all_compound_to_pos.get(src, set())
+                valid_pos = [p - n_compounds for p in pos_set if n_compounds <= p < n_compounds + n_proteins]
+                for p in valid_pos:
+                    pos_src_list.append(idx)
+                    pos_dst_list.append(p)
+            if pos_src_list:
+                pos_src_t = torch.tensor(pos_src_list, device=DEVICE, dtype=torch.long)
+                pos_dst_t = torch.tensor(pos_dst_list, device=DEVICE, dtype=torch.long)
+                pos_comp_emb = comp_sub[pos_src_t]
+                pos_prot_emb = prot_emb[pos_dst_t]
+                try:
+                    pos_residue_scores = model.decode(
+                        pos_comp_emb, pos_prot_emb, prot_residue_indices=pos_dst_t
+                    ).reshape(-1) / T
+                    pos_residue_scores = torch.clamp(pos_residue_scores, -SCORE_CLAMP, SCORE_CLAMP)
+                    for s, d, score in zip(pos_src_list, pos_dst_list, pos_residue_scores, strict=False):
+                        pos_key_to_residue_score[(int(s), int(d))] = torch.sigmoid(score).item()
+                except torch.cuda.OutOfMemoryError as e:
+                    logger.warning(f"_validate_hgt: 正样本残基路径 OOM，验证回退到 fast bilinear: {e}")
+                    if torch.cuda.is_available():
+                        torch.cuda.empty_cache()
+
+        # 4) Per-compound 评分与负采样
+        y_true, y_score = [], []
+        all_batch_ranking = []
+        n_valid = 0
+        for idx, src in enumerate(val_compounds_list):
+            pos_set = all_compound_to_pos.get(src, set())
+            valid_pos = [p - n_compounds for p in pos_set if n_compounds <= p < n_compounds + n_proteins]
+            if not valid_pos:
+                continue
+            n_valid += 1
+            scores = score_matrix[idx]
+
+            # 正样本
+            for p in valid_pos:
+                y_true.append(1)
+                if (idx, p) in pos_key_to_residue_score:
+                    y_score.append(pos_key_to_residue_score[(idx, p)])
+                else:
+                    y_score.append(torch.sigmoid(scores[p]).item())
+
+            # 硬负样本 (top-5)
+            valid_pos_tensor = torch.tensor(valid_pos, device=DEVICE, dtype=torch.long)
+            mask = torch.zeros(n_proteins, device=DEVICE)
+            mask[valid_pos_tensor] = -1e9
+            n_hard = min(5, n_proteins - len(valid_pos))
+            if n_hard > 0:
+                _, hard_indices = (scores + mask).topk(n_hard)
+                for hi in hard_indices:
+                    y_true.append(0)
+                    y_score.append(torch.sigmoid(scores[hi]).item())
+
+            # 随机负样本 (top-5)
+            n_rand = min(5, n_proteins - len(valid_pos))
+            if n_rand > 0:
+                rand_mask = torch.ones(n_proteins, device=DEVICE)
+                rand_mask[valid_pos_tensor] = 0
+                if n_hard > 0:
+                    for hi in hard_indices:
+                        rand_mask[hi] = 0
+                rand_candidates = torch.where(rand_mask > 0)[0]
+                if len(rand_candidates) > 0:
+                    n_sample = min(n_rand, len(rand_candidates))
+                    rand_idx = rand_candidates[torch.randperm(len(rand_candidates), device=DEVICE)[:n_sample]]
+                    for ri in rand_idx:
+                        y_true.append(0)
+                        y_score.append(torch.sigmoid(scores[ri]).item())
+
+            # 额外随机负样本 (top-20)
+            n_rand_extra = min(20, n_proteins - len(valid_pos) - n_hard)
+            if n_rand_extra > 0:
+                extra_rand_mask = torch.ones(n_proteins, device=DEVICE)
+                extra_rand_mask[valid_pos_tensor] = 0
+                if n_hard > 0:
+                    for hi in hard_indices:
+                        extra_rand_mask[hi] = 0
+                extra_candidates = torch.where(extra_rand_mask > 0)[0]
+                if len(extra_candidates) > 0:
+                    n_sample = min(n_rand_extra, len(extra_candidates))
+                    extra_idx = extra_candidates[torch.randperm(len(extra_candidates), device=DEVICE)[:n_sample]]
+                    for ri in extra_idx:
+                        y_true.append(0)
+                        y_score.append(torch.sigmoid(scores[ri]).item())
+
+            # Per-compound 排名指标
+            valid_pos_batch = valid_pos
+            batch_ranking = _compute_ranking_metrics(
+                scores.unsqueeze(0), [valid_pos_batch]
+            )
+            all_batch_ranking.append(batch_ranking)
+
+        if len(y_true) < 2 or len(set(y_true)) < 2:
+            return {"auc": 0.5, "aupr": 0.5, "n_valid_compounds": n_valid}
+
+        y_true_arr = np.array(y_true)
+        y_score_arr = np.array(y_score)
+
+        # 诊断日志
+        try:
+            pos_scores = y_score_arr[y_true_arr == 1]
+            neg_scores = y_score_arr[y_true_arr == 0]
+            if pos_scores.size and neg_scores.size:
+                logger.info(
+                    f"  [HGT val diag] n_pos={len(pos_scores)} n_neg={len(neg_scores)} "
+                    f"pos={pos_scores.mean():.4f}±{pos_scores.std():.4f} "
+                    f"neg={neg_scores.mean():.4f}±{neg_scores.std():.4f} "
+                    f"gap={(pos_scores.mean() - neg_scores.mean()):.4f}"
+                )
+        except Exception as e:
+            logger.warning(f"  [HGT val diag] 诊断打印异常: {e}")
+
+        result = compute_early_enrichment_metrics(y_true_arr, y_score_arr)
+        if all_batch_ranking:
+            precision_sums = {k: 0.0 for k in all_batch_ranking[0] if k.startswith("precision@")}
+            recall_sums = {k: 0.0 for k in all_batch_ranking[0] if k.startswith("recall@")}
+            hit_sums = {k: 0.0 for k in all_batch_ranking[0] if k.startswith("hit@")}
+            ndcg_sums = {k: 0.0 for k in all_batch_ranking[0] if k.startswith("ndcg@")}
+            ef_sums = {k: 0.0 for k in all_batch_ranking[0] if k.startswith("ef@")}
+            n_batches = len(all_batch_ranking)
+            for batch_r in all_batch_ranking:
+                for k, v in batch_r.items():
+                    if k in precision_sums:
+                        precision_sums[k] += v
+                    elif k in recall_sums:
+                        recall_sums[k] += v
+                    elif k in hit_sums:
+                        hit_sums[k] += v
+                    elif k in ndcg_sums:
+                        ndcg_sums[k] += v
+                    elif k in ef_sums:
+                        ef_sums[k] += v
+            for k in precision_sums:
+                result[k] = precision_sums[k] / n_batches
+            for k in recall_sums:
+                result[k] = recall_sums[k] / n_batches
+            for k in hit_sums:
+                result[k] = hit_sums[k] / n_batches
+            for k in ndcg_sums:
+                result[k] = ndcg_sums[k] / n_batches
+            for k in ef_sums:
+                result[k] = ef_sums[k] / n_batches
+        result["n_valid_compounds"] = n_valid
+        return result
 
 
 def _validate_hgt_minibatch(
@@ -2889,27 +3096,27 @@ def _validate_hgt_minibatch(
         return result
 
 
-def _validate_simplehgn_minibatch(
+def _validate_simplehgn(
     model: SimpleHGNLinkPredictor,
     hetero_data,
-    hetero_adj: dict,
     val_compounds: list[int],
     all_compound_to_pos: dict[int, set],
     n_compounds: int,
     n_proteins: int,
-    num_neighbors: list[int] = None,
-    val_batch_size: int = 256,
+    hetero_adj: dict | None = None,
 ) -> dict[str, float]:
-    """SimpleHGN mini-batch 验证，委托给 _validate_hgt_minibatch。
+    """SimpleHGN 全图前向验证，委托给 _validate_hgt（v62 全图版本）。
 
     SimpleHGN 与 HGT 共享相同的 forward(x_dict, edge_index_dict) 接口
     和 decode() 解码逻辑，验证流程完全一致。
+
+    签名与 _validate_hgt 一致，适配 train_hgt 的调用方式：
+        train_hgt 调用: _validate_hgt_fn(model, hd, val_compounds, ..., hetero_adj=val_hetero_adj)
     """
-    return _validate_hgt_minibatch(
-        model, hetero_data, hetero_adj, val_compounds,
+    return _validate_hgt(
+        model, hetero_data, val_compounds,
         all_compound_to_pos, n_compounds, n_proteins,
-        num_neighbors=num_neighbors, val_batch_size=val_batch_size,
-    )
+        hetero_adj=hetero_adj)
 
 
 def _predict_hgt_scores(
@@ -3910,7 +4117,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
         pheno_labels=pheno_train_labels,
         pheno_lambda=PHENO_LAMBDA,
         bpr_weight=BPR_WEIGHT, weight_decay=WEIGHT_DECAY, warmup_ratio=WARMUP_RATIO,
-        dropedge_ppi=DROPPEDGE_PPI, dropedge_pathway=DROPPEDGE_PATHWAY,
+        dropedge_ppi=DROPPEDGE_PPI, dropedge_pathway=DROPPEDGE_PATHWAY, dropedge_cpi=DROPPEDGE_CPI,
         focal_gamma=FOCAL_GAMMA, focal_alpha=FOCAL_ALPHA,
         memory_bank_size=MEMORY_BANK_SIZE,
         head_ratio=HEAD_RATIO, lambda_hhi=LAMBDA_HHI,
@@ -4027,7 +4234,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             pheno_labels=pheno_train_labels,
             pheno_lambda=PHENO_LAMBDA,
             bpr_weight=BPR_WEIGHT, weight_decay=WEIGHT_DECAY, warmup_ratio=WARMUP_RATIO,
-            dropedge_ppi=DROPPEDGE_PPI, dropedge_pathway=DROPPEDGE_PATHWAY,
+            dropedge_ppi=DROPPEDGE_PPI, dropedge_pathway=DROPPEDGE_PATHWAY, dropedge_cpi=DROPPEDGE_CPI,
             focal_gamma=FOCAL_GAMMA, focal_alpha=FOCAL_ALPHA,
             memory_bank_size=MEMORY_BANK_SIZE,
             head_ratio=HEAD_RATIO, lambda_hhi=LAMBDA_HHI,
@@ -4133,7 +4340,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             pheno_labels=pheno_train_labels,
             pheno_lambda=PHENO_LAMBDA,
             bpr_weight=BPR_WEIGHT, weight_decay=WEIGHT_DECAY, warmup_ratio=WARMUP_RATIO,
-            dropedge_ppi=DROPPEDGE_PPI, dropedge_pathway=DROPPEDGE_PATHWAY,
+            dropedge_ppi=DROPPEDGE_PPI, dropedge_pathway=DROPPEDGE_PATHWAY, dropedge_cpi=DROPPEDGE_CPI,
             focal_gamma=FOCAL_GAMMA, focal_alpha=FOCAL_ALPHA,
             memory_bank_size=MEMORY_BANK_SIZE,
             head_ratio=HEAD_RATIO, lambda_hhi=LAMBDA_HHI,
@@ -4144,7 +4351,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             plateau_patience=PLATEAU_PATIENCE_HGT,
             plateau_factor=PLATEAU_FACTOR_HGT,
             use_topology_neg=USE_TOPOLOGY_NEG,
-            _validate_simplehgn_fn=_validate_simplehgn_minibatch,
+            _validate_simplehgn_fn=_validate_simplehgn,
             _compute_cpi_loss_fn=_compute_cpi_loss,
             use_amp=False)
 
@@ -4198,18 +4405,16 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
         sage_history = [{"auc": sage_metrics.get("auc", 0.5), "aupr": sage_metrics.get("aupr", 0.5)}]
         logger.info(f"  SAGE 重新验证: auc={sage_metrics.get('auc', 0.5):.4f}, aupr={sage_metrics.get('aupr', 0.5):.4f}")
 
-        hgt_metrics = _validate_hgt_minibatch(
-            hgt_model, graphs["hetero_data"], graphs["hetero_adj_val"],
-            val_compounds, compound_to_pos, graphs["n_compounds"], graphs["n_proteins"],
-            num_neighbors=HGT_VAL_NUM_NEIGHBORS, val_batch_size=HGT_VAL_BATCH_SIZE,
+        hgt_metrics = _validate_hgt(
+            hgt_model, graphs["hetero_data_val"], val_compounds, compound_to_pos,
+            graphs["n_compounds"], graphs["n_proteins"],
         )
         hgt_history = [{"auc": hgt_metrics.get("auc", 0.5), "aupr": hgt_metrics.get("aupr", 0.5)}]
         logger.info(f"  HGT 重新验证: auc={hgt_metrics.get('auc', 0.5):.4f}, aupr={hgt_metrics.get('aupr', 0.5):.4f}")
 
-        simplehgn_metrics = _validate_simplehgn_minibatch(
-            simplehgn_model, graphs["hetero_data"], graphs["hetero_adj_val"],
-            val_compounds, compound_to_pos, graphs["n_compounds"], graphs["n_proteins"],
-            num_neighbors=SIMPLEHGN_VAL_NUM_NEIGHBORS, val_batch_size=SIMPLEHGN_VAL_BATCH_SIZE,
+        simplehgn_metrics = _validate_hgt(
+            simplehgn_model, graphs["hetero_data_val"], val_compounds, compound_to_pos,
+            graphs["n_compounds"], graphs["n_proteins"],
         )
         simplehgn_history = [{"auc": simplehgn_metrics.get("auc", 0.5), "aupr": simplehgn_metrics.get("aupr", 0.5)}]
         logger.info(f"  SimpleHGN 重新验证: auc={simplehgn_metrics.get('auc', 0.5):.4f}, aupr={simplehgn_metrics.get('aupr', 0.5):.4f}")

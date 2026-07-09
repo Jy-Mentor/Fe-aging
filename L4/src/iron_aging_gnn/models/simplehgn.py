@@ -260,14 +260,18 @@ class SimpleHGNLinkPredictor(nn.Module):
             edge_attr_dict[edge_key] = edge_attr
 
         # HeteroConv + GATv2Conv 卷积层（无门控，直接残差连接）
+        # v63-fix: 只对 HeteroConv 有输出的节点类型加残差。
+        # 孤立节点（无入边）的 HeteroConv 无输出，若对其加残差会导致
+        # out[nt] = x_dict[nt] + x_dict[nt] = 2*x_dict[nt]（每层翻倍），
+        # 2 层后嵌入放大 4 倍，与有边节点不在同一尺度，解码器崩溃。
         for conv, norm in zip(self.convs, self.norms):
             out = conv(x_dict, edge_index_dict, edge_attr_dict)
-            # 补全无入边的节点类型
+            conv_output_types = set(out.keys())
             for nt in x_dict:
                 if nt not in out:
                     out[nt] = x_dict[nt]
-            # 残差连接 + LayerNorm + ReLU
-            for nt in out:
+            # 残差连接仅对 conv 有输出的节点类型生效
+            for nt in conv_output_types:
                 if nt in x_dict and x_dict[nt].shape == out[nt].shape:
                     out[nt] = out[nt] + x_dict[nt]
             x_dict = {k: norm(v) for k, v in out.items()}
