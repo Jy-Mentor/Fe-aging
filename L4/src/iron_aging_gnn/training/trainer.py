@@ -23,7 +23,7 @@ from ..graph import (
     sample_homo_subgraph,
     split_head_tail_nodes,
 )
-from ..models import HGTLinkPredictor, MemoryBank, SAGELinkPredictor
+from ..models import HGTLinkPredictor, MemoryBank, RGCNLinkPredictor, SAGELinkPredictor, SimpleHGNLinkPredictor
 from .training_components import (
     GradientMonitor,
     LRSchedulerFactory,
@@ -478,7 +478,7 @@ def train_sage(
 
 
 def train_hgt(
-    model: HGTLinkPredictor,
+    model: HGTLinkPredictor | RGCNLinkPredictor | nn.Module,
     graphs: dict,
     train_compounds: list[int],
     val_compounds: list[int],
@@ -524,8 +524,8 @@ def train_hgt(
     _validate_hgt_fn=None,
     _compute_cpi_loss_fn=None,
     use_amp: bool = True,
-) -> tuple[HGTLinkPredictor, list[dict]]:
-    """HGT mini-batch 训练
+) -> tuple[nn.Module, list[dict]]:
+    """HGT/RGCN mini-batch 训练（适用于任何支持 x_dict/edge_index_dict 前向的模型）
 
     阶段1 (可选): 在尾节点平衡子图上预训练，学习稀疏靶标表示
     阶段2: 在完整训练图上微调
@@ -850,9 +850,202 @@ def train_hgt(
     return model, history
 
 
+def train_rgcn(
+    model: RGCNLinkPredictor | nn.Module,
+    graphs: dict,
+    train_compounds: list[int],
+    val_compounds: list[int],
+    compound_to_pos: dict[int, set],
+    device: torch.device,
+    val_proteins: set = None,
+    epochs: int = 100,
+    lr: float = 1e-3,
+    patience: int = 15,
+    batch_size: int = 128,
+    num_neighbors: list[int] = None,
+    prot_to_path_neighbors: dict[int, set] | None = None,
+    two_stage: bool = False,
+    pretrain_epochs: int = 0,
+    pretrain_lr: float | None = None,
+    random_seed: int = 42,
+    use_infonce: bool = False,
+    use_bpr: bool = True,
+    use_curriculum: bool = True,
+    use_topology_neg: bool = False,
+    pheno_compound_indices: list[int] = None,
+    pheno_labels: list[int] = None,
+    pheno_lambda: float = 0.3,
+    bpr_weight: float = 0.4,
+    weight_decay: float = 1e-4,
+    warmup_ratio: float = 0.05,
+    dropedge_ppi: float = 0.15,
+    dropedge_pathway: float = 0.10,
+    dropedge_cpi: float = 0.0,
+    focal_gamma: float = 2.0,
+    focal_alpha: float = 0.75,
+    memory_bank_size: int = 8192,
+    head_ratio: float = 0.2,
+    lambda_hhi: float = 1.0,
+    head_undersample_ratio: float = 0.6,
+    grad_clip_norm: float = 1.0,
+    pretrain_lr_multiplier: float = 1.5,
+    pretrain_lr_decay: float = 0.5,
+    finetune_lr_multiplier: float = 0.5,
+    use_plateau_scheduler: bool = False,
+    plateau_patience: int = 2,
+    plateau_factor: float = 0.5,
+    _validate_rgcn_fn=None,
+    _compute_cpi_loss_fn=None,
+    use_amp: bool = True,
+) -> tuple[RGCNLinkPredictor, list[dict]]:
+    """RGCN mini-batch 训练（接口与 train_hgt 完全一致）
+
+    将 train_hgt 的验证钩子函数 _validate_hgt_fn 映射为 _validate_rgcn_fn，
+    其余参数与逻辑完全复用 train_hgt。
+
+    阶段1 (可选): 在尾节点平衡子图上预训练，学习稀疏靶标表示
+    阶段2: 在完整训练图上微调
+    """
+    if _validate_rgcn_fn is None or _compute_cpi_loss_fn is None:
+        raise ValueError(
+            "train_rgcn 需要注入 _validate_rgcn_fn, _compute_cpi_loss_fn 参数。"
+        )
+
+    # 将 _validate_rgcn_fn 映射为 _validate_hgt_fn 参数，复用 train_hgt
+    return train_hgt(
+        model=model, graphs=graphs,
+        train_compounds=train_compounds, val_compounds=val_compounds,
+        compound_to_pos=compound_to_pos, device=device,
+        val_proteins=val_proteins, epochs=epochs, lr=lr, patience=patience,
+        batch_size=batch_size, num_neighbors=num_neighbors,
+        prot_to_path_neighbors=prot_to_path_neighbors,
+        two_stage=two_stage, pretrain_epochs=pretrain_epochs,
+        pretrain_lr=pretrain_lr, random_seed=random_seed,
+        use_infonce=use_infonce, use_bpr=use_bpr,
+        use_curriculum=use_curriculum, use_topology_neg=use_topology_neg,
+        pheno_compound_indices=pheno_compound_indices,
+        pheno_labels=pheno_labels, pheno_lambda=pheno_lambda,
+        bpr_weight=bpr_weight, weight_decay=weight_decay,
+        warmup_ratio=warmup_ratio,
+        dropedge_ppi=dropedge_ppi, dropedge_pathway=dropedge_pathway,
+        dropedge_cpi=dropedge_cpi,
+        focal_gamma=focal_gamma, focal_alpha=focal_alpha,
+        memory_bank_size=memory_bank_size,
+        head_ratio=head_ratio, lambda_hhi=lambda_hhi,
+        head_undersample_ratio=head_undersample_ratio,
+        grad_clip_norm=grad_clip_norm,
+        pretrain_lr_multiplier=pretrain_lr_multiplier,
+        pretrain_lr_decay=pretrain_lr_decay,
+        finetune_lr_multiplier=finetune_lr_multiplier,
+        use_plateau_scheduler=use_plateau_scheduler,
+        plateau_patience=plateau_patience,
+        plateau_factor=plateau_factor,
+        _validate_hgt_fn=_validate_rgcn_fn,
+        _compute_cpi_loss_fn=_compute_cpi_loss_fn,
+        use_amp=use_amp,
+    )
+
+
+def train_simplehgn(
+    model: SimpleHGNLinkPredictor | nn.Module,
+    graphs: dict,
+    train_compounds: list[int],
+    val_compounds: list[int],
+    compound_to_pos: dict[int, set],
+    device: torch.device,
+    val_proteins: set = None,
+    epochs: int = 100,
+    lr: float = 1e-3,
+    patience: int = 15,
+    batch_size: int = 128,
+    num_neighbors: list[int] = None,
+    prot_to_path_neighbors: dict[int, set] | None = None,
+    two_stage: bool = False,
+    pretrain_epochs: int = 0,
+    pretrain_lr: float | None = None,
+    random_seed: int = 42,
+    use_infonce: bool = False,
+    use_bpr: bool = True,
+    use_curriculum: bool = True,
+    use_topology_neg: bool = False,
+    pheno_compound_indices: list[int] = None,
+    pheno_labels: list[int] = None,
+    pheno_lambda: float = 0.3,
+    bpr_weight: float = 0.4,
+    weight_decay: float = 1e-4,
+    warmup_ratio: float = 0.05,
+    dropedge_ppi: float = 0.15,
+    dropedge_pathway: float = 0.10,
+    dropedge_cpi: float = 0.0,
+    focal_gamma: float = 2.0,
+    focal_alpha: float = 0.75,
+    memory_bank_size: int = 8192,
+    head_ratio: float = 0.2,
+    lambda_hhi: float = 1.0,
+    head_undersample_ratio: float = 0.6,
+    grad_clip_norm: float = 1.0,
+    pretrain_lr_multiplier: float = 1.5,
+    pretrain_lr_decay: float = 0.5,
+    finetune_lr_multiplier: float = 0.5,
+    use_plateau_scheduler: bool = False,
+    plateau_patience: int = 2,
+    plateau_factor: float = 0.5,
+    _validate_simplehgn_fn=None,
+    _compute_cpi_loss_fn=None,
+    use_amp: bool = True,
+) -> tuple[SimpleHGNLinkPredictor, list[dict]]:
+    """SimpleHGN mini-batch 训练（接口与 train_hgt 完全一致）
+
+    将 train_hgt 的验证钩子函数 _validate_hgt_fn 映射为 _validate_simplehgn_fn，
+    其余参数与逻辑完全复用 train_hgt。
+
+    阶段1 (可选): 在尾节点平衡子图上预训练，学习稀疏靶标表示
+    阶段2: 在完整训练图上微调
+    """
+    if _validate_simplehgn_fn is None or _compute_cpi_loss_fn is None:
+        raise ValueError(
+            "train_simplehgn 需要注入 _validate_simplehgn_fn, _compute_cpi_loss_fn 参数。"
+        )
+
+    return train_hgt(
+        model=model, graphs=graphs,
+        train_compounds=train_compounds, val_compounds=val_compounds,
+        compound_to_pos=compound_to_pos, device=device,
+        val_proteins=val_proteins, epochs=epochs, lr=lr, patience=patience,
+        batch_size=batch_size, num_neighbors=num_neighbors,
+        prot_to_path_neighbors=prot_to_path_neighbors,
+        two_stage=two_stage, pretrain_epochs=pretrain_epochs,
+        pretrain_lr=pretrain_lr, random_seed=random_seed,
+        use_infonce=use_infonce, use_bpr=use_bpr,
+        use_curriculum=use_curriculum, use_topology_neg=use_topology_neg,
+        pheno_compound_indices=pheno_compound_indices,
+        pheno_labels=pheno_labels, pheno_lambda=pheno_lambda,
+        bpr_weight=bpr_weight, weight_decay=weight_decay,
+        warmup_ratio=warmup_ratio,
+        dropedge_ppi=dropedge_ppi, dropedge_pathway=dropedge_pathway,
+        dropedge_cpi=dropedge_cpi,
+        focal_gamma=focal_gamma, focal_alpha=focal_alpha,
+        memory_bank_size=memory_bank_size,
+        head_ratio=head_ratio, lambda_hhi=lambda_hhi,
+        head_undersample_ratio=head_undersample_ratio,
+        grad_clip_norm=grad_clip_norm,
+        pretrain_lr_multiplier=pretrain_lr_multiplier,
+        pretrain_lr_decay=pretrain_lr_decay,
+        finetune_lr_multiplier=finetune_lr_multiplier,
+        use_plateau_scheduler=use_plateau_scheduler,
+        plateau_patience=plateau_patience,
+        plateau_factor=plateau_factor,
+        _validate_hgt_fn=_validate_simplehgn_fn,
+        _compute_cpi_loss_fn=_compute_cpi_loss_fn,
+        use_amp=use_amp,
+    )
+
+
 __all__ = [
     "train_sage",
     "train_hgt",
+    "train_rgcn",
+    "train_simplehgn",
     "TrainingConfig",
     "Validator",
     "MemoryBankManager",

@@ -8,8 +8,8 @@ from __future__ import annotations
 
 import gc
 import logging
-import math
 
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -354,7 +354,11 @@ class ResidueAwareBilinearDecoder(nn.Module):
             end = min(offset + residue_max_len, total_residues)
 
             # 逐蛋白 gather，每次只分配 ~640KB 在 CPU 上，立即搬 GPU
-            feat = self._residue_embeddings[offset:end].to(device)  # (L_actual, d)
+            emb_slice = self._residue_embeddings[offset:end]
+            if isinstance(emb_slice, torch.Tensor):
+                feat = emb_slice.to(device)  # (L_actual, d)
+            else:
+                feat = torch.from_numpy(np.array(emb_slice)).to(device)  # memmap -> numpy -> tensor
             L_actual = feat.shape[0]
             if L_actual < L:
                 pad = torch.zeros(L - L_actual, d, device=device, dtype=feat.dtype)

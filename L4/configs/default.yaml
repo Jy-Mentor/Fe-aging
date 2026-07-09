@@ -20,6 +20,10 @@ model:
   temperature: 2.0
   decoder_type: "residue_bilinear"
 sage:
+  # v60-fix: SAGE 保持轻量配置，避免容量翻倍导致收敛困难；HGT 单独使用 model 级 128/3 配置。
+  hidden_dim: 64
+  out_dim: 64
+  num_layers: 2
   epochs: 25
   lr: 0.0005
   patience: 7
@@ -40,8 +44,8 @@ hgt:
   patience: 7
   batch_size: 64
   num_neighbors:
-  - 3
-  - 2
+  - 16
+  - 8
   two_stage: true
   pretrain_epochs: 10
   pretrain_lr: 0.00075
@@ -75,7 +79,8 @@ loss:
   label_smoothing_pos: 0.9
   label_smoothing_neg: 0.1
   # v57: BPR增强 — 使用hard_neg_scores替代随机采样，增强排序学习
-  bpr_weight: 0.3
+  # v60-diag: 临时关闭 BPR 以诊断训练崩溃原因
+  bpr_weight: 0.0
   bce_weight: 1.0
   infonce_weight: 0.0
   infonce_temperature: 0.07
@@ -99,6 +104,9 @@ validation:
   hgt_val_num_neighbors:
   - 8
   - 4
+  # v61-fix: HGT 验证是否对正样本使用残基注意力分数。关闭时统一使用 fast bilinear 打分，
+  # 避免正样本残基分数与负样本 fast bilinear 分数分布不一致导致 AUC/AUPR 虚高为 1.0。
+  hgt_val_use_residue_for_pos: false
   val_freq: 3
   pretrain_val_freq: 5
   mem_refresh_freq: 3

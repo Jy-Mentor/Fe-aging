@@ -232,6 +232,10 @@ class ValidationConfig(BaseModel):
     val_batch_size: int = Field(default=512, ge=1, description="验证时批量评分")
     hgt_val_batch_size: int = Field(default=64, ge=1, description="HGT mini-batch 验证时每批化合物数")
     hgt_val_num_neighbors: list[int] = Field(default=[64, 32], description="HGT mini-batch 验证时邻居采样数")
+    hgt_val_use_residue_for_pos: bool = Field(
+        default=True,
+        description="HGT 验证时正样本是否使用 ResidueAwareBilinearDecoder 残基注意力分数",
+    )
     val_freq: int = Field(default=2, ge=1, description="验证频率（每 N epoch）")
     pretrain_val_freq: int = Field(default=5, ge=1, description="预训练阶段验证频率")
     mem_refresh_freq: int = Field(default=5, ge=1, description="Memory Bank 全局刷新频率")
