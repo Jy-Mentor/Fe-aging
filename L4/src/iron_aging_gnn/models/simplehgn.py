@@ -70,6 +70,9 @@ class SimpleHGNLinkPredictor(nn.Module):
             pheno_head_dropout: 表型头 Dropout。
             temperature: 解码温度系数 T。
             decoder_type: 解码器类型：mlp / dot / bilinear / residue_bilinear。
+            decoder_init_scheme: 解码器权重初始化方案（仅在 residue_bilinear 时有效）。
+            decoder_final_bias_init: 解码器末层偏置初始值（仅在 residue_bilinear 时有效）。
+            decoder_max_residue_batch: 残基注意力最大 batch 大小（仅在 residue_bilinear 时有效）。
         """
         super().__init__()
         self.out_dim = out_dim

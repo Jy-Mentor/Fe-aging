@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Phase 4: Mini-Batch GNN 双分支 — 化合物冷启动候选化合物发现
+"""Phase 4: Mini-Batch GNN 三分支 — 化合物冷启动候选化合物发现
 
-SAGE + HGT 双分支集成：拓扑 (SAGEConv) + 语义 (HGTConv)，支持：
+SAGE + HGT + SimpleHGN 三分支集成：拓扑 (SAGEConv) + 语义 (HGTConv) + 边类型感知 (SimpleHGN)，支持：
 - 两阶段迁移学习 (BiMLPA/HHI 社区感知头尾划分)
 - 课程负采样 (随机 → 中度通路邻近 → 极硬)
 - PPI拓扑难负样本 + ESM-2结构相似性难负样本

@@ -1,10 +1,10 @@
-"""训练模块：SAGE 和 HGT 的 mini-batch 训练函数
+"""训练模块：SAGE、HGT、RGCN、SimpleHGN 的 mini-batch 训练函数
 
 支持两阶段迁移学习、表型分类辅助任务、课程负采样、Memory Bank 等。
 
 以下辅助函数从主脚本中注入：
   - _compute_cpi_loss (losses)
-  - _validate_sage, _validate_hgt (validation)
+  - _validate_sage, _validate_hgt, _validate_rgcn, _validate_simplehgn (validation)
 """
 
 from __future__ import annotations
