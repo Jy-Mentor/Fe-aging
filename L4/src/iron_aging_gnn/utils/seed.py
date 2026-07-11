@@ -1,13 +1,10 @@
-from __future__ import annotations
-
-import logging
-logger = logging.getLogger(__name__)
-
 """随机种子设置工具
 ================
 确保实验可复现：固定 Python、NumPy、PyTorch（CPU/GPU）随机种子，
 并配置 CuDNN/cuBLAS 确定性行为。
 """
+
+from __future__ import annotations
 
 import os
 import random

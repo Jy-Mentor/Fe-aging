@@ -30,7 +30,7 @@ from .decoders import MLPDecoder, DotProductDecoder, BilinearDecoder, ResidueAwa
 logger = logging.getLogger(__name__)
 
 _PHENO_HEAD_DROPOUT = 0.3
-_TEMPERATURE = 5.0
+_TEMPERATURE = 1.0
 
 
 class RGCNLinkPredictor(nn.Module):
@@ -91,12 +91,14 @@ class RGCNLinkPredictor(nn.Module):
 
         prot_in_dim = node_feat_dims.get("protein", 640) if node_feat_dims else 640
         self.prot_in_dim = prot_in_dim
+        self.prot_pathway_dim = node_feat_dims.get("prot_pathway", 0) if node_feat_dims else 0
         self.prot_proj = nn.Sequential(
             nn.Linear(prot_in_dim, hidden_dim),
             nn.LayerNorm(hidden_dim),
             nn.ReLU(),
             nn.Dropout(dropout),
         )
+        self.prot_dropout = nn.Dropout(dropout)
 
         # 构建边类型 → 整数索引映射（包含 metadata 全部边类型 + 动态反向边）
         self._build_relation_mapping(metadata)
@@ -256,10 +258,15 @@ class RGCNLinkPredictor(nn.Module):
                 raise ValueError(
                     f"蛋白输入维度 {actual_dim} < prot_in_dim {self.prot_in_dim}"
                 )
-            if actual_dim > self.prot_in_dim:
-                x_dict["protein"] = self.prot_proj(x_dict["protein"][:, :self.prot_in_dim])
-            else:
-                x_dict["protein"] = self.prot_proj(x_dict["protein"])
+            prot_esm = x_dict["protein"][:, :self.prot_in_dim]
+            prot_h = self.prot_proj(prot_esm)
+            if self.prot_pathway_dim > 0 and actual_dim >= self.prot_in_dim + self.prot_pathway_dim:
+                prot_pathway = x_dict["protein"][
+                    :, self.prot_in_dim:self.prot_in_dim + self.prot_pathway_dim
+                ].float()
+                prot_h = prot_h + (prot_pathway @ self.pathway_embed.weight)
+            prot_h = self.prot_dropout(prot_h)
+            x_dict["protein"] = prot_h
         if "disease" in x_dict and self.disease_embed is not None:
             x_dict["disease"] = self.disease_embed(x_dict["disease"].squeeze(-1).long())
         if "pathway" in x_dict:

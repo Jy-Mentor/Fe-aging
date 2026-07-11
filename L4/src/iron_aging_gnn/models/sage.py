@@ -29,7 +29,7 @@ _PROT_PROJ_DROPOUT = 0.4          # 蛋白特征投影器外部 Dropout
 _PROT_PROJ_INNER_DROPOUT = 0.3    # 蛋白特征投影器内部 Dropout
 _PATHWAY_PROJ_DROPOUT = 0.3       # 通路投影器 Dropout
 _PHENO_HEAD_DROPOUT = 0.3         # 表型分类头 Dropout
-_TEMPERATURE = 5.0                # 温度参数 T（固定，不参与梯度更新）
+_TEMPERATURE = 1.0                # 温度参数 T（固定，不参与梯度更新），与 config 一致
 
 
 class SAGELinkPredictor(nn.Module):

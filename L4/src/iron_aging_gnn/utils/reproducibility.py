@@ -178,6 +178,62 @@ def generate_reproducibility_manifest(
     return manifest
 
 
+def export_environment_fingerprint(output_dir: str | Path) -> Path:
+    """导出环境指纹（pip freeze + 系统信息）到指定目录。
+
+    生成文件:
+      - {output_dir}/environment_fingerprint.txt: pip freeze 完整输出
+      - {output_dir}/environment_fingerprint.json: 结构化系统信息
+
+    Args:
+        output_dir: 输出目录路径。
+
+    Returns:
+        生成的 fingerprint 文件路径。
+    """
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # pip freeze 文本输出
+    pip_path = output_dir / "environment_fingerprint.txt"
+    try:
+        result = subprocess.run(
+            [sys.executable, "-m", "pip", "freeze"],
+            capture_output=True, text=True,
+        )
+        pip_content = result.stdout
+    except Exception as e:
+        logger.warning(f"pip freeze 失败: {e}")
+        pip_content = f"# pip freeze failed: {e}\n"
+    pip_path.write_text(pip_content, encoding="utf-8")
+    logger.info(f"环境指纹 (pip freeze) 已保存: {pip_path}")
+
+    # 结构化系统信息
+    json_path = output_dir / "environment_fingerprint.json"
+    sys_info = {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "python_version": sys.version,
+        "python_executable": sys.executable,
+        "platform": platform.platform(),
+        "machine": platform.machine(),
+        "processor": platform.processor(),
+        "cuda_available": False,
+    }
+    try:
+        import torch
+        sys_info["cuda_available"] = torch.cuda.is_available()
+        if torch.cuda.is_available():
+            sys_info["cuda_version"] = torch.version.cuda
+            sys_info["gpu_count"] = torch.cuda.device_count()
+            sys_info["gpu_names"] = [torch.cuda.get_device_name(i) for i in range(torch.cuda.device_count())]
+    except Exception:
+        pass
+    json_path.write_text(json.dumps(sys_info, ensure_ascii=False, indent=2), encoding="utf-8")
+    logger.info(f"系统信息指纹已保存: {json_path}")
+
+    return pip_path
+
+
 def save_reproducibility_manifest(
     manifest: dict[str, Any],
     output_path: str | Path,

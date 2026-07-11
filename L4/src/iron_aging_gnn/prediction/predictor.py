@@ -20,6 +20,94 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_AUPR = 0.5
 DIVERSITY_PENALTY = 0.1
+DEFAULT_RERANK_TOPK = 100
+CONSISTENCY_WARN_THRESHOLD = 0.01  # 1% 差异告警阈值
+
+
+def _rerank_with_residue(
+    sage_model: SAGELinkPredictor,
+    hgt_model: HGTLinkPredictor | None,
+    tcm_feat: torch.Tensor,
+    sage_prot_emb: torch.Tensor,
+    hgt_prot_emb: torch.Tensor | None,
+    sage_T: float,
+    hgt_T: float | None,
+    topk_indices: torch.Tensor,
+    gene_index_map: list[tuple[str, int]],
+    sage_fast_scores: torch.Tensor,
+    hgt_fast_scores: torch.Tensor | None,
+    device: torch.device,
+) -> tuple[torch.Tensor, torch.Tensor | None, torch.Tensor]:
+    """对 top-k 候选使用残基感知双线性解码器重新打分（训练-推断一致性修复）。
+
+    Args:
+        sage_model: SAGE 模型
+        hgt_model: HGT 模型
+        tcm_feat: (n_tcm, feat_dim) TCM 化合物特征
+        sage_prot_emb: (n_prots, sage_out_dim) SAGE 蛋白嵌入
+        hgt_prot_emb: (n_prots, hgt_out_dim) HGT 蛋白嵌入
+        sage_T: SAGE 温度参数
+        hgt_T: HGT 温度参数
+        topk_indices: (n_tcm, k) top-k 基因列索引（对应 gene_index_map 的列）
+        gene_index_map: [(gene_name, local_protein_idx), ...] 基因→蛋白局部索引映射
+        sage_fast_scores: (n_tcm, n_genes) SAGE fast bilinear 得分
+        hgt_fast_scores: (n_tcm, n_genes) HGT fast bilinear 得分
+        device: 计算设备
+
+    Returns:
+        (sage_residue_scores, hgt_residue_scores, consistency_diffs) 元组，
+        每个张量形状为 (n_tcm, k)，仅包含 top-k 基因的得分与差异
+    """
+    n_tcm = tcm_feat.shape[0]
+    k = topk_indices.shape[1]
+    sage_residue = torch.zeros(n_tcm, k, device=device)
+    hgt_residue = torch.zeros(n_tcm, k, device=device) if hgt_model is not None else None
+    consistency_diffs = torch.zeros(n_tcm, k, device=device)
+
+    sage_tcm_emb = sage_model.encode_compound(tcm_feat)
+    if hgt_model is not None:
+        hgt_tcm_emb = hgt_model.encode_compound(tcm_feat)
+
+    for i in range(n_tcm):
+        for j in range(k):
+            gene_col = topk_indices[i, j].item()
+            if gene_col < 0:
+                continue
+            _, local_p_idx = gene_index_map[gene_col]
+            if local_p_idx < 0:
+                continue
+
+            # SAGE 残基路径重打分
+            sage_comp = sage_tcm_emb[i:i+1]
+            sage_prot = sage_prot_emb[local_p_idx:local_p_idx+1]
+            sage_residue_indices = torch.tensor([local_p_idx], device=device, dtype=torch.long)
+            sage_score = torch.sigmoid(
+                sage_model.decode(sage_comp, sage_prot, prot_residue_indices=sage_residue_indices) / sage_T
+            )
+            sage_residue[i, j] = sage_score
+
+            # HGT 残基路径重打分
+            if hgt_model is not None and hgt_prot_emb is not None:
+                hgt_comp = hgt_tcm_emb[i:i+1]
+                hgt_prot = hgt_prot_emb[local_p_idx:local_p_idx+1]
+                hgt_residue_indices = torch.tensor([local_p_idx], device=device, dtype=torch.long)
+                hgt_score = torch.sigmoid(
+                    hgt_model.decode(hgt_comp, hgt_prot, prot_residue_indices=hgt_residue_indices) / hgt_T
+                )
+                hgt_residue[i, j] = hgt_score
+
+            # 一致性检查：对比 fast vs residue 路径差异
+            sage_fast = sage_fast_scores[i, gene_col]
+            sage_diff = torch.abs(sage_residue[i, j] - sage_fast).item()
+            if hgt_model is not None and hgt_fast_scores is not None:
+                hgt_fast = hgt_fast_scores[i, gene_col]
+                hgt_diff = torch.abs(hgt_residue[i, j] - hgt_fast).item()
+                diff = max(sage_diff, hgt_diff)
+            else:
+                diff = sage_diff
+            consistency_diffs[i, j] = diff
+
+    return sage_residue, hgt_residue, consistency_diffs
 
 
 def predict_tcm(
@@ -37,6 +125,9 @@ def predict_tcm(
     tcm_feat_precomputed: torch.Tensor | None = None,
     # 外部注入的化合物特征构建函数
     build_compound_features_fn=None,
+    # 训练-推断一致性修复参数
+    rerank_topk: int = DEFAULT_RERANK_TOPK,
+    residue_rerank_enabled: bool = True,
 ) -> pd.DataFrame:
     """SAGE + HGT 集成预测 — 动态权重 + 多样性约束 + MC Dropout
 
@@ -44,6 +135,11 @@ def predict_tcm(
     余弦相似度多样性惩罚：鼓励两个分支利用不同信号。
     MC Dropout 不确定性估计：mc_samples>0 时保持 Dropout 开启，
     重复 mc_samples 次前向，输出均值 + 标准差。
+
+    训练-推断一致性修复 (v2):
+      - rerank_topk: 对 top-k 候选基因使用残基感知双线性解码器重新打分
+      - residue_rerank_enabled: 是否启用残基重打分
+      - 自动检测 fast bilinear vs residue 路径得分差异，差异 > 1% 时告警
 
     Args:
         sage_model: SAGE 链接预测模型
@@ -59,6 +155,8 @@ def predict_tcm(
         mc_samples: MC Dropout 采样次数（0=禁用，推荐30）
         tcm_feat_precomputed: 预计算的 TCM 化合物特征（可选）
         build_compound_features_fn: 化合物特征构建函数（从主脚本注入）
+        rerank_topk: 残基重打分 top-k 数量（默认 100，0 禁用）
+        residue_rerank_enabled: 是否启用残基感知重打分
 
     Returns:
         pd.DataFrame: 预测结果表
@@ -102,6 +200,9 @@ def predict_tcm(
         sage_w = hgt_w = 0.5
     logger.info(f"  集成权重: SAGE={sage_w:.3f} (prot_aupr={sage_prot_aupr:.3f}), "
                 f"HGT={hgt_w:.3f} (prot_aupr={hgt_prot_aupr:.3f})")
+
+    if residue_rerank_enabled and rerank_topk > 0:
+        logger.info(f"  残基重打分: 启用 (rerank_topk={rerank_topk})")
 
     # 预构建基因→蛋白局部索引映射
     gene_index_map = []
@@ -186,6 +287,59 @@ def predict_tcm(
         sage_mean = all_sage_scores_mc[0]
         hgt_mean = all_hgt_scores_mc[0]
         sage_std = hgt_std = None
+
+    # ---- 残基感知重打分（训练-推断一致性修复） ----
+    if residue_rerank_enabled and rerank_topk > 0:
+        n_genes = len(target_genes)
+        actual_k = min(rerank_topk, n_genes)
+
+        # 基于 fast bilinear 集成得分选出 top-k 基因
+        weighted_fast = sage_w * sage_mean + hgt_w * hgt_mean
+        _, topk_indices = torch.topk(weighted_fast, k=actual_k, dim=1)
+
+        # 对 top-k 进行残基路径重打分
+        with torch.no_grad():
+            sage_residue, hgt_residue, consistency_diffs = _rerank_with_residue(
+                sage_model=sage_model,
+                hgt_model=hgt_model,
+                tcm_feat=tcm_feat.to(device),
+                sage_prot_emb=node_emb[n_compounds:].to(device),
+                hgt_prot_emb=hgt_out["protein"].to(device) if hgt_model is not None and hgt_all_scores is not None else None,
+                sage_T=sage_T,
+                hgt_T=hgt_T if hgt_model is not None else None,
+                topk_indices=topk_indices,
+                gene_index_map=gene_index_map,
+                sage_fast_scores=sage_mean.to(device),
+                hgt_fast_scores=hgt_mean.to(device) if hgt_model is not None else None,
+                device=device,
+            )
+
+        # 一致性检查告警
+        max_diff = consistency_diffs.max().item()
+        mean_diff = consistency_diffs.mean().item()
+        n_warn = int((consistency_diffs > CONSISTENCY_WARN_THRESHOLD).sum().item())
+        if n_warn > 0:
+            logger.warning(
+                f"  训练-推断一致性告警: {n_warn}/{consistency_diffs.numel()} 个 top-k 对 "
+                f"fast vs residue 路径得分差异 > {CONSISTENCY_WARN_THRESHOLD*100:.0f}%，"
+                f"最大差异={max_diff:.4f}，平均差异={mean_diff:.4f}"
+            )
+        else:
+            logger.info(
+                f"  训练-推断一致性检查通过: 全部 {consistency_diffs.numel()} 个 top-k 对 "
+                f"fast vs residue 路径得分差异 <= {CONSISTENCY_WARN_THRESHOLD*100:.0f}%，"
+                f"最大差异={max_diff:.4f}，平均差异={mean_diff:.4f}"
+            )
+
+        # 用残基得分替换 top-k 基因的 fast bilinear 得分
+        for i in range(sage_mean.shape[0]):
+            for j in range(actual_k):
+                gene_col = topk_indices[i, j].item()
+                if gene_col < 0:
+                    continue
+                sage_mean[i, gene_col] = sage_residue[i, j].cpu()
+                if hgt_model is not None and hgt_residue is not None:
+                    hgt_mean[i, gene_col] = hgt_residue[i, j].cpu()
 
     # 多样性约束
     delta = torch.abs(sage_mean - hgt_mean)

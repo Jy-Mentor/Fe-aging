@@ -288,7 +288,8 @@ def build_graphs_and_adj(
     # 异质图数据（用于 HGT 全图验证）
     hetero_data = HeteroData()
     hetero_data["compound"].x = torch.from_numpy(comp_feat)
-    hetero_data["protein"].x = torch.from_numpy(prot_matrix)
+    # v65-fix: HGT/SimpleHGN 蛋白输入严格使用 640-d ESM-2，pathway 信息通过异质图结构传递
+    hetero_data["protein"].x = torch.from_numpy(prot_matrix[:, :prot_esm_dim])
     hetero_data["pathway"].x = torch.zeros(max(n_pathways, 1), 1, dtype=torch.float32)
     hetero_data["pathway"].n_pathways = n_pathways
 
@@ -377,7 +378,7 @@ def build_graphs_and_adj(
                 build_topology_hard_neighbors,
                 build_topology_medium_neighbors,
             )
-            sampler = TopologyNegativeSampler(ppi_df)
+            sampler = TopologyNegativeSampler(ppi_df, source_col="source", target_col="target", weight_col="weight")
             prot_to_topo_medium_neighbors = build_topology_medium_neighbors(
                 ppi_df,
                 gene_to_idx=gene_to_idx,

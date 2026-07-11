@@ -62,13 +62,17 @@ from iron_aging_gnn.graph.topology_negative_sampling import (  # noqa: E402
 )
 from iron_aging_gnn.evaluation import compute_early_enrichment_metrics  # noqa: E402
 from iron_aging_gnn.models import MemoryBank, SAGELinkPredictor, HGTLinkPredictor, SimpleHGNLinkPredictor  # noqa: E402
+from iron_aging_gnn.models.graph_transformer import GraphTransformerEncoder  # noqa: E402
+from iron_aging_gnn.models.semantic_attention import SemanticAttention, cross_view_infonce_loss  # noqa: E402
+from iron_aging_gnn.graph.meta_path import MetaPathBuilder  # noqa: E402
+from iron_aging_gnn.evaluation.cold_start import ColdStartEvaluator  # noqa: E402
 from iron_aging_gnn.training.trainer import train_sage, train_hgt, train_simplehgn  # noqa: E402
 from iron_aging_gnn.utils.config import Config, load_config  # noqa: E402
 
 for d in [L4_RESULTS, L4_LOGS]:
     d.mkdir(parents=True, exist_ok=True)
 
-LOG_FILE = L4_LOGS / "phase4_v60_full_train.log"
+LOG_FILE = L4_LOGS / "phase4_v67_full_train.log"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -238,6 +242,27 @@ MEMORY_BANK_SIZE = _cfg.memory_bank.memory_bank_size if _cfg else 8192
 INFONCE_WARMUP_RATIO = _cfg.two_stage.infonce_warmup_ratio if _cfg else 0.15
 INFONCE_MEM_SAMPLE = _cfg.memory_bank.infonce_mem_sample if _cfg else 256
 INFONCE_TEMPERATURE = _cfg.loss.infonce_temperature if _cfg else 0.07
+
+# v67: 辅助网络重建损失参数（DHGT-DTI/MHGNN-DTI 风格）
+AUX_RECON_WEIGHT = _cfg.loss.aux_recon_weight if _cfg else 0.15
+AUX_RECON_PPI_SAMPLES = _cfg.loss.aux_recon_ppi_samples if _cfg else 256
+AUX_RECON_PATHWAY_SAMPLES = _cfg.loss.aux_recon_pathway_samples if _cfg else 128
+AUX_RECON_DDI_SAMPLES = _cfg.loss.aux_recon_ddi_samples if _cfg else 128
+AUX_RECON_DRUG_DISEASE_SAMPLES = _cfg.loss.aux_recon_drug_disease_samples if _cfg else 128
+AUX_RECON_PROT_DISEASE_SAMPLES = _cfg.loss.aux_recon_protein_disease_samples if _cfg else 128
+AUX_RECON_DRUG_SIDE_EFFECT_SAMPLES = _cfg.loss.aux_recon_drug_side_effect_samples if _cfg else 128
+SEMANTIC_ATTN_WEIGHT = _cfg.loss.semantic_attn_weight if _cfg else 0.05
+SEMANTIC_ATTN_TEMPERATURE = _cfg.loss.semantic_attn_temperature if _cfg else 0.5
+
+# v67: 冷启动评估参数（GHCDTI 风格）
+ENABLE_COLD_DRUG_EVAL = _cfg.validation.enable_cold_drug_eval if _cfg else False
+ENABLE_COLD_TARGET_EVAL = _cfg.validation.enable_cold_target_eval if _cfg else False
+COLD_DRUG_SPLIT_RATIO = _cfg.validation.cold_drug_split_ratio if _cfg else 0.2
+COLD_TARGET_SPLIT_RATIO = _cfg.validation.cold_target_split_ratio if _cfg else 0.2
+
+# v67: 元路径与 Graph Transformer 配置
+META_PATH_ENABLED = _cfg.meta_path.enabled if _cfg else False
+GT_ENABLED = _cfg.graph_transformer.enabled if _cfg else False
 
 HEAD_RATIO = _cfg.two_stage.head_ratio if _cfg else 0.2
 LAMBDA_HHI = _cfg.two_stage.lambda_hhi if _cfg else 1.0
@@ -2080,6 +2105,77 @@ def _compute_cpi_loss(
 
     return loss
 
+# v67: 辅助网络重建损失函数
+def _compute_auxiliary_reconstruction_loss(*, model, prot_emb, prot_local_indices, homo_adj,
+    n_compounds, ppi_samples=256, prot_to_path_neighbors=None, is_hetero=False,
+    comp_emb=None, comp_local_indices=None, ddi_samples=128,
+    prot_disease_samples=128, hetero_adj=None, n_diseases=0, disease_embed=None):
+    device = prot_emb.device
+    total_loss = torch.tensor(0.0, device=device)
+    n_terms = 0
+    if ppi_samples > 0 and len(prot_local_indices) >= 2:
+        n_local = len(prot_local_indices)
+        n_ppi = min(ppi_samples, n_local * (n_local - 1) // 2)
+        pos_pairs, neg_pairs = [], []
+        prot_set = set(prot_local_indices)
+        for i_idx, pi in enumerate(prot_local_indices):
+            for pj in homo_adj.get(pi, []):
+                if pj in prot_set and pi < pj:
+                    try: pos_pairs.append((i_idx, prot_local_indices.index(pj)))
+                    except ValueError: pass
+        import random as _r; rng = _r.Random(42); attempts = 0
+        while len(neg_pairs) < n_ppi and attempts < n_ppi * 10:
+            a, b = rng.randint(0, n_local-1), rng.randint(0, n_local-1)
+            attempts += 1
+            if a >= b or (a,b) in pos_pairs or (b,a) in pos_pairs or (a,b) in neg_pairs: continue
+            neg_pairs.append((a,b))
+        if pos_pairs and neg_pairs:
+            n = min(len(pos_pairs), len(neg_pairs))
+            pp = torch.tensor(pos_pairs[:n], dtype=torch.long, device=device)
+            pn = torch.tensor(neg_pairs[:n], dtype=torch.long, device=device)
+            ps = (prot_emb[pp[:,0]] * prot_emb[pp[:,1]]).sum(dim=1)
+            ns = (prot_emb[pn[:,0]] * prot_emb[pn[:,1]]).sum(dim=1)
+            total_loss = total_loss + F.binary_cross_entropy_with_logits(torch.cat([ps,ns]), torch.cat([torch.ones_like(ps), torch.zeros_like(ns)]))
+            n_terms += 1
+    if ddi_samples > 0 and comp_emb is not None and comp_local_indices is not None and len(comp_local_indices) >= 2:
+        n_lc = len(comp_local_indices)
+        import random as _r2; rng2 = _r2.Random(42)
+        n_ddi = min(ddi_samples, n_lc*(n_lc-1)//2)
+        dpairs = [(rng2.randint(0,n_lc-1), rng2.randint(0,n_lc-1)) for _ in range(n_ddi*2)]
+        dpairs = [(a,b) for a,b in dpairs if a < b][:n_ddi]
+        if dpairs:
+            di = torch.tensor(dpairs, dtype=torch.long, device=device)
+            ds = (comp_emb[di[:,0]] * comp_emb[di[:,1]]).sum(dim=1)
+            dc = F.cosine_similarity(comp_emb[di[:,0]], comp_emb[di[:,1]], dim=1)
+            dl = (dc > 0.5).float().detach()
+            if dl.sum() > 0 and (1-dl).sum() > 0:
+                total_loss = total_loss + F.binary_cross_entropy_with_logits(ds, dl)
+                n_terms += 1
+    if is_hetero and prot_disease_samples > 0 and hetero_adj is not None and n_diseases > 0:
+        n_lp = len(prot_local_indices)
+        pedges = hetero_adj.get(("protein","associated_with","disease"), {})
+        import random as _r3; rng3 = _r3.Random(42)
+        pos_pd = [(li, d) for li, gp in enumerate(prot_local_indices) for d in pedges.get(gp,[]) if d < n_diseases]
+        ns = min(prot_disease_samples, n_lp * n_diseases)
+        neg_pd, att = [], 0
+        while len(neg_pd) < ns and att < ns*10:
+            p, d = rng3.randint(0,n_lp-1), rng3.randint(0,n_diseases-1)
+            att += 1
+            if (p,d) in pos_pd or (p,d) in neg_pd: continue
+            neg_pd.append((p,d))
+        if pos_pd and neg_pd:
+            n = min(len(pos_pd), len(neg_pd))
+            pp = torch.tensor(pos_pd[:n], dtype=torch.long, device=device)
+            pn = torch.tensor(neg_pd[:n], dtype=torch.long, device=device)
+            de = disease_embed if disease_embed is not None else model.disease_embed(torch.arange(n_diseases, device=device))
+            ps = (prot_emb[pp[:,0]] * de[pp[:,1]]).sum(dim=1)
+            ns = (prot_emb[pn[:,0]] * de[pn[:,1]]).sum(dim=1)
+            total_loss = total_loss + F.binary_cross_entropy_with_logits(torch.cat([ps,ns]), torch.cat([torch.ones_like(ps), torch.zeros_like(ns)]))
+            n_terms += 1
+    if n_terms == 0:
+        return torch.tensor(0.0, device=device, requires_grad=True)
+    return total_loss / n_terms
+
 
 def _split_head_tail_nodes(
     train_compounds: list[int],
@@ -3677,7 +3773,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
 
     start_time = time.time()
     logger.info("=" * 60)
-    logger.info("Phase 4 v60: SAGE + HGT Mini-Batch — 工业级重构（配置系统/tqdm/GPU监控/类型注解）")
+    logger.info("Phase 4 v67: SAGE + HGT Mini-Batch — 工业级重构（配置系统/tqdm/GPU监控/类型注解）")
     logger.info("v21: 移除InfoNCE / 保留课程负采样&BPR&两阶段 / 双分支 / 蛋白冷启动")
     logger.info("v22: warm靶标扩展 / 靶标优先级加权 / zero-shot bonus")
     logger.info("v23: 铁死亡表型分类辅助任务 / 表型概率融合到composite_score")
@@ -3799,7 +3895,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
         logger.warning(f">>> 以下铁衰老96基因缺少ESM-2特征: {missing_ferro_in_prot_feat}")
 
     # 图数据缓存路径与缓存键（修复 HGT 化合物冷启动验证信息泄漏）
-    GRAPH_CACHE_PATH = L4_RESULTS / "graph_cache_v60.pkl"
+    GRAPH_CACHE_PATH = L4_RESULTS / "graph_cache_v67.pkl"
     GRAPH_CACHE_KEY = {
         "version": "v60",
         "random_seed": RANDOM_SEED,
@@ -4052,7 +4148,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             DECODER_TYPE = "bilinear"
             residue_embeddings = None
 
-    sage_model_path = L4_RESULTS / "sage_best_v60.pt"
+    sage_model_path = L4_RESULTS / "sage_best_v67.pt"
     if skip_sage and sage_model_path.exists():
         logger.info(f">>> 跳过 SAGE 训练，加载已有模型: {sage_model_path}")
         sage_model = SAGELinkPredictor(
@@ -4128,12 +4224,19 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
         plateau_patience=PLATEAU_PATIENCE_SAGE,
         plateau_factor=PLATEAU_FACTOR_SAGE,
         use_topology_neg=USE_TOPOLOGY_NEG,
-        _validate_sage_fn=_validate_sage, _compute_cpi_loss_fn=_compute_cpi_loss)
+        _validate_sage_fn=_validate_sage, _compute_cpi_loss_fn=_compute_cpi_loss,
+        _compute_auxiliary_reconstruction_loss_fn=_compute_auxiliary_reconstruction_loss,
+        aux_recon_weight=AUX_RECON_WEIGHT,
+        aux_recon_ppi_samples=AUX_RECON_PPI_SAMPLES,
+        aux_recon_ddi_samples=AUX_RECON_DDI_SAMPLES,
+        hetero_adj=graphs.get("hetero_adj"),
+        n_diseases=graphs.get("n_diseases", 0),
+        use_amp=False)
 
     try:
         L4_RESULTS.mkdir(parents=True, exist_ok=True)
-        torch.save({"state_dict": sage_model.state_dict(), "version": "v60", "hidden_dim": SAGE_HIDDEN_DIM, "out_dim": SAGE_OUT_DIM}, L4_RESULTS / "sage_best_v60.pt")
-        logger.info("  SAGE 模型已保存到 sage_best_v60.pt")
+        torch.save({"state_dict": sage_model.state_dict(), "version": "v60", "hidden_dim": SAGE_HIDDEN_DIM, "out_dim": SAGE_OUT_DIM}, L4_RESULTS / "sage_best_v67.pt")
+        logger.info("  SAGE 模型已保存到 sage_best_v67.pt")
     except Exception:
         logger.error("  SAGE 模型保存失败", exc_info=True)
         raise
@@ -4164,7 +4267,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
     else:
         logger.info(f">>> 训练 HGT（v60: HGTConv + {DECODER_TYPE} + 两阶段迁移学习 + FocalLoss + 课程负采样）")
         _log_gpu_memory("HGT 训练前")
-    hgt_model_path = L4_RESULTS / "hgt_best_v60.pt"
+    hgt_model_path = L4_RESULTS / "hgt_best_v67.pt"
     if skip_hgt and hgt_model_path.exists():
         logger.info(f">>> 跳过 HGT 训练，加载已有模型: {hgt_model_path}")
         hgt_node_feat_dims = {
@@ -4246,12 +4349,19 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             plateau_factor=PLATEAU_FACTOR_HGT,
             use_topology_neg=USE_TOPOLOGY_NEG,
             _validate_hgt_fn=_validate_hgt, _compute_cpi_loss_fn=_compute_cpi_loss,
+            _compute_auxiliary_reconstruction_loss_fn=_compute_auxiliary_reconstruction_loss,
+            aux_recon_weight=AUX_RECON_WEIGHT,
+            aux_recon_ppi_samples=AUX_RECON_PPI_SAMPLES,
+            aux_recon_ddi_samples=AUX_RECON_DDI_SAMPLES,
+            aux_recon_prot_disease_samples=AUX_RECON_PROT_DISEASE_SAMPLES,
+            hetero_adj=graphs.get("hetero_adj"),
+            n_diseases=graphs.get("n_diseases", 0),
             use_amp=False)
 
         try:
             L4_RESULTS.mkdir(parents=True, exist_ok=True)
-            torch.save({"state_dict": hgt_model.state_dict(), "version": "v60", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "hgt_best_v60.pt")
-            logger.info("  HGT 模型已保存到 hgt_best_v60.pt")
+            torch.save({"state_dict": hgt_model.state_dict(), "version": "v60", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "hgt_best_v67.pt")
+            logger.info("  HGT 模型已保存到 hgt_best_v67.pt")
         except Exception:
             logger.error("  HGT 模型保存失败", exc_info=True)
             raise
@@ -4271,7 +4381,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
     else:
         logger.info(f">>> 训练 SimpleHGN（HeteroConv + GATv2Conv + {DECODER_TYPE} + 两阶段迁移学习 + FocalLoss + 课程负采样）")
         _log_gpu_memory("SimpleHGN 训练前")
-    simplehgn_model_path = L4_RESULTS / "simplehgn_best_v60.pt"
+    simplehgn_model_path = L4_RESULTS / "simplehgn_best_v67.pt"
     if skip_simplehgn and simplehgn_model_path.exists():
         logger.info(f">>> 跳过 SimpleHGN 训练，加载已有模型: {simplehgn_model_path}")
         simplehgn_node_feat_dims = {
@@ -4353,12 +4463,19 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             use_topology_neg=USE_TOPOLOGY_NEG,
             _validate_simplehgn_fn=_validate_simplehgn,
             _compute_cpi_loss_fn=_compute_cpi_loss,
+            _compute_auxiliary_reconstruction_loss_fn=_compute_auxiliary_reconstruction_loss,
+            aux_recon_weight=AUX_RECON_WEIGHT,
+            aux_recon_ppi_samples=AUX_RECON_PPI_SAMPLES,
+            aux_recon_ddi_samples=AUX_RECON_DDI_SAMPLES,
+            aux_recon_prot_disease_samples=AUX_RECON_PROT_DISEASE_SAMPLES,
+            hetero_adj=graphs.get("hetero_adj"),
+            n_diseases=graphs.get("n_diseases", 0),
             use_amp=False)
 
         try:
             L4_RESULTS.mkdir(parents=True, exist_ok=True)
-            torch.save({"state_dict": simplehgn_model.state_dict(), "version": "v60", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "simplehgn_best_v60.pt")
-            logger.info("  SimpleHGN 模型已保存到 simplehgn_best_v60.pt")
+            torch.save({"state_dict": simplehgn_model.state_dict(), "version": "v60", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "simplehgn_best_v67.pt")
+            logger.info("  SimpleHGN 模型已保存到 simplehgn_best_v67.pt")
         except Exception:
             logger.error("  SimpleHGN 模型保存失败", exc_info=True)
             raise
@@ -4696,10 +4813,10 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
     top_df = pred_df.head(TOP_N_CANDIDATES).copy()
 
     try:
-        pred_df.to_csv(L4_RESULTS / "tcm_predictions_full_v60.csv", index=False)
-        top_df.to_csv(L4_RESULTS / "tcm_top_candidates_v60.csv", index=False)
-        logger.info(f"  预测结果已保存: tcm_predictions_full_v60.csv ({len(pred_df)} 行), "
-                    f"tcm_top_candidates_v60.csv ({len(top_df)} 行)")
+        pred_df.to_csv(L4_RESULTS / "tcm_predictions_full_v67.csv", index=False)
+        top_df.to_csv(L4_RESULTS / "tcm_top_candidates_v67.csv", index=False)
+        logger.info(f"  预测结果已保存: tcm_predictions_full_v67.csv ({len(pred_df)} 行), "
+                    f"tcm_top_candidates_v67.csv ({len(top_df)} 行)")
     except Exception:
         logger.error("  预测结果 CSV 保存失败", exc_info=True)
         raise
@@ -4736,15 +4853,15 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
         perf_rows.append(simplehgn_row)
     if perf_rows:
         try:
-            pd.DataFrame(perf_rows).to_csv(L4_RESULTS / "model_performance_v60.csv", index=False)
-            logger.info(f"  模型性能报告已保存: model_performance_v60.csv (训练时间={train_time_min:.1f}min, GPU峰值={gpu_mem_peak_gb:.2f}GB)")
+            pd.DataFrame(perf_rows).to_csv(L4_RESULTS / "model_performance_v67.csv", index=False)
+            logger.info(f"  模型性能报告已保存: model_performance_v67.csv (训练时间={train_time_min:.1f}min, GPU峰值={gpu_mem_peak_gb:.2f}GB)")
         except Exception:
             logger.error("  模型性能 CSV 保存失败", exc_info=True)
             raise
 
     total_time = time.time() - start_time
     logger.info("=" * 60)
-    logger.info(f"Phase 4 v60 完成！总耗时 {total_time / 60:.1f} 分钟")
+    logger.info(f"Phase 4 v67 完成！总耗时 {total_time / 60:.1f} 分钟")
     if sage_history:
         logger.info(f"  SAGE best val_auc: {max(h['auc'] for h in sage_history):.4f}  val_aupr: {max(h.get('aupr', 0) for h in sage_history):.4f}")
     if hgt_history:
@@ -4755,7 +4872,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Phase 4 v60: SAGE + HGT + 树模型集成训练与 TCM 预测")
+    parser = argparse.ArgumentParser(description="Phase 4 v67: SAGE + HGT + 树模型集成训练与 TCM 预测")
     parser.add_argument(
         "--decoder_type",
         type=str,

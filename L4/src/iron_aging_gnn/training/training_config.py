@@ -1,8 +1,3 @@
-from __future__ import annotations
-
-import logging
-logger = logging.getLogger(__name__)
-
 """训练配置数据类 — 封装 train_sage / train_hgt 的 30+ 参数
 
 使用方式:
@@ -10,6 +5,8 @@ logger = logging.getLogger(__name__)
     config = TrainingConfig(epochs=50, lr=1e-3)  # 覆盖部分参数
     config = TrainingConfig.from_config(cfg)     # 从 pydantic Config 构建
 """
+
+from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
@@ -132,7 +129,7 @@ class TrainingConfig:
             pretrain_lr_decay=cfg.two_stage.pretrain_lr_decay,
             # 损失函数
             use_infonce=False,
-            use_bpr=True,
+            use_bpr=(cfg.loss.bpr_weight > 0.0),
             bpr_weight=cfg.loss.bpr_weight,
             use_curriculum=True,
             use_topology_neg=False,

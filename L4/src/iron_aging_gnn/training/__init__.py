@@ -1,3 +1,4 @@
+from .hyperparameter_search import run_hyperparameter_search
 from .trainer import train_hgt, train_rgcn, train_sage, train_simplehgn
 from .training_components import (
     GradientMonitor,
@@ -17,4 +18,5 @@ __all__ = [
     "MemoryBankManager",
     "GradientMonitor",
     "LRSchedulerFactory",
+    "run_hyperparameter_search",
 ]

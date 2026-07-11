@@ -24,7 +24,7 @@ from .decoders import MLPDecoder, DotProductDecoder, BilinearDecoder, ResidueAwa
 logger = logging.getLogger(__name__)
 
 _PHENO_HEAD_DROPOUT = 0.3         # 表型分类头 Dropout
-_TEMPERATURE = 5.0                # 温度参数 T（固定，不参与梯度更新）
+_TEMPERATURE = 1.0                # 温度参数 T（固定，不参与梯度更新），与 config 一致
 
 
 class HGTLinkPredictor(nn.Module):
@@ -82,12 +82,14 @@ class HGTLinkPredictor(nn.Module):
 
         prot_in_dim = node_feat_dims.get("protein", 640) if node_feat_dims else 640
         self.prot_in_dim = prot_in_dim
+        self.prot_pathway_dim = node_feat_dims.get("prot_pathway", 0) if node_feat_dims else 0
         self.prot_proj = nn.Sequential(
             nn.Linear(prot_in_dim, hidden_dim),
             nn.LayerNorm(hidden_dim),
             nn.ReLU(),
             nn.Dropout(dropout),
         )
+        self.prot_dropout = nn.Dropout(dropout)
 
         self.convs = nn.ModuleList()
         self.gates = nn.ModuleList()
@@ -100,7 +102,7 @@ class HGTLinkPredictor(nn.Module):
                     heads=num_heads,
                 ))
                 gate = nn.Linear(hidden_dim, 1)
-                nn.init.constant_(gate.bias, 2.0)
+                nn.init.constant_(gate.bias, 0.0)
                 self.gates.append(gate)
 
         self.out_proj = nn.Identity() if hidden_dim == out_dim else nn.Linear(hidden_dim, out_dim, bias=False)
@@ -141,9 +143,11 @@ class HGTLinkPredictor(nn.Module):
     def forward(self, x_dict, edge_index_dict, use_pathway: bool = True):
         """前向传播：执行 HGT 卷积、门控聚合与输出投影。
 
-        HGT 将通路信息作为独立 pathway 节点处理（异质图结构），
-        因此蛋白节点仅需 ESM-2 特征。输入特征维度必须与 prot_in_dim 严格一致，
-        禁止截断或填充，不匹配时直接抛出 ValueError。
+        蛋白特征处理（v62-fix）：
+          - 前 prot_in_dim 维为 ESM-2 嵌入，通过 prot_proj 投影
+          - 若 prot_pathway_dim > 0，后续维度为通路 one-hot，通过 pathway_embed
+            加权求和后拼接到蛋白投影（与 SAGE 一致，强化通路直接编码）
+          - 蛋白投影后施加独立 Dropout（prot_dropout），防止过拟合
         """
         x_dict = {k: v.clone() for k, v in x_dict.items()}
 
@@ -156,14 +160,15 @@ class HGTLinkPredictor(nn.Module):
                     f"蛋白输入维度 {actual_dim} < prot_in_dim {self.prot_in_dim}，"
                     f"特征维度不足，无法提取 ESM-2 嵌入"
                 )
-            if actual_dim > self.prot_in_dim:
-                logger.debug(
-                    f"蛋白输入维度 {actual_dim} > prot_in_dim {self.prot_in_dim}，"
-                    f"取前 {self.prot_in_dim} 维作为 ESM-2 嵌入（其余为通路等附加特征，由异质图结构传递）"
-                )
-                x_dict["protein"] = self.prot_proj(x_dict["protein"][:, :self.prot_in_dim])
-            else:
-                x_dict["protein"] = self.prot_proj(x_dict["protein"])
+            prot_esm = x_dict["protein"][:, :self.prot_in_dim]
+            prot_h = self.prot_proj(prot_esm)
+            if self.prot_pathway_dim > 0 and actual_dim >= self.prot_in_dim + self.prot_pathway_dim:
+                prot_pathway = x_dict["protein"][
+                    :, self.prot_in_dim:self.prot_in_dim + self.prot_pathway_dim
+                ].float()
+                prot_h = prot_h + (prot_pathway @ self.pathway_embed.weight)
+            prot_h = self.prot_dropout(prot_h)
+            x_dict["protein"] = prot_h
         if "disease" in x_dict and self.disease_embed is not None:
             x_dict["disease"] = self.disease_embed(x_dict["disease"].squeeze(-1).long())
         if "pathway" in x_dict:

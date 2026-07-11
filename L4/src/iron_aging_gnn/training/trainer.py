@@ -45,19 +45,6 @@ def _check_tensor_nan(tensor: torch.Tensor, name: str = "tensor") -> bool:
     return False
 
 
-def _check_gradient_norm(model: nn.Module, warn_threshold: float = 100.0) -> float:
-    """计算模型梯度总范数，若超过阈值则记录警告"""
-    total_norm = 0.0
-    for p in model.parameters():
-        if p.grad is not None:
-            param_norm = p.grad.data.norm(2).item()
-            total_norm += param_norm ** 2
-    total_norm = total_norm ** 0.5
-    if total_norm > warn_threshold:
-        logger.warning(f"梯度范数异常: {total_norm:.1f} > {warn_threshold:.1f}")
-    return total_norm
-
-
 def train_sage(
     model: SAGELinkPredictor,
     graphs: dict,
@@ -104,6 +91,12 @@ def train_sage(
     plateau_factor: float = 0.5,
     _validate_sage_fn=None,
     _compute_cpi_loss_fn=None,
+    _compute_auxiliary_reconstruction_loss_fn=None,
+    aux_recon_weight: float = 0.1,
+    aux_recon_ppi_samples: int = 256,
+    aux_recon_ddi_samples: int = 128,
+    hetero_adj: dict | None = None,
+    n_diseases: int = 0,
     use_amp: bool = False,
 ) -> tuple[SAGELinkPredictor, list[dict]]:
     """GraphSAGE mini-batch 训练
@@ -139,8 +132,8 @@ def train_sage(
                 logger.info('SAGE model compiled with torch.compile (reduce-overhead)')
             else:
                 logger.info('Triton not available, skipping torch.compile for SAGE')
-        except Exception as e:
-            logger.warning(f'torch.compile failed for SAGE: {e}, continuing without compilation')
+        except (RuntimeError, ImportError, OSError) as e:
+                logger.warning(f'torch.compile failed for SAGE: {e}, continuing without compilation')
 
     # v54-fix: 完整节点特征矩阵保留在 CPU，仅按 batch 子图取到 GPU，
     # 避免 8GB 显存 (WDDM) 在启动阶段移动全图特征即 OOM。
@@ -211,7 +204,6 @@ def train_sage(
 
         shuffled_compounds = list(active_compounds)
         random.shuffle(shuffled_compounds)
-        total_batches = (len(shuffled_compounds) + batch_size - 1) // batch_size
         for batch_start in range(0, len(shuffled_compounds), batch_size):
             if n_batches == 0 and batch_start % (batch_size * 50) == 0:
                 logger.info(f"  SAGE epoch {epoch}: starting batch at compound {batch_start}/{len(shuffled_compounds)}")
@@ -306,6 +298,25 @@ def train_sage(
                 bpr_detach_neg=stage_bpr_detach_neg,
             )
 
+            # 辅助 PPI 重建损失（DHGT-DTI 风格）
+            if _compute_auxiliary_reconstruction_loss_fn is not None and aux_recon_weight > 0 and prot_emb.shape[0] > 4:
+                prot_global_indices = [node_list[i] for i in prot_local_indices]
+                comp_global_indices = [node_list[i] for i in range(n_compounds_in_sub) if node_list[i] < n_compounds]
+                comp_emb_all = node_emb[:n_compounds_in_sub]
+                aux_loss = _compute_auxiliary_reconstruction_loss_fn(
+                    model=model,
+                    prot_emb=prot_emb,
+                    prot_local_indices=prot_global_indices,
+                    homo_adj=homo_adj,
+                    n_compounds=n_compounds,
+                    ppi_samples=aux_recon_ppi_samples,
+                    is_hetero=False,
+                    comp_emb=comp_emb_all,
+                    comp_local_indices=comp_global_indices,
+                    ddi_samples=aux_recon_ddi_samples,
+                )
+                loss = loss + aux_recon_weight * aux_loss
+
             if use_pheno:
                 pheno_local_indices = []
                 pheno_batch_labels = []
@@ -365,7 +376,7 @@ def train_sage(
         for epoch in range(1, pretrain_epochs + 1):
             total_loss, n_batches = _train_one_epoch(
                 epoch, pretrain_compounds, pretrain_optimizer, pretrain_memory_bank, pretrain_epochs,
-                stage_scaler=pretrain_scaler, stage_use_residue_decoder=False,
+                stage_scaler=pretrain_scaler, stage_use_residue_decoder=True,
                 stage_bpr_detach_neg=True,
                 cumulative_epoch_offset=0, total_epochs=pretrain_epochs + epochs)
             if n_batches == 0:
@@ -481,6 +492,8 @@ def train_sage(
                     logger.info(f"  SAGE 微调 lr {prev_lr:.2e} -> {new_lr:.2e} (plateau, val_aupr={m['aupr']:.4f})")
             else:
                 scheduler.step()
+        else:
+            scheduler.step()
 
     if validator.load_best_state(model):
         best_entry = validator.get_best_entry(history)
@@ -537,6 +550,14 @@ def train_hgt(
     plateau_factor: float = 0.5,
     _validate_hgt_fn=None,
     _compute_cpi_loss_fn=None,
+    _compute_auxiliary_reconstruction_loss_fn=None,
+    aux_recon_weight: float = 0.1,
+    aux_recon_ppi_samples: int = 256,
+    aux_recon_ddi_samples: int = 128,
+    aux_recon_prot_disease_samples: int = 128,
+    hetero_adj: dict | None = None,
+    n_diseases: int = 0,
+    disease_embed = None,
     use_amp: bool = False,
 ) -> tuple[nn.Module, list[dict]]:
     """HGT/RGCN mini-batch 训练（适用于任何支持 x_dict/edge_index_dict 前向的模型）
@@ -562,10 +583,11 @@ def train_hgt(
                 logger.info('HGT model compiled with torch.compile (reduce-overhead)')
             else:
                 logger.info('Triton not available, skipping torch.compile for HGT')
-        except Exception as e:
-            logger.warning(f'torch.compile failed for HGT: {e}, continuing without compilation')
+        except (RuntimeError, ImportError, OSError) as e:
+                logger.warning(f'torch.compile failed for HGT: {e}, continuing without compilation')
 
     hetero_adj = graphs.get("hetero_adj_train", graphs["hetero_adj"])
+    homo_adj = graphs.get("homo_adj_train", graphs["homo_adj"])
     hetero_data = graphs.get("hetero_data_train", graphs["hetero_data"]).to(device)
     n_compounds = graphs["n_compounds"]
     n_proteins = graphs["n_proteins"]
@@ -677,7 +699,7 @@ def train_hgt(
             prot_emb = hgt_out["protein"]
             comp_emb = hgt_out["compound"]
 
-            if torch.isnan(prot_emb).any() or torch.isnan(comp_emb).any():
+            if _check_tensor_nan(prot_emb, "HGT prot_emb") or _check_tensor_nan(comp_emb, "HGT comp_emb"):
                 continue
 
             cpi_ei = sg[("compound", "interacts", "protein")].edge_index
@@ -713,6 +735,27 @@ def train_hgt(
                 use_residue_decoder=stage_use_residue_decoder,
                 bpr_detach_neg=stage_bpr_detach_neg,
             )
+
+            # 辅助 PPI + 通路重建损失（DHGT-DTI / H2GnnDTI 风格）
+            if _compute_auxiliary_reconstruction_loss_fn is not None and aux_recon_weight > 0 and prot_emb.shape[0] > 4:
+                aux_loss = _compute_auxiliary_reconstruction_loss_fn(
+                    model=model,
+                    prot_emb=prot_emb,
+                    prot_local_indices=prot_sorted,
+                    homo_adj=homo_adj,
+                    n_compounds=n_compounds,
+                    ppi_samples=aux_recon_ppi_samples,
+                    prot_to_path_neighbors=prot_to_path_neighbors,
+                    is_hetero=True,
+                    comp_emb=comp_emb,
+                    comp_local_indices=comp_sorted,
+                    ddi_samples=aux_recon_ddi_samples,
+                    prot_disease_samples=aux_recon_prot_disease_samples,
+                    hetero_adj=hetero_adj,
+                    n_diseases=n_diseases,
+                    disease_embed=disease_embed,
+                )
+                loss = loss + aux_recon_weight * aux_loss
 
             if stage_use_pheno:
                 comp_sorted_tensor = torch.tensor(comp_sorted, device=device, dtype=torch.long)
@@ -768,7 +811,7 @@ def train_hgt(
         for epoch in range(1, pretrain_epochs + 1):
             total_loss, n_batches = _train_one_epoch(
                 epoch, pretrain_compounds, pretrain_optimizer, pretrain_memory_bank, pretrain_epochs,
-                stage_scaler=pretrain_scaler, stage_use_residue_decoder=False,
+                stage_scaler=pretrain_scaler, stage_use_residue_decoder=True,
                 stage_bpr_detach_neg=True,
                 cumulative_epoch_offset=0, total_epochs=pretrain_epochs + epochs)
             if n_batches == 0:
@@ -854,6 +897,8 @@ def train_hgt(
                     logger.info(f"  HGT 微调 lr {prev_lr:.2e} -> {new_lr:.2e} (plateau, val_aupr={val_aupr:.4f})")
             else:
                 scheduler.step()
+        else:
+            scheduler.step()
 
     if validator.load_best_state(model):
         best_entry = validator.get_best_entry(history)
@@ -1006,6 +1051,14 @@ def train_simplehgn(
     plateau_factor: float = 0.5,
     _validate_simplehgn_fn=None,
     _compute_cpi_loss_fn=None,
+    _compute_auxiliary_reconstruction_loss_fn=None,
+    aux_recon_weight: float = 0.1,
+    aux_recon_ppi_samples: int = 256,
+    aux_recon_ddi_samples: int = 128,
+    aux_recon_prot_disease_samples: int = 128,
+    hetero_adj: dict | None = None,
+    n_diseases: int = 0,
+    disease_embed = None,
     use_amp: bool = False,
 ) -> tuple[SimpleHGNLinkPredictor, list[dict]]:
     """SimpleHGN mini-batch 训练（接口与 train_hgt 完全一致）
@@ -1051,6 +1104,14 @@ def train_simplehgn(
         plateau_factor=plateau_factor,
         _validate_hgt_fn=_validate_simplehgn_fn,
         _compute_cpi_loss_fn=_compute_cpi_loss_fn,
+        _compute_auxiliary_reconstruction_loss_fn=_compute_auxiliary_reconstruction_loss_fn,
+        aux_recon_weight=aux_recon_weight,
+        aux_recon_ppi_samples=aux_recon_ppi_samples,
+        aux_recon_ddi_samples=aux_recon_ddi_samples,
+        aux_recon_prot_disease_samples=aux_recon_prot_disease_samples,
+        hetero_adj=hetero_adj,
+        n_diseases=n_diseases,
+        disease_embed=disease_embed,
         use_amp=use_amp,
     )
 

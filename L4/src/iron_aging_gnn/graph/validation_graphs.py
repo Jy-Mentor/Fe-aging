@@ -262,3 +262,31 @@ def build_val_safe_hetero_adj(
     """
     # 验证安全邻接表与训练安全邻接表在当前设定下等价
     return build_train_safe_hetero_adj(hetero_adj, n_compounds, val_comp_set, val_prot_set)
+
+
+def build_val_comp_cold_hetero_adj(
+    hetero_adj,
+    n_compounds: int,
+    val_comp_set: set,
+    val_prot_set: set = None,
+):
+    """v59: 构建严格化合物冷启动验证异质邻接表
+
+    彻底移除验证集化合物的所有 CPI 边（无论目标蛋白属于训练集还是验证集），
+    确保验证化合物仅依靠自身特征（encode_compound）和全局蛋白拓扑（PPI/通路/疾病）
+    进行预测，符合真实冷启动场景。
+
+    蛋白侧所有拓扑（PPI / 通路 / 疾病）保持完整。
+    """
+    val_adj = {}
+    val_prot_set = set() if val_prot_set is None else val_prot_set
+    for et, adj in hetero_adj.items():
+        new_adj = defaultdict(list)
+        for src, dsts in adj.items():
+            if et == ("compound", "interacts", "protein") and src in val_comp_set:
+                # v59: 严格冷启动 — 完全移除验证化合物的所有 CPI 边
+                continue
+            else:
+                new_adj[src].extend(dsts)
+        val_adj[et] = new_adj
+    return val_adj

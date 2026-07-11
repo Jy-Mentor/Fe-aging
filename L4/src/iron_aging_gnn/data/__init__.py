@@ -5,6 +5,8 @@ from .constants import (
     RDKIT_DESCRIPTOR_NAMES,
 )
 from .features import (
+    CompoundFeatureConfig,
+    FeatureCache,
     build_compound_features,
     compute_aac,
     compute_esm2_embeddings,
@@ -31,5 +33,7 @@ __all__ = [
     "load_protein_features",
     "compute_aac",
     "compute_esm2_embeddings",
+    "CompoundFeatureConfig",
+    "FeatureCache",
     "pipeline_self_check",
 ]

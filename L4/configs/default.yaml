@@ -1,10 +1,12 @@
-# v57 全面修复配置 (2026-07-08)
-# 目标: TCM隔离 + 课程累积调度 + BPR增强 + HGT容量提升 + 冷启动修复
-# 策略:
-#   - HGT hidden_dim 64→128, num_layers 2→3，提升模型容量
-#   - 课程负采样改用累积epoch，避免微调阶段重置回随机采样
-#   - BPR 负样本改用 hard_neg_scores，增强排序学习
-#   - 温度参数 T=2.0，Focal gamma=2.0
+﻿# v67 论文驱动全面优化 (2026-07-12)
+# 基于7篇论文 (DHGT-DTI, GHCDTI, H2GnnDTI, MHGNN-DTI, HTINet2, GENNDTI, MDL-HTI)
+# 核心优化:
+#   - 重新启用 InfoNCE 对比学习 (GHCDTI: 跨视图对比学习提升泛化)
+#   - 增强辅助网络重建为全6类网络 (DHGT-DTI: 重建所有网络提升预测)
+#   - 添加冷启动评估 (GHCDTI: Cold Drug/Cold Target)
+#   - 添加元路径图构建模块 (DHGT-DTI/MHGNN-DTI: 高阶语义学习)
+#   - 添加 Graph Transformer 编码器 (DHGT-DTI: 全局视角元路径学习)
+#   - 添加语义注意力机制 (GHCDTI: 跨模态对齐)
 random_seed: 42
 model:
   hidden_dim: 128
@@ -20,13 +22,12 @@ model:
   temperature: 1.0
   decoder_type: "residue_bilinear"
 sage:
-  # v60-fix: SAGE 保持轻量配置，避免容量翻倍导致收敛困难；HGT 单独使用 model 级 128/3 配置。
   hidden_dim: 64
   out_dim: 64
   num_layers: 2
-  epochs: 25
+  epochs: 30
   lr: 0.0005
-  patience: 7
+  patience: 10
   batch_size: 128
   num_neighbors:
   - 16
@@ -36,7 +37,7 @@ sage:
   pretrain_lr: 0.00075
   finetune_lr_multiplier: 0.5
   use_plateau_scheduler: true
-  plateau_patience: 1
+  plateau_patience: 3
   plateau_factor: 0.5
 hgt:
   epochs: 20
@@ -51,7 +52,7 @@ hgt:
   pretrain_lr: 0.00075
   finetune_lr_multiplier: 0.5
   use_plateau_scheduler: true
-  plateau_patience: 2
+  plateau_patience: 3
   plateau_factor: 0.5
 simplehgn:
   epochs: 20
@@ -68,6 +69,10 @@ simplehgn:
   two_stage: true
   pretrain_epochs: 10
   pretrain_lr: 0.0015
+  use_plateau_scheduler: true
+  plateau_patience: 3
+  plateau_factor: 0.5
+  finetune_lr_multiplier: 0.5
 two_stage:
   head_ratio: 0.2
   lambda_hhi: 1.0
@@ -88,17 +93,23 @@ negative_sampling:
   topo_neighbors_top_k: 50
   esm_similarity_top_k: 50
 loss:
-  # focal_gamma=2.0: 标准值，压制"易分错误样本"的梯度
   focal_gamma: 2.0
   focal_alpha: 0.75
   label_smoothing_pos: 0.9
   label_smoothing_neg: 0.1
-  # v57: BPR增强 — 使用hard_neg_scores替代随机采样，增强排序学习
-  # v60-diag: 临时关闭 BPR 以诊断训练崩溃原因
-  bpr_weight: 0.0
+  bpr_weight: 0.3
   bce_weight: 1.0
-  infonce_weight: 0.0
+  infonce_weight: 0.1
   infonce_temperature: 0.07
+  aux_recon_weight: 0.15
+  aux_recon_ppi_samples: 256
+  aux_recon_pathway_samples: 128
+  aux_recon_ddi_samples: 128
+  aux_recon_drug_disease_samples: 128
+  aux_recon_protein_disease_samples: 128
+  aux_recon_drug_side_effect_samples: 128
+  semantic_attn_weight: 0.05
+  semantic_attn_temperature: 0.5
 training:
   weight_decay: 0.0001
   grad_clip_norm: 1.0
@@ -119,13 +130,15 @@ validation:
   hgt_val_num_neighbors:
   - 8
   - 4
-  # v61-fix: HGT 验证是否对正样本使用残基注意力分数。关闭时统一使用 fast bilinear 打分，
-  # 避免正样本残基分数与负样本 fast bilinear 分数分布不一致导致 AUC/AUPR 虚高为 1.0。
   hgt_val_use_residue_for_pos: false
   val_freq: 3
   pretrain_val_freq: 5
   mem_refresh_freq: 3
   default_aupr: 0.5
+  enable_cold_drug_eval: false
+  enable_cold_target_eval: false
+  cold_drug_split_ratio: 0.2
+  cold_target_split_ratio: 0.2
 prediction:
   tree_ensemble_weight: 0.6
 memory_bank:
@@ -138,3 +151,19 @@ decoder:
   max_residue_batch: 2
   init_scheme: "orthogonal"
   final_bias_init: -0.5
+meta_path:
+  enabled: false
+  drug_meta_paths:
+    - ["drug", "protein", "drug"]
+    - ["drug", "protein", "protein", "drug"]
+  protein_meta_paths:
+    - ["protein", "protein"]
+    - ["protein", "drug", "protein"]
+  max_path_length: 4
+graph_transformer:
+  enabled: false
+  num_layers: 2
+  num_heads: 4
+  dropout: 0.3
+  use_gated_residual: true
+  output_dim: 128

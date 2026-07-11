@@ -4,7 +4,6 @@
 """
 
 import logging
-import sys
 
 import pandas as pd
 
@@ -21,8 +20,7 @@ def load_cpi_data() -> pd.DataFrame:
     """加载 CPI（化合物-蛋白互作）数据"""
     cpi_path = _paths.l4_root / "results" / "experimental_actives_detail_cleaned_combined.csv"
     if not cpi_path.exists():
-        logger.error(f"CPI 数据文件不存在: {cpi_path}")
-        sys.exit(1)
+        raise FileNotFoundError(f"CPI 数据文件不存在: {cpi_path}")
     try:
         df = pd.read_csv(cpi_path, low_memory=False)
     except Exception:
@@ -31,14 +29,11 @@ def load_cpi_data() -> pd.DataFrame:
     required = ["gene", "canonical_smiles", "uniprot_id"]
     for col in required:
         if col not in df.columns:
-            logger.error(f"CPI 数据缺少列: {col}")
-            sys.exit(1)
+            raise ValueError(f"CPI 数据缺少列: {col}")
     df = df[df["canonical_smiles"].notna()].copy()
     df = df[df["canonical_smiles"].astype(str).str.strip() != ""].copy()
-    assert len(df) > 0, "CPI 数据加载后为空，请检查数据文件内容"
-    assert "gene" in df.columns, "CPI 数据缺少 gene 列"
-    assert "canonical_smiles" in df.columns, "CPI 数据缺少 canonical_smiles 列"
-    assert "uniprot_id" in df.columns, "CPI 数据缺少 uniprot_id 列"
+    if len(df) == 0:
+        raise ValueError("CPI 数据加载后为空，请检查数据文件内容")
     logger.info(f"CPI 数据: {len(df)} 条记录, {df['gene'].nunique()} 个基因, "
                 f"{df['canonical_smiles'].nunique()} 个唯一 SMILES")
     return df
@@ -69,6 +64,9 @@ def load_ppi_network() -> pd.DataFrame:
             logger.error(f"PPI 网络文件读取失败: {ppi_path}", exc_info=True)
             raise
         df = df.rename(columns={"gene_a": "source", "gene_b": "target", "combined_score": "weight"})
+        for col in ["source", "target", "weight"]:
+            if col not in df.columns:
+                raise ValueError(f"PPI 数据缺少列: {col}")
         if df["weight"].max() > 1.0:
             df["weight"] = df["weight"] / 1000.0
         df["source"] = df["source"].astype(str).str.upper()
@@ -77,8 +75,7 @@ def load_ppi_network() -> pd.DataFrame:
                     f"{pd.concat([df['source'], df['target']]).nunique()} 个节点")
         return df
 
-    logger.error("PPI 网络文件不存在")
-    sys.exit(1)
+    raise FileNotFoundError("PPI 网络文件不存在，请检查 L1/results 目录")
 
 
 def load_kegg_pathways() -> dict[str, list[str]]:
@@ -116,14 +113,47 @@ def load_tcm_pool() -> pd.DataFrame:
     original_path = _paths.l3_results / "tcm_compound_pool_tox_filtered.csv"
     tcm_path = noleak_path if noleak_path.exists() else original_path
     if not tcm_path.exists():
-        logger.error(f"TCM 候选池文件不存在: {tcm_path}")
-        sys.exit(1)
+        raise FileNotFoundError(f"TCM 候选池文件不存在: {tcm_path}")
     try:
         df = pd.read_csv(tcm_path, low_memory=False)
     except Exception:
         logger.error(f"TCM 候选池文件读取失败: {tcm_path}", exc_info=True)
         raise
-    assert len(df) > 0, "TCM 候选池加载后为空，请检查数据文件内容"
+    if len(df) == 0:
+        raise ValueError("TCM 候选池加载后为空，请检查数据文件内容")
     source_tag = "去泄漏版" if tcm_path == noleak_path else "原始版"
     logger.info(f"TCM 候选池（{source_tag}）: {len(df)} 个化合物")
     return df
+
+
+def load_ferroptosis_library() -> pd.DataFrame | None:
+    """加载铁死亡表型分类数据集（供消融实验等外部脚本调用）"""
+    pheno_file = _paths.l4_results / "phenotype_ferroptosis_dataset_v25_clean.csv"
+    if pheno_file.exists():
+        try:
+            df = pd.read_csv(pheno_file)
+        except Exception:
+            logger.error(f"铁死亡表型数据集读取失败: {pheno_file}", exc_info=True)
+            return None
+        assert "label" in df.columns, "铁死亡表型数据集缺少 label 列"
+        logger.info(f"铁死亡表型数据集: {len(df)} 个化合物 (正={(df['label']==1).sum()}, 负={(df['label']==0).sum()})")
+        return df
+    logger.warning(f"铁死亡表型数据集不存在: {pheno_file}")
+    return None
+
+
+def load_disease_edges() -> pd.DataFrame | None:
+    """加载疾病-基因边数据（供消融实验等外部脚本调用）"""
+    disease_file = _paths.l4_results / "disease_gene_edges.csv"
+    if disease_file.exists():
+        try:
+            df = pd.read_csv(disease_file)
+        except Exception:
+            logger.error(f"疾病-基因边数据读取失败: {disease_file}", exc_info=True)
+            return None
+        assert "gene_symbol" in df.columns, "疾病-基因边数据缺少 gene_symbol 列"
+        assert "disease_name" in df.columns, "疾病-基因边数据缺少 disease_name 列"
+        logger.info(f"疾病-基因边数据: {len(df)} 条边")
+        return df
+    logger.warning(f"疾病-基因边数据不存在: {disease_file}")
+    return None

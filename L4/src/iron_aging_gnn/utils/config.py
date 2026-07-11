@@ -1,12 +1,9 @@
-from __future__ import annotations
-
-import logging
-logger = logging.getLogger(__name__)
-
 """铁衰老 GNN 项目配置系统
 =======================
 基于 pydantic 的严格类型配置类，支持从 YAML 文件加载配置并合并默认值。
 """
+
+from __future__ import annotations
 
 from pathlib import Path
 
@@ -257,6 +254,34 @@ class ValidationConfig(BaseModel):
     default_aupr: float = Field(default=0.5, ge=0.0, le=1.0, description="默认 AUPR（无验证数据时）")
 
 
+class CompoundFeatureConfig(BaseModel):
+    """化合物特征工程配置。"""
+
+    ecfp4_nbits: int = Field(
+        default=2048, ge=512, le=4096, description="ECFP4 指纹位数"
+    )
+    ecfp4_radius: int = Field(default=2, ge=1, le=3, description="ECFP4 半径")
+    use_maccs: bool = Field(default=True, description="是否使用 MACCS 指纹")
+    use_rdkit_descriptors: bool = Field(
+        default=True, description="是否使用 RDKit 描述符"
+    )
+    enable_cache: bool = Field(default=True, description="是否启用特征缓存")
+    cache_version: str = Field(default="v1", description="特征缓存版本")
+    cache_dir: str = Field(
+        default="L4/feature_cache", description="特征缓存目录（相对于 project_root）"
+    )
+    rdkit_descriptor_names: list[str] = Field(
+        default_factory=lambda: [
+            "MolWt", "MolLogP", "MolMR", "TPSA",
+            "NumHAcceptors", "NumHDonors", "NumRotatableBonds",
+            "HeavyAtomCount", "NumAromaticRings", "NumAliphaticRings",
+            "NumHeteroatoms", "NumValenceElectrons", "NHOHCount", "NOCount",
+            "RingCount", "FractionCSP3", "BalabanJ",
+        ],
+        description="RDKit 描述符名称列表",
+    )
+
+
 class ESM2Config(BaseModel):
     """ESM-2 蛋白质语言模型配置。"""
 
@@ -336,6 +361,7 @@ class Config(BaseModel):
     random_seed: int = Field(default=42, ge=0, description="全局随机种子")
     paths: PathConfig = Field(default_factory=PathConfig)
     model: ModelConfig = Field(default_factory=ModelConfig)
+    compound_feature: CompoundFeatureConfig = Field(default_factory=CompoundFeatureConfig)
     sage: SageConfig = Field(default_factory=SageConfig)
     hgt: HgtConfig = Field(default_factory=HgtConfig)
     simplehgn: SimpleHgnConfig = Field(default_factory=SimpleHgnConfig)
@@ -427,8 +453,10 @@ def _deep_merge_defaults(raw: dict) -> dict:
     sub_configs = {
         "paths": PathConfig,
         "model": ModelConfig,
+        "compound_feature": CompoundFeatureConfig,
         "sage": SageConfig,
         "hgt": HgtConfig,
+        "simplehgn": SimpleHgnConfig,
         "two_stage": TwoStageConfig,
         "curriculum": CurriculumConfig,
         "loss": LossConfig,
@@ -438,6 +466,7 @@ def _deep_merge_defaults(raw: dict) -> dict:
         "memory_bank": MemoryBankConfig,
         "prediction": PredictionConfig,
         "numerical": NumericalConfig,
+        "negative_sampling": NegativeSamplingConfig,
         "decoder": DecoderConfig,
     }
 

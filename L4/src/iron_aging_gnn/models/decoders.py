@@ -298,9 +298,10 @@ class ResidueAwareBilinearDecoder(nn.Module):
 
         if prot_to_residue_idx is None:
             prot_to_residue_idx = torch.zeros(1, dtype=torch.long)
-        self._prot_to_residue_idx = prot_to_residue_idx.to(
-            self._prot_to_residue_idx.device
-        )
+        # 使用 .data.copy_() 保留 buffer 注册状态，确保 model.to(device) 自动迁移
+        if self._prot_to_residue_idx.shape != prot_to_residue_idx.shape:
+            self._prot_to_residue_idx.resize_(prot_to_residue_idx.shape)
+        self._prot_to_residue_idx.data.copy_(prot_to_residue_idx.to(self._prot_to_residue_idx.device))
 
     def free_residue_features(self) -> None:
         """释放残基级 ESM-2 特征占用的 CPU 内存，避免大张量同时驻留导致 OOM。"""
