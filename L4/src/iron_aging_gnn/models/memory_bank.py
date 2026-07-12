@@ -44,10 +44,17 @@ class MemoryBank:
         self.full = False
 
     def update(self, embeddings: torch.Tensor):
-        """将新嵌入入队（FIFO）"""
+        """将新嵌入入队（FIFO）
+
+        当单批嵌入数超过容量时，只保留最后 max_size 个嵌入。
+        """
         n = embeddings.shape[0]
         if n == 0:
             return
+        # 单批超过容量时截断，只保留最后 max_size 个
+        if n > self.max_size:
+            embeddings = embeddings[-self.max_size:].detach()
+            n = self.max_size
         end = self.ptr + n
         if end > self.max_size:
             # 环绕
