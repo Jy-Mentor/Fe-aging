@@ -1,0 +1,29 @@
+# 预测推理配置 (v1)
+# 控制 TCM 预测时的行为，包括训练-推断一致性修复参数
+
+# 集成预测
+ensemble:
+  # 多样性惩罚系数（0~1，越大越惩罚两分支预测过于相似）
+  diversity_penalty: 0.1
+  # MC Dropout 采样次数（0=禁用，推荐 30 用于不确定性估计）
+  mc_samples: 0
+
+# 训练-推断一致性修复
+# 确保预测时使用与训练一致的残基感知双线性解码器路径
+consistency:
+  # 是否启用残基感知重打分
+  residue_rerank_enabled: true
+  # top-k 残基重打分数量（对 fast bilinear 初筛的 top-k 基因走残基注意力路径重新打分）
+  # 0 表示禁用；设为目标基因总数可对所有基因走残基路径
+  rerank_topk: 100
+  # fast bilinear vs residue 路径得分差异告警阈值（>此值则告警）
+  warn_threshold: 0.01
+
+# 输出配置
+output:
+  # 输出格式: "csv" | "tsv" | "json"
+  format: "csv"
+  # 是否包含不确定性列（要求 mc_samples > 0）
+  include_uncertainty: true
+  # 是否包含中间得分列（SAGE/HGT 分别的得分）
+  include_branch_scores: false

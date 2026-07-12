@@ -1,0 +1,61 @@
+# 标准化评估协议配置 (v1)
+# 使评估结果与领域文献可比，支持固定比例负采样、分层k折交叉验证、多随机种子评估
+
+# 负采样策略
+negative_sampling:
+  # 固定比例模式: 1, 10, 100 (正:负)
+  # 用于与文献基准对比的标准模式
+  ratios: [1, 10, 100]
+  # 默认评估比例（推荐1:100用于文献对比）
+  default_ratio: 100
+  # 负采样随机种子
+  seed: 42
+  # 是否排除已知正样本（避免将已知正样本误采为负样本）
+  exclude_known_positives: true
+
+# 交叉验证配置
+cross_validation:
+  # 是否启用分层k折交叉验证
+  enabled: false
+  # k 折数
+  n_folds: 5
+  # 分层依据: "compound" (按化合物分层) | "protein" (按蛋白分层) | "pair" (按交互对分层)
+  stratify_by: "compound"
+  # 随机种子
+  seed: 42
+
+# 多随机种子评估
+multi_seed:
+  # 是否启用多种子评估
+  enabled: true
+  # 评估种子列表
+  seeds: [42, 123, 456]
+  # 是否输出均值±标准差
+  report_mean_std: true
+
+# 评估指标
+metrics:
+  # 主要指标
+  primary: ["aupr", "auc"]
+  # 次要指标
+  secondary: ["roce_0.5", "roce_1.0", "roce_2.0", "roce_5.0", "bedroc_20", "bedroc_160.9"]
+  # 排名指标
+  ranking: ["precision@10", "precision@50", "recall@10", "recall@50", "ndcg@10", "ndcg@50"]
+  # Bootstrap 置信区间
+  bootstrap:
+    enabled: true
+    n_iterations: 1000
+    ci: 0.95
+
+# 结果归档
+archiving:
+  # 是否自动归档评估结果
+  enabled: true
+  # 归档目录（相对于 L4 根目录）
+  output_dir: "runs/evaluations"
+  # 归档格式: "json" | "csv" | "both"
+  format: "both"
+  # 是否包含时间戳
+  include_timestamp: true
+  # 是否保存完整预测分数（用于后续分析）
+  save_predictions: false

@@ -1,0 +1,77 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "iron_aging_gnn"
+version = "0.1.0"
+description = "铁衰老-中药单体-脑缺血再灌注异构图神经网络药物重定位"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.0.0",
+    "torch-geometric>=2.3.0",
+    "numpy>=1.24.0",
+    "pandas>=2.0.0",
+    "scikit-learn>=1.3.0",
+    "scipy>=1.10.0",
+    "rdkit>=2023.03.1",
+    "transformers>=4.30.0",
+    "pydantic>=2.0.0",
+    "PyYAML>=6.0",
+    "tqdm>=4.65.0",
+    "openpyxl>=3.1.0",
+    "biopython>=1.80",
+    "optuna>=4.0.0",
+    "mlflow>=2.16.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+]
+
+[project.scripts]
+iron-aging-train = "entry.train:main"
+iron-aging-evaluate = "entry.evaluate:main"
+iron-aging-predict = "entry.predict:main"
+iron-aging-build-graph = "entry.build_graph:main"
+
+[tool.ruff]
+exclude = [
+    "scripts/tree_model_cpi_*.py",
+    "scripts/supplement_cpi_*.py",
+    "scripts/test_bindingdb*.py",
+    "scripts/tmp_*.py",
+    "scripts/verify_v27.py",
+    "scripts/validate_data_authenticity.py",
+    "scripts/validate_p4_inputs.py",
+    "scripts/rank_candidates_optimized.py",
+    "scripts/rank_topsis.py",
+    "scripts/repair_model_inputs.py",
+    "scripts/run_bowler.py",
+    "scripts/stat_significance.py",
+    "scripts/task_review_hook.py",
+    "scripts/pool_residue_esm2.py",
+    "scripts/precompute_esm2_residue_features.py",
+    "scripts/precompute_residue_stats.py",
+    "scripts/phase4_model_pipeline_v4.py",
+    "scripts/phase4_model_pipeline_v5.py",
+    "scripts/phase4_gat_hgt_pipeline.py",
+    "scripts/complementarity_analysis.py",
+    "scripts/data_audit_v25.py",
+    "scripts/diagnose_sage_prot_cold.py",
+    "scripts/esm2_mlp_baseline.py",
+    "scripts/fetch_bindingdb_cpi.py",
+    "scripts/fetch_missing_genes_bindingdb.py",
+    "scripts/diagnose_hgt.py",
+    "scripts/ablation_study.py",
+    "tests/",
+]
+
+[tool.ruff.lint]
+ignore = ["E402"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

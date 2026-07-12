@@ -346,59 +346,28 @@ def _validate_sage(model, x, homo_edge_index, val_compounds, all_compound_to_pos
                          return_embeddings=return_embeddings)
 
 def _validate_hgt(model, hetero_data, val_compounds, all_compound_to_pos, n_compounds,
-                  val_prot_set, train_prot_set, prot_residue_indices,
-                  residue_emb, residue_offsets, residue_lengths, global_to_local,
-                  return_embeddings=False):
+                  n_proteins, **kwargs):
     return validate_hgt(model, hetero_data, val_compounds, all_compound_to_pos, n_compounds,
-                        val_prot_set, train_prot_set, prot_residue_indices,
-                        residue_emb, residue_offsets, residue_lengths, global_to_local,
-                        device=DEVICE, score_clamp=SCORE_CLAMP, hard_neg_top_k=HARD_NEG_TOP_K,
-                        rand_neg_top_k=RAND_NEG_TOP_K, mask_val=MASK_VAL,
-                        return_embeddings=return_embeddings)
+                        n_proteins, device=DEVICE, score_clamp=SCORE_CLAMP, **kwargs)
 
-def _validate_hgt_minibatch(model, hetero_adj, val_compounds, all_compound_to_pos, n_compounds,
-                            val_prot_set, train_prot_set, prot_residue_indices,
-                            residue_emb, residue_offsets, residue_lengths, global_to_local,
-                            return_embeddings=False):
-    return validate_hgt_minibatch(model, hetero_adj, val_compounds, all_compound_to_pos, n_compounds,
-                                  val_prot_set, train_prot_set, prot_residue_indices,
-                                  residue_emb, residue_offsets, residue_lengths, global_to_local,
-                                  device=DEVICE, score_clamp=SCORE_CLAMP, hard_neg_top_k=HARD_NEG_TOP_K,
-                                  rand_neg_top_k=RAND_NEG_TOP_K, mask_val=MASK_VAL,
-                                  val_batch_size=HGT_VAL_BATCH_SIZE, val_num_neighbors=HGT_VAL_NUM_NEIGHBORS,
-                                  return_embeddings=return_embeddings)
+def _validate_hgt_minibatch(model, hetero_data, hetero_adj, val_compounds, all_compound_to_pos,
+                            n_compounds, n_proteins, **kwargs):
+    return validate_hgt_minibatch(model, hetero_data, hetero_adj, val_compounds, all_compound_to_pos,
+                                  n_compounds, n_proteins, device=DEVICE,
+                                  hgt_val_num_neighbors=HGT_VAL_NUM_NEIGHBORS,
+                                  val_batch_size=HGT_VAL_BATCH_SIZE, **kwargs)
 
 def _validate_simplehgn(model, hetero_data, val_compounds, all_compound_to_pos, n_compounds,
-                        val_prot_set, train_prot_set, return_embeddings=False):
+                        n_proteins, **kwargs):
     return validate_simplehgn(model, hetero_data, val_compounds, all_compound_to_pos, n_compounds,
-                              val_prot_set, train_prot_set,
-                              device=DEVICE, score_clamp=SCORE_CLAMP, hard_neg_top_k=HARD_NEG_TOP_K,
-                              rand_neg_top_k=RAND_NEG_TOP_K, mask_val=MASK_VAL,
-                              return_embeddings=return_embeddings)
+                              n_proteins, device=DEVICE, score_clamp=SCORE_CLAMP, **kwargs)
 
 
-def _predict_hgt_scores(model, hetero_adj, compound_idx_list, protein_idx_list,
-                        global_to_local, prot_residue_indices,
-                        residue_emb, residue_offsets, residue_lengths):
-    return predict_hgt_scores(model, hetero_adj, compound_idx_list, protein_idx_list,
-                              global_to_local, prot_residue_indices,
-                              residue_emb, residue_offsets, residue_lengths,
-                              device=DEVICE, score_clamp=SCORE_CLAMP,
-                              val_batch_size=HGT_VAL_BATCH_SIZE, val_num_neighbors=HGT_VAL_NUM_NEIGHBORS)
 
-def _predict_hgt_target_proteins_minibatch(model, hetero_adj, compound_idx, protein_idx_list,
-                                           global_to_local, prot_residue_indices,
-                                           residue_emb, residue_offsets, residue_lengths):
-    return predict_hgt_target_proteins_minibatch(model, hetero_adj, compound_idx, protein_idx_list,
-                                                 global_to_local, prot_residue_indices,
-                                                 residue_emb, residue_offsets, residue_lengths,
-                                                 device=DEVICE, score_clamp=SCORE_CLAMP,
-                                                 val_batch_size=HGT_VAL_BATCH_SIZE, val_num_neighbors=HGT_VAL_NUM_NEIGHBORS)
 
-def _predict_simplehgn_scores(model, hetero_data, compound_idx_list, protein_idx_list,
-                              global_to_local):
-    return predict_simplehgn_scores(model, hetero_data, compound_idx_list, protein_idx_list,
-                                    global_to_local, device=DEVICE, score_clamp=SCORE_CLAMP)
+
+
+
 
 
 def _build_val_safe_homo_edge_index(homo_edge_index, n_compounds, val_comp_set, val_prot_set=None):
@@ -441,36 +410,9 @@ def _check_gradient_norm(model, warn_threshold=100.0):
     return check_gradient_norm(model, warn_threshold)
 
 
-def _compute_cpi_loss(logits, targets, epoch, total_epochs, compound_to_pos, train_compounds,
-                      train_protein_set, medium_neg_neighbors, hard_neg_neighbors,
-                      esm_hard_neighbors, device, memory_bank, compound_emb, protein_emb,
-                      compound_indices, protein_indices, loss_state):
-    return compute_cpi_loss(logits, targets, epoch, total_epochs, compound_to_pos, train_compounds,
-                            train_protein_set, medium_neg_neighbors, hard_neg_neighbors,
-                            esm_hard_neighbors, device, memory_bank, compound_emb, protein_emb,
-                            compound_indices, protein_indices, loss_state,
-                            focal_gamma=FOCAL_GAMMA, focal_alpha=FOCAL_ALPHA,
-                            label_smoothing_pos=LABEL_SMOOTHING_POS, label_smoothing_neg=LABEL_SMOOTHING_NEG,
-                            bpr_weight=BPR_WEIGHT, cpi_loss_weight=CPI_LOSS_WEIGHT,
-                            infonce_weight=INFONCE_WEIGHT, infonce_warmup_ratio=INFONCE_WARMUP_RATIO,
-                            infonce_mem_sample=INFONCE_MEM_SAMPLE, infonce_temperature=INFONCE_TEMPERATURE,
-                            curriculum_phase1=CURRICULUM_PHASE1, curriculum_phase2=CURRICULUM_PHASE2,
-                            medium_neg_ratio=MEDIUM_NEG_RATIO, hard_neg_ratio=HARD_NEG_RATIO,
-                            score_clamp=SCORE_CLAMP, mask_val=MASK_VAL, eps=EPS, eps_small=EPS_SMALL)
+_compute_cpi_loss = compute_cpi_loss  # v67: trainer passes all args as kwargs, no wrapper needed
 
-def _compute_auxiliary_reconstruction_loss(*, model, prot_emb, prot_local_indices, homo_adj,
-                                           n_compounds, train_protein_set, device):
-    return compute_auxiliary_reconstruction_loss(
-        model=model, prot_emb=prot_emb, prot_local_indices=prot_local_indices,
-        homo_adj=homo_adj, n_compounds=n_compounds,
-        train_protein_set=train_protein_set, device=device,
-        aux_recon_weight=AUX_RECON_WEIGHT,
-        aux_recon_ppi_samples=AUX_RECON_PPI_SAMPLES,
-        aux_recon_pathway_samples=AUX_RECON_PATHWAY_SAMPLES,
-        aux_recon_ddi_samples=AUX_RECON_DDI_SAMPLES,
-        aux_recon_drug_disease_samples=AUX_RECON_DRUG_DISEASE_SAMPLES,
-        aux_recon_prot_disease_samples=AUX_RECON_PROT_DISEASE_SAMPLES,
-        aux_recon_drug_side_effect_samples=AUX_RECON_DRUG_SIDE_EFFECT_SAMPLES)
+_compute_auxiliary_reconstruction_loss = compute_auxiliary_reconstruction_loss  # v67: trainer passes all args as kwargs
 # -- Kept local functions --
 
 def _check_tensor_nan(tensor: torch.Tensor, name: str = "tensor") -> bool:
@@ -1563,6 +1505,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
     pred_df = predict_tcm(
         sage_model, hgt_model, graphs, tcm_smiles, all_target_genes,
         compound_stats,
+        DEVICE,
         mc_samples=MC_SAMPLES,
         tcm_feat_precomputed=tcm_feat_precomputed,
         tree_predictions=tree_pred_df,  # 树模型预测集成

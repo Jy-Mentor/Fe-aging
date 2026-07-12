@@ -1,0 +1,44 @@
+# PyG 标准 Loader 配置 (v1)
+# 控制是否使用 PyG 内置 NeighborLoader/HGTLoader 替代自定义采样器
+
+# 全局开关
+use_pyg_loader: false  # true: 使用 PyG 标准 Loader; false: 使用自定义采样器（回退）
+
+# 同构图 Loader (SAGE)
+homo:
+  # 每层采样邻居数
+  num_neighbors: [16, 8]
+  # 每个 batch 的子图节点数（种子节点数）
+  batch_size: 128
+  # 是否 shuffle
+  shuffle: true
+  # 数据加载 worker 数
+  num_workers: 0
+  # 是否使用 DropEdge（DropEdge 在 Loader 外单独处理）
+  drop_edge_p: 0.0
+
+# 异构图 Loader (HGT/SimpleHGN/RGCN)
+hetero:
+  # 每层采样邻居数（按节点类型）
+  num_neighbors:
+    compound: [16, 8]
+    protein: [16, 8]
+    pathway: [4, 2]
+    disease: [2, 1]
+  # 每个 batch 的种子节点数
+  batch_size: 64
+  # 是否 shuffle
+  shuffle: true
+  # 数据加载 worker 数
+  num_workers: 0
+  # DropEdge 概率（Loader 外处理）
+  drop_edge_p: 0.0
+
+# 验证 Loader
+validation:
+  # 验证时使用全图还是采样
+  use_full_graph: true  # true: 全图前向; false: 采样
+  # 采样时每层邻居数
+  num_neighbors: [32, 16]
+  # 验证 batch size
+  batch_size: 256

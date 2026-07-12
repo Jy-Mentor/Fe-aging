@@ -1,0 +1,64 @@
+# 模型架构配置 (v1)
+# 控制编码器、解码器、训练策略等全局参数
+# 注意: 此文件为参考模板，实际运行时使用 default.yaml 中的 model 段配置
+
+# 化合物编码器选择
+compound_encoder:
+  # 编码器类型: "fingerprint" | "gin" | "grover"
+  # fingerprint: 传统 ECFP4+MACCS+RDKit 描述符（当前默认）
+  # gin: 轻量 GIN 分子图编码器（图同构网络）
+  # grover: GROVER 分子图 Transformer（需预训练权重）
+  type: "fingerprint"
+
+  # GIN 配置
+  gin:
+    hidden_dim: 128
+    out_dim: 128
+    num_layers: 3
+    dropout: 0.3
+    # 原子特征维度（RDKit atom featurizer 输出）
+    atom_feat_dim: 74
+    # 键特征维度（RDKit bond featurizer 输出）
+    bond_feat_dim: 12
+
+  # GROVER 配置
+  grover:
+    # 预训练权重路径（相对于项目根目录）
+    pretrained_path: "scripts/grover_repo/grover/pretrained/"
+    # 是否冻结预训练权重
+    freeze_pretrained: true
+    # 输出维度（与蛋白编码器对齐）
+    out_dim: 640
+    # 是否使用 GROVER base 还是 large
+    model_size: "base"
+
+# 蛋白编码器
+protein_encoder:
+  # ESM-2 嵌入维度
+  esm_dim: 640
+  # 是否冻结 ESM-2 嵌入
+  freeze_esm: true
+
+# 图神经网络
+gnn:
+  # 默认隐藏维度
+  hidden_dim: 128
+  # 默认输出维度
+  out_dim: 128
+  # 默认层数
+  num_layers: 3
+  # 默认 Dropout
+  dropout: 0.3
+  # 温度参数
+  temperature: 1.0
+
+# 解码器
+decoder:
+  # 解码器类型: "mlp" | "dot" | "bilinear" | "residue_bilinear"
+  type: "residue_bilinear"
+  # 双线性秩
+  rank: 64
+  # 初始化策略
+  init_scheme: "orthogonal"
+  # 最终偏置初始值
+  final_bias_init: -0.5
