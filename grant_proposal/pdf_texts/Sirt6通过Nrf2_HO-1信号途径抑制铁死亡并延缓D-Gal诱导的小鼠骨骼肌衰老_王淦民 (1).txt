@@ -1,0 +1,713 @@
+
+--- 第1页 ---
+· · 中国病理生理杂志 ， （）： -
+1354 Chinese Journal of Pathophysiology 2025 41 7 1354 1364
+杂志网址：
+https://www.cjpp.net
+［文章编号］ - （ ） - -
+1000 4718 2025 07 1354 11
+Sirt6通过 Nrf2/HO-1信号途径抑制铁死亡
+并延缓 D-Gal诱导的小鼠骨骼肌衰老*
+王淦民 ， 王 瑶 ， 陈士坤 ， 段晨阳 ， 王雨嫣 ， 刘小溯 ， 侯东尧 ， 杜 权
+1 2 1 1 1 1 3 1△
+（1重庆医科大学附属第二医院麻醉科，重庆 ；2重庆市第十三人民医院麻醉科，重庆 ；
+400010 400053
+3湖北医药学院附属太和医院麻醉科，湖北十堰 ）
+442000
+［摘 要］ 目的：探讨沉默信息调节因子（ ）对核因子 相关因子（ ）血红素加氧酶（ - ）信号
+6 Sirt6 E2 2 Nrf2 / 1 HO 1
+途径及 -半乳糖（ - ）诱导的衰老小鼠骨骼肌铁死亡的调控机制。方法：构建 - 处理的小鼠衰老模型，随机
+D D Gal D Gal
+分为对照组和 - 组。在 - 处理的 小鼠成肌细胞中，使用铁死亡激动剂 （ ）和抑制剂
+D Gal D Gal C2C12 erastin Era ferro⁃
+- （ - ）， 激动剂 - 和抑制剂 - 及Nrf2 进行干预，设置相应分组。监测小鼠体重
+statin 1 Fer 1 Sirt6 MDL 800 OSS 128167 siRNA
+和前肢相对抓力； - 和 检测腓肠肌及成肌细胞中 、 、 - 、 、 、 、肌肉环指蛋白
+RT qPCR Western blot Sirt6 Nrf2 HO 1 P53 P21 P16
+、肌萎缩 - 蛋白、溶质载体家族 成员 和谷胱甘肽过氧化物酶 的表达；苏木精-伊红染色分析腓肠肌肌纤维
+1 F box 7 11 4
+直径；检测成肌细胞及肌管内活性氧（ ）、线粒体活性氧（ ）、线粒体膜电位、衰老相关 -半乳糖苷酶阳性
+ROS mtROS β
+率、还原型谷胱甘肽、脂质过氧化物及 浓度；使用免疫荧光染色检测肌管肌球蛋白重链（ ）表达。结果： -
+Fe2+ MyHC D
+组小鼠体重和前肢相对抓力显著下降（P ），衰老及肌萎缩标志基因上调，铁死亡标志基因和 的
+Gal <0.01 Sirt6 mRNA
+及蛋白表达水平降低（P ），同时腓肠肌纤维直径显著缩小（P ）。 - 处理的成肌细胞和肌管中，衰老及
+<0.01 <0.01 D Gal
+肌萎缩标志物升高（P ）， 信号减弱，铁死亡相关蛋白及 、 和 - 的蛋白水平下降（P 或P
+<0.01 MyHC Sirt6 Nrf2 HO 1 <0.05 <
+）； - 预处理抑制了上述变化（P 或P ）。 - 显著抑制 - 引起的成肌细胞及肌管衰老和
+0.01 Fer 1 <0.05 <0.01 MDL 800 D Gal
+肌萎缩改变，并增加铁死亡相关蛋白的表达（P 或P ），抑制了铁死亡；然而， 的加入消除了 -
+<0.05 <0.01 Era MDL 800
+的上述作用（P 或P ）。Nrf2 转染后， - 抑制铁死亡和改善肌管生成质量的作用显著减弱
+<0.05 <0.01 siRNA MDL 800
+（P 或P ）。结论： 通过 - 信号途径抑制成肌细胞铁死亡，从而减轻小鼠成肌细胞衰老改变
+<0.05 <0.01 Sirt6 Nrf2/HO 1
+及肌管生成质量的下降，有利于延缓骨骼肌衰老。
+［关键词］ 肌少症；铁死亡；骨骼肌衰老；沉默信息调节因子 ； - 信号通路；氧化应激
+6 Nrf2/HO 1
+［中图分类号］ ； ； ［文献标志码］ ： -
+R685 R363 Q255 A doi 10.3969/j.issn.1000 4718.2025.07.012
+Sirt6 inhibits ferroptosis and attenuates D-Gal-induced skeletal muscle
+aging in mice via Nrf2/HO-1 signaling pathway
+， ， ， ， ，
+1 2 1 1 1
+WANG Ganmin WANG Yao CHENG Shikun DUAN Chenyang WANG Yuyan
+， ，
+1 3 1△
+LIU Xiaosu HOU Dongyao DU Quan
+（1Department of Anesthesiology， the Second Affiliated Hospital of Chongqing Medical University， Chongqing ， Chi⁃
+400010
+na； 2Department of Anesthesiology， the Thirteenth People's Hospital of Chongqing， Chongqing ， China； 3Depart⁃
+400053
+ment of Anesthesiology， Taihe Hospital， Hubei University of Medicine， Shiyan ， China）
+442000
+［ABSTRACT］ AIM： （ ）
+To investigate the regulatory mechanism of silent information regulator 6 Sirt6 on nuclear
+- （ ） - （ - ）
+factor E2 related factor 2 Nrf2 /heme oxygenase 1 HO 1 signaling pathway and ferroptosis in skeletal muscle aging in⁃
+- （ - ） METHODS： - -
+duced by D galactose D Gal in mice. A D Gal induced mouse aging model was established and randomly
+- In vitro， - -
+divided into control and D Gal groups. D Gal treated C2C12 mouse myoblasts were treated with ferroptosis ago⁃
+（ ） - （ - ）， - - ， Nrf2
+nist erastin Era and inhibitor ferrostatin 1 Fer1 Sirt6 agonist MDL 800 and inhibitor OSS 128167 and siRNA.
+-
+Mouse body weight and forelimb relative grip strength were monitored. RT qPCR and Western blot were used to measure
+［收稿日期］ - - ［修回日期］ - -
+2024 09 25 2025 02 27
+［基金项目］ 重庆市出国留学人员创新自主项目（ ）；重庆科卫联合项目（ ）；重庆市研究生
+* No. CX2021069 No. 2020MSXM008
+科研创新项目（ ）
+No. CYS23334
+通讯作者 杜权 - ：
+△ E mail duquan100@sina.com
+--- 第2页 ---
+· ·
+1355
+， ， - ， ， ， ， ， - ，
+the expression of Sirt6 Nrf2 HO 1 P53 P21 P16 muscle ring finger protein 1 muscle atrophy F box solute carrier
+， -
+family 7 member 11 and glutathione peroxidase 4 in gastrocnemius muscle and myoblasts. Hematoxylin eosin staining
+（ ）， ，
+was performed to examine muscle fiber diameter. Levels of reactive oxygen species ROS mitochondrial ROS mitochon⁃
+， - - ， ， ，
+drial membrane potential senescence associated β galactosidase activity glutathione lipid peroxidation and Fe2+ con⁃
+centration were measured in myoblasts and myotubes. Immunofluorescence staining was used to detect myosin heavy chain
+（ ） RESULTS： -
+MyHC expression in myotubes. Mice in the D Gal group exhibited significant reductions in body weight
+（P ）， ，
+and forelimb grip strength <0.01 upregulation of aging and muscle atrophy markers and decreased mRNA and pro⁃
+（P ） ，
+tein levels of ferroptosis markers and Sirt6 <0.01 . Additionally gastrocnemius muscle fiber diameter significantly de⁃
+（P ） - - ， （P
+creased <0.01 . In D Gal treated myoblasts and myotubes aging and muscle atrophy markers were elevated <
+）， ， - ， ， ， -
+0.01 MyHC expression was reduced and protein levels of ferroptosis related markers Sirt6 Nrf2 and HO 1 were de⁃
+（P P ） - - （P P ） -
+creased <0.05 or <0.01 . Fer 1 pre treatment alleviated these changes <0.05 or <0.01 . MDL 800 significantly
+- - ，
+improved D Gal induced aging and muscle atrophy in myoblasts and myotubes while increasing the expression of ferropto⁃
+- （P P ） ， -
+sis related proteins <0.05 or <0.01 . However the addition of Erastin abolished the beneficial effects of MDL 800
+（P P ） ， -
+<0.05 or <0.01 . Following Nrf2 siRNA transfection the ability of MDL 800 to improve ferroptosis and the quality of
+（P P ） CONCLUSION：
+myotube formation was significantly diminished <0.05 or <0.01 . Sirt6 inhibits ferroptosis in myo⁃
+- ， -
+blasts through the Nrf2/HO 1 signaling pathway thereby alleviating age related changes in myoblasts and the decline in
+，
+myotube formation quality which is beneficial for improving skeletal muscle aging.
+［KEYWORDS］ ； ； ； ； -
+sarcopenia ferroptosis skeletal muscle aging silent information regulator 6 Nrf2/HO1 signaling
+；
+pathway oxidative stress
+随着老龄化时代的到来，肌肉减少症（ 调控铁死亡，参与化疗药物的代谢以及肿瘤的形成，
+sarcope⁃
+；简称肌少症）已成为严重影响老年人生活质量和 但其机制不确切［ 9 - 10 ］。核因子 相关因子 （
+nia E2 2 nuclear
+自理能力的社会问题［］。据统计， 岁以上老年人 - ， ）是 的重要作用靶
+1
+65 factor E2 related factor 2 Nrf2 Sirt6
+中约 发生了肌少症，而 岁以上人群中其比例 点， 可被激活，防止氧化应激改变［ 11 ］。此外，
+20% 80 Nrf2
+高达 ［］。肌少症的病理生理机制较复杂，涉及氧 血红素加氧酶 （ - ， - ）
+2
+50% Sirt6/Nrf2/ 1 heme oxygenase 1 HO 1
+化应激、慢性炎症和代谢障碍等机制，它们共同作用 信号通路在 -半乳糖［ -（ ）- ， - ］诱导
+D D + galactose D Gal
+导致骨骼肌细胞的损伤、死亡及肌肉减少［］。近年 的衰老小鼠模型和紫外线 诱导的皮肤衰老模型中
+3
+A
+研究显示，肌细胞可发生铁死亡，可能参与了肌少症 显示出对衰老相关损伤的改善作用［ 12 - 13 ］。本研究探
+的发生与进展，且具有重要作用［］。 讨 - 信号途径在小鼠肌细胞铁死亡中的作
+4
+Nrf2/HO 1
+铁死亡（ ）是一种依赖铁离子和活性氧 用，以及 对小鼠衰老骨骼肌的影响，旨在阐明该
+ferroptosis Sirt6
+（ ， ）的细胞死亡形式，在 通路在肌少症发病机制中的潜在调控作用。
+reactive oxygen species ROS
+年龄相关性疾病中受到关注［］。肌肉作为机体最大
+5
+材 料 和 方 法
+的器官，铁含量丰富且随着年龄的增加不断累积，这
+一特性使铁死亡可参与到年龄相关的肌少症中［ 6 ］。 1 材料
+研究显示，在衰老小鼠的卫星细胞中，大量游离铁离 只 周龄健康 级 野生型（ -
+20 8 SPF C57BL/6J wild
+子的累积、铁死亡相关蛋白轻链亚基溶质载体家族 ， ）雄性小鼠，体重（ ） ，购自重庆医
+7 type WT 20.0±1.0 g
+成员 （ ， ） 科大学实验动物中心［许可证号： （渝） -
+11 solute carrier family 7 member 11 SLC7A11 SYXK 2022
+以及谷胱甘肽过氧化物酶 （ ］； 小鼠成肌细胞系（货号： - ）及专
+4 glutathione peroxidase 0016 C2C12 CL 0044
+， ）表达降低，导致脂质过氧化产物的积累，最 用培养液（货号： - ）均购自武汉普诺赛生命科
+4 GPX4 CM 0044
+终诱发铁死亡并促进肌肉衰退［ 7 ］。因此，探讨铁死 技有限公司；- （货号： - ）、铁死亡诱导
+D Gal HY N0210
+亡在肌少症中的具体作用机制和调控手段具有重要 剂 （ ；货号： - ）、铁死亡抑制剂
+erastin Era HY 15763 ferro⁃
+研究意义。 -（ - ；货号： - ）和 抑制剂 -
+statin 1 Fer 1 HY 100579 Sirt6 OSS
+沉默信息调节因子 （ （货号： - ）均购自 ；
+6 silent information regulator 128167 HY 107454 MedChemExpress
+， ）是 家族中的长寿蛋白之一， 激动剂 - （货号： ）购自 ；
+6/sirtuin 6 Sirt6 sirtuins Sirt6 MDL 800 B8384 APE×BIO
+在衰老、代谢、炎症和应激反应等过程发挥重要作 培养液（货号： ）和 马血清
+DMEM basic 11965092 2%
+用［］。研究表明， 在肿瘤细胞中通过不同机制 （货号： ）均购自 ； - 引物序列
+8
+Sirt6 16050122 Gibco RT qPCR
+--- 第3页 ---
+· ·
+1356
+来源于 ，并由生工生物工程（上海）股份有限公 从眼眶取血 ，静置 后 、 g离心
+NCBI 1.5 mL 2 h 4 ℃ 1 000× 10
+司合成；Nrf2 和 购自生工生物 ，收集上层血清。参照试剂盒说明书，测定血清
+siRNA RNATransMate min
+工程（上海）股份有限公司；超氧化物歧化酶（ 中的 和 水平。同时，取腓肠肌组织使用总
+super⁃ SOD MDA
+， ）测定试剂盒（货号： - - ）、 铁含量试剂盒检测组织中的铁含量，并通过试剂盒
+oxide dismutase SOD A001 3 2
+丙二醛（ ， ）测定试剂盒（货号： 检测 水平。
+malondialdehyde MDA GSH
+- - ）和组织铁测定试剂盒（货号： - - ）均 2.4 苏木精-伊红（ - ， ）染色 取
+A003 1 2 A039 2 1 hematoxylin eosin HE
+购自南京建成生物工程研究所有限公司； - 小鼠腓肠肌放入组织固定液中 固定，石蜡包埋，
+DCFH DA 4 ℃
+荧光探针（货号： ）、 荧光探针（货 制备切片，脱蜡覆水处理后，进行苏木精-伊红染色，
+S0033S MitoSOX Red
+号： ）、 - 荧光探针（货号： ）、衰老相 最后使用电子显微镜观察。
+S0061S JC 1 C2003S
+关 -半乳糖苷酶（ - - 2.5 免疫荧光染色 将腓肠肌组织切片或固定后
+β senescence associated β galactosi⁃
+， - - ）染色试剂盒（货号： ）、还原型 的肌管爬片，置于 - 冰上透膜
+dase SA β Gal C0602 0.5% Triton X 100 15
+谷胱甘肽（ ， ）测定试剂盒（货号： ， 室温封闭 。 抗 孵育过夜，荧光
+glutathione GSH min 5% BSA 1 h Ⅰ 4 ℃
+）和 试剂盒（货号： ）均 抗室温避光孵育 ，再滴加含 抗荧光淬灭
+S0053 SYBR Green PCR D7260 Ⅱ 1 h DAPI
+购自上海碧云天生物技术有限公司；细胞内亚铁离 剂封片。荧光显微镜观察拍照，并用 软件
+ImageJ
+子荧光探针 （货号：- - ）购自武汉 分析。
+FerroOrange E BC F101
+伊莱瑞特生物科技股份有限公司；脂质过氧化物荧 2.6 细胞培养及肌管分化 小鼠成肌细胞
+C2C12
+光探针 （货号： ）购自东仁化学科技（上 在 和 条件下培养，分化培养液（含 马
+Liperfluo L248 37 ℃ 5% CO2 2%
+海）有限公司；抗肌球蛋白重链（ ， 血清的 ）每天更换，持续 以形成肌管。分
+myosin heavy chain DMEM 5 d
+）抗体（货号： - ）购自 ； 化成功的评估标准包括观察细胞形态变化确认多核
+MyHC SC 376157 Santa Cruz RNA
+反转录试剂盒（货号： ）及 试剂盒（货 肌管形成，以及通过免疫荧光染色检测 表达，
+AG21017 PCR MyHC
+号： ）购自湖南艾科瑞生物工程有限公司； 要求 阳性细胞占总细胞数的比例 。药物
+AG11706 MyHC ≥70%
+- 试剂及抗 、 、 、肌肉环指蛋白 （ 处理包括将 - 、 、 - 、 - 和 -
+CCK 8 P53 P21 P16 1 myo⁃ D Gal Era Fer 1 OSS 128167 MDL
+， ）、肌萎缩 - 蛋 溶于二甲基亚砜（ ， ）中，
+genic ring finger protein 1 MuRF1 F box 800 dimethyl sulfoxide DMSO
+白（ - ， ）、 、 处理成肌细胞以及肌管 ，以 作为对照组。
+muscle atrophy F box protein MAFbx SLC7A11 48 h DMSO
+、 抗体（货号分别为： 、 、 - 、 - 和 - 需提前预处理 。
+GPX4 GAPDH RM02823 A0263 Fer 1 OSS 128167 MDL 800 2 h
+、 、 、 、 、 、 2.7 细胞转染 取生长状态良好的 成肌细
+A2691 A23882 A7416 A3101 A6825 A2413 C2C12
+、 ）均购自武汉爱博泰克生物科技有 胞以每孔 接种于 孔板中。细胞贴壁后，使用
+6
+A11243 A19056 1×10 6
+限公司；抗 抗体（货号： ）购自 转染试剂根据说明书将 （针对
+NRF2 #12721 Cell Sig⁃ RNATransMate siRNA
+； - 抗体（货号： - ）购自 Nrf2）转染入细胞。 后进行检测。
+naling Technology HO 1 ER1802 73 48 h
+杭州华安生物技术有限公司。 2.8 - 实验 按每孔 个细胞种板，细胞
+CCK 8 5 000
+2 方法 密度达 加药反应不同时间。换液后加入 -
+80% CCK 8
+2.1 衰老小鼠模型的建立 只 周龄雄性 试剂每孔 ，反应 ，使用多功能酶标仪测
+20 8 10 µL 0.5~2 h
+小鼠，在 、 相对湿度和 光照 黑 量 波长下吸光度（A）值。
+C57BL/6 24 ℃ 60% 12 h / 480 nm
+暗周期的 环境中饲养。通过随机数表分为对照 2.9 - 实验 根据 提取试剂盒的步
+SPF RT qPCR RNA
+组（n ）和 - 组（n ）。参照文献［
+14
+］，- 组 骤，提取总 并测定浓度。将 逆转录生成
+=10 D Gal =10 D Gal RNA RNA
+小鼠每天颈背部皮下注射 - （ ）， ，加入 试剂进行扩增反应。
+D Gal 125 mg/kg control cDNA SYBR Green PCR
+组小鼠注射相同体积的生理盐水，连续 周，期间记 采用 方法分析数据。引物序列见表 。
+−ΔΔCt
+8 2 1
+录活力和体重。实验结束后实施安乐死，所有操作 2.10 分析 提取各组细胞、肌管以及
+Western blot
+获重庆医科大学伦理委员会批准（ - - 小鼠腓肠肌蛋白。使用 法定量试剂盒测定各组
+IACUC CQMU BCA
+- ）。 蛋白浓度。电泳、转膜后，使用 脱脂牛奶室温封
+2024 02009 5%
+2.2 小鼠前肢抓力测定 连续注射 周后，使用 闭 。封闭结束，用 缓冲液稍作清洗后，孵育
+8 2 h PBST
+电子抓力计测定小鼠的前肢抓力。每只 抗，在 下处理过夜。加入 抗（∶ ），室温
+Ugo Basile Ⅰ 4 ℃ Ⅱ 1 1 000
+小鼠重复测量 次，取最大值作为前肢绝对抓力 孵育 。使用增强型化学发光剂显影记录分析。
+3 1 h
+指标。 2.11 活性氧（ ， ）、线粒
+reactive oxygen species ROS
+2.3 血清和组织中生化指标的检测 麻醉小鼠后， 体 （ ， ）及线粒体膜电位
+ROS mitochondrial ROS mtROS
+--- 第4页 ---
+· ·
+1357
+表1 RT-qPCR引物序列 被认为具有统计学意义。
+0.05
+-
+Table 1. The sequences of the primers for RT qPCR 结 果
+（ - ）
+Name Primer sequence 5' 3'
+： 1 D-Gal诱导的衰老小鼠骨骼肌发生铁死亡改变并
+MAFbx Forward CATCCTCTTTCTTGCCCGTCT
+： 伴随Sirt6表达水平降低
+Reverse TATCACCACCCCTTGCCTTAC
+：
+MuRF1 Forward CTGGACGAGAAGAAGAGCGAG 与 组相比，- 组小鼠体重逐渐减轻，前
+： Con D Gal
+Reverse CACTTGAGAGGAAGGTAGCCC 肢相对抓力显著减弱（P ），血清 活性显著
+： <0.01 SOD
+Sirt6 Forward GTCAGAGACACGGTTGTGGG 降低（P ）、 水平显著升高（P ），腓肠
+： <0.01 MDA <0.01
+Reverse TCATCAGCGAGCATCAGGTC 肌中 、 和 的 和蛋白表达水平显著
+： P53 P21 P16 mRNA
+Nrf2 Forward TTGCGCCCGCCTCACCTC 上调（P 或P ），表现为衰老相关表型。此
+： <0.05 <0.01
+Reverse ACTTGTACCGCCTCGTCTGGAC
+外，- 组小鼠，腓肠肌肌纤维直径显著缩短（P
+- ：
+D Gal <
+HO 1 Forward ACCGCCTTCCTGCTCAACATTG
+），排列紊乱， 和 的 及蛋白
+：
+Reverse CTCTGACGAAGTGACGCCATCTG 0.01 MuRF1 MAFbx mRNA
+： 水平显著升高（P ），表现为肌肉质量下降。同
+SLC7A11 Forward CTATTTTACCACCATCAGTGCG <0.01
+： 时，- 组小鼠腓肠肌中的总铁含量显著升高（P
+Reverse ATCGGGACTGCTAATGAGAATT D Gal <
+： ）， 水平（P ）以及 、 和
+P53 Forward GAGGTTCGTGTTTGTGCCTG 0.01 GSH <0.01 SLC7A11 GPX4
+： 的 和蛋白表达水平显著降低（P ），
+Reverse TTCTTTTGCGGGGGAGAGG Sirt6 mRNA <0.01
+： 见图 。
+P21 Forward CCGACTCTTGACATTGCTCAGACC
+1
+：
+Reverse AGATATGCCTCCTGCCGACCTG 2 铁死亡参与D-Gal引起的成肌细胞衰老和肌管
+：
+P16 Forward TTCAGGTGATGATGATGGGCAACG 生成质量下降
+：
+Reverse CGGGCGGGAGAAGGTAGTGG 随着 - 浓度的增加，成肌细胞和肌管的活力
+： D Gal
+GPX4 Forward ATAAGAACGGCTGCGTGGTGAAG 显著下降（P ），并且在 - 时与
+： <0.01 D Gal 20g/L 1 µmol/
+Reverse TAGAGATAGCACGGCAGGTCCTTC 处理结果无显著差异（P ），同时肌管
+： L Erastin >0.05
+GAPDH Forward TGTGTCCGTCGTGGATCTGA
+中 、 、 、 和 蛋白水平逐渐上
+：
+P53 P21 P16 MuRF MAFbx
+Reverse TTGCTGTTGAAGTCGCAGGAG
+升， 和 蛋白水平逐渐下降。与成肌细
+SLC7A11 GPX4
+（ ， ）检测 在 胞对照组相比，成肌细胞 - 组 - - 阳性率、
+mitochondrial membrane potential MMP D Gal SA β Gal
+孔板中，细胞或肌管经药物作用 后，加入分别 、 、 和 2+ 水平均显著升高（P
+96 48 h ROS mtROS Liperfluo Fe <
+按 ∶ 和 ∶ 稀释的 - 、 ）， 和 水平显著降低（P ）。与肌
+1 1 000 1 2 000 DCFH DA MitoSOX 0.01 GSH MMP <0.01
+、 - 荧光探针，在 、 条件下避光孵 管对照组相比，肌管 - 组活力受到显著抑制（P
+Red JC 1 37 ℃ 5% CO2 D Gal <
+育 。 缓冲液洗涤后，使用酶标仪或荧光显 ），衰老和肌萎缩相关蛋白水平、 及
+30 min PBS 0.01 ROS mtROS
+微镜检测荧光信号。 显著升高（P 或P ），铁死亡相关蛋白的表
+<0.05 <0.01
+2.12 - - 染色 在 孔板中，细胞经药物作用 达降低（P ），同时 荧光信号减弱。然而，
+SA β Gal 6 <0.01 MyHC
+后，使用 -半乳糖苷酶染色固定液固定 ， 在 - 基础上，加入 - 后，成肌细胞衰老和肌管
+48 h β 15 min D Gal Fer 1
+缓冲液洗涤后加入 - 染色工作液，在 恒 肌萎缩指标得到改善，并伴随 和 2+ 和
+PBS β Gal 37 ℃ Liperfluo Fe GSH
+温箱中孵育过夜。染色后，在光学显微镜下观察并 等铁死亡指标显著降低（P 或 P ），
+<0.05 <0.01
+计数。 见图 。
+2
+2.13 细胞内 2+ 和脂质过氧化的测定 孔板 3 激动Sirt6通过抑制铁死亡延缓D-Gal引起的成
+Fe 96
+中，细胞或肌管经药物作用 后，使用 肌细胞衰老
+48 h 1 µmol/L
+工作液和 工作液，在 与成肌细胞 - 组相比，加入 激活剂
+FerroOrange 5 µmol/L Liperfluo D Gal Sirt6
+和 条件下避光孵育 。吸尽工作 - 后，细胞活力和 水平部分恢复（P
+37 ℃ 5% CO2 30 min MDL 800 GSH <
+液后，使用酶标仪检测荧光强度。 ）， 2+ （P ）、 （P ）、 - -
+0.01 Fe <0.01 Liperfluo <0.05 SA β Gal
+3 统计学处理 阳性率（P ）及 （P ）、 水平显著
+<0.05 ROS <0.01 mtROS
+采用 软件进行分析作 降低（P ）， 水平得到改善（P ），与
+GraphPad Prism 10.1.2 <0.05 MMP <0.01
+图。数值以均数 标准差（ ）表示。两组间 - 作用类似。与 - 组相比，加入 抑制剂
+± Mean±SD Fer 1 D Gal Sirt6
+均数比较采用t检验；多组间均数比较使用单因素方 - 后， 2+ （P ）、 （P ）、
+OSS 128167 Fe <0.01 Liperfluo <0.01
+差分析，用 法进行多组间两两比较分析。P - - 阳性率（P ）及 （P ）、
+Tukey < SA β Gal <0.05 ROS <0.01 mtROS
+--- 第5页 ---
+· ·
+1358
+- （ - ） ：
+Figure 1. D galactose D Gal induced ferroptosis and muscle mass decline in skeletal muscle of aged mice. A changes in body
+（n ）； ： （n ）；：
+weight and relative forelimb grip strength of mice during modeling =8 B serum levels of SOD and MDA =6 C he⁃
+- （n ， ）；：
+matoxylin eosin staining analysis of gastrocnemius muscle fiber diameter =6 scale bar=50 µm D mRNA and protein
+， ， ， ， ， ， ， -
+expression levels of P53 P21 P16 MuRF1 MAFbx Sirt6 SLC7A11 and GPX4 analyzed by RT qPCR and Western
+（n ）； ： （n ） *P ，**P
+blot =3 E measurement of total iron and GSH content in gastrocnemius muscle =6 . Mean±SD. <0.05 <
+vs
+0.01 control group.
+图1 D-半乳糖引起衰老小鼠骨骼肌发生铁死亡改变以及肌肉质量下降
+（P ）水平显著升高，细胞活力（P ）、 管衰老以及生成质量下降
+<0.01 <0.05 GSH
+（P ）、 （P ）显著降低。然而，加入 与肌管 - 组相比， - 激活 后，
+<0.01 MMP <0.05 D Gal MDL 800 Sirt6
+后， - 的改善作用被阻断（P ，P 、 蛋白表达水平上升（P ），同时
+Erastin MDL 800 <0.05 < SLC7A11 GPX4 <0.05
+）；而预先加入 - 则可以逆转或部分逆转 、 、衰老以及肌萎缩相关蛋白水平显著降
+0.01 Fer 1 ROS mtROS
+- 加重的成肌细胞铁死亡和衰老相关指标 低（P 或P ）， 的荧光信号强度恢
+OSS 128167 <0.05 <0.01 MyHC
+（P 或P ），见图 。 复。在 - 基础上使用 - 抑制 表达
+<0.05 <0.01 3 D Gal OSS 128167 Sirt6
+4 激动Sirt6通过抑制铁死亡改善D-Gal引起的肌 时，肌管铁死亡指标进一步上升（P 或 P
+<0.05 <
+--- 第6页 ---
+· ·
+1359
+- - （ - ）
+Figure 2. Effects of the ferroptosis inhibitor Fer 1 and inducer Era on C2C12 myoblasts and myotubes under D galactose D Gal
+： - ； ：
+treatment. A the viability of myoblasts and cell viability in myotubes assessed by CCK 8 assay B the protein expression
+， ， ， ， ， ； ： - -
+of P53 P21 P16 MuRF1 MAFbx SLC7A11 and GPX4 measured by Western blot C SA β Gal staining positive rate
+（ ）； ： ； ：
+in myoblasts scale bar=50 µm D changes in cell viability and levels of ROS and mtROS in myoblasts E immunofluo⁃
+（ ）； ：
+rescence detection of MyHC expression in myotubes scale bar=100 µm F measurement of mitochondrial membrane po⁃
+（ ）； ： ， ， ， ，
+tential in myoblasts scale bar=50 µm G changes in lipid peroxides Fe2+ GSH content mtROS and ROS levels in
+； ： ， ， ， ， ，
+myoblasts and myotubes H protein expression levels of P53 P21 P16 MuRF1 MAFbx SLC7A11 and GPX4 in myo⁃
+n *P ，**P vs ；#P ，##P vs ；
+tubes detected by Western blot. Mean±SD. =3. <0.05 <0.01 control group <0.05 <0.01 DF group
+$P ，$$P vs ；&P ，&&P vs
+<0.05 <0.01 DM group <0.05 <0.01 DO group.
+图2 D-Gal基础上使用铁死亡抑制剂Fer-1或铁死亡诱导剂Era对C2C12成肌细胞及肌管的影响
+--- 第7页 ---
+· ·
+1360
+- - （ - ） ：
+Figure 3. Effects of Fer 1 and Era on C2C12 myoblasts and myotubes under D galactose D Gal conditions. A changes in cell via⁃
+， ， ， - ， - ， ， -
+bility GSH Fe2+ and lipid peroxide levels in C2C12 myoblasts treated with OSS 128167 MDL 800 Erastin and Fer 1
+- ； ： - - （ ）； ：
+under D Gal treatment B SA β Gal staining positivity rate in myoblasts scale bar=50 µm C changes in ROS and
+； ： （ ）
+mtROS levels in myoblasts D measurement of mitochondrial membrane potential in myoblasts scale bar=50 µm .
+n **P vs ；#P ，##P vs ；$P ，$$P vs ；&P
+Mean±SD. =3. <0.01 control group <0.05 <0.01 DF group <0.05 <0.01 DM group <
+，&&P vs
+0.05 <0.01 DO group.
+图3 C2C12成肌细胞中D-Gal作用基础上加入OSS-128167、MDL-800、Era及Fer-1后细胞活力、铁死亡、氧化应激、衰老相
+关指标变化。
+），同时衰老及肌萎缩特异性指标显著升高（P （P ）；与成肌细胞 - - 组相比，成肌
+0.01 < <0.01 D Gal+MDL 800
+或P ）。然而，加入 后，激动 产生 细 胞 - - 组 ， （P ）、
+0.05 <0.01 Era Sirt6 D Gal+MDL 800+siNrf2 ROS <0.01
+的积极变化被阻断（P 或P ）；但这些指标 （P ）、 2 （ + P ）、 - - 阳性率（P
+<0.05 <0.01 mtROS <0.01 Fe <0.01 SA β Gal
+在预先加入 - 后均能够得到改善（P 或P ）水平显著升高， 水平显著降低（P ），
+Fer 1 <0.05 < <0.05 GSH <0.05
+），见图 。 且与成肌细胞 - 组无显著差异（P ）。与肌
+0.01 4 D Gal >0.05
+5 Sirt6通过Nrf2/HO-1信号通路改善成肌细胞及 管 - - 组相比，肌管 - -
+D Gal+MDL 800 D Gal+MDL 800+
+肌管铁死亡 组铁死亡相关蛋白表达下降（P ，P
+siNrf2 <0.05 <
+与成肌细胞对照组相比，- 组中 、 ）， 、 、衰老相关蛋白及肌萎缩相关蛋
+D Gal Sirt6 Nrf2 0.01 ROS mtROS
+和 - 蛋白水平下降（P ）。与成肌细胞 - 白表达水平显著升高（P 或P ），同时
+HO 1 <0.01 D Gal <0.05 <0.01 My⁃
+处理组相比，加入 - 后成肌细胞中 、 荧光信号减弱，见图 。
+OSS 128167 Sirt6 HC 5
+和 - 蛋白水平进一步降低（P ），而加入
+Nrf2 HO 1 <0.05 讨 论
+- 后成肌细胞中 、 和 - 蛋白水平
+MDL 800 Sirt6 Nrf2 HO 1
+升高（P 或P ）。与成肌细胞对照组相比， 氧化应激是机体衰老的关键机制［ - ］。脂质过
+1516
+<0.05 <0.01
+组中 、 - 基因及蛋白水平均显著降低 氧化物和 的积累会导致线粒体损伤和功能障
+siNrf2 Nrf2 HO 1 ROS
+--- 第8页 ---
+· ·
+1361
+， ， ， ， -
+Figure 4. Changes in cell viability ferroptosis oxidative stress aging and muscle atrophy related markers in myotubes treated with
+- （ - ） - ， - ， ， - ：
+D galactose D Gal and supplemented with OSS 128167 MDL 800 Era and Fer 1. A Western blot analysis of protein
+， ， ， ， ， ， ， ； ：
+expression levels of Sirt6 P53 P21 P16 MuRF1 MAFbx SLC7A11 and GPX4 in myotubes B changes in ROS and
+； ： （ ）
+mtROS levels in myotubes C immunofluorescence detection of MyHC expression in myotubes scale bar=100 µm .
+n *P ，**P vs ；#P ，##P vs ；$P ，$$P vs ；
+Mean±SD. =3. <0.05 <0.01 control group <0.05 <0.01 DF group <0.05 <0.01 DM group
+&P ，&&P vs
+<0.05 <0.01 DO group.
+图4 肌管中D-Gal作用基础上加入OSS-128167、MDL-800、Era及Fer-1细胞活力、铁死亡、氧化应激、衰老、肌萎缩相关指标
+变化
+碍，加速衰老过程［ ］。铁死亡作为 种依赖 和 抑制剂 - 显著改善了 - 诱导的 成肌细
+17 2+
+1 Fe Fer 1 D Gal C2C12
+的细胞死亡形式，其特征为抗氧化物质减少和 胞衰老改变，并提高了肌管生成质量，有利于防止骨
+ROS
+脂质过氧化物积累［ ］。细胞衰老作为 种细胞应激 骼肌衰老。
+18
+1
+状态，在氧化应激下可发生，因此抑制铁死亡可能是 - 通过促进细胞内氧化应激水平和破坏线
+D Gal
+一种有效的抗细胞衰老策略［ - ］。本研究证实，- 粒体稳态来加速骨骼肌的衰老，同时上调肌肉特异
+1920
+D
+诱导的衰老小鼠骨骼肌发生铁死亡改变，铁死亡 性 泛素连接酶的表达，促进肌肉蛋白降解［ ］。因
+21
+Gal E3
+--- 第9页 ---
+· ·
+1362
+- ：
+Figure 5. Effects of Sirt6 on the Nrf2/HO 1 signaling pathway in C2C12 myoblasts and myotubes. A Western blot analysis of protein
+， ， - ； ： -
+expression levels of Sirt6 Nrf2 and HO 1 in C2C12 myoblasts and myotubes B RT qPCR and Western blot analysis of
+- ； ： ， ，
+Nrf2 and HO 1 mRNA and protein expression levels C measurement of ROS mtROS levels and Fe2+ and GSH content
+； ： ； ： - -
+in C2C12 myoblasts D ROS and mtROS levels in myotubes E SA β Gal staining positivity rate in C2C12 myoblasts
+（ ）； ： （ ）； ：
+scale bar=50 µm F immunofluorescence detection of MyHC expression in myotubes scale bar=100 µm G Western
+， - ， ， ， ， ， ， ，
+blot analysis of protein expression levels of Nrf2 HO 1 P53 P21 P16 MuRF1 MAFbx SLC7A11 and GPX4 in myo⁃
+n *P ，**P vs ；#P ，##P vs ；&P ，&&P vs
+tubes. Mean±SD. =3. <0.05 <0.01 control group <0.05 <0.01 DF group <0.01 <0.001
+DO group.
+图5 Sirt6对C2C12成肌细胞以及肌管中Nrf2/HO-1信号通路的影响
+--- 第10页 ---
+· ·
+1363
+此，本研究利用 - 诱导的小鼠和 成肌细胞 综上所述，本研究揭示了铁死亡在衰老小鼠骨
+D Gal C2C12
+系建立衰老模型。结果显示，- 处理的小鼠体重 骼肌中的作用，并从机制上阐明了 通过激活
+D Gal Sirt6
+减轻、肌肉质量和功能下降，同时腓肠肌铁死亡标志 - 信号通路抑制铁死亡，从而改善肌细胞衰
+Nrf2/HO 1
+物表达上调，这表明铁死亡可能参与骨骼肌的衰老 老和肌管生成质量。这一研究为未来肌少症的防治
+过程。进一步引入铁死亡抑制剂 - 和诱导剂 提供了参考资料。然而，本研究采用的是 - 诱导
+Fer 1 D Gal
+处理 成肌细胞和肌管，并检测了衰老、 的衰老模型，虽然该模型广泛用于模拟衰老，但它主
+Erastin C2C12
+铁死亡和肌萎缩相关标志物。结果表明，抑制铁死 要通过加速氧化应激和炎症来模拟衰老过程，与自
+亡能改善 - 引起的成肌细胞衰老和肌管生成质 然衰老的复杂性存在差异。尽管 激动剂对小鼠
+D Gal Sirt6
+量的下降，而诱导铁死亡则加剧了这些变化。不同 骨骼肌衰老有改善作用，未来研究应在自然衰老的
+于细胞凋亡，铁死亡还与炎症关系密切。研究表明， 小鼠模型或人类样本中进一步验证 激动剂的作
+Sirt6
+在铁死亡后，可释放内源性损伤分子 ，加重 用，以更准确评估其在临床应用中的潜力。
+HMGB1
+细胞氧化应激改变［ ］。随着炎症因子的释放，加剧
+22
+作者贡献：王淦民进行课题设计、撰写文章；王瑶和陈
+了细胞氧化应激。因而，拮抗铁死亡可以减轻细胞
+士坤进行实验操作；段晨阳和王雨嫣分析数据；刘小溯和侯
+衰老。同时检测到具有抗衰老作用的 表达降
+东尧修订文章并整理文献；杜权对实验操作和文章撰写进行
+Sirt6
+低，提示 可能调控铁死亡介导的骨骼肌衰老 指导，并审核定稿。
+Sirt6
+损伤。 利益冲突：作者声明，本文无利益冲突。
+是烟酰胺腺嘌呤二核苷酸（ ）依赖性
++
+Sirt6 NAD ［参 考 文 献］
+去乙酰酶，参与细胞代谢、 修复、基因表达等过
+DNA
+程［ ］。已有研究表明 在甲状腺癌和糖尿病肾病 ［］ - ， ［］ ，
+23 Sirt6 1 Cruz Jentoft AJ Sayer AA. Sarcopenia J . Lancet
+中的铁死亡调控作用［ - ］，但其在年龄相关肌少症中 ， （ ）： -
+2425 2019 393 10191 2636 2646.
+［］ - ， ， ，
+的作用尚不明确。本研究中，通过在 - 处理的基 2 Petermann Rocha F Balntzi V Gray SR et al. Global
+D Gal ：
+础上分别引入 激活剂 - 和抑制剂 - prevalence of sarcopenia and severe sarcopenia a system⁃
+Sirt6 MDL 800 OSS - ［］
+，证实激活 显著增强成肌细胞的抗氧化 atic review and meta analysis J . J Cachexia Sarcopenia
+128167 Sirt6 ， ， （）： -
+能力，减少衰老和铁死亡标志物表达，改善肌管生成 Muscle 2022 13 1 86 99.
+［］ - ， ， ， ：
+3 Cruz Jentoft AJ Bahat G Bauer J et al. Sarcopenia re⁃
+质量，而抑制 则加剧这些变化。进一步实验表
+［］
+Sirt6 vised European consensus on definition and diagnosis J .
+明，添加铁死亡诱导剂后， 激活的保护效果被减 ， ， （）： -
+Sirt6 Age Ageing 2019 48 1 16 31.
+弱，显示 通过抑制铁死亡和减轻氧化应激改善 ［］ 王瑶，陈士坤，段晨阳，等 通过调控
+Sirt6 4 . Sirt6 P53/
+骨骼肌衰老。因此， 激活剂在防治肌少症及其 通路抑制骨骼肌细胞铁死亡［］ 中国
+Sirt6 SLC7A11/GPX4 J .
+他衰老相关疾病中的应用潜力值得进一步关注。未 病理生理杂志， ， （）： -
+2023 39 2 335 344.
+， ， ，
+来可开发小分子 激活剂，通过口服或局部给药 Wang Y Chen SK Duan CY et al. Sirtuin 6 suppresses
+Sirt6
+延缓肌肉消耗并改善肌肉功能。 ferroptosis in skeletal muscle cells by regulating P53/
+［］ ， ，
+的作用靶点较多，涉及基因组和非基因组 SLC7A11/GPX4 pathway J . Chin J Pathophysiol 2023
+Sirt6 （）： -
+机制［，］。 - 信号通路是经典的抗氧化及抗 39 2 335 344.
+923 Nrf2/HO 1 ［］ ， ， ：
+铁死亡通路［ - ］。本研究中， 激活显著上调了 5 Jiang X J Stockwell BR Conrad M. Ferroptosis mecha⁃
+2627 ， ［］
+Sirt6 nisms biology and role in disease J . Nat Rev Mol Cell
+- 处理的成肌细胞中 和 - 的表达，改善 ， ， （）： -
+D Gal Nrf2 HO 1 Biol 2021 22 4 266 282.
+铁死亡指标，并降低衰老和肌萎缩相关蛋白的表达。 ［］ ， ， ，
+6 Zhang Y Huang X Qi B et al. Ferroptosis and musculo⁃
+通过 沉默 后， 的抗铁死亡和抗衰老 ：
+siRNA Nrf2 Sirt6 skeletal diseases "Iron Maiden" cell death may be a
+效果显著减弱，进一步证实了 - 通路在 ［］ ， ，
+promising therapeutic target J . Front Immunol 2022
+Nrf2/HO 1 Sirt6
+：
+抗铁死亡中的关键作用。然而， 的抗铁死亡作 13 972753.
+Sirt6 ［］ ， ， ，
+用可能存在其它机制。研究表明，磷脂酰肌醇- -激 7 Ding H Chen S Pan X et al. Transferrin receptor 1 ab⁃
+3
+酶（ - ）蛋白激酶 （ lation in satellite cells impedes skeletal muscle regenera⁃
+phosphoinositide 3 kinase / B protein ki⁃ ［］
+）信号途径通过减少 对抗铁死亡［ ］，可能 tion through activation of ferroptosis J . J Cachexia Sarco⁃
+nase B ROS 28 ， ， （）： -
+penia Muscle 2021 12 3 746 768.
+与 的抗氧化作用协同；腺苷酸活化蛋白激酶
+［］ ， ， ，
+Sirt6
+8 Roichman A Elhanati S Aon MA et al. Restoration of
+（ - ）激活增强抗氧化并可
+AMP cctivated protein kinase energy homeostasis by SIRT6 extends healthy lifespan
+能间接调节 ［ 29 ］。 ［］ ， ， （）：
+Sirt6 J . Nat Commun 2021 12 1 3208.
+--- 第11页 ---
+· ·
+1364
+［］ ， ， ， ［ ］ ， ， ，
+9 Cai S Fu S Zhang W et al. SIRT6 silencing overcomes 19 Du K Wang L Jun JH et al. Aging promotes metabolic
+-
+resistance to sorafenib by promoting ferroptosis in gastric dysfunction associated steatotic liver disease by inducing
+［］ ， ， ： ［］ ， ，（）： -
+cancer J . Biochem Biophys Res Commun 2021 577 ferroptotic stress J . Nat Aging 2024 4 7 949 968.
+- ［ ］ ， ， ，
+158 164. 20 Zhou RP Chen Y Wei X et al. Novel insights into fer⁃
+［ ］ ， ， ， ： - ［］
+10 Gong S Xiong L Luo Z et al. SIRT6 promotes ferropto⁃ roptosis implications for age related diseases J . Ther⁃
+， ， （ ）： -
+sis and attenuates glycolysis in pancreatic cancer through anostics 2020 10 26 11976 11997.
+- ［］ ， ［ ］ ， - -
+regulation of the NF κB pathway J . Exp Ther Med 21 Azman KF Zakaria R. D galactose induced accelerated
+， （）： ： ［］ ， ，
+2022 24 2 502. aging model an overview J . Biogerontology 2019 20
+［ ］ ， ， ， （）： -
+11 Pan H Guan D Liu X et al. SIRT6 safeguards human 6 763 782.
+［ ］ ， ， ，
+mesenchymal stem cells from oxidative stress by coacti⁃ 22 Wen Q Liu J Kang R et al. The release and activity of
+［］ ， ， （）： - ［］
+vating NRF2 J . Cell Res 2016 26 2 190 205. HMGB1 in ferroptosis J . Biochem Biophys Res Com⁃
+［ ］ ， ， ， ， ， （）： -
+12 Li L Zhang H Chen B et al. BaZiBuShen alleviates mun 2019 510 2 278 283.
+- ［ ］ ， ， ，
+cognitive deficits and regulates Sirt6/NRF2/HO 1 and 23 Chang AR Ferrer CM Mostoslavsky R. SIRT6 a mam⁃
+- - - ［］
+Sirt6/P53 PGC 1α TERT signaling pathways in aging mice malian deacylase with multitasking abilities J . Physiol
+［］ ， ， ： ， ， （）： -
+J . J Ethnopharmacol 2022 282 114653. Rev 2020 100 1 145 169.
+［ ］ ， ， ， ［ ］ ， ， ， -
+13 Wang T Qin Y Qiao J et al. Overexpression of SIRT6 24 Lian F Dong D Pu J et al. Ubiquitin specific peptidase
+- -
+regulates NRF2/HO 1 and NF κB signaling pathways to al⁃ 10 attenuates the ferroptosis to promote thyroid cancer ma⁃
+- ［］ ［］
+leviate UVA induced photoaging in skin fibroblasts J . J lignancy by facilitating GPX4 via elevating SIRT6 J . En⁃
+， ， ： ， ， （）： -
+Photochem Photobiol B 2023 249 112801. viron Toxicol 2024 39 3 1129 1139.
+［ ］ ， ， ， ［ ］ ， ， ，
+14 Yang JH Gao J E YQ et al. Hydrogen sulfide inhibits 25 Du L Guo C Zeng S et al. Sirt6 overexpression relieves
+-
+skeletal muscle ageing by up regulating autophagy through ferroptosis and delays the progression of diabetic nephropa⁃
+- ［］ ， ， （）：
+promoting deubiquitination of adenosine 5' monophos⁃ thy via Nrf2/GPX4 pathway J . Ren Fail 2024 46 2
+（ ）-
+phate AMP activated protein kinase α1 via ubiquitin 2377785.
+［］ ， ［ ］ ， （ ）
+specific peptidase 5 J . J Cachexia Sarcopenia Muscle 26 Sies H Jones DP. Reactive oxygen species ROS as
+， （）： - ［］
+2024 15 5 2118 2133. pleiotropic physiological signalling agents J . Nat Rev
+［ ］ - ， - ， ， ， ， （）： -
+15 García Prat L Martínez Vicente M Perdiguero E et al. Mol Cell Biol 2020 21 7 363 383.
+［ ］ ，
+Autophagy maintains stemness by preventing senescence 27 Kerins MJ Ooi A. The roles of NRF2 in modulating cellu⁃
+［］ ， ， （ ）： - ［］ ， ，
+J . Nature 2016 529 7584 37 42. lar iron homeostasis J . Antioxid Redox Signal 2018 29
+［ ］ ， ， ， + （ ）： -
+16 Gomes AP Price NL Ling AJ et al. Declining NAD in⁃ 17 1756 1773.
+- ［ ］ ， ， ， -
+duces a pseudohypoxic state disrupting nuclear mitochon⁃ 28 He X Wang D Yi Y et al. δ Tocotrienol preconditioning
+［］ ， ， -
+drial communication during aging J . Cell 2013 155 improves the capability of bone marrow derived mesenchy⁃
+（）： -
+7 1624 1638. mal stem cells in promoting wound healing by inhibiting
+［ ］ ， ： - ［］ ， ，
+17 Wiley CD Campisi J. The metabolic roots of senescence BACH1 related ferroptosis J . Cell Death Discov 2023
+［］ （）：
+mechanisms and opportunities for intervention J . Nat 9 1 349.
+， ，（ ）： - ［ ］ ， ， ，
+Metab 2021 3 10 1290 1301. 29 Fan Y Yang Q Yang Y et al. Sirt6 suppresses high glu⁃
+［ ］ ， ， ， -
+18 Stockwell BR Friedmann Angeli JP Bayir H et al. Fer⁃ cose induced mitochondrial dysfunction and apoptosis in
+： ， ［］ ，
+roptosis a regulated cell death nexus linking metabolism podocytes through AMPK activation J . Int J Biol Sci
+， ［］ ， ， （）： ， （）： -
+redox biology and disease J . Cell 2017 171 2 2019 15 3 701 713.
+- （责任编辑：李淑媛，罗 森）
+273 285.

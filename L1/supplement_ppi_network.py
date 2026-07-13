@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 补充铁衰老 PPI 网络：
-1. 识别 ppi_network_extended_significant_edges_dedup.csv 中缺失的铁衰老基因
+1. 识别 ppi_network_extended_significant_edges.csv 中缺失的铁衰老基因
 2. 从 ppi_network_extended_edges.csv 补充（combined_score >= 400 的边）
 3. 从原始 STRING PPI 补充低置信度边（combined_score >= 150）
 4. 对仍缺失的基因，作为孤立节点记录警告
@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 # 路径
 ROOT = Path(r'd:\铁衰老 绝不重蹈覆辙')
 FERRO_GENES_PATH = ROOT / 'L1' / 'results' / 'ferroaging_genes_96.csv'
-DEDUP_PATH = ROOT / 'L1' / 'results' / 'ppi_network_extended_significant_edges_dedup.csv'
+DEDUP_PATH = ROOT / 'L1' / 'results' / 'ppi_network_extended_significant_edges.csv'
 EXTENDED_PATH = ROOT / 'L1' / 'results' / 'ppi_network_extended_edges.csv'
 SIGNIFICANT_PATH = ROOT / 'L1' / 'results' / 'ppi_network_extended_significant_edges.csv'
 STRING_PPI_PATH = Path(r'C:\Users\Jy-Mentor-7\Desktop\9606蛋白质\9606_human_ppi_symbol.txt')

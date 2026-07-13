@@ -5,10 +5,10 @@
 """
 from .validation import validate_sage, validate_hgt, validate_hgt_minibatch, validate_simplehgn
 from .prediction import predict_hgt_scores, predict_hgt_target_proteins_minibatch, predict_simplehgn_scores, predict_tcm
-from .utils import check_gpu_memory, log_gpu_memory, log_step_time, handle_oom_and_retry, check_gradient_norm, get_prot_feat_dim
+from .utils import check_gpu_memory, log_gpu_memory, log_step_time, check_gradient_norm, get_prot_feat_dim
 
 __all__ = [
     "validate_sage", "validate_hgt", "validate_hgt_minibatch", "validate_simplehgn",
     "predict_hgt_scores", "predict_hgt_target_proteins_minibatch", "predict_simplehgn_scores", "predict_tcm",
-    "check_gpu_memory", "log_gpu_memory", "log_step_time", "handle_oom_and_retry", "check_gradient_norm", "get_prot_feat_dim",
+    "check_gpu_memory", "log_gpu_memory", "log_step_time", "check_gradient_norm", "get_prot_feat_dim",
 ]

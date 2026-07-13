@@ -8,9 +8,7 @@ CPI数据补充脚本 v27
 """
 import pandas as pd
 import os
-import sys
 from rdkit import Chem
-from rdkit.Chem import AllChem
 
 # ========== 配置 ==========
 BASE_DIR = r"d:\铁衰老 绝不重蹈覆辙"

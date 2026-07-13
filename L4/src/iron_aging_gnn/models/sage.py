@@ -47,7 +47,9 @@ class SAGELinkPredictor(nn.Module):
                  decoder_type: str = "mlp",
                  decoder_init_scheme: str = "xavier",
                  decoder_final_bias_init: float = -0.5,
-                 decoder_max_residue_batch: int = 2):
+                 decoder_max_residue_batch: int = 2,
+                 use_cross_modal_fusion: bool = False,
+                 fusion_hidden_dim: int = 64):
         """初始化 SAGE 链接预测模型。
 
         Args:
@@ -149,6 +151,17 @@ class SAGELinkPredictor(nn.Module):
         else:
             raise ValueError(f"不支持的 decoder_type: {decoder_type}")
 
+        # CrossModalGatedFusion — 蛋白条件化药物特征调制 (CFM-DTI 风格)
+        self.use_cross_modal_fusion = use_cross_modal_fusion
+        self.cross_modal_fusion = None
+        if use_cross_modal_fusion:
+            from .conditioned_modulation import CrossModalGatedFusion
+            self.cross_modal_fusion = CrossModalGatedFusion(
+                drug_dim=out_dim, prot_dim=out_dim,
+                hidden_dim=fusion_hidden_dim, dropout=dropout,
+            )
+            logger.info(f"  SAGE CrossModalGatedFusion 已启用: hidden_dim={fusion_hidden_dim}")
+
         # 铁死亡表型分类头
         self.pheno_head = nn.Sequential(
             nn.Linear(out_dim, 64),
@@ -209,7 +222,7 @@ class SAGELinkPredictor(nn.Module):
 
     def decode(self, comp_emb: torch.Tensor, prot_emb: torch.Tensor,
                prot_residue_indices: torch.Tensor | None = None) -> torch.Tensor:
-        """解码化合物-蛋白交互分数。
+        """解码化合物-蛋白交互分数，支持 CrossModalGatedFusion（CFM-DTI 风格）。
 
         Args:
             comp_emb: (*, out_dim) 化合物嵌入
@@ -226,6 +239,9 @@ class SAGELinkPredictor(nn.Module):
             prot_emb = prot_emb.float()
             if prot_residue_indices is not None:
                 prot_residue_indices = prot_residue_indices.long()
+            # v69: CrossModalGatedFusion — 蛋白条件化药物特征调制
+            if self.cross_modal_fusion is not None:
+                comp_emb = self.cross_modal_fusion(comp_emb, prot_emb)
             if self.decoder_type == "residue_bilinear":
                 return self.decoder(comp_emb, prot_emb, prot_residue_indices)
             return self.decoder(comp_emb, prot_emb)

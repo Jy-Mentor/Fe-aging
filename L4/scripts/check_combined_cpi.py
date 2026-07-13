@@ -17,5 +17,5 @@ elif 'symbol' in df.columns:
     print(f'Unique genes: {df["symbol"].nunique()}')
     print(f'Genes: {sorted(df["symbol"].unique())}')
 else:
-    print(f'First 3 rows:')
+    print('First 3 rows:')
     print(df.head(3).to_string())

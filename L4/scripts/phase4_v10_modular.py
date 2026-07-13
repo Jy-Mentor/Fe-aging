@@ -23,22 +23,14 @@ import pickle
 import random
 import sys
 import time
-import traceback
 import warnings
 from collections import defaultdict
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from rdkit import Chem, RDLogger
-from rdkit.Chem import AllChem, Descriptors, rdMolDescriptors
-from sklearn.metrics import average_precision_score, roc_auc_score
-from torch_geometric.data import HeteroData
-from tqdm import tqdm
+from rdkit import RDLogger
 
 RDLogger.DisableLog("rdApp.error")
 RDLogger.DisableLog("rdApp.warning")
@@ -55,19 +47,9 @@ L4_RESULTS = L4_ROOT / "results_v10_minibatch"
 L4_LOGS = L4_ROOT / "logs"
 
 sys.path.insert(0, str(L4_SRC))
-from iron_aging_gnn.graph.sampling import sample_hetero_subgraph  # noqa: E402
-from iron_aging_gnn.graph.topology_negative_sampling import (  # noqa: E402
-    build_topology_hard_neighbors,
-    build_topology_medium_neighbors,
-)
-from iron_aging_gnn.evaluation import compute_early_enrichment_metrics  # noqa: E402
-from iron_aging_gnn.models import MemoryBank, SAGELinkPredictor, HGTLinkPredictor, SimpleHGNLinkPredictor  # noqa: E402
-from iron_aging_gnn.models.graph_transformer import GraphTransformerEncoder  # noqa: E402
-from iron_aging_gnn.models.semantic_attention import SemanticAttention, cross_view_infonce_loss  # noqa: E402
-from iron_aging_gnn.graph.meta_path import MetaPathBuilder  # noqa: E402
-from iron_aging_gnn.evaluation.cold_start import ColdStartEvaluator  # noqa: E402
+from iron_aging_gnn.models import SAGELinkPredictor, HGTLinkPredictor, SimpleHGNLinkPredictor  # noqa: E402
 from iron_aging_gnn.training.trainer import train_sage, train_hgt, train_simplehgn  # noqa: E402
-from iron_aging_gnn.utils.config import Config, load_config  # noqa: E402
+from iron_aging_gnn.utils.config import CompoundFeatureConfig, load_config  # noqa: E402
 
 for d in [L4_RESULTS, L4_LOGS]:
     d.mkdir(parents=True, exist_ok=True)
@@ -84,11 +66,6 @@ logging.basicConfig(
     force=True,
 )
 logger = logging.getLogger(__name__)
-
-# v59: HGT 验证子图缓存。验证集与采样参数固定（seed=42），首次采样后缓存可复用，
-# 显著降低同一次验证内的 CPU 采样开销。每次完整验证结束后由 _validate_hgt_minibatch 清空，
-# 避免长训练或多次验证导致内存泄漏。
-_HGT_VAL_SUBGRAPH_CACHE: dict[tuple[int, int, tuple[int, ...]], tuple] = {}
 
 RANDOM_SEED = 42
 np.random.seed(RANDOM_SEED)
@@ -164,20 +141,20 @@ NUM_HEADS = _cfg.model.num_heads if _cfg else 2
 SAGE_HIDDEN_DIM = getattr(_cfg.sage, "hidden_dim", HIDDEN_DIM) if _cfg else HIDDEN_DIM
 SAGE_OUT_DIM = getattr(_cfg.sage, "out_dim", OUT_DIM) if _cfg else OUT_DIM
 SAGE_NUM_LAYERS = getattr(_cfg.sage, "num_layers", NUM_LAYERS) if _cfg else NUM_LAYERS
-DROPOUT = _cfg.model.dropout if _cfg else 0.5
+DROPOUT = _cfg.model.dropout if _cfg else 0.3
 PROT_PROJ_DROPOUT = _cfg.model.prot_proj_dropout if _cfg else 0.4
 PROT_PROJ_INNER_DROPOUT = _cfg.model.prot_proj_inner_dropout if _cfg else 0.3
 PATHWAY_PROJ_DROPOUT = _cfg.model.pathway_proj_dropout if _cfg else 0.3
 PHENO_HEAD_DROPOUT = _cfg.model.pheno_head_dropout if _cfg else 0.3
-TEMPERATURE = _cfg.model.temperature if _cfg else 5.0
+TEMPERATURE = _cfg.model.temperature if _cfg else 1.0
 
-FOCAL_GAMMA = _cfg.loss.focal_gamma if _cfg else 2.0
-FOCAL_ALPHA = _cfg.loss.focal_alpha if _cfg else 0.75
-LABEL_SMOOTHING_POS = _cfg.loss.label_smoothing_pos if _cfg else 0.9
-LABEL_SMOOTHING_NEG = _cfg.loss.label_smoothing_neg if _cfg else 0.1
+FOCAL_GAMMA = _cfg.loss.focal_gamma if _cfg else 1.0
+FOCAL_ALPHA = _cfg.loss.focal_alpha if _cfg else 0.6
+LABEL_SMOOTHING_POS = _cfg.loss.label_smoothing_pos if _cfg else 0.95
+LABEL_SMOOTHING_NEG = _cfg.loss.label_smoothing_neg if _cfg else 0.05
 BPR_WEIGHT = _cfg.loss.bpr_weight if _cfg else 0.4
 CPI_LOSS_WEIGHT = _cfg.loss.bce_weight if _cfg else 0.6
-INFONCE_WEIGHT = _cfg.loss.infonce_weight if _cfg else 0.1
+INFONCE_WEIGHT = _cfg.loss.infonce_weight if _cfg else 0.0
 
 LEARNING_RATE_SAGE = _cfg.sage.lr if _cfg else 5e-4
 LEARNING_RATE_HGT = _cfg.hgt.lr if _cfg else 1e-3
@@ -193,9 +170,9 @@ PLATEAU_PATIENCE_HGT = _cfg.hgt.plateau_patience if _cfg else 2
 PLATEAU_FACTOR_HGT = _cfg.hgt.plateau_factor if _cfg else 0.5
 WEIGHT_DECAY = _cfg.training.weight_decay if _cfg else 1e-4
 GRAD_CLIP_NORM = _cfg.training.grad_clip_norm if _cfg else 1.0
-WARMUP_RATIO = _cfg.training.warmup_ratio if _cfg else 0.05
-DROPPEDGE_PPI = _cfg.training.dropedge_ppi if _cfg else 0.15
-DROPPEDGE_PATHWAY = _cfg.training.dropedge_pathway if _cfg else 0.1
+WARMUP_RATIO = _cfg.training.warmup_ratio if _cfg else 0.10
+DROPPEDGE_PPI = _cfg.training.dropedge_ppi if _cfg else 0.05
+DROPPEDGE_PATHWAY = _cfg.training.dropedge_pathway if _cfg else 0.05
 DROPPEDGE_CPI = _cfg.training.dropedge_cpi if _cfg else 0.0
 EPOCHS = _cfg.sage.epochs if _cfg else 15
 EPOCHS_HGT = _cfg.hgt.epochs if _cfg else 15
@@ -238,20 +215,20 @@ DECODER_INIT_SCHEME = _cfg.decoder.init_scheme if _cfg else "xavier"
 DECODER_FINAL_BIAS_INIT = _cfg.decoder.final_bias_init if _cfg else -0.5
 MAX_RESIDUE_BATCH = _cfg.decoder.max_residue_batch if _cfg else 2
 
-MEMORY_BANK_SIZE = _cfg.memory_bank.memory_bank_size if _cfg else 8192
-INFONCE_WARMUP_RATIO = _cfg.two_stage.infonce_warmup_ratio if _cfg else 0.15
-INFONCE_MEM_SAMPLE = _cfg.memory_bank.infonce_mem_sample if _cfg else 256
+MEMORY_BANK_SIZE = _cfg.memory_bank.memory_bank_size if _cfg else 4096
+INFONCE_WARMUP_RATIO = _cfg.two_stage.infonce_warmup_ratio if _cfg else 0.08
+INFONCE_MEM_SAMPLE = _cfg.memory_bank.infonce_mem_sample if _cfg else 128
 INFONCE_TEMPERATURE = _cfg.loss.infonce_temperature if _cfg else 0.07
 
 # v67: 辅助网络重建损失参数（DHGT-DTI/MHGNN-DTI 风格）
-AUX_RECON_WEIGHT = _cfg.loss.aux_recon_weight if _cfg else 0.15
+AUX_RECON_WEIGHT = _cfg.loss.aux_recon_weight if _cfg else 0.0
 AUX_RECON_PPI_SAMPLES = _cfg.loss.aux_recon_ppi_samples if _cfg else 256
 AUX_RECON_PATHWAY_SAMPLES = _cfg.loss.aux_recon_pathway_samples if _cfg else 128
 AUX_RECON_DDI_SAMPLES = _cfg.loss.aux_recon_ddi_samples if _cfg else 128
 AUX_RECON_DRUG_DISEASE_SAMPLES = _cfg.loss.aux_recon_drug_disease_samples if _cfg else 128
 AUX_RECON_PROT_DISEASE_SAMPLES = _cfg.loss.aux_recon_protein_disease_samples if _cfg else 128
 AUX_RECON_DRUG_SIDE_EFFECT_SAMPLES = _cfg.loss.aux_recon_drug_side_effect_samples if _cfg else 128
-SEMANTIC_ATTN_WEIGHT = _cfg.loss.semantic_attn_weight if _cfg else 0.05
+SEMANTIC_ATTN_WEIGHT = _cfg.loss.semantic_attn_weight if _cfg else 0.0
 SEMANTIC_ATTN_TEMPERATURE = _cfg.loss.semantic_attn_temperature if _cfg else 0.5
 
 # v67: 冷启动评估参数（GHCDTI 风格）
@@ -263,6 +240,9 @@ COLD_TARGET_SPLIT_RATIO = _cfg.validation.cold_target_split_ratio if _cfg else 0
 # v67: 元路径与 Graph Transformer 配置
 META_PATH_ENABLED = _cfg.meta_path.enabled if _cfg else False
 GT_ENABLED = _cfg.graph_transformer.enabled if _cfg else False
+# v69: CrossModalGatedFusion 配置
+USE_CROSS_MODAL_FUSION = getattr(_cfg.model, "use_cross_modal_fusion", False) if _cfg else False
+FUSION_HIDDEN_DIM = getattr(_cfg.model, "fusion_hidden_dim", 64) if _cfg else 64
 
 HEAD_RATIO = _cfg.two_stage.head_ratio if _cfg else 0.2
 LAMBDA_HHI = _cfg.two_stage.lambda_hhi if _cfg else 1.0
@@ -309,17 +289,15 @@ RDKIT_DESCRIPTOR_NAMES = [
 ]
 ECFP4_NBITS = 2048
 # v67 module imports — 所有功能从 iron_aging_gnn 包模块导入
-from iron_aging_gnn.data.features import build_compound_features, compute_aac, compute_esm2_embeddings, load_protein_features  # noqa: E402
-from iron_aging_gnn.data.loader import load_cpi_data, load_ppi_network, load_kegg_pathways, load_tcm_pool, load_ferroptosis_library, load_disease_edges  # noqa: E402
+from iron_aging_gnn.data.features import build_compound_features, load_protein_features, FeatureCache  # noqa: E402
+from iron_aging_gnn.data.loader import load_cpi_data, load_ppi_network, load_kegg_pathways, load_tcm_pool  # noqa: E402
 from iron_aging_gnn.data.self_check import pipeline_self_check  # noqa: E402
-from iron_aging_gnn.graph.build import build_pathway_neighbors, build_graphs_and_adj  # noqa: E402
-from iron_aging_gnn.graph.sampling import drop_edge, sample_homo_subgraph  # noqa: E402
+from iron_aging_gnn.graph.build import build_graphs_and_adj  # noqa: E402
 from iron_aging_gnn.graph.validation_graphs import build_val_safe_homo_edge_index, build_val_safe_hetero_data, build_val_comp_cold_homo_edge_index, build_val_comp_cold_hetero_data, build_train_safe_homo_adj, build_train_safe_hetero_adj, build_val_comp_cold_hetero_adj, build_val_safe_hetero_adj  # noqa: E402
-from iron_aging_gnn.models.losses import focal_loss_with_logits, infonce_loss, _CpiLossState, compute_cpi_loss, compute_auxiliary_reconstruction_loss  # noqa: E402
-from iron_aging_gnn.pipeline.utils import get_prot_feat_dim, check_gpu_memory, log_gpu_memory, log_step_time, handle_oom_and_retry, check_gradient_norm  # noqa: E402
-from iron_aging_gnn.pipeline.validation import validate_sage, validate_hgt, validate_hgt_minibatch, validate_simplehgn  # noqa: E402
-from iron_aging_gnn.pipeline.prediction import predict_hgt_scores, predict_hgt_target_proteins_minibatch, predict_simplehgn_scores, predict_tcm  # noqa: E402
-from iron_aging_gnn.evaluation.metrics import compute_ranking_metrics, compute_roce, compute_bedroc  # noqa: E402
+from iron_aging_gnn.models.losses import compute_cpi_loss, compute_auxiliary_reconstruction_loss  # noqa: E402
+from iron_aging_gnn.pipeline.utils import get_prot_feat_dim, check_gpu_memory, log_gpu_memory, log_step_time, check_gradient_norm  # noqa: E402
+from iron_aging_gnn.pipeline.validation import validate_sage, validate_hgt, validate_simplehgn  # noqa: E402
+from iron_aging_gnn.pipeline.prediction import predict_tcm  # noqa: E402
 
 # ============================================================================
 # v67 Wrappers -- pass global constants to module functions
@@ -328,34 +306,21 @@ from iron_aging_gnn.evaluation.metrics import compute_ranking_metrics, compute_r
 def _get_prot_feat_dim(prot_feat):
     return get_prot_feat_dim(prot_feat)
 
-def _compute_ranking_metrics(score_matrix, valid_pos_list, ks=(10, 20, 50)):
-    return compute_ranking_metrics(score_matrix, valid_pos_list, ks=ks)
-
-def _compute_roce(y_true, y_score):
-    return compute_roce(y_true, y_score)
-
-def _compute_bedroc(y_true, y_score, alpha=20.0):
-    return compute_bedroc(y_true, y_score, alpha=alpha)
-
 
 def _validate_sage(model, x, homo_edge_index, val_compounds, all_compound_to_pos, n_compounds,
-                   return_embeddings=False):
+                   n_proteins=None, return_embeddings=False):
     return validate_sage(model, x, homo_edge_index, val_compounds, all_compound_to_pos, n_compounds,
                          device=DEVICE, score_clamp=SCORE_CLAMP, hard_neg_top_k=HARD_NEG_TOP_K,
                          rand_neg_top_k=RAND_NEG_TOP_K, mask_val=MASK_VAL,
+                         neg_ratio=100,
                          return_embeddings=return_embeddings)
 
 def _validate_hgt(model, hetero_data, val_compounds, all_compound_to_pos, n_compounds,
                   n_proteins, **kwargs):
     return validate_hgt(model, hetero_data, val_compounds, all_compound_to_pos, n_compounds,
-                        n_proteins, device=DEVICE, score_clamp=SCORE_CLAMP, **kwargs)
+                        n_proteins, device=DEVICE, score_clamp=SCORE_CLAMP,
+                        neg_ratio=100, **kwargs)
 
-def _validate_hgt_minibatch(model, hetero_data, hetero_adj, val_compounds, all_compound_to_pos,
-                            n_compounds, n_proteins, **kwargs):
-    return validate_hgt_minibatch(model, hetero_data, hetero_adj, val_compounds, all_compound_to_pos,
-                                  n_compounds, n_proteins, device=DEVICE,
-                                  hgt_val_num_neighbors=HGT_VAL_NUM_NEIGHBORS,
-                                  val_batch_size=HGT_VAL_BATCH_SIZE, **kwargs)
 
 def _validate_simplehgn(model, hetero_data, val_compounds, all_compound_to_pos, n_compounds,
                         n_proteins, **kwargs):
@@ -402,9 +367,6 @@ def _log_gpu_memory(tag=''):
 
 def _log_step_time(start_time, step_name):
     return log_step_time(start_time, step_name)
-
-def _handle_oom_and_retry(model, optimizer, scaler, batch_seeds, loss_fn, max_retries=3):
-    return handle_oom_and_retry(model, optimizer, scaler, batch_seeds, loss_fn, max_retries)
 
 def _check_gradient_norm(model, warn_threshold=100.0):
     return check_gradient_norm(model, warn_threshold)
@@ -711,7 +673,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
     if n_cpi_removed > 0:
         logger.warning(f"  v56: 从 CPI 训练集剔除 {n_cpi_removed} 条 TCM 重叠记录（剩余 {len(cpi_df)} 条）")
     else:
-        logger.info(f"  v56: TCM 与 CPI 训练集无重叠，无需剔除")
+        logger.info("  v56: TCM 与 CPI 训练集无重叠，无需剔除")
 
     # 加载铁死亡表型分类数据集
     pheno_df = None
@@ -819,6 +781,17 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             logger.warning(f"  加载图数据缓存失败: {_e}，重新构建")
 
     if not _cache_loaded:
+        # v67: 化合物特征缓存管理器
+        compound_cfg = _cfg.compound_feature if _cfg else CompoundFeatureConfig()
+        if compound_cfg.enable_cache:
+            compound_feature_cache = FeatureCache(
+                PROJECT_ROOT / compound_cfg.cache_dir,
+                version=compound_cfg.cache_version,
+            )
+            logger.info(f"化合物特征缓存已启用: {compound_feature_cache.cache_dir}")
+        else:
+            compound_feature_cache = None
+
         # 构建图 & 邻接表
         logger.info(">>> 构建图 & 邻接表")
         _t0 = time.time()
@@ -828,6 +801,9 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             topo_neighbors_top_k=TOPO_NEIGHBORS_TOP_K,
             use_esm_similarity_neg=USE_ESM_SIMILARITY_NEG,
             esm_similarity_top_k=ESM_SIMILARITY_TOP_K,
+            compound_feature_cache=compound_feature_cache,
+            use_meta_paths=META_PATH_ENABLED,
+            meta_path_density_threshold=_cfg.meta_path.density_threshold if _cfg else 0.1,
         )
         _t0 = _log_step_time(_t0, "图构建完成")
 
@@ -1094,6 +1070,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
         prot_to_path_neighbors=graphs.get("prot_to_path_neighbors"),
         two_stage=True, pretrain_epochs=PRETRAIN_EPOCHS, pretrain_lr=PRETRAIN_LR_SAGE,
         random_seed=RANDOM_SEED,
+        use_infonce=INFONCE_WEIGHT > 0, use_bpr=True, use_curriculum=True,
         pheno_compound_indices=pheno_train_indices,
         pheno_labels=pheno_train_labels,
         pheno_lambda=PHENO_LAMBDA,
@@ -1101,7 +1078,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
         dropedge_ppi=DROPPEDGE_PPI, dropedge_pathway=DROPPEDGE_PATHWAY, dropedge_cpi=DROPPEDGE_CPI,
         focal_gamma=FOCAL_GAMMA, focal_alpha=FOCAL_ALPHA,
         memory_bank_size=MEMORY_BANK_SIZE,
-        head_ratio=HEAD_RATIO, lambda_hhi=LAMBDA_HHI,
+        head_ratio=HEAD_RATIO, lambda_hhi=LAMBDA_HHI, head_undersample_ratio=HEAD_UNDERSAMPLE_RATIO,
         grad_clip_norm=GRAD_CLIP_NORM,
         pretrain_lr_multiplier=PRETRAIN_LR_MULTIPLIER, pretrain_lr_decay=PRETRAIN_LR_DECAY,
         finetune_lr_multiplier=FINETUNE_LR_MULTIPLIER,
@@ -1116,7 +1093,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
         aux_recon_ddi_samples=AUX_RECON_DDI_SAMPLES,
         hetero_adj=graphs.get("hetero_adj"),
         n_diseases=graphs.get("n_diseases", 0),
-        use_amp=False)
+        use_amp=False, val_freq=VAL_FREQ)
 
     try:
         L4_RESULTS.mkdir(parents=True, exist_ok=True)
@@ -1168,7 +1145,13 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             compound_feat_dim=graphs["feat_dim"], node_feat_dims=hgt_node_feat_dims,
             pheno_head_dropout=PHENO_HEAD_DROPOUT,
             temperature=TEMPERATURE,
-            decoder_type=DECODER_TYPE)
+            decoder_type=DECODER_TYPE,
+            use_graph_transformer=GT_ENABLED,
+            gt_num_layers=_cfg.graph_transformer.num_layers if _cfg else 2,
+            gt_num_heads=_cfg.graph_transformer.num_heads if _cfg else 4,
+            gt_dropout=_cfg.graph_transformer.dropout if _cfg else 0.3,
+            use_cross_modal_fusion=USE_CROSS_MODAL_FUSION,
+            fusion_hidden_dim=FUSION_HIDDEN_DIM)
         hgt_checkpoint = torch.load(hgt_model_path, map_location=DEVICE, weights_only=False)
         # v59: 过滤掉 decoder 中动态注册的 residue 索引 buffer，避免旧 state_dict 的短 buffer 覆盖当前映射
         hgt_state_dict = {k: v for k, v in hgt_checkpoint["state_dict"].items() if "_prot_to_residue_idx" not in k}
@@ -1200,7 +1183,13 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             compound_feat_dim=graphs["feat_dim"], node_feat_dims=hgt_node_feat_dims,
             pheno_head_dropout=PHENO_HEAD_DROPOUT,
             temperature=TEMPERATURE,
-            decoder_type=DECODER_TYPE)
+            decoder_type=DECODER_TYPE,
+            use_graph_transformer=GT_ENABLED,
+            gt_num_layers=_cfg.graph_transformer.num_layers if _cfg else 2,
+            gt_num_heads=_cfg.graph_transformer.num_heads if _cfg else 4,
+            gt_dropout=_cfg.graph_transformer.dropout if _cfg else 0.3,
+            use_cross_modal_fusion=USE_CROSS_MODAL_FUSION,
+            fusion_hidden_dim=FUSION_HIDDEN_DIM)
         # 注册残基级 ESM-2 特征到 HGT 解码器（大张量保留在 CPU）
         if DECODER_TYPE == "residue_bilinear" and residue_embeddings is not None:
             hgt_model.set_residue_features(
@@ -1209,6 +1198,9 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
                 max_len=residue_max_len,
                 residue_device="cpu",
             )
+        # v69: 注册元路径边索引供 GraphTransformer 多视角编码
+        if META_PATH_ENABLED:
+            hgt_model.set_meta_path_edge_indices(graphs.get("meta_path_edge_indices"))
         hgt_model, hgt_history = train_hgt(
             hgt_model, graphs, train_compounds, val_compounds, compound_to_pos,
             device=DEVICE,
@@ -1218,14 +1210,16 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             prot_to_path_neighbors=graphs.get("prot_to_path_neighbors"),
             two_stage=True, pretrain_epochs=PRETRAIN_EPOCHS_HGT, pretrain_lr=PRETRAIN_LR_HGT,
             random_seed=RANDOM_SEED,
+            use_infonce=INFONCE_WEIGHT > 0, use_bpr=True, use_curriculum=True,
             pheno_compound_indices=pheno_train_indices,
             pheno_labels=pheno_train_labels,
             pheno_lambda=PHENO_LAMBDA,
             bpr_weight=BPR_WEIGHT, weight_decay=WEIGHT_DECAY, warmup_ratio=WARMUP_RATIO,
             dropedge_ppi=DROPPEDGE_PPI, dropedge_pathway=DROPPEDGE_PATHWAY, dropedge_cpi=DROPPEDGE_CPI,
             focal_gamma=FOCAL_GAMMA, focal_alpha=FOCAL_ALPHA,
+            semantic_attn_weight=SEMANTIC_ATTN_WEIGHT,
             memory_bank_size=MEMORY_BANK_SIZE,
-            head_ratio=HEAD_RATIO, lambda_hhi=LAMBDA_HHI,
+            head_ratio=HEAD_RATIO, lambda_hhi=LAMBDA_HHI, head_undersample_ratio=HEAD_UNDERSAMPLE_RATIO,
             grad_clip_norm=GRAD_CLIP_NORM,
             pretrain_lr_multiplier=PRETRAIN_LR_MULTIPLIER, pretrain_lr_decay=PRETRAIN_LR_DECAY,
             finetune_lr_multiplier=FINETUNE_LR_MULTIPLIER_HGT,
@@ -1241,7 +1235,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             aux_recon_prot_disease_samples=AUX_RECON_PROT_DISEASE_SAMPLES,
             hetero_adj=graphs.get("hetero_adj"),
             n_diseases=graphs.get("n_diseases", 0),
-            use_amp=False)
+            use_amp=False, val_freq=VAL_FREQ)
 
         try:
             L4_RESULTS.mkdir(parents=True, exist_ok=True)
@@ -1282,7 +1276,13 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             compound_feat_dim=graphs["feat_dim"], node_feat_dims=simplehgn_node_feat_dims,
             pheno_head_dropout=PHENO_HEAD_DROPOUT,
             temperature=TEMPERATURE,
-            decoder_type=DECODER_TYPE)
+            decoder_type=DECODER_TYPE,
+            use_graph_transformer=GT_ENABLED,
+            gt_num_layers=_cfg.graph_transformer.num_layers if _cfg else 2,
+            gt_num_heads=_cfg.graph_transformer.num_heads if _cfg else 4,
+            gt_dropout=_cfg.graph_transformer.dropout if _cfg else 0.3,
+            use_cross_modal_fusion=USE_CROSS_MODAL_FUSION,
+            fusion_hidden_dim=FUSION_HIDDEN_DIM)
         simplehgn_checkpoint = torch.load(simplehgn_model_path, map_location=DEVICE, weights_only=False)
         simplehgn_state_dict = {k: v for k, v in simplehgn_checkpoint["state_dict"].items() if "_prot_to_residue_idx" not in k}
         simplehgn_model.load_state_dict(simplehgn_state_dict, strict=False)
@@ -1312,7 +1312,13 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             compound_feat_dim=graphs["feat_dim"], node_feat_dims=simplehgn_node_feat_dims,
             pheno_head_dropout=PHENO_HEAD_DROPOUT,
             temperature=TEMPERATURE,
-            decoder_type=DECODER_TYPE)
+            decoder_type=DECODER_TYPE,
+            use_graph_transformer=GT_ENABLED,
+            gt_num_layers=_cfg.graph_transformer.num_layers if _cfg else 2,
+            gt_num_heads=_cfg.graph_transformer.num_heads if _cfg else 4,
+            gt_dropout=_cfg.graph_transformer.dropout if _cfg else 0.3,
+            use_cross_modal_fusion=USE_CROSS_MODAL_FUSION,
+            fusion_hidden_dim=FUSION_HIDDEN_DIM)
         if DECODER_TYPE == "residue_bilinear" and residue_embeddings is not None:
             simplehgn_model.set_residue_features(
                 residue_embeddings, residue_offsets, residue_lengths,
@@ -1320,6 +1326,9 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
                 max_len=residue_max_len,
                 residue_device="cpu",
             )
+        # v69: 注册元路径边索引供 GraphTransformer 多视角编码
+        if META_PATH_ENABLED:
+            simplehgn_model.set_meta_path_edge_indices(graphs.get("meta_path_edge_indices"))
         simplehgn_model, simplehgn_history = train_simplehgn(
             simplehgn_model, graphs, train_compounds, val_compounds, compound_to_pos,
             device=DEVICE,
@@ -1331,14 +1340,16 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             two_stage=True, pretrain_epochs=PRETRAIN_EPOCHS_SIMPLEHGN,
             pretrain_lr=PRETRAIN_LR_SIMPLEHGN,
             random_seed=RANDOM_SEED,
+            use_infonce=INFONCE_WEIGHT > 0, use_bpr=True, use_curriculum=True,
             pheno_compound_indices=pheno_train_indices,
             pheno_labels=pheno_train_labels,
             pheno_lambda=PHENO_LAMBDA,
             bpr_weight=BPR_WEIGHT, weight_decay=WEIGHT_DECAY, warmup_ratio=WARMUP_RATIO,
             dropedge_ppi=DROPPEDGE_PPI, dropedge_pathway=DROPPEDGE_PATHWAY, dropedge_cpi=DROPPEDGE_CPI,
             focal_gamma=FOCAL_GAMMA, focal_alpha=FOCAL_ALPHA,
+            semantic_attn_weight=SEMANTIC_ATTN_WEIGHT,
             memory_bank_size=MEMORY_BANK_SIZE,
-            head_ratio=HEAD_RATIO, lambda_hhi=LAMBDA_HHI,
+            head_ratio=HEAD_RATIO, lambda_hhi=LAMBDA_HHI, head_undersample_ratio=HEAD_UNDERSAMPLE_RATIO,
             grad_clip_norm=GRAD_CLIP_NORM,
             pretrain_lr_multiplier=PRETRAIN_LR_MULTIPLIER, pretrain_lr_decay=PRETRAIN_LR_DECAY,
             finetune_lr_multiplier=FINETUNE_LR_MULTIPLIER_HGT,
@@ -1355,7 +1366,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             aux_recon_prot_disease_samples=AUX_RECON_PROT_DISEASE_SAMPLES,
             hetero_adj=graphs.get("hetero_adj"),
             n_diseases=graphs.get("n_diseases", 0),
-            use_amp=False)
+            use_amp=False, val_freq=VAL_FREQ)
 
         try:
             L4_RESULTS.mkdir(parents=True, exist_ok=True)
@@ -1423,7 +1434,6 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
 
     # v56: 动态集成权重 — 基于验证 AUPR 加权
     # 训练时从训练历史提取；skip 时从已知最佳结果读取
-    use_simplehgn_pred = simplehgn_model is not None and simplehgn_history
     if skip_sage and skip_hgt and not reevaluate:
         sage_aupr = 0.7870  # SAGE v55 best_val_aupr（硬编码回退）
         hgt_aupr = 0.1251   # HGT v53 best_val_aupr（硬编码回退）

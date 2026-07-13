@@ -1,7 +1,6 @@
 """从dhimmel/bindingdb提取LACTB数据并合并到combined文件"""
 import gzip
 import pandas as pd
-import numpy as np
 from pathlib import Path
 import logging
 

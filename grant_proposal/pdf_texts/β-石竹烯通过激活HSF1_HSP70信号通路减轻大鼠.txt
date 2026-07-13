@@ -1,0 +1,1708 @@
+
+--- 第1页 ---
+分类号： R96 学号： 2019111005
+重 庆 医 科 大 学
+硕 士 学 位 论 文
+（学术学位）
+β-石竹烯通过激活HSF1/HSP70信号通路减轻大鼠脑
+缺血再灌注损伤研究
+论文题目
+左天睿
+作者姓名
+董 志 教授
+指导教师姓名（职称、单位名称）
+重庆医科大学药学院药理学教研室
+重庆市生物化学与分子药理学重点实验室
+药 学
+一级学名称
+药理学
+二级学科名称
+论文答辩年月 2022 年 5 月
+--- 第3页 ---
+目 录
+英文缩略语名词对照.......................................................................................................1
+中文摘要...........................................................................................................................2
+英文摘要...........................................................................................................................7
+论文正文 β-石竹烯通过激活 HSF1/HSP70 通路减轻大鼠脑缺血再灌注损伤研究
+.....................................................................................................................14
+前 言..........................................................................................................14
+第一部分 β-石竹烯通过激活 HSF1/HSP70 通路减轻损伤大鼠的氧化应激和
+细胞凋亡发生.................................................................................................................17
+1 实验材料..................................................................................................17
+2 实验方法..................................................................................................21
+3 结 果......................................................................................................25
+4 讨 论......................................................................................................35
+第二部分 β-石竹烯作用于HSF1/HSP70轴对氧糖剥夺/再灌注后的星形胶质
+细胞的保护作用及机制研究.............................................................................38
+1 实验材料..................................................................................................38
+2 实验方法..................................................................................................39
+3 结 果......................................................................................................43
+4 讨 论......................................................................................................48
+全文总结...............................................................................................................51
+参考文献...............................................................................................................52
+文献综述.........................................................................................................................60
+参考文献...............................................................................................................64
+致 谢.............................................................................................................................69
+研究生期间参与研究的成果及发表的文章.................................................................71
+--- 第4页 ---
+重庆医科大学硕士研究生学位论文
+英文缩略语名词对照
+英文缩写 英文全称 中文全称
+BAX BCL2-Associated X BCL2 相关X 基因
+BCL2 B-cell lymphoma-2 B 淋巴细胞瘤-2基因
+BCP β-Caryophyllene β-石竹烯
+CCK-8 CellCounting Kit-8 细 胞 计 数 试 剂 （ 含
+WST-8）
+CHOP C/EBPhomologous protein C/EBP 同源蛋白
+CIR Cerebral ischemia-reperfusion 脑缺血再灌注
+2-(4-Amidinophenyl)-6-indolecarbamidine
+DAPI 4',6-二脒基-2-苯基吲哚
+dihydrochloride
+DMEM Dulbecco's Modified EagleMedium 高糖改良伊格尔培养基
+DMSO Dimethyl sulfoxide 二甲基亚砜
+FBS FetalBovine Serum 胎牛血清
+GFAP Glialfibrillary acidic protein 胶质纤维酸性蛋白
+HE Hematoxylin and Eosin 苏木精-伊红染色
+HSF1 Heat shockfactor 1 热休克因子1
+HSP70 Heat shockprotein 70 热休克蛋白70
+MCAO Middlecerebral artery occlusion 大脑中动脉闭塞
+MDA Malondialdehyde 丙二醛
+OGD/R Oxygen glucosedeprivation/reperfusion 氧糖剥夺再灌注
+SOD SuperoxideDismutase 超氧化物歧化酶
+Tris-HCl 吐温氯化钠缓
+TBST Tris-Buffered SalineTween
+冲液
+Terminaldeoxynucleotidyl
+原位末端转移酶标记技
+TUNEL transferase-mediated dUTP-biotin nick
+术
+end labeling assay
+1
+--- 第5页 ---
+重庆医科大学硕士研究生学位论文
+石竹烯通过激活 信号通路减轻大
+β- HSF1/HSP70
+鼠脑缺血再灌注损伤研究
+摘 要
+热 休 克 蛋 白 70 （ heat shock proteins 70 ， HSP70 ） 是 热
+休克蛋白家族的以重要成员，是机体在疾病、损伤等应激状态下广泛
+表达的内源性保护蛋白。当脑缺血发生时，HSP70 在梗死区域中被显
+著诱导，其过度表达能减轻脑损伤，恢复神经功能，具有抗氧化、抗
+炎和抗凋亡的作用，被认为是脑卒中的潜在治疗靶点。另外，其作用
+高度依赖于热休克转录因子 1（heat shock factor 1，HSF1）的调控。
+实验表明，在组织缺血、神经系统等疾病中，HSF1 参与了应激适应、
+促进细胞存活等重要过程。β-石竹烯（β-caryophyllene ,BCP）属于双环
+倍半萜烯类，具有抗炎，抗氧化，抗凋亡的药理活性。特别是在神经
+系统疾病中发挥着重要的神经保护作用。但其具体机制尚未完全明确。
+目的：
+本研究拟探索 BCP 在大鼠脑缺血再灌注损伤模型中的抗氧化抗凋
+亡作用，同时联合 HSF1 抑制剂 Kribb11 干预，初步探索 BCP 对脑缺
+血再灌注损伤的保护作用机制是否与 HSF1/HSP70 信号通路有关，即
+BCP 是否通过激活 HSF1/HSP70 通路来减轻大鼠 CIR 损伤。
+方法：
+2
+--- 第6页 ---
+重庆医科大学硕士研究生学位论文
+第一部分：
+体内实验：将 Sprague-Dawley 雄性大鼠（250～290g）随机分组：
+假手术组（Sham）、脑缺血再灌注模型组（CIR）、BCP 低剂量给药
+组（153mg/kg BCP）、BCP 中剂量给药组（306mg/kg BCP）、BCP 高
+剂量给药组（612mg/kg BCP）、BCP（306mg/kg）+Kribb11 给药组
+（BCP+Kribb11）、Kribb11 给药组（Kribb11）。采用 10%的聚氧乙烯
+蓖麻油+生理盐水配制各剂量的 BCP 药液，BCP 各剂量组和
+BCP+Kribb11 组造模前连续 7 天灌胃给予 BCP 药物，而假手术组、模
+型组及 Kribb11 组给予相同的溶剂；造模前 3h，BCP+Kribb11 组和
+Kribb11 组侧脑室注射 Kribb11 药液（1mM, 10μl ，其余各组注射适量溶
+剂（DMSO+人工脑脊液）。采用线栓法建立大鼠脑缺血再灌注损伤模
+型，缺血 1.5h 后取栓，再灌注 24h。假手术组中的 SD 大鼠进行血管分
+离，但不进行插栓闭塞血管，其余操作同其他组；其余各组均进行损
+伤模型建立。再灌注 24h 后，再灌注 24h 后进行神经行为学评分（Longa
+法）；2,3,5-三苯基氯化四氮唑染色法测定脑梗死体积；苏木精-伊红染
+色、尼式染色观察皮层组织病理变化；实时定量 PCR 测定 HSF1、HSP70
+mRNA 水平；蛋白印迹法检测大鼠脑皮层中 HSP70、HSF1、磷酸化
+p-HSF1、凋亡相关蛋白（Chop、Caspase 3、Bcl2、Bax）的蛋白表达；
+免疫荧光染色检测 p-HSF1、HSP70 蛋白表达；Tunel 染色检测细胞凋
+亡水平；化学比色法检测皮层组织中丙二醛（MDA）含量和总超氧化
+物歧化酶（SOD）及 Caspase 3 活性。
+3
+--- 第7页 ---
+重庆医科大学硕士研究生学位论文
+第二部分：
+体外实验：从出生 3 天内的 SD 乳鼠中脑组织中提取原代星形胶质
+细胞，在体外培养星形胶质细胞。将细胞随机分为以下组别：正常组
+（Normal）；模型组（OGD/R），BCP 给药组（5，10，20，40μM
+BCP+OGD/R），BCP+Kribb11组（20uM BCP+Kribb11+OGD/R），Kribb11
+组（100,200,500nM, 1,3,10,20μM Kribb11+OGD/R）。各组均放置于 5%
+CO 、37℃的孵箱中正常培养，待细胞密度至 70%~80%后，进行后续
+2
+处理。细胞氧糖剥夺前，BCP 预处理 12 h，Kribbo11 预处理 12h。除
+假手术组外，其余各组细胞进行 OGD/R 模型建立，氧糖剥夺 2 h，再
+复氧复糖 24 h，然后取样本做相关检测。我们以采用 CCK-8 比色法检
+测细胞的存活率，Western-Blot 法检测细胞中 HSF1、磷酸化 p-HSF1、
+HSP70 以及凋亡相关蛋白的表达，流式细胞技术 Annexin V FITC/PI 双
+染检测细胞凋亡率，细胞进行有效处理后采用化学比色法检测细胞中
+SOD、MDA 及 Caspase 3 酶活性评估细胞的氧化应激水平和凋亡水平。
+结果：
+1.与假手术相比，模型组大鼠神经行为学特征明显，出现严重的神
+经功能障碍，脑组织出现大面积的梗死区域，同时缺血侧皮层组织病
+理损伤严重，细胞排列紊乱，核固缩现象明显，尼式小体消失，细胞
+大量死亡。与模型组相比，BCP 给药组大鼠神经功能缺损明显改善，
+脑梗死面积减少；脑缺血侧皮层的病理损伤减轻，细胞死亡减少；与
+BCP 给药组相比，BCP+Kribb11 组中随着 Kribb11 的联合干预，BCP
+的保护作用被逆转，大鼠的神经功能缺损、脑梗死面积和组织病理损
+4
+--- 第8页 ---
+重庆医科大学硕士研究生学位论文
+伤加重。
+2.与假手术组相比，模型组大鼠缺血侧皮层组织中 SOD 酶活性降
+低，MDA 含量显著增加，Caspase 3 酶活性增加，TUNEL 阳性细胞数
+明显增多；BCP 预处理后，模型组大鼠中 SOD 酶活性升高，MDA 含
+量明显减少，Caspase 3 酶活性减少，TUNEL 阳性细胞数减少；与 BCP
+给药组相比，BCP+Kribb11 组中 SOD 酶活性减少，MDA 含量更加，
+Caspase 3 酶活性增加，TUNEL 阳性细胞数增加。
+3.与假手术组相比，模型组大鼠缺血侧皮层组织中 HSF1，p-HSF
+和 HSP70 蛋白表达增加，凋亡相关蛋白发生变化，Bcl2 蛋白表达减少，
+Bax、Chop和Caspase 3表达增加；BCP进一步增加缺血侧皮层中HSF1、
+p-HSF1、HSP70 蛋白表达，增加 Bcl2 的表达，减少 Bax、Chop、Caspase3
+的表达；与 BCP 给药组相比，BCP+Kribb11 组显示 Kribb11 减弱了 BCP
+对大鼠 CIR 损伤的保护作用，Kribb11 明显抑制了 BCP 诱导的 HSF1、
+p-HSF1 和 HSP70 的表达，进而逆转了 BCP 对下游凋亡相关蛋白的作
+用（Bcl2、Bax）
+4.在 OGD/R 诱导后的星形胶质细胞中，也能观察到与体内实验相
+符合的结果，与假手术组相比，OGD/R 组细胞氧化应激水平增加，细
+胞凋亡增加，同时 p-HSF1、HSF1 和 HSP70 蛋白表达增加，Bcl2 蛋白
+表达减少，Bax 表达增加。BCP 干预后明显减少了 OGD/R 后细胞的氧
+化应激水平和凋亡发生，同时进一步增加 HSF1、p-HSF1 和 HSP70 蛋
+白表达，增加 Bcl2 的表达，减少 Bax 的表达。在 BCP+Kribb11 组中，
+Kribb11 逆转了 BCP 的保护作用，加重了细胞损伤。
+5
+--- 第9页 ---
+重庆医科大学硕士研究生学位论文
+结论：
+实验数据表明，BCP 能通过激活 HSF1/HSP70 信号轴降低氧化应
+激水平和抑制细胞凋亡，从而减轻大鼠 CIR 损伤。同样在体外 OGD/R
+模型中，BCP 能产生相似的作用效应保护星形胶质细胞免受缺氧缺糖
+损伤，发挥神经保护作用。为缺血性脑卒中的治疗提供了新的思路和
+潜在的候选药物。
+关键词：β-石竹烯，HSF1/HSP70 信号通路，脑缺血再灌注损伤，
+氧化应激，凋亡
+6
+--- 第10页 ---
+重庆医科大学硕士研究生学位论文
+β-Caryophyllene alleviates cerebral ischemia-reperfusion
+injury in rats by activating HSF1/HSP70 signaling pathway
+ABSTRACT
+Heat shock protein 70 (heat shock protein 70, HSP70) is an important
+member of the heat shock protein family and is an endogenous protective
+protein that is widely expressed in the body under stress conditions such as
+disease and injury. When cerebral ischemia occurs, HSP70 is significantly
+induced in the infarcted area, and its overexpression can alleviate brain
+injury, restore neurological function, and have antioxidant,
+anti-inflammatory, and anti-apoptotic effects, and is considered a potential
+therapeutic target for stroke point. In addition, its function is highly
+dependent on the regulation of heat shock factor 1 (HSF1). Experiments
+have shown that in tissue ischemia, nervous system, and other diseases,
+HSF1 is involved in important processes such as stress adaptation and
+promotion of cell survival. β-Caryophyllene (BCP) belongs to the bicyclic
+sesquiterpenes with anti-inflammatory, antioxidant, and anti-apoptotic
+pharmacological activities. In particular, it plays an important
+neuroprotective role in neurological diseases. However, its specific
+mechanism has not been fully clarified.
+Objective:This study intends to explore the anti-oxidative and
+7
+--- 第11页 ---
+重庆医科大学硕士研究生学位论文
+anti-apoptotic effects of BCP in the rat model of cerebral
+ischemia-reperfusion injury, and at the same time, combined with the HSF1
+inhibitor Kribb11 intervention to preliminarily explore whether the
+protective mechanism of BCP on cerebral ischemia-reperfusion injury is
+related to HSF1/HSP70 signaling pathway, that is, whether BCP attenuates
+CIR injury in rats by activating the HSF1/HSP70 pathway.
+Methods
+In vivo experiment: Sprague-Dawley male rats (250 ～290g) were
+randomly divided into groups: sham operation group (Sham), cerebral
+ischemia-reperfusion model group (CIR), BCP low-dose administration
+group (153mg/kg BCP), BCP medium-dose group (306mg/kg BCP), BCP
+high dose group (612mg/kg BCP), BCP (306mg/kg) + Kribb11 group
+(BCP+Kribb11), Kribb11 group (Kribb11) . Each dose of BCP liquid was
+prepared with 10% polyoxyethylene castor oil + normal saline. The BCP
+dose groups and the BCP+Kribb11 group were given BCP by gavage for 7
+consecutive days before modeling, while the sham operation group, model
+group, and Kribb11 Groups were given the same solvent; 3 hours before
+modeling, Kribb11 drug solution (1mM, 10μl) was injected into the lateral
+ventricle of BCP+Kribb11 group and Kribb11 group, and the other groups
+were injected with an appropriate amount of solvent (DMSO+artificial
+cerebrospinal fluid). The rat model of cerebral ischemia-reperfusion injury
+was established by the suture method. The thrombus was removed after 1.5
+8
+--- 第12页 ---
+重庆医科大学硕士研究生学位论文
+hours of ischemia and reperfused for 24 hours. The SD rats in the
+sham-operated group were separated from the blood vessels, but not
+plugged to occlude the blood vessels, and the rest of the operations were
+the same as those of the other groups. After 24 hours of reperfusion,
+neurobehavioral scoring (Longa method) was performed; 2,3,5-triphenyl
+tetrazolium chloride staining was used to determine the volume of cerebral
+infarction; hematoxylin-eosin staining, Nissin The pathological changes of
+cortex were observed by staining; the mRNA levels of HSF1 and HSP70
+were determined by real-time quantitative PCR; HSP70, HSF1,
+phosphorylated p-HSF1, apoptosis-related proteins (Chop, Caspase 3, Bcl2,
+Bax) were detected in rat cerebral cortex by Western blotting The protein
+expression of p-HSF1 and HSP70 was detected by immunofluorescence
+staining; the apoptosis level was detected by Tunel staining; the content of
+malondialdehyde (MDA) and total superoxide dismutase (SOD) and total
+superoxide dismutase (SOD) and Caspase 3 activity..
+In vitro experiment: Primary astrocytes were extracted from midbrain
+tissue of SD suckling mice within 3 days of birth, and astrocytes were
+cultured in vitro. The cells were randomly divided into the following
+groups: normal group (Normal); model group (OGD/R), BCP
+administration group (5, 10, 20, 40uM BCP+OGD/R), BCP+Kribb11 group
+(20uM BCP+ Kribb11+OGD/R), Kribb11 group (100, 200, 500nM, 1, 3, 10,
+20uM Kribb11+OGD/R). All groups were placed in an incubator with 5%
+9
+--- 第13页 ---
+重庆医科大学硕士研究生学位论文
+CO2 and 37 ° C for normal culture. After the cell density reached
+70%-80%, follow-up treatment was performed. Before cells were deprived
+of oxygen and glucose, BCP was pretreated for 12 h and Kribbo11 was
+pretreated for 12 h. Except for the sham-operated group, the cells in the
+other groups were subjected to OGD/R model establishment,
+oxygen-glucose deprivation for 2 h, reoxygenation and re-glucose for 24 h,
+and then samples were taken for related detection. We used the CCK-8
+colorimetric method to detect cell viability, and the Western-Blot method to
+detect the expression of HSF1, phosphorylated p-HSF1, HSP70, and
+apoptosis-related proteins in cells, flow cytometry Annexin V FITC/PI
+double staining The apoptosis rate was detected. After the cells were
+effectively treated, the activity of SOD, MDA, and caspase 3 in the cells
+was detected by chemical colorimetry to evaluate the level of oxidative
+stress and apoptosis of the cells.
+Result:
+1. Compared with the sham operation, the rats in the model group
+have obvious neurobehavioral characteristics, severe neurological
+dysfunction, a large area of infarction in the brain tissue, severe
+pathological damage to the ischemic cortex, disordered cell arrangement,
+and nuclear solidification. The phenomenon of shrinkage was obvious, the
+Nissl bodies disappeared, and the cells died in large numbers. Compared
+with the model group, the neurological deficits of the rats in the BCP
+10
+--- 第14页 ---
+重庆医科大学硕士研究生学位论文
+administration group were significantly improved, and the area of cerebral
+infarction was reduced; the pathological damage and cell death of the
+cerebral ischemic lateral cortex were alleviated; With the combined
+intervention of Kribb11, the protective effect of BCP was reversed, and the
+neurological deficit, cerebral infarct size and histopathological damage in
+rats were aggravated.
+2. Compared with the sham operation group, the SOD enzyme
+activity in the ischemic side cortex of the model group decreased, the MDA
+content increased significantly, the Caspase 3 enzyme activity increased,
+and the number of TUNEL positive cells increased significantly; after BCP
+pretreatment, the model group increased significantly. SOD enzyme
+activity increased, MDAcontent decreased significantly, Caspase 3 enzyme
+activity decreased, and the number of TUNEL positive cells decreased in
+mice; compared with the BCP administration group, SOD enzyme activity
+decreased, MDAcontent increased, Caspase 3 enzyme activity decreased in
+BCP+Kribb11 group The activity increased and the number of TUNEL
+positive cells increased.
+3. Compared with the sham-operated group, the expression of HSF1,
+p-HSF, and HSP70 proteins in the ischemic cortex of the model group
+increased, the apoptosis-related proteins changed, the expression of Bcl2
+decreased, and the expressions of Bax, Chop, and Caspase 3 increased;
+BCP further increased the protein expression of HSF1, p-HSF1, HSP70,
+11
+--- 第15页 ---
+重庆医科大学硕士研究生学位论文
+increased the expression of Bcl2, and decreased the expression of Bax,
+Chop, and Caspase3 in the ischemic lateral cortex; Compared with the BCP
+administration group, the BCP+Kribb11 group showed that Kribb11
+attenuated BCP Protective effect on rat CIR injury, Kribb11 significantly
+inhibited the expression of BCP-induced HSF1, p-HSF1, and HSP70, and
+then reversed the effect of BCP on downstream apoptosis-related proteins
+(Bcl2, Bax)
+4. In the astrocytes induced by OGD/R, the results consistent with the
+in vivo experiments can also be observed. Compared with the sham
+operation group, the level of oxidative stress and apoptosis in the OGD/R
+group increased. , while the expression of p-HSF1, HSF1, and HSP70
+increased, the expression of Bcl2 decreased, and the expression of Bax
+increased. BCP intervention significantly reduced the level of oxidative
+stress and apoptosis of cells after OGD/R, and further increased the protein
+expressions of HSF1, p-HSF1, and HSP70, increasing the expression of
+Bcl2, and decreasing the expression of Bax. In the BCP+Kribb11 group,
+Kribb11 reversed the protective effect of BCPand aggravated cell damage.
+Conclusion:
+The experimental data showed that BCP could reduce the level of
+oxidative stress and inhibit apoptosis by activating the HSF1/HSP70
+signaling axis, thereby attenuating CIR injury in rats. Also in the in vitro
+OGD/R model, BCP can produce similar effects to protect astrocytes from
+12
+--- 第16页 ---
+重庆医科大学硕士研究生学位论文
+hypoxia and glucose damage and exert neuroprotective effects. It provides
+new ideas and candidate drugs for the treatment of ischemic stroke.
+Keywords: β-Caryophyllene, HSF1/HSP70 signaling pathway,
+cerebral ischemia-reperfusion injury, oxidative stress, apoptosis
+13
+--- 第17页 ---
+重庆医科大学硕士研究生学位论文
+石竹烯通过激活 信号通路减轻大鼠脑
+β- HSF1/HSP70
+缺血再灌注损伤研究
+前 言
+脑卒中是目前造成人类严重残疾和死亡的主要疾病之一，严重危害人类的生
+命健康。在我国常发于中老年人群体，具有高发病率，高致残率，高死亡率，同
+时预后较差，为社会和患者家庭带来沉重的负担[1-3]。脑卒中分为出血性和缺血性
+脑卒中，其中缺血性脑卒中患病人群占比达到 70%以上，常见病因是脑内或颈部
+血管阻塞,造成脑组织缺糖缺氧，引起一系列严重的神经系统功能障碍[1-3]。脑缺血
+发生后，其治疗时间窗口较短，若错过最佳的溶栓时间（通过tPA或物理溶栓法），
+恢复血供后易导致更为严重的缺血再灌注损伤，如炎症因子大量释放、神经细胞
+的大量凋亡坏死等[3,12,14-15,21]。
+脑缺血再灌注（cerebral ischemia-reperfusion, CIR）损伤涉及许多复杂的病理
+过程，如神经炎症、氧化应激、细胞内钙离子超载、ATP 及膜离子泵丧失等，其
+中氧化应激是引起组织脂质过氧化、炎症和细胞凋亡发生的重要原因之一
+[8-9,15-17,26]。当发生CIR 损伤时，机体氧化应激水平增高，产生大量的氧自由基和活
+性氧（ROS）,体内的氧化与抗氧化作用失衡引起组织损伤，如触发DNA损伤、脂
+质过氧化，线粒体紊乱、炎症因子释放等导致细胞凋亡坏死引起严重的神经功能
+障碍[8,21,24,26,35-37]。因此，控制氧化应激、神经炎症和蛋白毒性应激可能为预防和治
+疗缺血性中风提供了一种很有前途的方法。
+热 休 克 蛋 白 70 （ heat shock proteins 70 ， HSP70 ）
+属于热休克蛋白家族，是机体在疾病、损伤等应激状态下广泛表达的内源性保护
+蛋白，在外界刺激（如热休克、缺血损伤、创伤、感染）下，HSP70 蛋白的存在
+能够增加组织细胞对应激源的耐受性，同时清除机体产生的过多的氧自由基和脂
+质过氧化，减少细胞氧化应激水平和细胞损伤[9-13]。同时作为分子伴侣蛋白，在蛋
+白质折叠、清除错误蛋白、防止应激蛋白的聚集和伴侣介导的自噬等发挥重要作
+用[32-35]。有研究发现，HSP70 在细胞死亡信号通路有重要作用，可能是诱导后的
+HSP70能够通过维持线粒体膜电位稳定，阻止细胞色素C的释放，诱导Bcl2 的表
+14
+--- 第18页 ---
+重庆医科大学硕士研究生学位论文
+达，阻断凋亡诱导因子(AIF)向核转运，同时与Caspase 9结合抑制下游半胱天冬酶
+依赖性的凋亡途径，减少凋亡小体的形成，进而发挥抗凋亡作用[8,9,32-35]。HSP70
+在正常脑组织中表达量很低，当发生脑缺血时，HSP70 在梗死区域中被显著诱导，
+其过度表达能减轻脑损伤，恢复神经功能，被认为是脑卒中的潜在治疗靶点
+[9,10,12,40]。另外，重要的是，其蛋白水平和作用功能高度依赖于热休克转录因子 1
+（heat shock factor 1，HSF1）的调控[6,14,29]。HSF1 属于 HSF 家族，是一类高度保
+守的转录因子。实验表明，在组织缺血、肝损伤、神经系统等疾病中，HSF1 参与
+了应激适应、促进细胞存活、减少炎症发生等重要过程[4-8,27-28,31,73,75]。有趣的是，
+去乙酰化SIRT1通过激活HSF1/HSP70通路减轻内质网应激导致的肝脂肪变性[41]；
+脑泰方能够通过上调 HSF1/HSPB1 通路抑制 CIR 损伤中由脂质过氧化引起的神经
+元铁死亡[8]。生理情况下，HSF1 表达量低，位于胞内以非活性单体形式存在，应
+激作用下导致 HSF1 激活发生核易位，可能被蛋白激酶 C 磷酸化（特别是 Ser326
+位点的磷酸化利于核因子的激活），形成激活态的三聚体，与热休克基因上保守
+的热休克元件（HSE）结合，促进内源性蛋白如 HSP70、Snail 蛋白的转录，影响
+下游的凋亡和炎症的发生，从而起到神经保护作用[9,14,41]。近年来，越来越多实验
+表明 HSF1/HSP70 信号通路的激活或许能通过减少氧化应激水平、抗炎抗凋亡来
+增加组织细胞对缺血损伤的耐受性，可能成为未来开发脑卒中治疗药物的潜在靶
+点[9,14,32-35,38]。
+近年来，寻找开发用于治疗缺血性脑卒中的药物一直受到广泛关注，经过许
+多研究发现，特别是在中药和天然药物中，有不少具有神经保护作用的潜在候选
+药物，比如脑泰方、一些天然多糖和倍半萜类等等[8,12,21,23,34]。其中，β-石竹烯
+（β-caryophyllene ,BCP）是来源于许多天然植物（丁香叶、肉桂叶、樟树等）的油
+状液体，属于双环倍半萜烯类，能选择性激活大麻素受体 2 型，具有抗炎，抗氧
+化，抗焦虑等广泛药理活性[3,15-19]。我们前期研究证实，在脑缺血再灌注损伤中，
+BCP 的保护作用可能与激活 NRF2/HO-1 通路发挥抗氧化作用有关[42]；此外 BCP
+预处理还能通过作用PI3K/AKt信号通路抑制细胞凋亡来部分地防止CIR损伤[43]。
+有研究表明，HSF1/HSP70 信号轴受到PI3K/AKT 通路的调控，同时在星形胶质细
+胞和心肌细胞中也反馈调节 NRF2 和 STAT3 的表达[10,34,58,71,75]。那么 BCP 在 CIR
+损伤中的神经保护作用是否与 HSF1/HSP70 存在一定相关性，需要我们进一步探
+15
+--- 第19页 ---
+重庆医科大学硕士研究生学位论文
+索。
+基于此，本实验拟通过采用大脑中动脉阻塞法构建大鼠 CIR 模型以及在体外
+构建糖氧剥夺/复糖氧细胞模型模拟脑缺血再灌注损伤，以 HSF1/HSP70 通路调控
+细胞氧化应激和凋亡水平为切入点，观察BCP 对CIR 损伤大鼠的改善作用及作用
+机制，在体内体外模型中探讨 BCP 的抗氧化抗凋亡的保护作用与 HSF1/HSP70 通
+路间的联系，在之前研究基础上探究BCP 的新的作用机制，为疾病防治提供新的
+作用靶点和实验依据。
+16
+--- 第20页 ---
+重庆医科大学硕士研究生学位论文
+第一部分 β 石竹烯通过激活 通路减
+- HSF1/HSP70
+轻损伤大鼠的氧化应激和细胞凋亡发生
+1 实验材料
+1.1 实验动物
+SPF级雄性SD大鼠，体重250-290g，购自重庆医科大学实验动物中心（许可证 SYX
+渝2018-003）。大鼠在标准条件下（25±2℃，相对湿度为 60～70%）饲养，环境
+经历12小时昼夜循环。期间动物可以自由地获得充分的食物和水。
+1.2 药品与试剂
+试剂名称 公司 产地
+β-石竹烯 TCI 日本
+2，3，5-氯化三苯
+Sigma 美国
+基四氮唑(TTC)
+戊巴比妥钠 Sigma 美国
+RIPA 裂解液 碧云天 中国
+PMSF 鼎国昌盛 中国
+磷酸化蛋白酶复合抑制剂 鼎国昌盛 中国
+PAGE 凝 胶 快 速 试 剂 盒
+雅酶 中国
+（10%）
+Loading buffer 蛋白上样缓
+碧云天 中国
+冲液（5×）
+蛋白 Marker 雅酶 中国
+ECL 超敏显影液 Biosharp 美国
+PBS 粉末 鼎国昌盛 中国
+氯化钠 Proteintech 中国
+甘氨酸 Biofroxx 中国
+17
+--- 第21页 ---
+重庆医科大学硕士研究生学位论文
+Tris Biofroxx 中国
+PVDF膜 Millipore 美国
+TUNNEL 试剂盒 塞维尔 中国
+山羊抗兔二抗 Proteintech 中国
+吐温-20 鼎国昌盛 中国
+SOD活性试剂盒 碧云天 中国
+MDA含量试剂盒 碧云天 中国
+核蛋白抽提试剂盒 凯基生物 中国
+Caspase3 活性试剂盒 碧云天 中国
+BSA Biofroxx 中国
+脱脂奶粉 碧云天 中国
+β-actin 一抗 Proteintech 中国
+HSF1 一抗 博奥森生物科技 中国
+p-HSF1(ser326) 一抗 Affinity 美国
+HSP70 一抗 Affinity 美国
+Chop 一抗 Affinity 美国
+Bcl2 一抗 Affinity 美国
+Caspase3 一抗 Affinity 美国
+Bax 一抗 Proteintech 中国
+Bradford 蛋白定量试剂盒 碧云天 中国
+乙醇 重庆川东化工(集团)有限公司 中国
+甲醇 国标 中国
+多聚甲醛固定液 Biosharp 美国
+Tris-Hcl（1M）pH8.8 碧云天 美国
+山羊抗鼠二抗 Proteintech 中国
+山羊抗兔二抗 Proteintech 中国
+TRIzol 生工 中国
+逆转录试剂盒 Bimake 中国
+DEPC 水 生工 中国
+18
+--- 第22页 ---
+重庆医科大学硕士研究生学位论文
+SYBRGreen Ⅱ Bimake 美国
+Kribb11 MCE 中国
+聚氧乙烯蓖麻油 源叶生物 中国
+1.3 主要实验仪器
+仪器名称 公司 产地
+Mini-protean tetra Cell 凝胶 BIO-RAD 美国
+电泳仪
+凝胶成像系统 BIO-RAD 美国
+低温离心机 Thermo 美国
+酶标仪 Thermo Scientific 中国
+正置光学显微镜 Nikon 中国
+恒温水浴锅 上海医疗器械 中国
+Milli-Q超纯水仪 Millipore 中国
+移液枪 Eppendorf 德国
+纯水仪 Millipore 美国
+定量PCR仪 BIO-RAD 美国
+PCR逆转录仪 BIO-RAD 美国
+电子精密天平 Ohuas 美国
+-80℃冰箱 Thermo Scientific 美国
+4℃/-20℃冰箱 Haier 中国
+1.4 主要溶液配制
+1.4.1 β-石竹烯溶液的配制：
+将聚氧乙烯蓖麻油（EL40）与生理盐水按1:10配制成药物溶剂；根据实验所
+需要，按照相应药物浓度（204mg/kg、306mg/kg、408mg/kg）吸取一定量的BCP
+19
+--- 第23页 ---
+重庆医科大学硕士研究生学位论文
+原液与前述的溶剂充分混匀成均一乳液，用于后续的动物给药。
+1.4.2 Kribb11溶液的配制：
+将1mgKribb11粉末于3.518ml 的DMSO充分溶解配成100mM 的母液，锡纸
+避光-80℃保存；吸取适量母液加入人工脑脊液稀释配制成 1mM 的标准动物给药
+溶液，放于 4℃保存。
+1.4.32%TTC溶液的配制：
+精确称取 0.4gTTC粉末，于20ml PBS 溶液涡旋溶解配成2%TTC 溶液，放
+于4℃保存。
+1.4.44%戊巴比妥钠溶液配制：
+精确称取 4g的戊巴比妥钠粉末，随后加入100ml 的0.9%生理盐水充分溶解，
+放于4℃保存。
+1.4.5Western blot电泳液配制：
+试剂 质量或体积
+Tris 3.03g
+SDS 1g
+Glycine 18.8g
+ddH O 定容加至1L
+2
+1.4.6Western blot 转膜液配制：
+试剂 质量或体积
+Tris 3.03g
+Glycine 14.4g
+甲醇 200ml
+ddH O 定容加至1L
+2
+1.4.7Western blotTBST溶液配制：
+20
+--- 第24页 ---
+重庆医科大学硕士研究生学位论文
+试剂 质量或体积
+Nacl 8.8g
+吐温20 1mL
+Tris-Hcl(pH=8.8) 2mL
+ddH O 定容加至1L
+2
+2 实验方法
+2.1 实验分组及处理
+将SD大鼠按随机数字表法分为7组：假手术组，模型组，BCP 低、中、高剂
+量组（204、306、408mg/kg），BCP(306mg/kg) + Kribb11（HSF1 抑制剂）组，
+Kribb11组。（1）BCP 低、中、高剂量组：造模前分别以各剂量的BCP 溶液连续
+7天灌胃给药（BCP 原液溶于10%的聚氧乙烯蓖麻油+生理盐水混合溶液）；（2）
+模型组与假手术组：连续 7 天灌胃等体积的溶剂（蓖麻油+生理盐水）；（3）
+BCP+Kribb11 组：连续 7 天以 306mg/kg BCP 溶液灌胃给药，造模前 4h 侧脑室注
+射Kribb11溶液（1mM, 10μl）；（4）Kribb11组：连续 7天以等体积溶剂（蓖麻
+油＋生理盐水）灌胃，造模前 4h 侧脑室注射 Kribb11溶液（1mM, 10μl）。假手
+术组只进行麻醉和血管分离，其他各组采用大脑中动脉闭塞法（线栓法）构建大
+鼠CIR 模型。
+2.2 采用大脑中动脉闭塞（middle cerebral artery occlusion,MCAO）
+法构建大鼠 CIR 模型
+仰卧位固定大鼠，腹腔注射4%的戊巴比妥钠麻醉大鼠后，分离组织和神经，
+依次暴露出其右侧颈总动脉（CCA）、颈外动脉（ECA），颈内动脉（ICA）。结
+扎CCA、ECA，夹闭ICA。将线栓从CCA插入大脑中动脉起始处，固定线栓。缺
+21
+--- 第25页 ---
+重庆医科大学硕士研究生学位论文
+血1.5h后取出线栓，缝合伤口，再灌注24h。术后大鼠出现明显神经行为学障碍，
+和右侧半脑出现明显水肿，即为造模成功。假手术组除不插栓外，其余操作步骤
+与模型组相同。
+2.3 神经行为学评分
+缺血再灌注 24h 后，采用盲法（未参加且对实验内容不知情者）根据 Longa
+评分法评判各组大鼠神经功能损伤程度。具体评分如下表所示，分值越高说明动
+物神经行为障碍越严重。1-4 分视为造模成功。
+评分等级 神经功能缺损程度
+0分 大鼠活动正常，无神经缺损
+1分 提尾后，对侧前肢无法伸直，蜷缩状
+2分 无法直线行走，沿对侧转圈
+3分 无法正常行走，向对侧偏瘫
+4分 无法动弹，无自主活动
+2.4 苏木精-伊红（Hematoxylin and Eosin, HE）染色
+大鼠再灌注 24h 后麻醉，仰卧位麻醉后，剪开胸腔暴露出心脏及肝脏。依次
+将磷酸盐缓冲溶液和 4%多聚甲醛溶液从心尖灌注，灌注液经过体循环进入脑部，
+然后沿肝脏破损处流出，完毕后断头取脑，放入4%多聚甲醛溶液中浸泡固定过夜。
+第二天脱水，石蜡包埋脑组织，用切片机切片（约 5μm 厚）。用 HE 染液染色，
+树脂封片。在正置显微镜下观察缺血侧皮层脑组织病理学变化。
+2.5 尼式（NISSL）染色
+按照 2.4中制作大鼠脑组织的石蜡切片。烤片，脱蜡和水化后，用尼式染液染
+色，脱水，封片等具体实验操作步骤按照说明书进行。标本于正置显微镜下观察
+皮层神经元结构。
+2.6 2,3,5-三苯基氯化四氮唑（2,3,5-triphenyltetrazolium chloride，
+TTC）染色法测定脑梗死体积
+22
+--- 第26页 ---
+重庆医科大学硕士研究生学位论文
+大鼠缺血再灌注 24h后，麻醉断头取脑，将脑放入-20℃冷固1h。随后沿大脑
+冠状面连续切 5片，每片大约2mm厚。将其放入预先配好且预热的2%TTC 溶液
+中，避光，37℃水浴孵育20min。最后，再加入4%的多聚甲醛溶液固定，4℃过夜
+后拍照。染色后的脑片白色区域即为梗死区，而红色区域为非梗死的正常区域。
+采用Image-J 软件分析梗死体积。
+2.7 Tunel 染色检测皮层组织的细胞凋亡水平
+按照 2.4中制作脑组织石蜡切片。经过脱蜡、抗原修复后，根据Tunel 试剂盒
+说明书进行 Tunel染色；切片置于湿盒，加入proteinaseK，37℃下反应0.5h。PBS
+冲洗 3 次，滴加 Tunel 检测液，45℃孵育 2h，避光。PBS 冲洗 3 次后封片。红色
+荧光为凋亡细胞，蓝色荧光为细胞核。
+2.8 Westren blot 检测大鼠脑皮层组织中蛋白表达
+用蛋白裂解液（RIPA:PMSF:磷酸酶抑制剂=100：1：2）提取皮层组织蛋白。
+上样，经 10% SDS-PAGE 凝胶电泳分离后（上层胶 90V，30min；下层胶 120V，
+60min），根据分子量大小进行切胶，湿转至 PVDF 膜（250mA）。5%BSA 溶液
+常温封闭 2h。TBST 洗膜3次，加入一抗HSP70（1：1000）、HSF1（1：1000）、
+p-HSF1, （1: 1000）、Bcl2（1:2000）、Bax（1: 10000）、Chop（1：1000）、Caspase
+3（1:1000）和β-actin（1: 5000）4℃孵育过夜。孵育二抗，50min，洗膜3次；孵
+育三抗，30min。洗膜3次后，用ECL 超敏化学发光液显影成像。用Image lab 软
+件分析统计。
+2.9 免疫荧光染色检测组织中 p-HSF1、HSP70 蛋白表达
+按照2.4中制石蜡切片。切片经脱蜡，用枸橼酸钠（0.01mM）来抗原修复后。
+10%山羊血清室温封闭1-2h；加入p-HSF1、HSP70抗体（1：2000），4℃过夜；
+加入山羊抗兔 lgG（H+L）荧光二抗，37℃避光孵育1h；加入DAPI染核，避光孵
+育5min，封片。在共聚焦显微镜下观察并成像。
+2.10 超氧化物歧化酶（SOD）活性及丙二醛（MDA）含量水平检测反
+映组织氧化应激水平
+称取皮层组织适量，加入 PBS 或者IP 裂解液(比例按照每1mg 组织加入10μl
+23
+--- 第27页 ---
+重庆医科大学硕士研究生学位论文
+的裂解液)，冰上破碎匀浆后，4℃离心10min（10000g）；取上清液用于后续测定。
+按照各检测盒说明书实验步骤进行，用酶标仪在相应波长处测定吸光度（OD）以
+计算出 SOD活性和MDA含量水平。
+2.11 皮层组织中 Caspase 3 酶活性测定
+测定pNA标准曲线；称取皮层组织样品（每3～10mg组织加入100μl裂解液）；
+冰上破碎匀浆；收集匀浆液到离心管，冰上裂解 5min,4℃离心（16000g）,收集上
+清液为待测样品；按照试剂盒说明操作步骤进行操作，加入样品和相关反应试剂
+于 96 孔板中，在波长 405nm 处测定吸光度值并带入标准曲线中测的皮层组织的
+Caspase3酶活性。
+2.12 实时定量 PCR
+使用 Trizol(Sagon 生物，中国)根据所提供的说明从皮层组织样本中提取总
+RNA；使用 cDNASynthesis SuperMix(Bimake，上海，中国)逆转录试剂盒勇于cDNA
+的合成；随后使用SYBR Green qPCRMasterMix (Bimake)进行qRT-PCR反应检测
+HSF1 和HSP70的表达，引物序列和反应程序如下：
+Gene Forward Reverse
+HSF1 GCCTTTACTCCTCTGATGCTGT CTCTTGCTTGACACGGACCA
+Hspa1a TCACTCCTTAGTTTGTCCTGC AAATCACATCAGCGGGGC
+GAPDH TGTGTCCGTCGTGGATCTGA TTGCTGTTGAAGTCGCAGGAG
+以下为RT-PCR热循环反应程序：95°C，7分钟；95°C（15秒），60°C（40秒），
+65°C（30秒），以上经历39个循环结束。
+2.13 统计学分析
+所得实验数据均采用x± SD（均值±标准差）表示，统计学分析采用GraphPad
+Prism6软件处理，各组组间数据进行单因素方差（one-wayANOVA）分析，Tukey's
+test 用于组间差异比较。若P<0.05，表示为差异具有统计学意义。
+24
+--- 第28页 ---
+重庆医科大学硕士研究生学位论文
+3 结 果
+3.1 不同剂量 BCP 对大鼠脑梗死面积和神经功能缺损的影响
+TTC染色用于测定大鼠脑梗死体积，而采用Longa评分法（0～4分）量化大
+鼠造模后的神经功能缺损程度。与假手术相比，模型组大鼠表现出较高的神经行
+为障碍（P<0.01），脑出现大面积的白色脑梗死区域（P<0.01）。与模型组相比，
+BCP低、中、高剂量组都有不同程度的改善，脑梗死体积显著降低（P<0.05, P<0.01），
+神经功能缺损减缓（P<0.01），表明 BCP 的药效显著且具有剂量依赖性。其中，
+以306mg/kg 的BCP 中剂量组效果最佳，见图1.1。
+A B
+C
+图1.1 不同浓度BCP对缺血再灌注后大鼠脑梗死体积及神经功能缺损的变化
+Fig1.1EffectsofdifferentconcentrationsofBcponcerebralinfarctvolume(x±SD,n=4)and
+neurologicaldeficit(x±SD,n=15)inratsafterischemia-reperfusion.(**P<0.01vs.Shamgroup;
+##P<0.01vs.I/Rgroup;&P<0.05,&&P<0.01vs.306mg/kgBCPgroup)
+25
+--- 第29页 ---
+重庆医科大学硕士研究生学位论文
+3.2 不同剂量 BCP 对大鼠脑损伤侧皮层组织病理学损伤的影响
+通过 HE 染色观察皮层组织形态。假手术组中，皮层细胞轮廓清晰，排列规整。
+与假手术组相比，模型组中细胞排列紊乱，核固缩深染，周围组织空泡化，细胞
+大量死亡。与模型组相比，低、中、高剂量组中细胞死亡减少，核固缩和组织间
+质水肿得到改善，其中 306mg/kg BCP 中剂量组疗效最明显，见图1.2。
+结合 3.1，3.2的实验结果，为保证药物具有足够有效的治疗作用及安全性，选
+取BCP306mg/kg 作为最佳有效剂量进行后续生化指标的检测。
+图1.2 不同剂量BCP对损伤侧皮层组织形态结构的影响（HE，200×，400×）
+Fig1.2 Effects of different doses of BCP on the morphological structure of the injured side
+cortex.（HE，200×，400×）
+26
+--- 第30页 ---
+重庆医科大学硕士研究生学位论文
+3.3 BCP对CIR损伤大鼠皮层组织中HSF1和HSP70 mRNA水平的影
+响
+RT-PCR 结果显示，假手术组中，大鼠皮层中 HSF1 和 HSP70 mRNA 水平比
+较低；发生CIR 损伤后，I/R 组HSF1和HSP70mRNA 水平增高；BCP 干预后，与
+I/R 组相比，BCP 组中HSF1 和HSP70 mRNA水平进一步显著增高，见图1.3。提
+示BCP能够增加缺血损伤后大鼠的HSF1 和HSP70 mRNA水平。
+A B
+图1.3BCP对脑缺血再灌注损伤大鼠HSF1和HSP70mRNA水平的影响
+Fig1.3EffectsofBCPonthemRNAlevelsofHSF1andHSP70inratswithcerebralischemia
+reperfusioninjury(x±SD,n=5，*P<0.01vs.Shamgroup;##P<0.01vs.I/Rgroup)
+3.4 BCP 对大鼠缺血侧皮层组织中 HSF1、p-HSF1、HSP70 及凋亡相
+关蛋白表达的影响
+Western blot结果显示，与假手术组相比，模型组中HSF1，HSP70及p-HSF1
+蛋白表达增高（P<0.05)，凋亡相关蛋白Chop，Bax，Caspase 3蛋白表达显著增高
+（P<0.01)，Bcl2 蛋白表达下降(P<0.01)；与模型组比较，BCP 组（306mg/kg）中
+HSF1，p-HSF1，HSP70 蛋白表达进一步显著增高（P<0.01)，Chop，Bax，Caspase
+3蛋白表达显著下降（P<0.01），Bcl2 蛋白表达增高（P<0.01)，见图1.4。
+27
+--- 第31页 ---
+重庆医科大学硕士研究生学位论文
+A B
+C D
+E
+F
+G H
+图1.4BCP对大鼠皮层组织中HSF1、p-HSF1、HSP70及凋亡相关蛋白表达的影响
+Fig1.4EffectsofBCPontheexpressionsofHSF1,p-HSF1,HSP70andapoptosis-related
+proteinsinratcortex
+28
+--- 第32页 ---
+重庆医科大学硕士研究生学位论文
+(x±SD,n=5，*P<0.05,**P<0.01vs.Shamgroup;##P<0.01vs.I/Rgroup)
+3.5 HSF1 抑制剂联合 BCP 对 CIR 损伤大鼠缺血侧皮层组织病理损伤
+的影响
+HE 染色结果显示：与假手术组相比，模型组皮层区细胞大量死亡，核固缩和
+空泡样现象严重；与模型组相比，BCP 组正常细胞数目明显增多，损伤程度较轻；
+与BCP 组相比，Kribb11+BCP 组中细胞核固缩现象加重，细胞死亡增多，空泡样
+明显；与模型组相比，Kribb11组皮层区组织损伤、细胞死亡更为严重，见图1.5A。
+Nissl 染色显示，假手术组大鼠皮层区细胞轮廓清晰形态正常，尼氏小体和胞核清
+晰可见。与假手术相比，模型组皮层区尼氏体大量减少，细胞轮廓不清，间隙增
+大，核固缩严重；与模型组比较，BCP 组尼氏体增多，细胞损伤明显减轻；与BCP
+组相比，BCP+Kribb11 组中尼式小体减少，组织间隙增大，细胞损伤加重，见图
+1.5B。提示 BCP 对脑缺血再灌注损伤的保护作用能被 HSF1 抑制剂 Kribb11 部分
+逆转。
+A
+29
+--- 第33页 ---
+重庆医科大学硕士研究生学位论文
+B
+30
+--- 第34页 ---
+重庆医科大学硕士研究生学位论文
+图1.5HSF1抑制剂联合BCP对CIR损伤大鼠缺血侧皮层组织病理损伤的影响（HE，Nissl；
+200×，400×）
+Fig1.5 EffectsofHSF1inhibitorcombinedwithBCPonthehistopathologicaldamageof
+ischemiccortexinCIR-injuredrats(HE，Nissl；200×，400×)
+3.6 HSF1 抑制剂联合 BCP 对 HSF1/HSP70 通路的影响
+免疫荧光染色对 HSP70 和HSF1 蛋白表达进行检测。结果显示，假手术组中
+p-HSF1、HSP70的红色荧光微弱；与假手术相比，模型组中红色荧光有所增强；
+与模型组相比，BCP 组中 p-HSF1、HSP70 的红色荧光明显增强；而与 BCP 组相
+比，BCP+Kribb11 组中 p-HSF1、HSP70 的红色荧光明显减弱；同时，Kribb11 组
+的荧光强度低于模型组，见图 1.6。
+Western blot结果显示，与BCP 组相比，Kribb11+BCP 组中p-HSF1、HSP70、
+HSF1 蛋白表达明显降低（P<0.01,P<0.05），Bax 蛋白表达明显增加（P<0.01）,Bcl2
+蛋白表达明显减少（P<0.01），见图 1.6。提示在CIR 损伤中，HSF1可以上调HSP70
+的表达，BCP可能通过激活HSF1/HSP70 通路调控下游凋亡蛋白表达。
+A
+31
+--- 第35页 ---
+重庆医科大学硕士研究生学位论文
+B
+C D
+F
+E
+32
+--- 第36页 ---
+重庆医科大学硕士研究生学位论文
+G H
+图1.6HSF1抑制剂联合BCP对HSF1/HSP70通路的影响
+Fig1.6EffectsofHSF1inhibitorcombinedwithBCPonHSF1/HSP70pathwaycausedbyCIR
+injuryinrats
+(x±SD,n=5，*P<0.05,**P<0.01vs.Shamgroup;#P<0.05,##P<0.01vs.I/Rgroup;&P<0.05,
+&&P<0.01vs.BCPgroup)
+3.7 BCP 对 CIR 损伤大鼠脑缺血侧皮层中细胞凋亡的影响
+Tunel 染色对皮层细胞凋亡水平进行检测。结果显示，与假手术组相比，模型
+组中Tunel 阳性细胞（红色）数量明显增加，细胞大量凋亡；与模型组相比，BCP
+组中阳性细胞数量下降，细胞凋亡减少。与BCP 组相比，BCP+Kribb11 组中阳性
+细胞数增多，细胞凋亡加重，见图1.7A-B。Caspase3酶活性检测显示，与假手术
+组相比，模型组中Caspas 3活性显著增高（P<0.01)。与模型组相比，BCP 给药组
+中Caspase 3酶的活性降低（P<0.05）。与BCP组相比，Kribb11加入后，BCP+Kribb11
+组中 Caspase 3 酶活性反而增加（P<0.05），见图 1.7C。以上提示 BCP 可能通过
+激活HSF1/HSP70通路发挥抗凋亡作用。
+33
+--- 第37页 ---
+重庆医科大学硕士研究生学位论文
+A
+B
+C
+图1.7 BCP对CIR损伤后皮层细胞凋亡的影响
+Fig1.7EffectsofBCPonapoptosisofcorticalcellsafterCIRinjury
+(x±SD,n=3-5,**P<0.01vs.Shamgroup;#P<0.05,##P<0.01vs.I/Rgroup;&P<0.05,
+&&P<0.01vs.BCPgroup)
+3.8 BCP 对 CIR 损伤大鼠缺血侧皮层中氧化应激水平的影响
+SOD活性和MDA含量检测结果显示，与假手术组相比，模型组的SOD活性
+显著下降（P<0.01)，MDA含量明显增加（P<0.01)；与模型组相比，BCP 组中SOD
+活性增加（P<0.01)，MDA 含量减少(P<0.01)；在 Kribb11 联合干预后，抗氧化作
+用明显减弱，与BCP 组相比，BCP+Kribb11 组中SOD活性下降（P<0.01），MDA
+含量增加（P<0.01）；而与模型组相比，Kribb11 组的氧化应激水平更高，说明抑
+34
+--- 第38页 ---
+重庆医科大学硕士研究生学位论文
+制 HSF1 会加重脑组织的氧化损伤。见图 1.8，以上提示 BCP 可能通过激活
+HSF1/HSP70通路来发挥抗氧化作用。
+A B
+图1.8 BCP对CIR损伤后皮层组织氧化应激水平的影响
+Fig1.8EffectsofBCPonthelevelofoxidativestressincorticaltissueafterCIRinjury
+(x±SD, n=5, **P<0.01vs. Sham group ; #P<0.05, ##P<0.01vs. I/R group; &&P<0.01vs. BCP
+group)
+4 讨 论
+缺血性脑卒中是一种严重的神经系统疾病，高发病率，高致残致死率。脑血
+管快速再灌注后易发生更严重的CIR 损伤，加重病情，给临床治疗带来困难[1,2,8,13]。
+目前临床上还没有明确的药物用于治疗 CIR 损伤。β-石竹烯是存在于天然植物如
+丁香、肉桂等的一种挥发油，低毒性，常作为食品和化妆品的添加剂[3,15-19]。具有
+抗氧化、抗炎、抗凋亡等药理活性，大量实验表明，其在脑缺血再灌注损伤、阿
+尔兹海默症等神经系统疾病中具有明显的神经保护作用[15-19,42,43]。然而其在CIR 损
+伤中的具体机制及作用靶点尚未完全清楚。
+本实验通过采用 MCAO/R造模成功的大鼠模型模拟临床上的CIR 损伤疾病，
+探究BCP的神经保护作用及机制。造模前给予不同剂量BCP 干预，结果显示BCP
+能显著减少大鼠脑梗死体积，降低神经行为障碍，改善缺血侧皮层组织的病理损
+伤，减少神经元坏死。表明BCP 对CIR 损伤具有明显的改善作用且具有剂量依赖
+性。当机体发生 CIR 损伤时，细胞内氧化应激水平激增，线粒体紊乱，胞内稳态
+35
+--- 第39页 ---
+重庆医科大学硕士研究生学位论文
+失衡，触发下游炎症、凋亡的发生，导致神经元发生大量凋亡甚至坏死[15-17,24,26]。
+在整个CIR 损伤的整个病理生理过程中，氧化应激扮演着重要角色[26,35-37]。 所以
+我们对BCP在CIR 损伤中氧化损伤是否具有改善作用进行了相关探究，MDA（脂
+质过氧化物）和 SOD（抗氧化酶）是常见的内源性生化指标，反映机体的氧化应
+激水平。结果表明 BCP 处理后，SOD活性增高，MDA 含量降低，减轻了脑缺血
+再灌注后组织的氧化损伤。
+研究表明，HSF1/HSP70 通路的激活在心血管、组织缺血等疾病具有抗氧化抗
+凋亡的作用[4,14,41,58,73,75]。HSF1 是机体内的重要转录因子，参与细胞存活，抗炎、
+抗氧化等过程[4-8,66-69,75]。在神经疾病中，神经元损伤与HSF1 降解有关[6,7]。正常生
+理状态下，HSF1 表达量较少，在胞质中与HSP90结合形成复合物，其激活和核转
+位受抑制，当受到应激刺激后，解离激活形成三聚体入核，同时发生蛋白修饰激
+活[9,14,41,58],如关键位点的磷酸化、乙酰化等等，与一些反应元件结合，如热休克反
+应元件（HSE）,调节下游如 HSP70、Snail 等的表达[5,41,74]，进而发挥保护作用。
+HSP70 作为分子伴侣蛋白，在脑梗死及附近区域能被显著诱导上调，受到 HSF1
+转录调控[9,10,40]。研究表明，HSP的过表达能维持线粒体膜稳态，降低氧自由基累
+积和 Ca2+超载，抑制凋亡小体释放和炎症的发生；同时分子伴侣作用，减少错误
+蛋白的折叠，进而降低内质网应激水平，对脑损伤有神经保护作用[9-14,38,41,56,63]。有
+趣的是，在 CIR 模型小鼠中注射外源性重组 HSP70，能减少细胞死亡，促进神经
+生长[11]。有研究表明，在脑缺血中上调 HSF1/HSPB1（与 HSP70 同属于 HSPs 家
+族）通路可减轻由脂质过氧化造成的神经元铁死亡的发生[8]。结合文献，为进一步
+探究BCP 的保护作用与 HSF1/HSP70 信号通路的关系，我们进行了后续实验，结
+果显示，kribb11组中，使用HSF1 抑制剂抑制了HSF1、p-HSF1 和HSP70 蛋白表
+达，氧化应激水平更高，细胞死亡和组织损伤更为严重。提示 CIR 损伤与
+HSF1/HSP70通路具有相关性，抑制HSF1 通路会加重缺血损伤。BCP 预处理后，
+与模型组相比，HSF1、p-HSF1、HSP70 蛋白表达显著增加，而凋亡相关蛋白表达
+减少，组织氧化应激和细胞凋亡水平减少；联用HSF1抑制剂阻断HSF1 信号通路
+后，Kribb11 拮抗了 BCP 对缺血再灌注损伤的保护作用和抗氧化效应，逆转了相
+关通路蛋白表达，组织中氧化应激水平增高，细胞凋亡数增多，脑缺血损伤加重。
+以上结果共同说明 BCP 能降低氧化应激水平，减少细胞凋亡，改善损伤的作用，
+36
+--- 第40页 ---
+重庆医科大学硕士研究生学位论文
+可能与激活 HSF1/HSP70通路有关。
+综上，本研究探讨了 BCP 在大鼠脑缺血再灌注损伤中新的靶点与作用机制，
+初步证实 BCP 可能通过激活 HSF1/HSP70 通路来产生抗氧化和抗凋亡作用，从而
+改善大鼠脑缺血再灌注损伤。
+37
+--- 第41页 ---
+重庆医科大学硕士研究生学位论文
+第二部分 石竹烯作用于 轴对氧糖剥
+β- HSF1/HSP70
+夺 再灌注后的星形胶质细胞的保护作用探究
+/
+1 实验材料
+1.1 药品与试剂
+试剂名称
+公司 产地
+DMSO（细胞级） 鼎国昌盛 美国
+胰酶消化液 Mengbio 美国
+CCK-8 试剂盒 Biosharp 美国
+PBS 溶液 Biosharp 美国
+GFAP一抗 Proteintech 中国
+无糖培养基 Gibco 中国
+DMEM/F12 基础培养基 Gibco 中国
+胎牛血清FBS Gibco 中国
+青霉素/链霉素双抗 Biosharp 中国
+Goat anti-Rabbit IgG (H + Proteintech 中国
+L)荧光二抗
+其余试剂同实验第一部分
+1.2 主要实验仪器
+仪器名称
+公司 产地
+荧光倒置显微镜 Nikon 日本
+细胞培养箱 Thermo 美国
+三气细胞培养箱 天有利科技 中国
+流式细胞仪 Thermo 美国
+其余仪器同实验第一部分
+38
+--- 第42页 ---
+重庆医科大学硕士研究生学位论文
+1.3 主要溶液配制
+1.3.1F12 细胞完全培养基（50ml 为例）：
+试剂 体积
+DMEM/F12 基础培养基 44.5ml
+FBS 胎牛血清 5ml
+双抗溶液 0.5ml
+配置好后放于 4℃保存
+1.3.2BCP 溶液配制：
+吸取 BCP原液5ul,依次加入5ul DMSO和1.940mlF12 完全培养基，配制成浓
+度为10mMBCP 母液，4℃保存。随后实验，吸取适量母液，加入培养基稀释成最
+终的细胞给药浓度。
+1.3.3Kribb11溶液配制：
+称取 1mg Kribb11粉末，加入 3.518ml DMSO溶液溶解配制成100μM 的母液。
+分装，避免反复冻融，放于-80℃保存。临用时现配制，吸取母液，加入适量完全
+培养基稀释成终细胞给药浓度。
+其余试剂配制同实验第一部分
+2 实验方法
+2.1 细胞培养
+从出生 3d内的 SD乳鼠中分离提取原代星形胶质细胞。具体步骤如下，首先
+快速剥离脑组织，置于冰冷的 PBS 中。然后切除脑膜及一些大血管，随后将脑组
+织转移到 DMEM/F12 基础培养基中。过筛后用胰酶（含 EDTA）消化分离组织，
+经过离心重悬后将细胞种植到含有FBS和双抗的F12完全培养基的T25培养瓶中。
+39
+--- 第43页 ---
+重庆医科大学硕士研究生学位论文
+所有细胞在 37℃下含有5% CO 的细胞孵箱中培养。待细胞密度达到适宜范围后
+2
+进行传代处理，一般传到 3代后可用于后续实验。
+2.2 星形胶质细胞的鉴定
+（1）将星形胶质细胞接种铺板到 24 孔板中，待其生长到适宜的密度后，弃去培
+养基，加入 PBS 冲洗5min，重复 3次；
+（2）室温下加入 4%多聚甲醛固定细胞，15min，随即用PBS 清洗3次，5min;
+（3）加入0.5%Triton X-100 的PBS 溶液室温孵育25min，使细胞破膜完全，随后
+用PBS 清洗3次；
+（4）加入山羊血清封闭 60min（室温）；
+（5）加入 GFAP（1：200）一抗，放入4℃冰箱孵育过夜；
+（6）第二天回收一抗，用PBS 清洗3次后，加入荧光二抗（1：200），37℃避光
+孵育60min；
+（7）PBS 清洗细胞后，加入适量的含DAPI的抗荧光淬灭剂，孵育10min；
+（8）在倒置荧光显微镜下观察拍照。星胶细胞纯度=视野下 GFAP 阳性的细胞数
+/DAPI阳性细胞总数。
+2.3 氧糖剥夺/再复糖氧（OGD/R）模型构建及细胞分组处理
+我们通过构建细胞的氧糖剥夺和再复氧(OGD/R)模型来模拟体外的脑缺血再
+灌注模型。简单来说，当在细胞达到所需的密度后，将完全培养基换成无糖DMEM
+培养基，将细胞放入三气培养箱中（含有 94%N 、5%二氧化碳和 1%O 的厌氧环
+2 2
+境）氧糖剥夺3小时。随后，给细胞提供含有10%胎牛血清的DMEM/F12 完全培
+养基，并放回原来正常的细胞培养箱下再复糖氧12小时。
+我们将细胞分为以下组别：Normal 组，Normal+Kribb11 组，OGD/R 组，BCP
+（5uM,10uM, 20uM,40uM）+OGD/R组，Kribb11（100nM,200nM, 500nM, 1uM,3uM,
+10uM, 20uM）+OGD/R 组，BCP（20uM）+Kribb11（1uM）+OGD/R 组。除正常
+40
+--- 第44页 ---
+重庆医科大学硕士研究生学位论文
+组外，其余各组进行 OGD/R 处理。各浓度的BCP 和 Kribb11在OGD/R 前24h加
+入到细胞孔板中。
+2.4 CCK-8 法测定星形胶质细胞活力
+CCK-8 法用于测量细胞活力。它可以用橙色甲臜染料来量化活细胞的数量。
+星形胶质细胞以每孔 10,000个细胞的密度接种在96孔板中。待细胞紧贴墙壁后，
+各个给药组在 OGD/R 前24h进行药物预处理。在复糖氧12h后进行CCK8 检测，
+将每孔细胞加入10ulCCK-8，在37°C下孵育1小时。最后使用酶标仪测定460nm
+处的吸光度，以此计算细胞存活率。
+2.5 Western blot 法检测星胶细胞中相关蛋白的表达
+提取细胞蛋白：将细胞 6 孔板中培养基弃去，加入预冷的 PBS 清洗。随后加
+入细胞裂解液充分裂解，收集上清液于EP离心管。离心后吸取上清液后加入1/4
+体积的loadingbuffer 煮沸后-80℃保存。
+后续操作同第一部分的实验方法。
+2.6 流式细胞术测定细胞凋亡率
+（1）收集细胞：加入胰酶消化液（0.25%，不含EDTA）,待星形胶质细胞消化为
+单个细胞后，加入 PBS 缓冲液，将细胞收集于15ml离心管中；
+（2）离心：5min（1000r/min），弃上清液，以此重复三次；
+（3）重悬：加入 500μl 的缓冲液重悬细胞，将其转移到1.5ml的EP 管中；
+（4）固定染色后，上机检测细胞凋亡率。
+2.7 星形胶质细胞中 SOD 含量和 MDA 水平的检测
+用 PBS 洗涤细胞 2 次，再加入预冷的 IP 裂解液裂解细胞，收集细胞样品于
+EP 管中。随后液样品 4 ℃高速离心（10,000g～12,000g，10 分钟），取上清作为
+待测样品。其余步骤按照试剂盒说明书进行操作（按照下表加入样品和检测溶液），
+用酶标仪在规定波长处测定吸光度，从而测定SOD和MDA水平。
+测定 SOD活性：
+41
+--- 第45页 ---
+重庆医科大学硕士研究生学位论文
+溶液 样品体积（每孔）
+待测样品 20μl
+NBT 酶工作液 160ul
+反应启动液 20μl
+测定 MDA含量：
+溶液 样品体积（每孔）
+待测样品 0.1ml
+MDA 检测液 0.2ml
+2.8 星形胶质细胞中 Caspase 3 活性检测
+（1）细胞样品的收集：用胰酶消化贴壁细胞后，加入F12 完全培养基，收集到15ml
+离心管中。离心 5min（600g，4℃），吸除上清液；加入 PBS 洗涤重悬，同前条
+件离心后，弃上清，加入裂解液（比例按照每200万细胞加100μl），重悬沉淀，
+冰上放置裂解 15min。
+（2）Caspase3酶活性检测：
+如下配置反应体系：
+样品 空白对照
+检测缓冲液 40μl 40μl
+待测样品 50μl 0
+裂解液 0 50μl
+Ac-DEVD-pNA 10μl 10μl
+总体积 100μl 100μl
+其余步骤按照说明书操作进行。
+用酶标仪测定各孔 A405，代入标准曲线中测得caspase 3酶活力单位（一活力单位
+定义为1h 内1nmolAc-DEVD-pNA产生1nmolpNA的caspase3的酶量）
+2.8 统计学分析
+所有实验数据均以均值±标准差表示（x ± SD），同时采用 GraphPad Prism 6
+42
+--- 第46页 ---
+重庆医科大学硕士研究生学位论文
+软件对数据进行统计学分析。两组间采用t 检验；one-wayANVOVA分析用于单因
+素组间比较。当 P<0.05，表示为具有统计学差异。
+3 结 果
+3.1 星形胶质细胞鉴定
+GFAP是星形胶质细胞的特异性标志物，我们采用免疫荧光实验来检测培养的
+大鼠原代星形胶质细胞的纯度。如图2.1所示，图中绿色荧光表示GFAP阳性，蓝
+色荧光表示为细胞核，通过merged 共定位显示，星形胶质细胞占总细胞的90%左
+右，该密度下的细胞可用于后续实验。
+图2.1 大鼠原代星形胶质细胞鉴定（100×）
+Fig2.1Theidentificationofastrocytesthroughimmunofluorescence.GFAP(green), DAPI
+(blue)
+3.2 不同浓度 BCP 及 Kribb11 对星形胶质细胞活力的影响
+为深入研究 BCP 对 OGD/R 后的星形胶质细胞损伤模型的作用机制。我们采
+用CCK-8法检测不同浓度下的BCP 及Kribb11对细胞活力的影响。首先我们观察
+了不同浓度的 BCP 对细胞活力的影响。如图 2.2A，结果显示在不同浓度 BCP 干
+预下，OGD/R 后的细胞活力都有一定程度的回升，其中以20μM 的BCP 的保护效
+果最好（P<0.01）。我们选择20μM 的BCP 作为后续给药浓度。
+随后在正常条件下，选择不同浓度的Kribb11作用于星形胶质细胞，观察其毒
+性作用，如图2.2B 结果显示，当浓度大于1μmol/L后，药物发生毒性作用，细胞
+活力出现明显下降（P<0.01），再结合相关文献，我们选取了三个安全浓度
+43
+--- 第47页 ---
+重庆医科大学硕士研究生学位论文
+200nmol/L、500nmol/L和1μmol/L，观察在OGD/R后对细胞活力的影响。如图2.2C，
+结果显示在 Kribb11的干预下，OGD/R 后细胞活力明显下降，其中1μmol/LKribb11
+作用效应最为明显。综合考虑后，我们选择1μM Kribb11作为后续给药浓度。
+A B
+C
+图2.2 不同浓度BCP和Kribb11对星形胶质细胞活力的影响
+Fig2.2CellviabilityofastrocytesaftertreatmentwithvariousconcentrationofBCPand
+Kribb11.(x±SD,n=4，**P<0.01vs.Normal;##P<0.01vs.OGD/R)
+3.3 BCP 联合 Kribb11 对 OGD/R 后的星形胶质细胞中 HSF1/HSP70
+通路的影响
+为探究具体作用机制，我们通过将 BCP 与 HSF1 抑制剂 Kribb11 联合作用，
+探究BCP的保护作用是否有HSF1/HSP70 通路的参与。Western blot结果显示（图
+2.3）：OGD/R 后，模型组中的HSF1、p-HSF1、HSP70蛋白表达增加，而凋亡相
+44
+--- 第48页 ---
+重庆医科大学硕士研究生学位论文
+关蛋白BAX 表达增加，Bcl2 表达减少；与OGD/R 模型组相比，BCP 干预组中，
+通路蛋白 HSF1 及其磷酸化蛋白p-HSF1 和HSP70进一步增加，BAX 蛋白量减少，
+Bcl2 蛋白增加；与 BCP 组相比，BCP+Kribb11 组中 BCP 对通路相关蛋白的作用
+被逆转，同时下游BAX 表达增加，Bcl2 表达减少。以上说明，BCP 在OGD/R 所
+致的星形胶质细胞损伤中具有激活HSF1/HSP70信号通路的作用。
+A B
+C D
+E F
+45
+--- 第49页 ---
+重庆医科大学硕士研究生学位论文
+图 2.3BCP对OGD/R后的星形胶质细胞中HSF1及相关蛋白表达的影响
+Fig2.3 TheeffectofBCPontheexpressionofHSF1andrelatedproteinsinastrocytesafter
+OGD/R.(x±SD,n=4，*P<0.05,**P<0.01vs.Normal;#P<0.05,##P<0.01vs.OGD/R；&P<0.05,
+&&P<0.01vs.OGD/R+BCP)
+3.4 BCP通过激活HSF1/HSP70通路来减少OGD/R所致的星形胶质细
+胞的凋亡
+通过CCK8实验和流式细胞术观察OGD/R后各组星形胶质细胞的损伤和凋亡
+情况。结果如图2.4A-C 所示，与正常组相比，OGD/R 组中星形胶质细胞活力显著
+下降，caspase 3活性显著增高，细胞凋亡率明显增高；与OGD/R 组相比，
+OGD/R+BCP 组中星胶细胞活力得到恢复，caspase 3活性降低，细胞凋亡率明显降
+低；与OGD/R+BCP 组相比，OGD/R+BCP+Kribb11 组中BCP 对星胶细胞凋亡的
+抑制作用明显减弱，细胞损伤加重。以上说明BCP能够通过激活HSF1/HSP70 通
+路来减少 OGD/R 所致的星形胶质细胞的凋亡发生。
+A
+46
+--- 第50页 ---
+重庆医科大学硕士研究生学位论文
+B C
+图2.4BCP通过激活HSF1/HSP70通路对星形胶质细胞活力和细胞凋亡的影响
+Fig2.4EffectsofBCPonastrocyteviabilityandapoptosisbyactivatingHSF1/HSP70
+pathway(x±SD,n=3，**P<0.01vs.Normal;##P<0.01vsOGD/R；&&P<0.01vs.OGD/R+BCP)
+3.5 BCP通过激活HSF1/HSP70通路减轻OGD/R后星形胶质细胞的氧
+化应激水平
+我们通过测定星形胶质细胞中MDA含量和SOD活性来反映其氧化应激水平。
+结果如图 2.5 所示，与正常组相比，OGD/R 组中 MDA 含量显著增加，SOD 活性
+明显受到抑制，细胞氧化应激水平增加；与 OGD/R 组相比，OGD/R+BCP 组中
+MDA含量减少，SOD活性增高；与 OGD/R+BCP组相比，OGD/R+BCP+Kribb11
+组中SOD活性降低，MDA 含量增加，BCP 的抗氧化作用被抑制剂Kribb11 逆转。
+以上说明 BCP 通过激活 HSF1/HSP70 信号通路减轻 OGD/R 后星形胶质细胞的氧
+化应激水平。
+47
+--- 第51页 ---
+重庆医科大学硕士研究生学位论文
+A B
+图2.5BCP通过激活HSF1/HSP70通路对OGD/R后星形胶质细胞的氧化应激水平的影响
+Fig2.5EffectofBCPonoxidativestresslevelofastrocytesafterOGD/RbyactivatingHSF1/
+HSP70pathway(x±SD,n=4，**P<0.01vs.Normal;##P<0.01vs.OGD/R；&&P<0.01vs.
+OGD/R+BCP)
+4 讨 论
+星形胶质细胞属于神经胶质细胞，是哺乳动物神经系统中数量最多的细胞类
+型[44-46]。他们在调节突触活动、重塑神经元结构、维持离子稳态以及营养代谢中
+起着重要作用[44-48]。研究发现，在脑缺血及其他脑损伤等病理过程中星形胶质细
+胞的功能缺损会直接影响神经元的存活和重塑性[44-50]。以往对脑缺血的研究主要
+集中在神经元的功能上，现在越来越多研究表明，星形胶质细胞在脑缺血所致的
+脑组织损伤中发挥重要作用，包括保护脑功能和重塑神经元网络，同时诱导细胞
+缺血耐受和维持血脑屏障完整[44-51,53-54]。因此，中风后星形胶质细胞功能调节无疑
+会影响神经元的存活及功能恢复。有报道称，通过分选出保护性星形胶质细胞，
+将其与神经元共培养后，能保护神经元抵抗免受OGD/R 损伤，减少神经元的凋亡
+[76]。通过抑制星形胶质细胞细胞凋亡来保护缺血和再灌注（I/ R）损伤的中枢神经
+系统是一种非常有效的方法。星形胶质细胞的凋亡涉及几种分子途径，如Ca2+超
+负荷、线粒体功能障碍和氧化应激[45,46]。研究表明，通过药物干预和基因敲低等手
+48
+--- 第52页 ---
+重庆医科大学硕士研究生学位论文
+段能增加星形胶质细胞的活性，抵抗兴奋性毒性和降低氧化应激等，进而而发挥
+神经保护作用[44-46,48-50]。
+本部分研究通过从 SD 乳鼠中提取原代星形胶质细胞，待培养成熟后建立
+OGD/R 体外模型，模拟大鼠脑缺血再灌注损伤。经过 OGD/R 后，发现细胞悬浮
+大量死亡，细胞活力显著降低。我们设置了不同浓度的 BCP 药物进行模型前干预，
+从中发现 BCP 能够明显改善细胞损伤，增加细胞活力，抑制 OGD/R 所致的细胞
+死亡。其中以20μMBCP 效果最好。HSP70属于热休克蛋白家族，是分子伴侣和蛋
+白折叠催化的核心成分，其参与了保护脑组织免受缺血中风损伤[54,56,58]。HSP70 除
+了在缺血半影带的神经元内被诱导外，同时在梗死区中星形胶质细胞中也高度表
+达并与其活性相关[10,38,40]。有研究表明，通过上调 HSP70 可以改善缺血损伤后神
+经元和星形胶质细胞的存活[10,65]。有报道称，L-谷氨酰胺通过抑制氧化应激和神经
+元凋亡来保护小鼠大脑免受缺血性损伤，这与星形胶质细胞中 HSP70 的表达上调
+有关[10]。同时在亨廷顿病中，不同于神经元的脆弱性，星形胶质细胞中的显示更
+高水平的 HSP70活性，能快速降解突变亨廷顿蛋白（mHtt）等错误蛋白，表现出
+较高的细胞活力[59]。HSF1 作为高度保守的转录因子，介导热休克蛋白的转录，以
+响应各种应激，在促进细胞存活和调节趋化因子方面挥发重要作用[58,66-68,70]。有研
+究发现，使用丙泊酚处理后的星形胶质细胞，能明显增加HSF1 和NRF2 的核转录
+水平，增加热休克蛋白表达，以此减轻缺氧引起的 BBB 损伤[62]。同时，在 TNFα
+和FasL 配体的诱导下，能够促进星形胶质细胞中 HSF1 诱导热休克蛋白和一些趋
+化因子，促进细胞存活[68]。此外，HSF1 还参与了星形胶质细表型的诱导。在脊髓
+损伤中，HSF1 参与抑制（神经毒性）A1 型星形胶质细胞的过度增加，保护细胞
+免受应激诱导的细胞凋亡和控制炎症激活[69]。在第一部分动物体内实验中，我们
+已经发现 BCP能够通过激活HSF1/HSP70 信号通路减轻CIR 损伤。同时基于前期
+CCK-8实验结果，为进一步探究在体外BCP 能否通过激活HSF1/HSP70 通路减轻
+OGD/R 所致的星形胶质细胞伤亡。我们选择BCP 联合HSF1 抑制剂 Kribb11作用
+于星形胶质细胞，进行了后续实验。我们发现，BCP能够上调HSF1 及其磷酸化，
+HSP70的表达，同时上调Bcl2 和下调Bax 的表达；而BCP 联合Kribb11后，BCP
+对蛋白的调节作用发生逆转，以上说明 BCP 能够通过激活 HSF1/HSP70 通路调控
+下游凋亡蛋白的表达。在随后的实验中，我们发现 BCP 能够减轻 OGD/R 后星形
+49
+--- 第53页 ---
+重庆医科大学硕士研究生学位论文
+胶质细胞的氧化应激水平（MDA含量和SOD活性），抑制细胞凋亡。而联用Kribb11
+后，BCP 对损伤细胞的保护作用和抗氧化作用被明显减弱。这些结果说明，BCP
+能够通过激活 HSF1/HSP70通路来减轻星形胶质细胞的OGD/R 损伤。
+综上，本部分细胞体外实验发现，BCP 能够减弱OGD/R 诱导的星形胶质细胞
+凋亡和氧化应激水平，从而发挥保护作用。其机制可能与激活 HSF1/HSP70 通路
+有关。由此可看，这与我们前面动物体内实验结果保持一致。
+50
+--- 第54页 ---
+重庆医科大学硕士研究生学位论文
+全文总结
+1. BCP能够减少脑梗死面积，改善缺血侧皮层神经元损伤，从而减少大鼠
+脑缺血再灌注损伤，且具有剂量依赖性。
+2.BCP能够上调HSF1、HSP70的mRNA 和蛋白水平。
+3.BCP通过激活HSF1/HSP70信号通路减少大鼠缺血脑组织中的氧化损伤，进
+而发生神经保护作用。
+4. BCP通过激活HSF1/HSP70信号通路抑制OGD/R后星形胶质细胞的凋亡，
+降低氧化应激水平，从而减轻OGD/R损伤。
+51
+--- 第55页 ---
+重庆医科大学硕士研究生学位论文
+参考文献
+[1] KATAN M, LUFT A. Global Burden of Stroke[J]. Seminars in Neurology,
+2018,38(02): 208-211.
+[2] Campbell B , Silva D , Macleod M R , et al. Ischaemic stroke[J]. Nature Reviews
+Disease Primers,2019,5(1):70.
+[3] 刘京东, 陈莎, 王钰淳, 等. β-石竹烯作用于 Notch1/NF-κB 信号轴对脑缺血再
+灌注损伤大鼠的改善作用[J]. 第三军医大学学报,2021,43(03): 218-225.
+[4] LIU W, XIA F, HA Y, et al. Neuroprotective Effects of HSF1 in Retinal
+Ischemia-Reperfusion Injury[J].Invest OphthalmolVis Sci,2019,60(4): 965-977.
+[5] JIN Y, LI C, XU D, et al. Jagged1-mediated myeloid Notch1 signaling activates
+HSF1/Snail and controls NLRP3 inflammasome activation in liver inflammatory
+injury[J].Cellular& molecularimmunology,2020,17(12): 1245-1256.
+[6] KIM E, SAKATA K, LIAO F, et al. Bidirectional interplay of HSF1 degradation
+and UPR activation promotes tau hyperphosphorylation[J]. PLoS genetics,
+2017,13(7): e1006849.
+[7] GOMEZ-PASTOR R, BURCHFIEL E T, NEEF D W, et al. Abnormal degradation
+of the neuronal stress-protective transcription factor HSF1 in Huntington's
+disease[J].Nature Communications,2017,8(1).
+[8] 饶政清, 梅志刚, 葛金文, 等. 脑泰方调控细胞铁转运抑制铁死亡保护脑卒中
+缺血损伤的机制研究[J].中草药,2021,52(21): 6552-6560.
+[9] KIM J Y, HAN Y, LEE J E, et al. The 70-kDa heat shock protein (Hsp70) as a
+therapeutic target for stroke[J]. Expert opinion on therapeutic targets, 2018,22(3):
+191-199.
+[10] LUO L L, LI Y F, SHAN H M, et al. L-glutamine protects mouse brain from
+ischemic injury via up‐regulating heat shock protein 70[J]. CNS Neuroscience &
+Therapeutics, 2019,25(9): 1030-1041.
+[11] DEMYANENKO S, NIKULV, RODKIN S, et al. Exogenous recombinant Hsp70
+mediates neuroprotection after photothrombotic stroke[J]. Cell Stress and
+52
+--- 第56页 ---
+重庆医科大学硕士研究生学位论文
+Chaperones, 2021,26(1): 103-114.
+[12] 颜玲, 黄德彬, 刘锦红, 等. 黄芪多糖对脑缺血再灌注大鼠脑皮质中HSP70、
+PKB和P53 蛋白表达的影响[J]. 中国病理生理杂志,2012,28(09): 1610-1617.
+[13] Lee S H , Kim M , Yoon B W , et al. Targeted hsp70.1 Disruption Increases
+Infarction Volume After Focal Cerebral Ischemia in Mice[J]. Stroke, 2001,
+32(12):2905.
+[14] YAO M, ZHAO Z, WEI L, et al. HSF1/HSP pathway in the hippocampus is
+involved in SIRT1-mediated caloric restriction-induced neuroprotection after
+surgery in agedmice[J]. Experimental Gerontology,2019,119:184-192.
+[15] LIU S, LIU J, WANG Y, et al. Differentially expressed genes induced by
+β-caryophyllene in a rat model of cerebral ischemia-reperfusion injury[J]. Life
+Sciences, 2021,273: 119293.
+[16] YANG M, LV Y, TIAN X, et al. Neuroprotective Effect of β-Caryophyllene on
+Cerebral Ischemia-Reperfusion Injury via Regulation of Necroptotic Neuronal
+Death and Inflammation: In Vivo and in Vitro[J]. Frontiers in Neuroscience,
+2017,11.
+[17] 赵虹霞,邓玲,王萱,等.β-石竹烯对小鼠脑缺血再灌注损伤作用机制的研究[J].
+中国临床药理学杂志,2021,37(13):1684-1687.
+[18] Yujie, Cheng, Zhi, et al. β-Caryophyllene ameliorates the Alzheimer-like
+phenotype in APP/PS1 Mice through CB2 receptor activation and the PPARγ
+pathway.[J].Pharmacology,2014, 94(1-2):1-12
+[19] Gertsch J, Leonti M, Raduner S, et al. Beta-caryophyllene is a dietary
+cannabinoid[J]. Proceedings of the National Academy of Sciences of the United
+StatesofAmerica, 2008,105(26).
+[20] Longa E Z , Weinstein P R , Carlson S , et al. Reversible middle cerebral artery
+occlusion without craniectomy in rats.[J]. Stroke; a journal of cerebral circulation,
+1989, 20(1):84.
+[21] 李亚巍, 金瑛, 昌盛, 等. 蓝莓花色苷对大鼠脑缺血再灌注损伤的保护作用
+初探[J]. 毒理学杂志,2017,31(05): 354-358.
+53
+--- 第57页 ---
+重庆医科大学硕士研究生学位论文
+[22] Deng L, Guo Y, Liu J, et al. Long noncoding RNAANRIL knockdown attenuates
+neuroinflammation following ischemic stroke via suppressing the expression of
+NF-κB in vitroand invivo.[J].Neurol Res. 2021;43(9):767-777.
+[23] 蔡静, 黄文静, 刘时喜,等. 基于 TGF-β1/Smad3 信号探讨红景天苷对缺血性
+脑卒中大鼠的神经保护作用机制[J]. 中草药,2020,51(24):8.
+[24] 饶江燕,李明航,刁俊玲,等.贝沙罗汀上调线粒体自噬减轻小鼠脑缺血/再灌注
+损伤[J].中国药理学通报,2020,36(07):940-945.
+[25] FanW , Zhang R , Han D , et al. Reduced Sirtuin1 signalling exacerbates diabetic
+mice hindlimb ischaemia injury and inhibits the protective effect of a liver X
+receptoragonist[J].Journal ofCellularand MolecularMedicine, 2020,24(10).
+[26] SEKERDAG E, SOLAROGLU I, GURSOY-OZDEMIR Y. Cell Death
+Mechanisms in Stroke and Novel Molecular and Cellular Treatment Options[J].
+Current neuropharmacology,2018,16(9): 1396-1415.
+[27] FOK J H L, HEDAYAT S, ZHANG L, et al. HSF1 Is Essential for Myeloma Cell
+Survival and A Promising Therapeutic Target[J]. Clinical Cancer Research,
+2018,24(10): 2395-2407.
+[28] WANG B, LIU Y, HUANG L, et al. A CNS-permeable Hsp90 inhibitor rescues
+synaptic dysfunction and memory loss in APP-overexpressing Alzheimer's mouse
+model via an HSF1-mediated mechanism[J]. Molecular Psychiatry, 2017,22(7):
+990-1001.
+[29] Yoon YJ, Kim JA, Shin KD, et al. KRIBB11 inhibits HSP70 synthesis through
+inhibition of heat shock factor 1 function by impairing the recruitment of positive
+transcription elongation factor b to the hsp70 promoter[J]Biol Chem,
+2011,286(3):1737-1747.
+[30] Antonietti P, Linder B, Hehlgans S, et al. Interference with the
+HSF1/HSP70/BAG3 Pathway Primes Glioma Cells to Matrix Detachment and
+BH3 Mimetic-InducedApoptosis[J].MolCancerTher,2017;16(1):156-168.
+[31] Huang C, Lu X, Tong L, Wang J, et al. Requirement for endogenous heat shock
+factor 1 in inducible nitric oxide synthase induction in murine microglia[J].
+54
+--- 第58页 ---
+重庆医科大学硕士研究生学位论文
+Neuroinflammation, 2015,12(1):1-12.
+[32] Cheng CY, Kao ST, Lee YC. Ferulic Acid Exerts Anti-apoptotic Effects against
+Ischemic Injury by Activating HSP70/Bcl-2- and HSP70/Autophagy-Mediated
+Signaling after Permanent Focal Cerebral Ischemia in Rats[J]. Am J Chin Med,
+2019;47(1):39-61.
+[33] Mohanan A, Deshpande S, Jamadarkhana PG, et al. Delayed intervention in
+experimental stroke with TRC051384--a small molecule HSP70 inducer[J].
+Neuropharmacology,2011May;60(6):991-9.
+[34]Li J,YuJ, MaH, et al. Intranasal Pretreatment with Z-Ligustilide, theMainVolatile
+Component of Rhizoma Chuanxiong, Confers Prophylaxis against Cerebral
+Ischemia via Nrf2 and HSP70 Signaling Pathways[J]. J Agric Food Chem, 2017
+Mar1;65(8):1533-1542.
+[35] Jiang Y, He R, Shi Y, Liang J. Plasma exosomes protect against cerebral
+ischemia/reperfusion injury via exosomal HSP70 mediated suppression of ROS[J].
+Life Sci,2020 Sep 1;256:117987.
+[36] Su XT, Wang L, Ma SM, et al. Mechanisms of Acupuncture in the Regulation of
+Oxidative Stress in Treating Ischemic Stroke[J]. Oxid Med Cell Longev, 2020 Oct
+24;2020:7875396.
+[37] Shao A, Lin D, Wang L, et al. Oxidative Stress at the Crossroads ofAging, Stroke
+andDepression[J].Aging Dis, 2020 Dec 1;11(6):1537-1566.
+[38] Kim JY, Kim N, Zheng Z, et al. 70-kDa Heat Shock Protein Downregulates
+Dynamin in Experimental Stroke: A New Therapeutic Target?[J]. Stroke, 2016
+Aug;47(8):2103-11.
+[39] Yoo K, Yun HH, Jung SY, et al. KRIBB11 Induces Apoptosis in A172
+Glioblastoma Cells via MULE-Dependent Degradation of MCL-1[J]. Molecules,
+2021 Jul8;26(14):4165.
+[40] Giffard RG, Yenari MA. Many mechanisms for hsp70 protection from cerebral
+ischemia[J]. JNeurosurgAnesthesiol, 2004Jan;16(1):53-61.
+[41] Zheng X, Xu F, Liang H, et al. SIRT1/HSF1/HSP pathway is essential for
+55
+--- 第59页 ---
+重庆医科大学硕士研究生学位论文
+exenatide-alleviated, lipid-induced hepatic endoplasmic reticulum stress[J].
+Hepatology,2017Sep;66(3):809-824.
+[42] Lou J, Cao G, Li R, et al. β-Caryophyllene Attenuates Focal Cerebral
+Ischemia-Reperfusion Injury by Nrf2/HO-1 Pathway in Rats[J].Neurochem Res,
+2016 Jun;41(6):1291-304.
+[43] Zhang Q, An R, Tian X, et al. β-Caryophyllene Pretreatment Alleviates Focal
+Cerebral Ischemia-Reperfusion Injury by Activating PI3K/Akt Signaling
+Pathway[J].Neurochem Res, 2017May;42(5):1459-1469.
+[44] Zhong CJ, Chen MM, Lu M, et al. Astrocyte-specific deletion of Kir6.1/K-ATP
+channel aggravates cerebral ischemia/reperfusion injury through endoplasmic
+reticulum stress in mice[J]. ExpNeurol, 2019Jan;311:225-233.
+[45] Li L, Voloboueva L, Griffiths BB, Xu L, et al. MicroRNA-338 inhibition protects
+against focal cerebral ischemia and preserves mitochondrial function in vitro in
+astrocytes and neurons viaCOX4I1[J]. Mitochondrion,2021Jul;59:105-112.
+[46] Chen X, Lu M, He X, et al, Birnbaumer L, Liao Y. TRPC3/6/7 Knockdown
+Protects the Brain from Cerebral Ischemia Injury viaAstrocyteApoptosis Inhibition
+and Effects on NF-кB Translocation[J]. Mol Neurobiol, 2017
+Dec;54(10):7555-7566.
+[47] GuoY, Dong L, GongA, et al. Damage to the blood‑brain barrier and activation of
+neuroinflammation by focal cerebral ischemia under hyperglycemic condition[J]. Int
+JMol Med, 2021Jul;48(1):142.
+[48] Dong C, Wen S, Zhao S, et al. Salidroside Inhibits ReactiveAstrogliosis and Glial
+Scar Formation in Late Cerebral Ischemia via the Akt/GSK-3β Pathway[J].
+Neurochem Res, 2021Apr;46(4):755-769.
+[49]Wang N, ZhangY,Wu L, et al. Puerarin protected the brain from cerebral ischemia
+injury via astrocyte apoptosis inhibition[J]. Neuropharmacology, 2014
+Apr;79:282-9.
+[50] Zhu J, Yang LK, Wang QH, et al. NDRG2 attenuates ischemia-induced astrocyte
+necroptosis via the repression of RIPK1[J]. Mol Med Rep, 2020
+56
+--- 第60页 ---
+重庆医科大学硕士研究生学位论文
+Oct;22(4):3103-3110.
+[51] Song S, Huang H, Guan X, et al.Activation of endothelial Wnt/β-catenin signaling
+by protective astrocytes repairs BBB damage in ischemic stroke[J]. Prog Neurobiol,
+2021Apr;199:101963.
+[52] Li Z, Song Y, He T, et al. M2 microglial small extracellular vesicles reduce glial
+scar formation via the miR-124/STAT3 pathway after ischemic stroke in mice[J].
+Theranostics, 2021Jan1;11(3):1232-1248.
+[53] Song X, Gong Z, Liu K, et al. Baicalin combats glutamate excitotoxicity via
+protecting glutamine synthetase from ROS-induced 20S proteasomal degradation[J].
+Redox Biol, 2020Jul;34:101559.
+[54] Sun H, Jiang M, Fu X, et al. Mesencephalic astrocyte-derived neurotrophic factor
+reduces cell apoptosis via upregulating HSP70 in SHSY-5Y cells[J]. Transl
+Neurodegener,2017May 22;6:12.
+[55] Mi J, Yang Y, Yao H, et al. Inhibition of heat shock protein family A member 8
+attenuates spinal cord ischemia-reperfusion injury via astrocyte NF-κB/NLRP3
+inflammasome pathway : HSPA8 inhibition protects spinal ischemia-reperfusion
+injury[J].J Neuroinflammation, 2021Aug 6;18(1):170.
+[56] Yu WW, Cao SN, Zang CX, et al. Heat shock protein 70 suppresses
+neuroinflammation induced by α-synuclein in astrocytes[J]. Mol Cell Neurosci,
+2018 Jan;86:58-64.
+[57] Zhou D, Huang Z, Zhu X, et al. Circular RNA 0025984 Ameliorates Ischemic
+Stroke Injury and Protects Astrocytes Through miR-143-3p/TET1/ORP150
+Pathway[J].Mol Neurobiol, 2021Nov;58(11):5937-5953.
+[58] Ren Z, Dong Z, Xie P, et al. PNU282987 inhibits amyloid‑β aggregation by
+upregulating astrocytic endogenous αB‑crystallin and HSP‑70 via regulation of the
+α7AChR, PI3K/Akt/HSF‑1 signaling axis[J]. Mol Med Rep, 2020
+Jul;22(1):201-208.
+[59] Zhao T, Hong Y, Yin P, et al. Differential HspBP1 expression accounts for the
+greater vulnerability of neurons than astrocytes to misfolded proteins[J]. Proc Natl
+57
+--- 第61页 ---
+重庆医科大学硕士研究生学位论文
+Acad SciU SA, 2017Sep 12;114(37):E7803-E7811.
+[60] Markosyan V, Safiullov Z, Izmailov A, et al. Preventive Triple Gene Therapy
+Reduces the Negative Consequences of Ischemia-Induced Brain Injury after
+ModellingStrokein aRat[J]. Int J Mol Sci,2020Sep 18;21(18):6858.
+[61] Jaworska J, Ziemka-Nalecz M, Sypecka J, et al. The potential neuroprotective role
+of a histone deacetylase inhibitor, sodium butyrate, after neonatal
+hypoxia-ischemia[J].J Neuroinflammation, 2017Feb10;14(1):34.
+[62] Sun X, Yin Y, Kong L, et al. The effect of propofol on hypoxia-modulated
+expression of heat shock proteins: potential mechanism in modulating blood-brain
+barrier permeability[J]. MolCell Biochem, 2019Dec;462(1-2):85-96.
+[63] Zhou XY, Luo Y, Zhu YM, et al. Inhibition of autophagy blocks
+cathepsins-tBid-mitochondrial apoptotic signaling pathway via stabilization of
+lysosomal membrane in ischemic astrocytes[J]. Cell Death Dis, 2017 Feb
+16;8(2):e2618.
+[64] Cheng JJ, Guo Q, Wu XG, et al. Scutellaria barbata Flavonoids Improve the
+Composited Aβ-induced Abnormal Changes in Glial Cells of the Brains of Rats[J].
+CombChem HighThroughput Screen, 2022;25(1):64-76.
+[65] Hu C, Chen X, Wang M, et al. Analgecine protects against cerebral
+ischemia-reperfusion through apoptosis inhibition and anti-neuroinflammation in
+rats[J].Neuropeptides, 2022Feb 8;93:102230.
+[66] Huang C, Hu W, Wang J, et al. Methylene blue increases the amount of HSF1
+through promotion of PKA-mediated increase in HSF1-p300 interaction[J]. Int J
+Biochem CellBiol, 2017Mar;84:75-88.
+[67] Lin PY, Simon SM, Koh WK, et al. Heat shock factor 1 over-expression protects
+against exposure of hydrophobic residues on mutant SOD1 and early mortality in a
+mouse model of amyotrophic lateral sclerosis[J]. Mol Neurodegener, 2013 Nov
+21;8:43.
+[68] Choi K, Ni L, Jonakait GM. Fas ligation and tumor necrosis factor α activation of
+murine astrocytes promote heat shock factor-1 activation and heat shock protein
+58
+--- 第62页 ---
+重庆医科大学硕士研究生学位论文
+expression leading to chemokine induction and cell survival[J]. J Neurochem, 2011
+Feb;116(3):438-48.
+[69] Li L, Li Y, He B, et al. HSF1 is involved in suppressing A1 phenotype conversion
+of astrocytes following spinal cord injury in rats[J]. J Neuroinflammation, 2021 Sep
+16;18(1):205.
+[70] Sun X, Crawford R, Liu C, et al. Development-dependent regulation of molecular
+chaperones after hypoxia-ischemia[J]. Neurobiol Dis, 2015Oct;82:123-131.
+[71] Frezzato F, Raggi F, Martini V, et al. HSP70/HSF1 axis, regulated via a PI3K/AKT
+pathway, is a druggable target in chronic lymphocytic leukemia[J]. Int J Cancer,
+2019 Dec 1;145(11):3089-3100.
+[73] Tucker NR, Middleton RC, Le QP, et al. HSF1 is essential for the resistance of
+zebrafish eye and brain tissues to hypoxia/reperfusion injury[J]. PLoS One,
+2011;6(7):e22268.
+[74] Gomez-Pastor R, Burchfiel ET, Thiele DJ. Regulation of heat shock transcription
+factors and their roles in physiology and disease[J]. Nat Rev Mol Cell Biol, 2018
+Jan;19(1):4-19.
+[75]Yuan L, Qiu L,YeY,et al. Heat-shock transcription factor1 is critically involved in
+the ischaemia-induced cardiac hypertrophy via JAK2/STAT3 pathway[J]. J Cell Mol
+Med, 2018Sep;22(9):4292-4303.
+[76] Zhao N, Xu X, Jiang Y, et al. Lipocalin-2 may produce damaging effect after
+cerebral ischemia by inducing astrocytes classical activation[J]. J
+Neuroinflammation, 2019Aug 19;16(1):168.
+59
+--- 第63页 ---
+重庆医科大学硕士研究生学位论文
+文献综述
+HSP70 信号转导对脑缺血中再灌注损伤的作用
+【摘要】缺血性脑卒中是继癌症、心脏病后造成人类严重残疾和死亡的主要
+疾病之一，常见病因是脑内血管阻塞造成组织缺糖缺氧，进而引起严重的神经系
+统功能障碍。由于其治疗时间窗口较短，若错过最佳的溶栓时间，恢复血供后易
+导致更为严重的缺血再灌注损伤。HSP70 是机体在疾病损伤等应激状态下广泛表
+达的内源性保护蛋白。当发生脑缺血再灌注损伤时，HSP70 在缺血半影带和梗死
+区中被诱导，在疾病早期的一定时间内保持较高水平。HSP70 介导的信号转导可
+以通过降低氧化应激，抑制细胞凋亡和缓解炎症反应来发挥神经保护作用，改善
+脑缺血再灌注损伤。
+【关键词】脑缺血再灌注损伤；HSP70；凋亡；炎症
+一、HSP70 蛋白与脑缺血再灌注损伤的联系
+缺血性脑卒中是由于脑颈部血管阻塞、血栓形成等所致局部脑组织缺血缺氧，
+进而引发脑组织病变坏死和严重的神经功能障碍的一种急性神经系统疾病[1,2]。其
+发病率高，致残、致死率高，预后较差，特别在我国中老年人群体中现象尤为明
+显[1,2]。临床上治疗药物十分有限，通过美国 FDA 批准的 rt-PA（重组组织纤溶酶
+原激活物）药物进行快速溶栓处理，但其有效治疗窗狭窄限制了药物的临床治疗
+效果[1,2,12]。并且在恢复血供后，容易触发一系列复杂的病理机制，继发性地引起
+更 为 严 重 的 不 可 逆 的 脑 组 织 损 伤 ， 即 脑 缺 血 再 灌 注 损 伤 （ cerebral
+ischemia-reperfusion injury，CIRI）[12,13]。目前研究表明，CIRI 的发生与脑组织细
+胞内氧自由基大量产生、兴奋性氨基酸、胞内钙超载、ATP及膜离子泵功能丧失、
+炎症发生等多种机制有关[5,8,12,13,14]。
+在脑组织发生缺血缺氧后，存在着分子伴侣调控来应对细胞应激反应。热休
+克蛋白70（heat shock protein70, HSP70）是一种在哺乳动物体内普遍存在的高度保
+存的多肽类应激蛋白，由 Ritossa，Tissieres 等人首次在果蝇幼虫中发现[6-8]。其主
+要分为两种亚型：结构型 HSC70 和诱导型 HSP70[6]。它主要被认为是一种胞质伴
+侣蛋白，参与促进蛋白质的正确折叠、降解、复杂的组装和易位，减少细胞内错
+误蛋白的积累，降低细胞毒性，充分发挥其分子伴侣的关键作用[6-11]。最近研究表
+60
+--- 第64页 ---
+重庆医科大学硕士研究生学位论文
+明，在一些病理生理条件下HSP70 等热休克蛋白能够与溶酶体膜蛋白如 LAMP2α
+结合后，在溶酶体中通过激活分子伴侣自噬途径降解原结合的一些变性蛋白或者
+损伤的细胞器，在蛋白折叠修饰和循环利用中发挥了重要的作用[39]。据报道，在
+缺血性或出血性脑卒中和其他脑损伤中，HSP70 的诱导能积极有效地保护大脑免
+受各种应激损伤，发挥神经保护作用[6-11,17-20]。研究表明，在脑缺血梗死区和缺血
+半影带处，HSP70 能够被显著诱导，表达增加[6,7,23,34]。一些通过针对增加或减少
+HSP70 表达的策略进行的研究发现，HSP70 能够减少脑缺血梗死体积，减轻神经
+元损伤和神经功能障碍，发挥明显的神经保护作用，并且被证明可以防止血脑屏
+障（BBB）的破坏[26-29]。与此同时，其作用功能高度依赖于上游热休克转录因子
+（heat shockfactor 1，HSF1）的调控。热休克转录因子1（HSF1）是DNA 结合蛋
+白家族的成员，该家族介导热休克蛋白（HSP）的转录，以响应各种应激[3,5,11]。
+HSF1 的生物学重要性体现在保护各种细胞免受应激诱导的细胞凋亡，抑制巨噬细
+胞中炎症细胞因子表达以及介导神经发生和胚胎外发育方面[3-5,33,36]。正常生理条件
+下，无活性的 HSF1 单体结合在细胞质中，并与热休克蛋白以及胞质伴侣蛋白TCP1
+形成复合物。然而当组织损伤或环境应激刺激（例如高温和氧化应激）时，将HSF1
+从复合物释放并易位到细胞核，同时发生磷酸化、乙酰化等蛋白后修饰作用激活
+HSF1 的活性，与DNA 上一些反应元件结合以诱导下游基因的转录[4,6,7,24]。因此，
+HSP70 的诱导在缺血性中风及相关疾病的潜在神经保护治疗方面具有明显的临床
+意义，其介导的信号传导可能通过抑制细胞凋亡和缓解神经炎症等来发挥保护作
+用。
+二、HSP70 信号通路与细胞凋亡的相关性
+在脑缺血损伤早期主要通过凋亡机制诱导细胞死亡，分为细胞内线粒体介导
+的内在途径和细胞表面受体触发的外部途径[6,7]。细胞凋亡的触发因素包有氧自由
+基、死亡受体连接、DNA 损伤、Caspase 蛋白酶激活和离子失衡等[6,7,13,14]。一些研
+究表明，Hsp70 可以直接或间接地干扰细胞凋亡等细胞死亡途径[9,10,20,22]。
+细胞凋亡的内在途径激活受Bcl-2家族成员的相互作用和Caspases刺激的影响
+[6,7,13,14,17]。线粒体通常被认为与缺血性中风后细胞凋亡的发生紧密相关[7,21,31]。研
+究发现，Hsp70 可能通过干扰线粒体事件与下游凋亡的相互作用来起到抗凋亡作用
+[6,7]。比如，Hsp70 可以阻止线粒体中细胞色素 c(Cytc)的释放；通过与 CytC 和
+61
+--- 第65页 ---
+重庆医科大学硕士研究生学位论文
+procaspase-9 结合后，中断凋亡小体的形成，最终抑制下游caspase 3活化触发的细
+胞凋亡[6-8,17-20,31]。有报道称，在心肌细胞中，HSP70还能抑制AIF 和Samc从线粒
+体的释放，减少DNA 片段化，进而挽救细胞凋亡[40]。此外，细胞的氧化应激，如
+ROS活性氧水平，也会激活线粒体介导的细胞凋亡。有研究发现，Pla-Exo（一血
+浆外泌体）通过增加缺血区 HSP70 的表达来降低小鼠脑缺血/再灌注(I/R)损伤中
+ROS水平，防止线粒体损伤，从而抑制细胞的凋亡[20]。Bcl-2 是抑制细胞凋亡的关
+键蛋白，通过阻断了Cytc 和AIF 的释放，抑制下游caspase-3 的剪切活化[6,7,17]。促
+凋亡和抗凋亡蛋白的平衡决定了细胞是否通过调节线粒体膜通透性过渡孔而发生
+凋亡[6,7]。研究发现，在小鼠 MCAO/R 模型中，L-谷氨酰胺通过上调 HSP70 表达
+来增加Bcl2 蛋白表达，减少Bax 的表达和抑制caspase-3的活化，最终发挥抗凋亡
+的作用[8]。同时有报道称，阿那吉辛（Analgecine）可以部分通过调控
+HSP70/Bcl-2/Bax 通路明显增强神经营养蛋白相关蛋白，减少脑缺血再灌注后神经
+元的凋亡损伤[32]。
+外在凋亡机制涉及到了细胞膜上的死亡受体的参与。死亡受体包括有
+Fas/CD95、TNFR1 和Trail 受体，可以与一些TNF 家族的配体（FASL、TNF、CD40L、
+Light、RANKL 和 Trail 等）结合产生作用效应，其中许多为缺血后炎症反应的部
+分释放介质[6,7,33]。其中经典的是，FasL 与 Fas 受体结合后，触发 Fas 的死亡结构
+域蛋白(FADD)对 Caspase-8 的募集，三者形成死亡信号复合物（DISC），进一步
+诱导由Caspase3介导的细胞凋亡途径[6,7]。HSP70 被证明了可以通过特定的伴侣作
+用与一些死亡受体结合，如 Trail1 和Trail2，抑制DISC 复合物的形成和活性[41]。
+有研究表明，Dynamin 可能促进Fas 介导的神经元的凋亡坏死，而在模型小鼠中过
+表达HSP70可以下调Dynamin 和Fas 的表达，减少caspase8的产生，进而抑制细
+胞凋亡，发挥神经保护作用[33]。
+三、HSP70 信号通路与炎症发生的相关性
+在缺血性中风和其他脑损伤疾病中，中枢神经系统中的炎症反应也是整个病
+理过程中造成神经元急性损伤的重要原因，可以继发性地导致更为严重的组织损
+伤[6,42]。在缺血急性期中，随着大脑血脑屏障的破坏，神经胶质细胞的过度激活和
+免疫细胞流入脑实质中发生严重的炎症级联反应[7,13,42]。在炎症相关细胞中外周损
+62
+--- 第66页 ---
+重庆医科大学硕士研究生学位论文
+伤因子（如 MyD88，LPS 等）与膜受体结合（如 Toll 样受体）激活由 NF/kB 或
+MAPK等信号通路介导的炎症反应，产生释放大量自由基和炎症因子，如IL-1β、
+IL-6/8 和IFN-γ等，导致脑组织水肿加重，加剧神经元的损伤，激活细胞的各种死
+亡机制[7,13,42]。
+研究发现，HSP70 的信号转导可以调节细胞的炎症反应，减少神经炎症的发
+生[6,7,27-29]。HSP70被证明能够与NF-kB 和MAPK相互作用，抑制其的活化导致下
+游炎症级联的反应的中断。同时能够减少MMPs和ROS 的产生以减少对炎症的激
+活，发挥抗炎作用[6,7]。有研究表明，在一些神经退行性疾病中，通过对星形胶质
+细胞过表达 HSP70 显著降低 COX2、iNOS 的表达和 TNF-α和 IL-1β的产生，同时
+抑制了JNK和NF-kB 信号通路的激活，从而减少神经炎症的发生[28]。有趣的是，
+同样的情况发生在 OGD/R 处理后的星形胶质细胞中，HSP70 的过表达可以通过阻
+断上游转录因子（IκB，JNK 和 p38）的磷酸化和核转位，削弱其与 DNA 的结合
+能力，抑制下游促炎基因的表达，改善脑损伤的结局[29]。此外，在小鼠腹膜炎模
+型中发现，HSP70 是 NLRP3 激活的负调节因子。HSP70缺失导致小鼠 nlrp3 依赖
+性腹膜炎的恶化，而在 BMDMs 中 HSP70 的过表达后通过与其相互作用抑制了
+NLRP3 炎症小体的激活，降低了caspase-1 的表达和IL-1β的产生[43]。
+有趣的是，一些研究发现，细胞外的 HSP70可能存在相反的促炎作用。通过
+输入外源性重组 HSP70，激活NF-kB 通路，导致促炎因子和iNOS 的上调[6]。然而
+其中的一些工作受到质疑，制剂中可能含有少量的LPS 所以会引起炎症的发生[6]。
+四、小结
+综上所述，HSP70 在脑缺血再灌注损伤中发挥着积极的神经保护作用，机制上
+可以通过抑制损伤后神经元和胶质细胞的凋亡、减弱炎症级联反应来改善缺血损
+伤。HSP70 可能是缺血性中风和其他神经系统疾病中令人兴奋的治疗靶点。目前
+对其的研究主要是停留在转基因动物和基因转移上，未来的研究可能会进一步揭
+示对靶点药物的寻找和开发上，将更好地实现临床转化。
+63
+--- 第67页 ---
+重庆医科大学硕士研究生学位论文
+参考文献
+[1] KATAN M, LUFT A. Global Burden of Stroke[J]. Seminars in Neurology,
+2018,38(02): 208-211.
+[2] Campbell B , Silva D , Macleod M R , et al. Ischaemic stroke[J]. Nature Reviews
+Disease Primers,2019,5(1):70.
+[3] LIU W, XIA F, HA Y, et al. Neuroprotective Effects of HSF1 in Retinal
+Ischemia-Reperfusion Injury[J].Invest OphthalmolVis Sci,2019,60(4): 965-977.
+[4] JIN Y, LI C, XU D, et al. Jagged1-mediated myeloid Notch1 signaling activates
+HSF1/Snail and controls NLRP3 inflammasome activation in liver inflammatory
+injury[J].Cellular& molecularimmunology,2020,17(12): 1245-1256.
+[5] 饶政清, 梅志刚, 葛金文, 等. 脑泰方调控细胞铁转运抑制铁死亡保护脑卒中
+缺血损伤的机制研究[J].中草药,2021,52(21): 6552-6560.
+[6] KIM J Y, HAN Y, LEE J E, et al. The 70-kDa heat shock protein (Hsp70) as a
+therapeutic target for stroke[J]. Expert opinion on therapeutic targets, 2018,22(3):
+191-199.
+[7] Kim JY, Kim JW, Yenari MA. Heat shock protein signaling in brain ischemia and
+injury[J].Neurosci Lett, 2020Jan10;715:134642.
+[8] LUO L L, LI Y F, SHAN H M, et al. L-glutamine protects mouse brain from
+ischemic injury via up‐regulating heat shock protein 70[J]. CNS Neuroscience &
+Therapeutics, 2019,25(9): 1030-1041.
+[9] DEMYANENKO S, NIKUL V, RODKIN S, et al. Exogenous recombinant Hsp70
+mediates neuroprotection after photothrombotic stroke[J]. Cell Stress and
+Chaperones, 2021,26(1): 103-114.
+[10] Lee S H , Kim M , Yoon B W , et al. Targeted hsp70.1 Disruption Increases
+Infarction Volume After Focal Cerebral Ischemia in Mice[J]. Stroke, 2001,
+32(12):2905.
+[11] YAO M, ZHAO Z, WEI L, et al. HSF1/HSP pathway in the hippocampus is
+involved in SIRT1-mediated caloric restriction-induced neuroprotection after
+64
+--- 第68页 ---
+重庆医科大学硕士研究生学位论文
+surgery in agedmice[J]. Experimental Gerontology,2019,119:184-192.
+[12] LIU S, LIU J, WANG Y, et al. Differentially expressed genes induced by
+β-caryophyllene in a rat model of cerebral ischemia-reperfusion injury[J]. Life
+Sciences, 2021,273: 119293.
+[13] SEKERDAG E, SOLAROGLU I, GURSOY-OZDEMIR Y. Cell Death
+Mechanisms in Stroke and Novel Molecular and Cellular Treatment Options[J].
+Current neuropharmacology,2018,16(9): 1396-1415.
+[14] Tuo QZ, Zhang ST, Lei P. Mechanisms of neuronal cell death in ischemic stroke
+andtheirtherapeuticimplications[J]. Med Res Rev,2022Jan;42(1):259-305.
+[15] WANG B, LIU Y, HUANG L, et al. A CNS-permeable Hsp90 inhibitor rescues
+synaptic dysfunction and memory loss in APP-overexpressing Alzheimer's mouse
+model via an HSF1-mediated mechanism[J]. Molecular Psychiatry, 2017,22(7):
+990-1001.
+[16]Antonietti P,Linder B, Hehlgans S, et al. Interference with theHSF1/HSP70/BAG3
+Pathway Primes Glioma Cells to Matrix Detachment and BH3 Mimetic-Induced
+Apoptosis[J].MolCancerTher,2017;16(1):156-168.
+[17] Cheng CY, Kao ST, Lee YC. Ferulic Acid Exerts Anti-apoptotic Effects against
+Ischemic Injury by Activating HSP70/Bcl-2- and HSP70/Autophagy-Mediated
+Signaling after Permanent Focal Cerebral Ischemia in Rats[J]. Am J Chin Med,
+2019;47(1):39-61.
+[18] Mohanan A, Deshpande S, Jamadarkhana PG, et al. Delayed intervention in
+experimental stroke with TRC051384--a small molecule HSP70 inducer[J].
+Neuropharmacology,2011May;60(6):991-9.
+[19]Li J,YuJ, MaH, et al. Intranasal Pretreatment with Z-Ligustilide, theMainVolatile
+Component of Rhizoma Chuanxiong, Confers Prophylaxis against Cerebral
+Ischemia via Nrf2 and HSP70 Signaling Pathways[J]. J Agric Food Chem, 2017
+Mar1;65(8):1533-1542.
+[20] Jiang Y, He R, Shi Y, Liang J. Plasma exosomes protect against cerebral
+ischemia/reperfusion injury via exosomal HSP70 mediated suppression of ROS[J].
+65
+--- 第69页 ---
+重庆医科大学硕士研究生学位论文
+Life Sci,2020 Sep 1;256:117987.
+[21] Su XT, Wang L, Ma SM, et al. Mechanisms of Acupuncture in the Regulation of
+Oxidative Stress in Treating Ischemic Stroke[J]. Oxid Med Cell Longev, 2020 Oct
+24;2020:7875396.
+[22] Kim JY, Kim N, Zheng Z, et al. 70-kDa Heat Shock Protein Downregulates
+Dynamin in Experimental Stroke: A New Therapeutic Target?[J]. Stroke, 2016
+Aug;47(8):2103-11.
+[23] Giffard RG, Yenari MA. Many mechanisms for hsp70 protection from cerebral
+ischemia[J]. JNeurosurgAnesthesiol, 2004Jan;16(1):53-61.
+[24] Zheng X, Xu F, Liang H, et al. SIRT1/HSF1/HSP pathway is essential for
+exenatide-alleviated, lipid-induced hepatic endoplasmic reticulum stress[J].
+Hepatology,2017Sep;66(3):809-824.
+[25] Song X, Gong Z, Liu K, et al. Baicalin combats glutamate excitotoxicity via
+protecting glutamine synthetase from ROS-induced 20S proteasomal degradation[J].
+Redox Biol, 2020Jul;34:101559.
+[26] Sun H, Jiang M, Fu X, et al. Mesencephalic astrocyte-derived neurotrophic factor
+reduces cell apoptosis via upregulating HSP70 in SHSY-5Y cells[J]. Transl
+Neurodegener,2017May 22;6:12.
+[27] Mi J, Yang Y, Yao H, et al. Inhibition of heat shock protein family A member 8
+attenuates spinal cord ischemia-reperfusion injury via astrocyte NF-κB/NLRP3
+inflammasome pathway : HSPA8 inhibition protects spinal ischemia-reperfusion
+injury[J].J Neuroinflammation, 2021Aug 6;18(1):170.
+[28] Yu WW, Cao SN, Zang CX, et al. Heat shock protein 70 suppresses
+neuroinflammation induced by α-synuclein in astrocytes[J]. Mol Cell Neurosci,
+2018 Jan;86:58-64.
+[29] Kim JY, Yenari MA, Lee JE. Regulation of inflammatory transcription factors by
+heat shock protein 70 in primary cultured astrocytes exposed to oxygen-glucose
+deprivation[J].Neuroscience,2015Feb 12;286:272-80.
+[30] Zhao T, Hong Y, Yin P, et al. Differential HspBP1 expression accounts for the
+66
+--- 第70页 ---
+重庆医科大学硕士研究生学位论文
+greater vulnerability of neurons than astrocytes to misfolded proteins[J]. Proc Natl
+Acad SciU SA, 2017Sep 12;114(37):E7803-E7811.
+[31] Zhou XY, Luo Y, Zhu YM, et al. Inhibition of autophagy blocks
+cathepsins-tBid-mitochondrial apoptotic signaling pathway via stabilization of
+lysosomal membrane in ischemic astrocytes[J]. Cell Death Dis, 2017 Feb
+16;8(2):e2618.
+[32] Hu C, Chen X, Wang M, et al. Analgecine protects against cerebral
+ischemia-reperfusion through apoptosis inhibition and anti-neuroinflammation in
+rats[J].Neuropeptides, 2022Feb 8;93:102230.
+[33] Choi K, Ni L, Jonakait GM. Fas ligation and tumor necrosis factor α activation of
+murine astrocytes promote heat shock factor-1 activation and heat shock protein
+expression leading to chemokine induction and cell survival[J]. J Neurochem, 2011
+Feb;116(3):438-48.
+[34] Sun X, Crawford R, Liu C, et al. Development-dependent regulation of molecular
+chaperones after hypoxia-ischemia[J]. Neurobiol Dis, 2015Oct;82:123-131.
+[35] Gomez-Pastor R, Burchfiel ET, Thiele DJ. Regulation of heat shock transcription
+factors and their roles in physiology and disease[J]. Nat Rev Mol Cell Biol, 2018
+Jan;19(1):4-19.
+[36]Yuan L, Qiu L,YeY,et al. Heat-shock transcription factor1 is critically involved in
+the ischaemia-induced cardiac hypertrophy via JAK2/STAT3 pathway[J]. J Cell Mol
+Med, 2018Sep;22(9):4292-4303.
+[37] Yao X, Yang W, Ren Z, et al. Neuroprotective and Angiogenesis Effects of
+Levetiracetam Following Ischemic Stroke in Rats[J]. Front Pharmacol, 2021 May
+14;12:638209.
+[38] Yu Y, Zhu Y, Sun X, et al. DL-3-n-butylphthalide protects H9c2 cardiomyoblasts
+from ischemia/reperfusion injury by regulating HSP70 expression via PI3K/AKT
+pathway activation[J]. ExpTher Med,2021Sep;22(3):1008.
+[39] 丁宇,王彦丰,左夏林,艾学龙,王媛媛,王彦斌,姚翔,丁克祥.人类细胞自噬研究的
+起源及细胞自噬的分子机制[J].国际老年医学杂志,2022,43(01):98-101+114.
+67
+--- 第71页 ---
+重庆医科大学硕士研究生学位论文
+[40] Jiang B, Xiao W, Shi Y, et al. Heat shock pretreatment inhibited the release of
+Smac/DIABLO from mitochondria and apoptosis induced by hydrogen peroxide in
+cardiomyocytes and C2C12 myogenic cells[J]. Cell Stress Chaperones, 2005
+Autumn;10(3):252-62.
+[41] Guo F, Sigua C, Bali P, et al. Mechanistic role of heat shock protein 70 in
+Bcr-Abl-mediated resistance to apoptosis in human acute leukemia cells[J]. Blood,
+2005 Feb 1;105(3):1246-55.
+[42] Jurcau A, Simion A. Neuroinflammation in Cerebral Ischemia and
+Ischemia/Reperfusion Injuries: From Pathophysiology to Therapeutic Strategies[J].
+Int J MolSci, 2021Dec 21;23(1):14.
+[43] Martine P, Chevriaux A, Derangère V, et al. HSP70 is a negative regulator of
+NLRP3 inflammasomeactivation[J]. Cell Death Dis,2019Mar 15;10(4):256.
+68
+--- 第72页 ---
+重庆医科大学硕士研究生学位论文
+致 谢
+三年时间，白驹过隙般转瞬即逝，感慨颇多，难以一一道来
+首先，我要特别感谢我的导师董志教授。三年来，我从董老师身上学到了很
+多为人处世的道理和严谨治学的精神。无论是在科研学习上还是日常生活中，董
+老师总是我们的无尽包容、支持与理解，用他丰富的经历经验从客观的角度帮你
+分析解决问题。董老师个人魅力总是令人着迷，无论是他的谈吐还是歌声；同时
+他总能跟上我们年轻人想法和潮流。正因如此，平日里我们课题组的氛围很是轻
+松自在，非常荣幸能够成为咱们“董事会”的一员。最后真心感谢恩师一路上的
+栽培和指导！
+其次我还要感谢我的家人和朋友，感谢你们对我在学业上及生活上无条件的
+支持，在我学习生活不顺时候包容我的脾气，给我鼓励和开导。
+然后我要特别感谢我的同门胡晴雯，三年里，我俩在科研这条路共进退，达
+成了浓厚的革命友谊。由衷感谢她对我的支持帮助，虽然她时常嫌弃责备我的愚
+笨，但我知道这对我的反向鞭策。很幸运有这样一位好兄弟，所以想感谢的话都
+在以后每一次的推杯换盏、觥筹交错间，最后祝愿她未来的博士学习中顺顺利利
+，同时也要开心永驻，也要记得在川渝还有一波朋友，常回来看看。感谢刘京东
+（烧的一手好饭）师兄、邓玲师姐（国粹）、陈莎师姐（榜样）、王萱师姐（小
+杜迷妹）、赵虹霞师姐（干饭人）以及所以毕业的师兄师姐们对科研和生活上我
+的帮助、教导和关爱。因为有你们，才有了我们这样一个有爱活泼的大家庭。
+我还要感谢吴宇师妹（探店小达人，超懂生活的，做的一手好甜点）、樊小
+梅师妹（最不像重庆人的九龙坡littleMei，平时对她些许严格，希望不要怪我）在
+实验上和平时对我的支持与帮助，今后就是研三师姐了，要好好加油，科研顺利
+。感谢江露和杨绍楠师妹对我的帮助，有了三位博后和两位师姐加持，在科研的
+道路上乘风破浪吧。然后感谢杨老师课题组的同学们（特别感谢“老年活动室”
+的美女们）对我的关心帮助。特别感谢“正精人”的厚米们（你要永远记得711的
+朝阳）和我最可爱老帅的室友弟兄们（把爱永远留在3228）。因为有你们陪伴，
+才有现在真切的我。研究生三年里虽有遗憾，但也精彩绚烂。最后感谢重庆医科
+大学和药学院生物化学与分子药理学重点实验室为我提供了良好的实验平台，更
+69
+--- 第73页 ---
+重庆医科大学硕士研究生学位论文
+要感谢药学院各位老师平时给予的帮助与指导。
+长风破浪会有时，直挂云帆寄沧海！怀揣希望再次出发，虽江湖路远，我们
+必顶峰相见！
+70
+--- 第74页 ---
+重庆医科大学硕士研究生学位论文
+研究生期间参与研究的成果及发表的文章
+[1] β-石竹烯通过激活 HSF1/HSP70 通路来减轻大鼠脑缺血再灌注损伤（中国
+新药）（第一作者，修回复审）
+[2] Hu, Q., Zuo, T., Deng, L., Chen, S.,Yu, W., Liu, S., Liu, J., Wang, X., Fan, X.,
+Dong, Z. β-Caryophyllene Suppresses Ferroptosis Induced by Cerebral Ischemia
+Reperfusion via Activation of the NRF2/HO-1 Signaling Pathway in MCAO/R rats.
+[J].Phytomedicine, 2022,154112.（共同第一作者，已接收）
+71

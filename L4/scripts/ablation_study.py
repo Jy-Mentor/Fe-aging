@@ -33,7 +33,6 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from tqdm import tqdm
 
 # ── 路径设置 ──────────────────────────────────────────────
 PROJECT_ROOT = Path(__file__).parent.parent.parent.resolve()
@@ -202,7 +201,7 @@ KEY_DATA_FILES = [
     PROJECT_ROOT / "L2" / "results" / "kegg_pathways" / "kegg_human_pathway_genes.tsv",
     L4_RESULTS / "esm2_protein_embeddings.npz",
     PROJECT_ROOT / "L3" / "results" / "tcm_compound_pool_v21_Alevel.csv",
-    PROJECT_ROOT / "L3" / "results" / "tcm_compound_pool_tox_filtered_noleak.csv",
+    PROJECT_ROOT / "L3" / "results" / "tcm_compound_pool_tox_filtered.csv",
     PROJECT_ROOT / "L3" / "results" / "tcm_compound_pool_tox_filtered.csv",
     PROJECT_ROOT / "L1" / "results" / "ferroaging_genes_96.csv",
     L4_RESULTS / "phenotype_ferroptosis_dataset_v25_clean.csv",   # v25: 清洗后表型数据
@@ -254,7 +253,7 @@ def _load_cpi_leak_smiles() -> set:
     leak_smiles = set()
     for tcm_path in [
         PROJECT_ROOT / "L3" / "results" / "tcm_compound_pool_v21_Alevel.csv",
-        PROJECT_ROOT / "L3" / "results" / "tcm_compound_pool_tox_filtered_noleak.csv",
+        PROJECT_ROOT / "L3" / "results" / "tcm_compound_pool_tox_filtered.csv",
         PROJECT_ROOT / "L3" / "results" / "tcm_compound_pool_tox_filtered.csv",
     ]:
         if tcm_path.exists():

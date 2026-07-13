@@ -1,0 +1,320 @@
+
+--- 第1页 ---
+858 Guangxi Medical Journal，Apr．2021，Vol．43，No．7
+综 述
+▲
+铁死亡与缺血再灌注损伤关系的研究进展
+易 欣1，2，3 刘 畅1，2，3 周 易1，2，3 蒋学俊1，2，3
+(1 武汉大学人民医院心内科，2 武汉大学心血管病研究所，3 心血管病湖北省重点实验室，
+湖北省武汉市 430060，电子邮箱:yixin321624@126．com)
+【提要】 铁死亡是近年提出来的一种新型细胞程序性死亡方式，其有别于细胞凋亡、细胞坏死、细胞自噬
+的程序性死亡，是以活性氧基团和铁离子介导的脂质过氧化为主要特征。铁死亡与多种生理和病理生理过程
+有关，最新发现其与心脏、脑、肝脏和肾脏等重要生命器官组织的缺血再灌注损伤密切相关。本文主要针对铁
+死亡与缺血再灌注损伤之间的关系展开综述。
+【关键词】 铁死亡;缺血再灌注损伤;细胞死亡;综述
+【中图分类号】 Ｒ 392．1 【文献标识码】 A 【文章编号】 0253-4304(2021)07-0858-05
+DOI:10．11675/j．issn．0253-4304．2021．07．16
+尽快使缺血器官组织恢复血流灌注、挽救濒死细 要特征，因此被称为“铁死亡”或“铁坏死”［11］。细胞
+胞，是目前治疗缺血性心肌病、缺血性脑病等缺血性 内的游离铁离子通过芬顿反应与过氧化氢相互作用，
+疾病的关键。然而，除缺血外，再灌注本身也会给心 导致组成生物膜的多不饱和脂肪酸发生脂质过氧化，
+肌、脑组织、肝脏、肾脏等重要生命器官组织造成进一 这是目前已知的铁死亡启动的基础机制［12－14］。
+步的损伤，这一矛盾现象被称为“缺血再灌注损 1．2 铁死亡的关键调节因子 线粒体是 ＲOS 产生
+伤”［1－2］。导致缺血再灌注损伤的机制主要包括氧化 的主要场所，ＲOS的形式主要包括羟自由基、超氧阴
+应激、钙超载、线粒体通透性转换孔开放、炎症反应、
+离子自由基、单线态氧和过氧化氢等［15］。谷胱甘肽
+过氧化物酶4( glutathione peroxidase 4，GPX4) 是一种
+能量代谢障碍等，但无论何种机制，最终结局均是导
+致器官组织的细胞死亡［3］。既往研究报告指出，多 硒蛋白，它可特异并高效地清除磷脂过氧化氢，从而
+抑制铁死亡。有学者采用氧化脂质组学方法分析发
+种细胞程序性死亡参与缺血再灌注后的心肌细胞死
+现，缺乏 GPX4 的小鼠肾脏组织中存在大量磷脂氢过
+亡、肝细胞死亡和肾小管上皮细胞死亡等［4－7］，其中
+氧化物的堆积，包括磷脂酰胆碱氢过氧化物、磷脂酰
+最经典的死亡方式是细胞凋亡。近年来，又发现一些
+乙醇胺和心磷脂等［16］。定位在 Sn-2 位置的多不饱
+新的程序性死亡方式参与缺血再灌注损伤的发生和
+和脂肪酸会导致磷脂极易发生氧化，脂质过氧化反应
+发展，譬如铁死亡［8－10］。因此，本文将着重介绍铁死
+的主要产物分解后形成次要产物———低分子和高分
+亡影响缺血再灌注损伤的研究概况，浅析铁死亡与缺
+子醛，而醛可以与细胞成分如胺、氨基酸和蛋白质相
+血再灌注损伤之间的关系。
+互作用，形成共价产物，这些醛反过来可以进一步促
+1 铁死亡
+进细胞死亡［17］。此外，目前已经鉴定出多种与磷脂
+代谢有关的酶在铁死亡中发挥重要作用。其中，酰基
+1．1 铁死亡的概念 铁是人体内不可缺少的微量元 辅酶 A 合酶长链家族成员 4( acyl-CoA synthetase
+素，体内铁含量过低或过高、分布异常均会影响机体的 long-chain family member 4，ACSL4) 可催化长链脂肪
+生理功能。2012年，Dixon 等［11］首次报告了一种新型 酸和辅酶A反应生成酯酰辅酶A，敲低或抑制ACSL4
+细胞死亡方式，其主要表现为细胞内铁离子堆积、脂质 均能显著抑制 GPX4 抑制剂 ＲSL3 诱导的铁死亡［18］。
+过氧化、线粒体体积缩小和线粒体膜密度增加。这种 溶血磷脂酰胆碱酰基转移酶3( lysophosphatidylcholine
+程序性细胞死亡方式有别于细胞凋亡、细胞坏死和细 acyltransferase 3，LPCAT3) 可参与磷脂酰乙醇胺的生
+胞自噬，呈铁离子依赖，是以活性氧( reactive oxygen 物合成，影响多不饱和脂肪酸的跨膜，抑制 LPCAT3
+species，ＲOS) 基团和铁离子介导的脂质过氧化为主 的表达可减少细胞内脂质过氧化的底物聚集，从而抑
+▲基金项目:国家自然科学青年基金(81700249);湖北省卫生健康委科研立项青年项目(WJ2019Q043)
+作者简介:易欣(1987～)，女，博士，副主任医师，研究方向:冠心病的基础与临床。
+通信作者:蒋学俊(1967～)，男，博士，主任医师，研究方向:介入心脏病学，电子邮箱: xjjiang@whu．edu．cn。
+--- 第2页 ---
+广西医学 2021 年4 月第43 卷第7 期 859
+制铁死亡［19］。 搭桥等手段恢复血液供应的早期可能会进一步促进
+1．3 铁死亡的诱导剂和抑制剂 目前，已发现多种 心肌细胞死亡、诱发心律失常、心肌顿抑、微血管栓塞
+物质可以诱导铁死亡的发生，常见的铁死亡诱导剂有 等，这一矛盾现象被称为“心肌缺血再灌注损伤”［1］。
+小分子化合物 Erastin、ＲSL3、丁硫氨酸亚砜胺、柳氮 2．1．2 铁死亡参与心肌缺血再灌注损伤: 已有研究
+磺吡啶、青蒿琥酯和索拉非尼等，但细胞凋亡、坏死、 报告了多种细胞程序性死亡参与缺血再灌注后心肌
+自噬相关抑制剂并不能逆转 Erastin 诱导的细胞铁死 细胞的死亡，最经典的是细胞凋亡，而铁死亡是新型
+亡［20－22］。同时，有些物质也能够抑制铁死亡，包括维 细胞程序性死亡方式之一［8］。最近有学者发现在心
+生素E、谷胱甘肽、Trolox、Ferrostatin-1、Liproxstatin-1、
+肌缺血再灌注损伤发生时可产生磷脂氧化产物［27］。
+铁螯合剂如甲磺酸去铁胺等。最近有学者发现，部分 在心肌缺血再灌注后大量的 ＲOS 产生，而芬顿反应
+中药及其活性成分能够有效调节铁死亡，如青蒿素可 可进一步促进 ＲOS 的产生，如二价铁离子通过芬顿
+调节与铁死亡相关的基因表达，诱导细胞铁死亡［22］; 反应将H
+2
+O
+2
+转化为OH自由基( ·OH) ;产生的ＲOS
+会与生物膜的多不饱和脂肪酸发生脂质过氧化反应，
+葛根素能抑制ＲOS的生成，调节铁稳态，抑制细胞铁
+死亡［23］; 黄芩苷可抑制脂质过氧化，减少铁沉积，抑 导致心肌细胞发生铁死亡。
+制细胞铁死亡［24］; 糙米提取物也可以抑制脂质过氧 Ooko等［21］于经皮冠状动脉介入术后4 d 和5 个
+月对48 例ST段抬高型心肌梗死患者进行磁共振成
+化，改善敲低 GPX4 基因后所致的细胞毒性和细胞增
+像检查，发现患者梗死区和左室重构区的残留铁水平
+殖障碍，从而抑制细胞铁死亡［25］。由此可见，中药及
+较高;Baba等［28］的研究进一步证实在小鼠缺血再灌注
+其活性成分有望成为未来治疗铁死亡相关疾病的重
+损伤过程中，心肌细胞存在铁超载。这提示铁死亡在
+要方向之一，但需要深入研究中药成分的结构特征和
+心肌缺血再灌注损伤中发挥重要作用。具有结合铁作
+作用靶点，从而保证中药及其活性成分治疗铁死亡相
+用的去铁胺被证明对雄性小鼠离体心肌缺血再灌注损
+关疾病的稳定性和安全性。
+伤具有保护作用［14］。铁死亡抑制剂Ferrostatin-1 被证
+2 铁死亡与缺血再灌注损伤的关系 明能显著抑制缺血再灌注损伤导致的心肌细胞死
+亡［17］。此外，王福俤教授团队更是在动物水平进一
+临床和基础研究显示，心脏、脑、肾脏、肝脏、肺脏 步证实了铁死亡对心肌缺血再灌注损伤的作用，其研
+等重要生命器官组织缺血后，恢复血液灌注不但没能 究结果显示，Ferrostatin-1 以及铁螯合剂能显著抑制
+减轻组织的缺血损伤反而进一步加重了器官组织的 缺血再灌注损伤导致的急性和慢性心脏损伤［8］。以
+细胞死亡，即缺血再灌注损伤［1－2］。细胞死亡导致器
+上研究结果表明，铁死亡可能是介导心肌缺血再灌注
+官组织功能降低是缺血再灌注损伤的主要原因，如何 损伤的重要机制，而通过干预铁死亡有望成为减轻心
+有效减少甚至抑制细胞死亡是改善和恢复缺血再灌 肌缺血再灌注损伤的潜在靶点。
+注后器官组织功能的重要研究方向。随着对细胞死 2．1．3 中药及其活性成分或小分子化合物通过抑制
+亡方式的不断认识和深入研究，越来越多的学者发现 铁死亡改善心肌缺血再灌注损伤:葛根素为异黄酮类
+铁死亡是缺血再灌注损伤中细胞死亡的重要方式之 化合物，是葛根发挥药理作用的物质基础之一［29］。
+一，这为恢复缺血再灌注后受损器官组织的功能提供 Liu等［30］发现葛根素能够改善心力衰竭，抑制心肌细
+了新思路和新方向。 胞死亡;用铁死亡诱导剂 Erastin 或异丙肾上腺素处
+2．1 铁死亡与心肌缺血再灌注损伤 理心肌细胞 H9C2 后，心肌细胞活力降低，脂质过氧
+2．1．1 心肌缺血再灌注损伤的发生机制: 当冠状动 化、不稳定铁池增加，而给予葛根素能抑制其脂质过
+脉闭塞引起心肌组织中氧和营养物质供应障碍时，会 氧化和铁过载。这提示葛根素有可能是通过抑制心
+导致心肌组织的生化反应和代谢发生紊乱，如氧缺乏 肌细胞铁死亡而减缓心肌细胞死亡的。Baba 等［28］
+会导致氧化磷酸化暂停、线粒体膜去极化、ATP 缺乏， 利用第一代铁死亡诱导剂Erastin、第二代铁死亡诱导
+同时也会抑制心肌的收缩能力［1］。此外，氧缺乏还 剂ＲSL3 处理心肌细胞后，心肌细胞活力降低，而给
+会导致心肌内的代谢方式转换至无氧糖酵解，从而导 予铁死亡抑制剂Ferrostatin-1 或过表达雷帕霉素的下
+致乳酸堆积，降低细胞内 pH 值，并导致多种离子泵 游作用靶点哺乳动物雷帕霉素靶蛋白，均能显著抑制
+活性发生变化［26］。心肌持续缺血缺氧会导致心肌细 心肌细胞内ＲOS的生成，从而抑制心肌细胞铁死亡，
+胞大量死亡、心功能持续恶化、甚或死亡。因此，及时 提示雷帕霉素发挥心肌缺血保护作用的机制有可能
+恢复血液供应、挽救濒死心肌是目前治疗心肌梗死的 是通过抑制心肌细胞内铁过载和铁死亡而实现的。
+标准方法。然而，当临床通过溶栓、支架植入或冠脉 然而，铁死亡在心肌缺血再灌注损伤中的具体生物学
+--- 第3页 ---
+860 Guangxi Medical Journal，Apr．2021，Vol．43，No．7
+功能，以及中药及其活性成分或其他小分子化合物等 子在脑组织内沉积有关，从而能够改善脑缺血损
+有效改善心肌缺血再灌注损伤中铁死亡的精确分子 伤［38］。以上研究进一步提示，铁死亡在脑缺血再灌
+机制尚未完全明确。因此，未来进一步深入研究铁死 注损伤的发生和发展中发挥关键作用，而铁死亡抑制
+亡等与心肌缺血再灌注损伤的关系及机制有望为研 剂和铁螯合剂等有望通过调节异常的铁代谢改善铁
+发相关药物提供新思路。 死亡诱导的脑缺血再灌注损伤。然而，目前针对铁死
+2．2 铁死亡与脑缺血再灌注损伤 亡与脑缺血再灌注损伤的研究只局限于细胞实验和
+2．2．1 铁死亡参与脑缺血再灌注损伤: 脑是对缺血 动物实验阶段，铁死亡与人类脑血管疾病的确切关系
+缺氧最为敏感、耐受力最差的生命器官，是最容易发 还有待深入探究。
+生缺血再灌注损伤的器官之一，脑组织发生缺血再灌 2．3 铁死亡与肾缺血再灌注损伤
+注损伤后主要表现为脑细胞坏死和脑水肿等。铁是 2．3．1 铁死亡参与肾缺血再灌注损伤: 肾缺血再灌
+神经系统的电子传递者，参与线粒体氧化反应和氧气 注损伤是肾移植术后影响早期肾功能恢复和长期存
+运输，在 DNA、ＲNA、蛋白质和髓磷脂合成中发挥重 活的重要因素，是缺血性急性肾功能衰竭的重要环
+要作用;此外，铁还参与神经髓鞘的发生发展、神经递 节，也是临床上导致急性肾损伤的重要原因。此外，
+质如多巴胺的合成［31］。脑缺血后，线粒体无法提供 在心肺复苏、体外循环、严重失血性休克、短暂阻断肾
+足够的电子，生成大量的自由基，细胞膜上离子通透 血流手术过程中均可能存在肾缺血再灌注损伤。
+性升高，释放出大量不稳定低分子的“催化性”铁，此 Skouta等［39］运用叔丁基过氧化氢诱导人近端肾小管
+外无氧糖酵解产生大量的还原型烟酰胺腺嘌呤二核 上皮细胞HK-2 构建急性肾损伤的细胞模型，发现第
+苷酸磷酸将三价Fe离子还原成二价Fe离子;缺血期 一代铁死亡抑制剂 Ferrostatin-1、第二代铁死亡抑制
+和再灌注期的铁离子移位进一步促进自由基的生成， 剂 SＲS11-92 可明显延长 HK-2 细胞的存活时间。
+最终导致脂质过氧化和神经元细胞死亡，加重脑组织 Friedmann Angeli 等［16］敲除小鼠铁死亡关键基因
+的缺血损伤［32］。 GPX4后，发现肾小管上皮细胞发生了铁死亡，且小鼠
+有研究显示，大脑短暂缺血后再灌注4 d 后，沙 出现了急性肾损伤; 给予铁死亡抑制剂 Liproxstatin-1
+土鼠的海马区出现转铁蛋白阳性的神经元和铁蛋白 处理后能够显著减轻缺血再灌注诱导的急性肾损伤。
+阳性的胶质细胞，再灌注7 d 后纹状体出现铁蛋白阳 以上研究均表明，在缺血再灌注损伤导致的急性肾损
+性的巨噬细胞，这表明铁蛋白阳性表达与缺血后神经 伤模型中，肾小管上皮细胞发生了严重的铁死亡。
+元变性密切相关［33］。Chi 等［34］研究发现脑缺血1 h 2．3．2 铁死亡抑制剂和铁螯合剂改善肾缺血再灌注
+后，脑组织内大量铁沉积，主要集中在巨噬细胞和小 损伤:Linkermann 等［40］发现，在急性缺血再灌注损伤
+胶质细胞铁蛋白阳性明显的细胞坏死区域。此外，脑 和草酸肾病相关的急性肾功能衰竭小鼠模型中均存在
+缺血能诱导铁代谢障碍，脑组织内大量铁沉积，而铁 严重的铁死亡，利用铁死亡第三代抑制剂SＲS16-86 可
+沉积又可通过脂质过氧化促进自由基产生，导致 保护肾功能、减轻缺血再灌注和草酸盐相关的急性肾
+DNA变性，进一步引起脑组织损伤［35－36］。以上研究 损伤，并延长生存时间。另外，横纹肌溶解和叶酸也
+均提示，铁超载和铁死亡在脑缺血再灌注损伤、脑损 可导致近端肾小管发生铁死亡，而给予铁螯合剂去铁
+伤等神经系统疾病的病理生理过程中发挥重要作用， 胺和铁死亡抑制剂 Ferrostatin-1 均可抑制脂质过氧
+通过干预铁代谢和铁死亡或可成为抑制脑细胞死亡、 化，从而减轻急性肾损伤［41－42］。还有学者发现，新型
+减轻脑缺血再灌注损伤的潜在靶点。 铁螯合剂CHGN2957 也能有效减轻大鼠肾缺血再灌
+2．2．2 铁死亡抑制剂和铁螯合剂改善脑缺血再灌注 注损伤，这可能与其利用中性粒细胞明胶酶相关脂质
+损伤:高浓度谷氨酸盐可诱导大鼠大脑海马区脑细胞 运载蛋白、肠螯素和铁的螯合，调节铁的传递过程，最
+死亡，而铁死亡抑制剂 Ferrostatin-1 和铁螯合剂 CPX 终减少ＲOS的产生有关［43］。由此可见，铁死亡抑制
+可以减轻这种脑细胞死亡，提示大鼠中枢神经系统损 剂或铁螯合剂、抑制肾细胞铁死亡，可能是未来临床
+伤中存在铁死亡，且铁死亡抑制剂和铁螯合剂可显著 治疗肾缺血再灌注损伤和急性肾损伤的新策略和新
+降低脑细胞的死亡率［11］。在新生羊缺血再灌注损伤 措施。
+模型中，铁螯合剂可以抑制自由基的生成，提高 2．4 铁死亡与肝缺血再灌注损伤 目前，肝脏切除
+钠-钾-腺苷三磷酸酶活性，促进神经功能的恢复，缩 和肝移植手术是终末期肝脏疾病最常用的治疗手段。
+减损伤面积，改善缺血再灌注脑损伤，提高生存 然而，肝缺血再灌注损伤是肝脏切除和肝移植手术过
+率［37］。此外，铁螯合剂发挥神经保护作用可能与其 程中不可避免的并发症，其可导致急慢性组织排异反
+能结合体内铁离子，促进体内铁离子排泄，减少铁离 应和肝脏移植术后器官衰竭等，极大地限制了肝脏切
+--- 第4页 ---
+广西医学 2021 年4 月第43 卷第7 期 861
+除术的适应证及边缘性肝脏供体的应用。有研究显 铁死亡的具体机制及其下游调控机制，明确铁死亡抑
+示，铁死亡在缺血再灌注性肝损伤中也发挥重要作 制剂的作用靶点和环节，将会为器官缺血再灌注损伤
+用;同时，给予铁死亡抑制剂 Liproxstatin-1 可以抑制 的治疗提供新的研究思路和治疗策略，具有十分重要
+脂质过氧化，从而减轻缺血再灌注导致的肝损伤［16］。 的临床价值和意义。
+然而，铁死亡在肝缺血再灌注损伤中的研究尚处于萌
+芽阶段。因此，未来深入研究铁死亡这一新型程序性 参 考 文 献
+细胞死亡方式，可能有助于阐明肝缺血再灌注损伤的
+病理生理机制，从而能够靶向铁死亡为改善缺血再灌 ［1］ Hausenloy DJ，Yellon DM．Myocardial ischemia-reperfusion
+injury: a neglected therapeutic target［J］． J Clin Invest，
+注性肝损伤提供新策略和新方向。
+2013，123(1):92－100．
+2．5 铁死亡与肺缺血再灌注损伤 肺缺血再灌注损
+［2］ Ahmed F，Mwiza JM，Fernander M，et al．Meprin-β activity
+伤常见于肺梗死、急性肺损伤和肺移植，是造成肺移植
+modulates the β-catalytic subunit of protein kinase A in
+患者术后原发性移植肺功能障碍的主要原因。研究表
+ischemia-reperfusion-induced acutekidneyinjury［J］．AmJ
+明，再灌注后，缺血肺组织在血氧恢复过程中生成大量
+Physiol Ｒenal Physiol，2020，318(5):F1147－F1159．
+的ＲOS，进一步激活免疫系统和凝血系统，进而导致内 ［3］ Davidson SM，Ferdinandy P，Andreadou I，et al．Multitarget
+皮细胞功能障碍、细胞凋亡等［44］。肿瘤抑制因子 p53 strategies to reduce myocardial ischemia/reperfusion injury:
+主要通过诱导细胞周期停滞、细胞凋亡等方式发挥作 JACC review topic of the week［J］． J Am Coll Cardiol，
+用。最近研究表明，p53 除了诱导细胞凋亡，还可以诱 2019，73(1):89－99．
+导细胞铁死亡［11］。Li 等［45］发现在缺血再灌注损伤诱 ［4］ Choi ME，Price DＲ，Ｒyter SW，et al．Necroptosis:a crucial
+pathogenic mediator of human disease［J］． JCI Insight，
+导的急性肺损伤小鼠和缺氧复氧诱导的小鼠肺上皮细
+2019，4(15):e128834．
+胞模型中存在铁死亡，过表达 p53 凋亡刺激蛋白家族
+［5］ Luedde M，Lutz M，Carter N，et al．ＲIP3，a kinase promoting
+抑制因子( inhibitor of apoptosis-stimulating protein of
+necroptotic cell death，mediates adverse remodeling after
+p53，iASPP) 可抑制铁死亡从而减轻缺血再灌注损伤
+myocardial infarction［J］． Cardiovascular Ｒesearch，2014，
+诱导的急性肺损伤，而敲低iASPP可促进铁死亡从而 103(2):206．
+加重缺血再灌注损伤诱导的急性肺损伤;其进一步发 ［6］ Kohli V，Selzner M，Madden JF，et al．Endothelial cell and
+现，iASPP发挥抑制铁死亡改善急性肺损伤的保护作 hepatocytedeaths occur by apoptosis after ischemia-reperfusion
+用，主要与其激活核因子E2 相关因子2/缺氧诱导因 injury in the rat liver［J］． Transplantation，1999，67(8):
+子-1/转录因子信号通路有关。然而，铁死亡与肺缺 1099．
+［7］ Hui C，Fang Y，J Wu，et al．ＲIPK3-MLKL-mediated necro-
+血再灌注损伤的研究报告尚少。因此，以铁死亡为核
+inflammation contributes to AKI progression to CKD［J］．
+心和靶点，研究铁死亡在肺缺血再灌注损伤中的具体
+Cell Death Dis，2018，9(9):878．
+作用机制，有助于阐明肺缺血再灌注损伤的病理生理
+［8］ Fang X，Wang H，Han D，et al．Ferroptosis as a target for
+机制，为改善缺血再灌注肺损伤提供新措施。
+protection against cardiomyopathy［J］．Proc Natl Acad Sci
+U S A，2019，116(7):2672－2680．
+3 结语与展望
+［9］ SuL，Jiang X，Yang C，et al．Pannexin 1 mediates ferroptosis
+that contributes to renal ischemia/reperfusion injury［J］．J
+铁死亡作为一种新型程序性细胞死亡方式，参与
+Biol Chem，2019，294(50):19395－19404．
+多种器官的缺血再灌注损伤病理生理过程，但目前仍
+［10］Yamada N，Karasawa T，Wakiya T，et al．Iron overload as a
+有许多问题有待进一步研究: ( 1) 铁死亡主要在缺血
+risk factor for hepatic ischemia-reperfusion injury in liver
+再灌注损伤的哪个环节或阶段发挥作用? ( 2) 器官 transplantation: potential role of ferroptosis［J］． Am J
+缺血再灌注损伤过程中，铁死亡是否必须依赖于铁离 Transplant，2020，20(6):1606－1618．
+子的参与? (3) 在器官缺血再灌注损伤过程中，铁死 ［11］Dixon SJ，Lemberg KM，Lamprecht MＲ，et al．Ferroptosis:
+亡与其他细胞死亡方式包括凋亡、坏死、焦亡等是如 an iron-dependent form of nonapoptotic cell death［J］．
+Cell，2012，149(5):1060－1072．
+何交错相互影响的，存在哪些交互信号通路? ( 4) 铁
+［12］方学贤，蔡昭贤，王 浩，等．铁过载及铁死亡在心脏疾病
+死亡特异性抑制剂和铁螯合剂在器官缺血再灌注损
+中的研究进展［J］．科学通报，2019，64(28):2974－2987．
+伤中的具体作用靶点是什么? 如何在器官缺血再灌
+［13］Valko M，Jomova K，Ｒhodes CJ，et al．Ｒedox-and non-redox-
+注损伤中进行铁死亡的特异性干预? 因此，进一步明
+metal-induced formation of free radicals and their role in
+确铁死亡与其他类型细胞死亡方式的差异，深入阐明 human disease［J］．Arch Toxicol，2016，90(1):1－37．
+--- 第5页 ---
+862 Guangxi Medical Journal，Apr．2021，Vol．43，No．7
+［14］Gao M，Monian P，Quadri N，et al． Glutaminolysis and ［30］Liu B，Zhao C，Li H，et al．Puerarin protects against heart
+transferrin regulate ferroptosis［J］．Mol Cell，2015，59(2): failure induced by pressure overload through mitigation of
+298－308． ferroptosis［J］． Biochem Biophys Ｒes Commun，2018，497
+［15］Singh Ｒ，Devi S，Gollen Ｒ． Ｒole of free radical in athero- (1):233－240．
+sclerosis，diabetes and dyslipidaemia: larger-than-life［J］． ［31］Qian ZM，WangQ．Expressionofirontransportproteinsand
+excessiveironaccumulation in the brain in neurodegenerative
+Diabetes Metab Ｒes Ｒev，2015，31(2):113－126．
+disorders［J］． Brain Ｒes Brain Ｒes Ｒev，1998，27( 3):
+［16］FriedmannAngeliJP，Schneider M，PronethB，et al．Inactivation
+257－267．
+of the ferroptosis regulator Gpx4 triggers acute renal failure
+［32］Kontos HA．Oxygen radicals in cerebral ischemia:the2001
+in mice［J］．Nat Cell Biol，2014，16(12):1180－1191．
+Willis lecture［J］．Stroke，2001，32(11):2712－2716．
+［17］Stamenkovic A，Pierce GN，Ｒavandi A．Phospholipid oxidation
+［33］IshimaruH，IshikawaK，OheY，etal．Activationofironhandling
+products inferroptoticmyocardialcelldeath［J］．AmJPhysiol
+systemwithin the gerbil hippocampus after cerebral ischemia［J］．
+Heart Circ Physiol，2019，317(1):H156－H163．
+Brain Ｒes，1996，726(1/2):23－30．
+［18］Doll S，Proneth B，Tyurina YY，et al．ACSL4 dictates ferroptosis
+［34］Chi SI，Wang CK，Chen JJ，et al．Differential regulation of
+sensitivity by shaping cellular lipid composition［J］． Nat
+H-and L-ferritin messenger ＲNA subunits，ferritin protein
+Chem Biol，2017，13(1):91－98．
+and Iron following focal cerebral ischemia-reperfusion［J］．
+［19］Woo JH，Shimoni Y，Yang WS，et al．Elucidating compound
+Neuroscience，2000，100(3):475－484．
+mechanism of action by network perturbation analysis［J］．
+［35］张志华，李 琳．脑缺血引起血清铁改变［J］．临床医药
+Cell，2015，162(2):441－451．
+实践，2005，14(7):495－496．
+［20］XieY，HouW，SongX，etal．Ferroptosis:processandfunction［J］． ［36］Wu J，Hua Y，Keep ＲF，et al．Oxidative brain injury from
+Cell Death Differ，2016，23(3):369－379． extravasated erythrocytes after intracerebral hemorrhage
+［21］OokoE，SaeedME，KadiogluO，etal．Artemisininderivatives ［J］．Brain Ｒes，2002，953(1/2):45－52．
+induceiron-dependentcell death(ferroptosis) in tumor cells［J］． ［37］Groenendaal F，Shadid M，McGowan JE，et al． Effects of
+Phytomedicine，2015，22(11):1045－1054． deferoxamine，a chelator of free iron，on NA+，K+-ATP ase
+［22］Eling N，ＲeuterL，HazinJ，etal．Identificationofartesunate activity of cortical brain cell membrane during early reper-
+as a specific activator of ferroptosis in pancreatic cancer fusion afterhypoxia-ischemiainnewbornlambs［J］．Pediatr
+cells［J］．Oncoscience，2015，2(5):517－532． Ｒes，2000，48(4):560－564．
+［23］Wang K，Zhu X，Zhang K，et al．Puerarin inhibits amyloid ［38］方郁丹，宋水江．铁离子在脑出血中的损伤机制及铁螯
+β-inducedNLＲP3inflammasome activation in retinal pigment 合剂的神经保护作用［J］．国际脑血管病杂志，2006，14
+epithelial cells via suppressing ＲOS-dependent oxidative (8):630－632．
+and endoplasmic reticulum stresses［J］． Exp Cell Ｒes， ［39］Skouta Ｒ，Dixon SJ，Wang J，et al． Ferrostatins inhibit
+oxidative lipid damage and cell death in diverse disease
+2017，357(2):335－340．
+models［J］．J Am Chem Soc，2014，136(12):4551－4556．
+［24］Xie Y，Song X，Sun X，et al．Identification of baicalein as a
+［40］Linkermann A，SkoutaＲ，HimmerkusN，etal．Synchronized
+ferroptosisinhibitor by natural product library screening［J］．
+renal tubular cell death involves ferroptosis［J］．Proc Natl
+Biochem Biophys Ｒes Commun，2016，473(4):775－780．
+Acad Sci U S A，2014，111(47):16836－16841．
+［25］SakaiO，YasuzawaT，SumikawaY，etal．ＲoleofGPx4inhuman
+［41］Ｒeeder BJ，Wilson MT．Desferrioxamine inhibits production
+vascular endothelial cells，and the compensatory activity of
+of cytotoxic heme to protein cross-linked myoglobin: a
+brown rice on GPx4 ablation condition［J］． Pathophysiology，
+mechanism to protect against oxidative stress without iron
+2017，24(1):9－15．
+chelation［J］．ChemＲesToxicol，2005，18(6):1004－1011．
+［26］Avkiran M，Marber MS． Na+ /H+ exchange inhibitors for
+［42］Martin-SanchezD，Ｒuiz-AndresO，PovedaJ，etal．Ferroptosis，
+cardioprotectivetherapy:progress，problemsandprospects［J］．
+but not necroptosis，is important in nephrotoxic folic acid-
+J Am Coll Cardiol，2002，39(5):747－753．
+induced AKI［J］．JAmSocNephrol，2017，28(1):218－229．
+［27］GangulyＲ，HasanallyD，StamenkovicA，et al．Alpha linolenic
+［43］王 翔．新型铁螯合剂CHGN2957对大鼠肾缺血再灌注
+aciddecreasesapoptosisandoxidizedphospholipidsincardio-
+损伤的保护作用［D］．上海:复旦大学，2010．
+myocytesduringischemia/reperfusion［J］．Mol Cell Biochem，
+［44］Weyker PD，Webb CA，Kiamanesh D，et al．Lung ischemia
+2018，437(1/2):163－175． reperfusion injury: a bench-to-bedside review［J］． Semin
+［28］Baba Y，Higa JK，Shimada BK，et al． Protective effects of Cardiothorac Vasc Anesth，2013，17(1):28－43．
+the mechanistic target of rapamycin against excess iron and ［45］Li Y，Cao Y，Xiao J，et al．Inhibitor of apoptosis-stimulating
+ferroptosis in cardiomyocytes［J］．Am J Physiol Heart Circ protein of p53 inhibits ferroptosis and alleviates intestinal
+Physiol，2018，314(3):H659－H668． ischemia/reperfusion-induced acute lung injury［J］． Cell
+［29］曾祥伟，冯 倩，张莹莹，等．葛根素对炎症相关疾病研 Death Differ，2020，27(9):2635－2650．
+究进展［J］．中国药理学通报，2018，34(1):8－11． (收稿日期:2020-09-14 修回日期:2020-12-24)

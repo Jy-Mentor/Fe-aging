@@ -1,0 +1,354 @@
+
+--- 第1页 ---
+生命的化学,2023,43(4):541-548 www.life.ac.cn doi: 10.13488/j.smhx.20220575
+铁死亡与缺血性脑卒中
+张鹏宇1， 王 媛2*
+(1山东中医药大学医学院，济南 250000；2山东中医药大学
+组织学与胚胎学教研室，济南 250000)
+摘要：铁死亡是一种铁代谢异常、脂质过氧化物累积构成的可调节性新型细胞死亡方式。缺血性脑卒
+中是全球第二大常见的脑血管疾病，病死率、致残率、复发率极高，其发生伴随着大量神经元死亡。
+现有研究证明，缺血性脑卒中发病机制与铁死亡关系密切。缺血性脑卒中损伤中出现的细胞内铁水平
+升高、脂质过氧化物增多和抗氧化能力下降的现象与铁依赖性非凋亡形式的铁死亡相一致。因此，阐
+明铁死亡在缺血性脑卒中的发生机制，有利于为其临床治疗提供新靶点。本文将从铁代谢、脂质代
+谢、氨基酸代谢、活性氧生成的调控等方面论述铁死亡发生的调节机制，着重探讨铁死亡发生在缺血
+性脑卒中的病理生理机制，期望以铁死亡为切入点，为缺血性脑卒中的临床治疗提供参考。
+关键词：铁死亡；铁代谢；缺血性脑卒中；脂质过氧化
+Ferroptosis and ischemic stroke
+ZHANG Pengyu1, WANG Yuan2*
+(1TheMedicalCollege,Shandong Universityof TraditionalChineseMedicine, Ji'nan250000, China;2Department of
+Histology andEmbryology,ShandongUniversity ofTraditionalChineseMedicine,Ji'nan250000, China)
+Abstract: Ferroptosis is a new and regulated cell death mode composed of abnormal iron metabolism and
+accumulation of lipid peroxides. Ischemic stroke is the second most common cerebrovascular disease in the
+worldwiththehighestfatalityrate,disabilityrateandrecurrencerate,anditsoccurrenceisaccompaniedbythe
+death of a large number of neurons. Existing studies have demonstrated that the neuronal pathogenesis of
+ischemic stroke is similar to ferroptosis. Ischemic stroke damage in intracellular iron levels, increased lipid
+peroxideandantioxidantcapacitydeclinephenomenonofironissimilartotheirondependenceofapoptosisin
+theformofdeath.Therefore,studyingtheinductionmechanismofferroptosisinischemicstrokeisbeneficial
+to provide new targets for clinical treatment of stroke. This review will discuss the regulatory mechanism of
+ferroptosisfromironmetabolism,lipidmetabolism,aminoacidmetabolism,activeoxygengeneratingsystem
+and the relationship between ferroptosis and ischemic stroke, in order to provide an entry point for ischemic
+stroke by intervening in ferroptosis and provide reference for its clinical treatment.
+Key Words: ferroptosis; iron metabolism; ischemic stroke; lipid peroxidation
+Dolma等[1]首先发现，新型化合物erastin可以 胞的死亡方式，并由Dixon等[2]于2012年明确提出
+杀死RAS基因突变的肿瘤细胞，且其不同于传统细 铁死亡的概念。虽然铁死亡发生机制起步于肿瘤
+收稿日期：2022-08-25
+基金项目：山东省自然科学基金面上项目(ZR2021MH327)；山东省高等学校青创科技计划项目(2019KJK013)
+第一作者：E-mail:zpy2021120929@163.com
+*通信作者：E-mail:demi0531@163.com
+--- 第2页 ---
+· 542 · 《生命的化学》2023年43卷4期 综述
+疾病的研究，但近年来研究发现，铁死亡与多种 应[5]，生成羟基自由基等活性氧，诱导铁死亡的发
+疾病有关，尤其与神经系统疾病联系密切。本文 生。因此，有必要维持LIP中的Fe2+水平，来保证
+就铁死亡的发生和调节机制作一综述，着重讨论 铁代谢的稳态平衡。
+铁死亡在缺血性脑卒中(ischemic stroke，IS)的发生 铁蛋白可通过NCOA4介导运至溶酶体，溶酶
+机制，为IS的治疗提供新思路和新策略。 体降解铁蛋白，使铁离子浓度升高，诱发铁死
+亡。Gao等[6]发现，敲除癌细胞NCOA4基因，可使
+1 铁死亡的概念和特征
+癌细胞的死亡被抑制。也有研究者发现，NCOA4
+铁死亡是一种以铁依赖性、脂质过氧化为特 通过结合铁蛋白促进其降解和铁自噬的发生，铁
+征的非凋亡性细胞死亡形式[2]。它与凋亡、自噬、 自噬可能成为诱导铁死亡的关键[7]。胞内的Fe2+被
+坏死等细胞死亡方式不同，无caspase-3的激化、自 铁氧化酶铜蓝蛋白氧化为Fe3+，经膜铁转运蛋白
+噬小体的形成和细胞无序死亡过程。可以从形态 (ferroportin，FPN)输出，被运输到各个组织器官发
+结构、生物化学、基因突变等方面对铁死亡进行 挥作用或在肝脏中储存。
+描述。在形态结构方面，表现为线粒体嵴消失、 2.2 脂质代谢
+体积减小、膜密度增加和膜的破裂。生物化学方 含不饱和脂肪酸的磷脂(polyunsaturated fatty
+面体现在谷胱甘肽(glutathione，GSH)缺乏、谷胱 acid-phosphatidyl ethanolamine，PUFAS-PE)是膜双
+甘肽过氧化酶4(glutathione peroxidase 4，GPX4)抗 分子层的重要组成成分，能调节细胞膜的流动
+氧化能力减弱和致死性活性氧(reactive oxygen 性。基于液相色谱/质谱技术(liquidchromatography/
+species，ROS)堆积[3]。在基因突变方面，遗传学的 mass spectrometry，LC/MS)的氧化脂质组学检测技
+改变导致铁代谢、脂质代谢、氨基酸代谢的紊 术能定量分析细胞氧化磷脂，发现铁死亡的脂质
+乱，其具体机制有待进一步研究。 化具有集中性，表现为含花生四烯酸(arachidonic
+acid，AA)或肾上腺酸(adrenaline，ADA)的磷脂酰
+2 铁死亡的发生及调节机制
+乙醇胺(phosphatidyl ethanolamine，PE)更易驱使细
+铁死亡主要是由不饱和脂肪酸和细胞内过量 胞发生铁死亡[8]。PUFAS-PE的脂质过氧化是铁死
+的Fe2+或脂氧合酶(lipoxygenase，LOX)发生氧化还 亡信号[9]，它的合成和氧化过程如下：(1)酰基辅酶
+原反应，造成ROS的过量堆积导致细胞死亡。本文 A合成酶长链家族成员4(acyl-CoA synthetase long
+从铁代谢、脂质代谢、胱氨酸/谷氨酸逆向转运系 chain family member 4，ACSL4)将细胞膜结构上的
+统(glutamate cystine antiporter system，system Xc-) PUFAS偶联到辅酶A(coenzyme-A，CoA)上，成为
+等三个方面对铁死亡的发生与调节机制进行阐述。 AA/ADA-CoA；(2)溶血磷脂酰胆碱酰基转移酶3
+2.1 铁代谢 (lysophosphatidylcholine acyltransferase 3，
+铁代谢包括铁的摄入、储存、释放三个过 LPCAT3)将酰基CoA衍生物酯化成AA/ADA-PE；
+程。铁代谢相关蛋白包括转铁蛋白(transferrin， (3) AA/ADA-PE被LOXs或Fe2+氧化为脂质过氧化
+Tf)、转铁蛋白受体1(transferrin receptor 1， 氢；(4)脂质过氧化氢与ROS作用生成脂质过氧化
+TFR1)、二价金属离子转运体1(divalent metal-ion 物(phospholipids-OH，L-OOH)，且L-OOH的生成
+transporter-1，DMT1)和核受体辅酶激活因子4 过程伴随链式反应，会造成更严重的细胞
+(nuclearreceptorcoactivator4，NCOA4)。铁在体内 损伤[10]。
+以Fe3+形式存在，Fe3+与Tf结合后被TFR1内吞进入 研究表明，ACSL4、LPCAT3在脂质过氧化中
+细胞。进入细胞内的Fe3+被金属还原酶3(six- 发挥了重要作用[11,12]。ACSL4在铁死亡中扮演重要
+transmembrane epithelial antigen of prostate 3， 角色，抑制或敲除ACSL4可增强细胞对铁死亡的抗
+STEAP3)还原为Fe2+，后储存在铁矿池(labile iron 性[11]。敲除LPCAT3可以改善多种肿瘤疾病的不良
+pool，LIP)中[4]或参与铁蛋白的形成。Fe2+过量情况 预后[12]。除了ACSL4和LPCAT3，脂氧合酶15(15-
+下，LIP中游离的Fe 2+与过氧化氢发生Fenton反 lipoxygenase，15-LOX)也对PUFAS起重要的氧化
+--- 第3页 ---
+张鹏宇,等. 铁死亡与缺血性脑卒中 · 543 ·
+作用，可加快驱动细胞铁死亡的进程。15-LOX不 丁硫氨酸亚砜胺可抑制GSH合成酶GCL的活
+仅能酶解PUFAS产生过量的L-OOH[13]，还能特异 性[16]，增强肿瘤细胞对铁死亡的敏感性。由上可
+性氧化磷脂，使磷脂具有渗透性，从而对细胞膜 知，Xc-是铁死亡级联反应中的上游节点分子，其
+造成不可逆的损伤。此外，维生素E可通过竞争结 中的Cystine/GSH信号通路是调控铁死亡的重要
+合位点来抑制LOX诱导的铁死亡[8]。 靶标。
+以上研究揭示，PUFAS-PE的脂质过氧化可从 P53是一种抑癌基因，抑制SLC7A11的表达，
+多方面造成膜结构的损伤、膜功能的紊乱，是诱 从而减少胱氨酸的摄取和GSH的合成，导致抗氧
+发细胞铁死亡的主要原因，故而还需深入研究脂 化能力减弱，引发细胞铁死亡[17]。但Xie等[18]发
+质过氧化机制来防治铁死亡。 现，P53对铁死亡具有双重调控作用，它能够降低
+2.3 Xc-系统 铁死亡的敏感性来抑制肿瘤细胞的生长。P53可促
+Xc-系统是细胞膜上由SLC7A11和溶质载体家 进二肽基肽酶4(dipeptidyl peptidase 4，DPP4)进入
+族3成员2(solute carrier family 3 member 2， 细胞核，形成P53-DPP4复合物来抑制质膜相关的
+SLC3A2)通过二硫键相连的二聚体，其中SLC7A11 DPP4依赖性脂质过氧化反应，从而负向调节结肠
+转运活性较高，对胱氨酸和谷氨酸的转运有高度 癌细胞的铁死亡[18]。因此，阐明P53对铁死亡的多
+特异性[14]。Xc-以1∶1的比例将谷氨酸运至细胞 重调控途径有利于更好发挥其在临床治疗中的
+外，再将胱氨酸运输至细胞内[15]。摄入的胱氨酸 作用。
+(cystine，Cys)被还原为半胱氨酸，半胱氨酸又在 2.4 活性氧生成的调控途径
+谷氨酸-半胱氨酸连接酶(glutamate cysteine ligase， 2.4.1 GSH/GPX4
+GCL)和谷胱甘肽合成酶的作用下合成GSH，故而 活性氧生成的调控途径依赖GSH/GPX4的抗氧
+Xc-参与GSH的合成。GSH的合成启动于Xc-对胱氨 化通路和独立于GPX4的多条抗氧化通路(图1)。
+酸的摄取，因而，在实验中可以采取14C标记胱氨 GPX4以GSH为辅酶发挥抗氧化作用，是清除L-
+酸的方法来检测细胞铁死亡的发生。研究发现， OOH、抑制铁死亡的关键酶。研究表明，条件敲
+图1 铁死亡的机制分子模式图
+--- 第4页 ---
+· 544 · 《生命的化学》2023年43卷4期 综述
+除GPX4会导致小鼠运动神经元退行性改变和死 知，抑制铁死亡能促进IS的神经功能改善。
+亡[19,20]。Erastin和RSL3都是铁死亡的抑制剂，但作 3.1 铁代谢介导铁死亡在IS中的作用
+用机制并不相同。Erastin通过抑制SLC7A11的活 铁在脑组织代谢功能中发挥两面性：一方面
+性，降低胱氨酸的摄入，胱氨酸的吸收又是GSH 参与大脑线粒体三羧酸的循环、呼吸链电子的传
+合成的限速步骤[21]，从而导致GPX4失活，造成细 递以及ATP的生成；另一方面，铁会伴随年龄增长
+胞损伤。RSL3、ML162(DPI7)则直接与GPX4共价 而累积，且这种累积在神经系统疾病相关的脑区
+结合抑制其活性，导致ROS聚集，引起铁死亡。天 更为明显[29]。IS导致的脑组织损伤与血脑屏障的破
+然化合物韦德洛拉酮则能促进GPX4的转录活性， 坏、铁代谢平衡紊乱密切相关。
+增强细胞对铁死亡的耐受性[22]。 血脑屏障具有维持大脑内环境稳定的作用，
+2.4.2 FSP1/DHODH/CoQ10 可阻止有害物质进入大脑。血脑屏障的维持需要
+铁死亡抑制蛋白1(ferroptosissuppressorprotein 小胶质细胞的协同控制，然而在大脑缺血缺氧的
+1，FSP1)具有抑制磷脂过氧化和铁死亡的作用[23,24]。 情况下，会导致小胶质细胞释放基质金属蛋白酶，
+二氢乳清酸脱氢酶(dihydroorate dehydrogenase， 破坏紧密连接蛋白的分布和表达[30]，使血脑屏障
+DHODH)是线粒体内膜中的黄素依赖酶，可与 的通透性增加，血液中的有害物质和大分子蛋白
+CoQ10发生氧化还原反应将自身氧化为乳清酸，同 质进入脑组织。血脑屏障的破坏，使血液中的铁
+时将CoQ还原为CoQH 。CoQH 可捕获脂质过氧化 进入脑实质，对介导脑卒中诱导的神经病变至关
+2 2
+自由基，阻止铁死亡的发生[25]。Mao等[26]研究发 重要[31]。此外，过量的铁与大脑高含量的PUFAS
+现，FSP1/DHODH/CoQ10通路不受GPX4表达高低 发生氧化反应生成大量ROS，释放有毒性的烷基自
+的影响，可独立于GPX4发挥抗氧化作用。 由基，对脑组织造成损害。但是临床使用的口服
+2.4.3 GCH1/BH4 铁螯合剂去铁胺可穿越血脑屏障螯合Fe2+[32]，发挥
+GCH1/BH4通路是另一条不依赖于GPX4的抗氧 改善IS神经功能损伤的功效。
+化通路[27]。鸟苷三磷酸环水解酶1(GTP cyclohydrolase IS时铁代谢紊乱体现在Fe2+摄入增加、释放减
+1，GCH1)是四氢生物喋呤(tetrahydrobiopterin， 少，使其在大脑中聚集，引起神经系统功能障
+BH4)合成的限速酶，合成的BH4发挥捕获自由基 碍。研究表明，缺血再灌注损伤(cerebral ischemia
+的抗氧化作用。因此，GCH1/BH4通路的正常表达 reperfusion injury，CIRI)的脑组织存在铁积聚[33]。
+会促进BH4的合成，抑制活性氧水平，是抵抗铁死 大脑中动脉闭塞(middle cerebral artery occlusion，
+亡的关键通路。 MCAO)动物模型中神经元负载过量铁，且铁摄入
+量与梗死面积呈正比[34]。铁稳态通路失衡由铁调
+3 铁死亡在IS中的发生机制
+节蛋白的异常所致。缺血缺氧情况下，缺氧诱导
+缺血性脑卒中是急性脑血管疾病，是因颈内 因子-1介导的TFR1表达水平升高[35]，TF-TFR1通
+动脉、中脑动脉、基底动脉堵塞或狭窄而导致某 道又是铁摄入的重要途径，会提升神经细胞的铁
+些部位没有血流供应造成脑组织损伤的疾病。脑 含量。IS病理机制重要转录因子NF-κβ使DMT1表
+缺血缺氧的情况引起血脑屏障和铁调节蛋白功能 达增加，促进了铁的流入。针对游离Fe2+累积，脑
+的改变，使铁在脑内大量蓄积，为依赖性铁死亡 泰方可通过抑制TFR1/DMT1的信号通路以减少铁
+的发生提供了基础条件。铁的积聚不仅会发生芬 的吸收，从而降低MCAO大鼠脑缺血及梗塞
+顿反应产生大量ROS，还会与脑内大量不饱和脂肪 面积[36]。
+酸生成脂质过氧化物，形成了以脂质过氧化为特 铁释放时，Tau蛋白活性的降低和白细胞介
+征的神经细胞铁死亡，也加重了脑缺血后的继发 素-6(interleukin-6，IL-6)的表达增加会导致铁在细
+性脑损伤。血清铁蛋白是IS患者出血性转换的重要 胞内的蓄积。Tau蛋白是微管中含量最高的微管相
+指标，使用铁螯合剂、铁抑素、抗氧化剂可降低 关蛋白，依赖淀粉样前体蛋白调节促进FPN排出
+血清铁蛋白含量，减轻缺血性脑损伤[28]。由此可 铁。Tuo等[37]发现，CIRI可抑制Tau蛋白活性，导
+--- 第5页 ---
+张鹏宇,等. 铁死亡与缺血性脑卒中 · 545 ·
+致细胞内铁超载从而增强铁死亡的敏感性。Ding LOX水平，减轻神经元损伤并促进脑缺血后功能
+等[38]发现，IL-6的含量与铁调素浓度呈正比，铁调 的恢复[44]。齐留通也是近来发现的一种新型、选
+素又对铁代谢通路中FPN的表达水平起负性调节。 择性的5-LOX抑制剂[45]，可以减少ROS的产生，有
+缺血期间，IL-6表达增加，使铁调素浓度升高[39]， 效阻止谷氨酸诱导的小鼠海马神经元HT22发生铁
+从而抑制铁的排出，造成铁沉积。因此，IS临床治 死亡。目前，有关LOX的干预研究更为详尽，相
+疗中应注意减少铁沉积以降低脑损伤，从而改善 关抑制剂通过阻断神经细胞铁死亡的级联反应可
+预后。 促进IS后的神经功能恢复。
+脑缺血后造成脑内铁代谢的紊乱是引发铁死 综上可知，铁死亡脂质过氧化的恶性连锁反
+亡级联反应的先决条件，也是加重继发性脑损伤 应能破坏细胞结构和功能的完整性，还能加剧脑
+的重要诱导因素。因此，改善脑铁代谢是降低脑 缺血和继发性脑损伤。因而，临床特异性抑制剂
+缺血后继发性脑损伤和促进神经功能恢复预后的 的使用可以降低脂质过氧化关键蛋白酶的活性，
+重要途径。 从而改善缺血性脑卒中的神经功能损伤和预后。
+3.2 脂质过氧化介导铁死亡在IS中的作用 3.3 氧化应激介导铁死亡在IS中的作用
+大脑是含脂质仅次于脂肪组织的器官，主要 氧化应激是IS的主要病理机制之一，它是指
+包含4个或6个双键的花生四烯酸，大脑的高耗氧 由于氧化与抗氧化能力的不平衡，产生过量的ROS
+使其对脂质过氧化尤为敏感，易生成ROS，造成铁 使DNA及蛋白质结构改变、细胞膜破裂。IS状态
+死亡。ACSL4和LOX是介导脂质过氧化的关键 下，糖氧供应的减少或中断导致脑组织能量代谢
+酶。ACSL4在脑组织中广泛分布，其表达可能由 紊乱，生成大量ROS，造成严重的氧化应激损伤。
+miR-347调控。研究发现，IS患者miR-347的表达 氧化应激损伤最早发现于谷氨酸诱导的细胞死亡
+增加上调了ACSL4水平[11]，从而加快了PUFAS转 途径中，谷氨酸诱导的细胞毒性可抑制Xc-，导致
+化为L-OOH的进程，造成细胞损伤。Cui等 [40]发 GSH表达降低，故而GPX4的活性缺失归因于氧化
+现，铁死亡标志蛋白基因ACSL4被敲除后，可保护 应激的损伤。Guan等[46]发现，CIRI的沙鼠模型中
+小鼠免受脑缺血损伤，反之过表达该基因可以加 GPX4含量降低，但用药物干预上调GPX4水平后
+剧脑损伤。因此，使用罗格列酮和整合素α6β4能 可抑制氧化应激损伤。葛建彬等[47]发现，枸杞多
+降低ACSL4活性[41]，抑制脑缺血引起的铁死亡。 糖不仅能下调缺血再灌注小鼠的脑皮质ROS水平，
+但目前关于ACSL4介导IS中铁死亡的文献报道较 还 可 减 少 氧 化 应 激 终 产 物 丙 二 醛
+少，其具体机制还有待进一步研究。 (malondialdehyde，MDA)的堆积来改善神经功能水
+LOX家族由不同的成员组成，其中，15-LOX 平。因此，提升抗氧化能力、降低ROS水平成为抑
+和5-LOX在铁死亡中扮演着比其他成员更重要的角 制IS神经元铁死亡的关键。
+色。15-LOX专一催化PUFAS发生氧化反应，是诱 GPX4是内源性抗氧化剂，增强其表达可以减
+导铁死亡的关键酶[37]。磷脂酰乙醇胺结合蛋白1 轻IS损伤。硒是细胞抗氧化剂的关键元素，通过激
+(phosphatidyl ethanolamine binding protein 1， 活特殊蛋白1和转录因子活化蛋白2C来促进GPX4
+PEBP1)促进15-LOX催化含花生四烯酸的磷脂酰乙 的表达[48]。硒的丰度会影响铁死亡的敏感性，若
+醇胺，与15-LOX结合产生脂质死亡信号促进铁死 丰度增加，会促进GPX4蛋白表达，减轻小鼠缺血
+亡[42]。Wenzel等[43]发现，下调PEBP1/15-LOX复合 性脑卒中的损伤[49]。另外，Tat SelPep作为一种含
+物水平能抑制铁死亡，降低海马组织CIRI的损伤 硒代半胱氨酸的肽，可以改善IS患者的预后[48]。此
+程度。15-LOX特异性抑制剂ML351通过降低LOX 外，香芹酚可通过增加GPX4表达来抑制沙鼠的铁
+活性来保护神经细胞免受脂质过氧化损伤。5-LOX 死亡，减轻CIRI中海马神经元的损伤[46]。
+则在大鼠持久MCAO后表达上调，但它还能介导 脂质ROS抑制剂可防止氧化应激反应，通过
+炎症介质半胱氨酰白三烯的产生，造成更严重的 清除ROS保护海马神经元免受CIRI损伤。
+脑组织损伤。研究发现，米诺环素的干预可下调5- Ferrostatin-1和Liproxstatin-1都是铁死亡抑制剂，具
+--- 第6页 ---
+· 546 · 《生命的化学》2023年43卷4期 综述
+有抗氧化活性，能清除ROS的累积，抑制由Erastin 进铁死亡的氨基酸代谢，进而改善IS患者神经功能
+或RSL3诱导的铁死亡。右美托咪定可降低IS损伤 的恢复[55]。丹参提取物丹参酮ⅡA不仅可以螯合铁
+大鼠的MDA水平，增加超氧化物歧化酶(supeyoxide 离子还能提升抗氧化能力来降低铁死亡的敏感
+dismutse，SOD)含量来提升抗氧化能力[50]。除此之 性，从而显著减轻MCAO模型的神经功能损
+外，依达拉奉作为ROS清除剂，可清除O2-、H O 伤[56]。由此可见，以铁死亡为靶点的中医药临床
+2 2
+和OH•，已在我国广泛用于治疗IS疾病[51]。以上研
+应用可以明显改善IS患者的神经功能，为脑卒中的
+究表明，干预氧化应激损伤已成为脑卒中的重要 治疗提供有效策略。
+治疗靶点，我国自主研发的Ⅰ类新药丁苯酞即通
+5 小结
+过提升抗氧化能力来缩小脑梗死面积、改善神经
+功能的损伤和脑缺血的预后。 本文综述了铁死亡的概念、发生调节机制，
+缺血性脑卒中氧化应激状态下产生的过量活 从铁代谢、脂质代谢、氧化应激等方面探讨了铁
+性氧和自身抗氧化能力的下调进一步加剧了继发
+死亡介导IS的发生。目前，对于铁死亡诱导IS机制
+性脑损伤。因而，研究脑卒中氧化应激损伤与铁
+的研究越来越多，且加强了对铁死亡生物标志物
+死亡之间的关联性可以为临床应用药物提供新的
+的探究。铁死亡的生物标志物可能是脑缺血中炎
+治疗靶点和治疗方向。
+症反应、兴奋性氨基酸毒性等机制的上下游靶点
+分子，对其深入研究可能会更全面地认识脑卒中
+4 中医药防治铁死亡介导的IS
+的病理机制。铁螯合剂与抗氧化剂的靶向药物也
+中医药具有独特的优势，可以多靶点、多途
+在IS的临床治疗中取得较好的疗效，且不同抑制剂
+径干预铁死亡来防治脑卒中。目前中医药在脑卒
+的结合使用更能在脑卒中的临床干预中发挥多靶
+中的临床治疗中应用广泛，包含外治法、中药复
+点、多环节的优势。但目前研究仍有不足之处：铁
+方和中药提取物等多种疗法(表1)。
+死亡与凋亡、自噬等细胞死亡途径之间的关系机制
+表1 中医药参与缺血性脑卒中后铁死亡的调节 尚不清楚；铁死亡在IS中的研究大多揭示现象，更
+中医药类型 名称 作用机制 参考文献 深层次的作用机理尚不明晰；铁死亡参与IS不同阶
+中医外治法 针刺疗法 上调GSH、SOD、GPX4的 [52] 段的具体机制尚不明确；中医药防治铁死亡介导IS
+活性，降低ROS水平
+机制的研究起步较晚，还有待深入发掘。因此，
+中药复方 桃红四物汤 降低P53表达，发挥Xc-作用 [53]
+研究者应继续靶向铁死亡，为脑卒中的防治提供新
+中药复方 安脑平冲方 下调TF和TFR的表达，降 [54]
+低铁水平 的策略和参考，并为IS的临床药物和治疗提供理论依
+中药提取物 高良姜素 激活SLC7A11/GPX4轴， [55] 据，以期为广大患者带来福音。
+促进氨基酸代谢
+中药提取物 丹参酮 降低铁水平，提升抗氧化 [56] 参 考 文 献
+能力
+[1] DolmaS,LessnickSL,HahnWC,etal. Identificationof
+针刺疗法可提升体内抗氧化能力来降低铁死 genotype-selectiveantitumoragentsusingsyntheticlethal
+chemical screening in engineered human tumor cells.
+亡中的活性氧水平，提高GSH、谷胱甘肽过氧化
+Cancer Cell, 2003, 3(3): 285-296
+物酶4、SOD的活性，加速大脑清除自由基，有效
+[2] Dixon SJ, Lemberg KM, Lamprecht MR, et al. Ferrop-
+改善脑卒中的预后[52]。桃红四物汤可降低大脑皮
+tosis: an iron-dependent form of nonapoptotic cell death.
+质基因P53的表达来发挥铁死亡中Xc -系统的作 Cell, 2012, 149(5): 1060-1072
+[3] Stockwell BR, Friedmann Angeli JP, Bayir H, et al.
+用，进而减轻CIRI引起的神经损伤和减少大脑梗
+Ferroptosis: a regulated cell death nexus linking metabo-
+塞体积[53]。安脑平冲方通过下调TF和TFR受体来
+lism,redoxbiology,anddisease.Cell,2017,171(2):273-
+降低铁的摄取水平，从而降低IS患者的神经功能损
+285
+伤程度[54]。高亮姜素可激活SLC7A11/GPX4轴来促 [4] Hirschhorn T, Stockwell BR. The development of the
+--- 第7页 ---
+张鹏宇,等. 铁死亡与缺血性脑卒中 · 547 ·
+concept of ferroptosis. Free Radic Biol Med, 2019, 133: [19] WangT,TomasD,PereraND,etal.Ferroptosismediates
+130-143 selective motor neuron death in amyotrophic lateral
+[5] Tang D, Chen X, Kang R, et al. Ferroptosis: molecular sclerosis.Cell Death Differ, 2022, 29(6): 1187-1198
+mechanisms and health implications. Cell Res, 2021, 31 [20] Imai H, Matsuoka M, Kumagai T, et al. Lipid peroxida-
+(2): 107-125 tion-dependent cell death regulated by GPX4 and
+[6] Gao M, Monian P, Pan Q, et al. Ferroptosis is an ferroptosis. Curr Top Microbiol Immunol, 2017, 403:
+autophagic cell death process. Cell Res, 2016, 26(9): 143-170
+1021-1032 [21] Maiorino M, Conrad M, Ursini F. GPX4, lipid peroxida-
+[7] LiC,SunG,ChenB,etal.Nuclearreceptorcoactivator4- tion, and cell death: discoveries, rediscoveries, and open
+mediated ferritinophagy contributes to cerebral ischemia- issues.Antioxid Redox Signal, 2018, 29(1): 61-74
+induced ferroptosis in ischemic stroke. Pharmacol Res, [22] 孙伟, 孙立新, 郎庆赋, 等. 铁死亡发生机制及其与消化
+2021, 174: 105933 系统恶性肿瘤发病的关系研究进展. 山东医药, 2021,
+[8] KaganVE,MaoG,QuF,etal.Oxidizedarachidonicand 61(35):92-96
+adrenicPEsnavigatecellstoferroptosis.NatChemBiol, [23] Bersuker K, Hendricks JM, Li Z, et al. The CoQ
+2017, 13(1): 81-90 oxidoreductase FSP1 acts parallel to GPX4 to inhibit
+[9] Ye LF, Chaudhary KR, Zandkarimi F, et al. Radiation- ferroptosis. Nature, 2019, 575(7784): 688-692
+induced lipid peroxidation triggers ferroptosis and syner- [24] Doll S, Freitas FP, Shah R, et al. FSP1 is a glutathione-
+gizeswithferroptosisinducers.ACSChemBiol,2020,15 independent ferroptosis suppressor. Nature, 2019, 575
+(2): 469-484 (7784): 693-698
+[10] Tyurina YY, St. Croix CM, Watkins SC, et al. Redox [25] Yang M, Tsui MG, Tsang JKW, et al. Involvement of
+(phospho)lipidomics of signaling in inflammation and FSP1-CoQ -NADHandGSH-GPX-4pathwaysinretinal
+10
+programmedcelldeath.JLeukocBiol,2019,106(1):57- pigmentepitheliumferroptosis.CellDeathDis, 2022,13
+81 (5): 468
+[11] Doll S, Proneth B, Tyurina YY, et al. ACSL4 dictates [26] Mao C, Liu X, Zhang Y, et al. DHODH-mediated
+ferroptosis sensitivity by shaping cellular lipid composi- ferroptosisdefenceisatargetablevulnerabilityincancer.
+tion.Nat Chem Biol, 2017, 13(1): 91-98 Nature, 2021, 593(7860): 586-590
+[12] Ke P, Bao X, Liu C, et al. LPCAT3 is a potential [27] Kraft VAN, Bezjian CT, Pfeiffer S, et al. GTP cyclohy-
+prognosticbiomarkerandmaybecorrelatedwithimmune drolase 1/tetrahydrobiopterin counteract ferroptosis
+infiltration and ferroptosis in acute myeloid leukemia: a through lipid remodeling. ACS Cent Sci, 2020, 6(1):
+pan-cancer analysis. Transl Cancer Res, 2022, 11(10): 41-53
+3491-3505 [28] WangY,TangB,ZhuJ,etal.Emergingmechanismsand
+[13] Zhang JJ, Du J, Kong N, et al. Mechanisms and targetedtherapyofferroptosisinneurologicaldiseasesand
+pharmacological applications of ferroptosis: a narrative neuro-oncology.IntJBiolSci, 2022,18(10):4260-4274
+review.Ann Transl Med, 2021, 9(19): 1503 [29] LeviS,CozziA,SantambrogioP.Ironpathophysiologyin
+[14] MartisRM,KnightLJ,DonaldsonPJ,etal.Identification, neurodegenerationwithbrainironaccumulation.AdvExp
+expression,androlesofthecystine/glutamateantiporterin MedBiol, 2019,1173:153-177
+oculartissues.OxidMedCellLongev, 2020,2020:1-10 [30] Müller S, Kufner A, Dell’Orco A, et al. Evolution of
+[15] ParkerJL,DemeJC,KolokourisD,etal.Molecularbasis blood-brain barrier permeability in subacute ischemic
+for redox control by the human cystine/glutamate stroke and associations with serum biomarkers and
+antiportersystemxc. Nat Commun, 2021, 12(1): 7147 functionaloutcome.Front Neurol, 2021, 12: 730923
+[16] Nishizawa S, Araki H, Ishikawa Y, et al. Low tumor [31] DeGregorio-Rocasolano N, Martí-Sistac O, Gasull T.
+glutathione level as a sensitivity marker for glutamate- Decipheringtheiron sideof stroke:neurodegeneration at
+cysteineligaseinhibitors.OncolLett,2018,15(6):8735- the crossroads between iron dyshomeostasis, excitotoxi-
+8743 city,andferroptosis. Front Neurosci, 2019, 13: 85
+[17] Lei G, Zhang Y, Hong T, et al. Ferroptosis as a [32] Abdul Y, Li W, Ward R, et al. Deferoxamine treatment
+mechanism to mediate p53 function in tumor radio- prevents post-stroke vasoregression and neurovascular
+sensitivity.Oncogene, 2021, 40(20): 3533-3547 unitremodelingleadingtoimprovedfunctionaloutcomes
+[18] Xie Y, Zhu S, Song X, et al. The tumor suppressor p53 intype2malediabeticrats:roleofendothelialferroptosis.
+limits ferroptosis by blocking DPP4 activity. Cell Rep, Transl Stroke Res, 2021, 12(4): 615-630
+2017, 20(7): 1692-1704 [33] HankeN,RamiA.Cerebralischemiainducesirondeposit,
+--- 第8页 ---
+· 548 · 《生命的化学》2023年43卷4期 综述
+ferritinaccumulation,nuclearreceptorcoactivator4-depletion, [45] Zhou RP, Chen Y, Wei X, et al. Novel insights into
+andferroptosis.Curr NeurovascRes, 2022,19(1):47-60 ferroptosis: implications for age-related diseases.
+[34] Zhang B, Di X, Song Y, et al. Effect of ultramicro Theranostics, 2020, 10(26): 11976-11997
+superparamagnetic iron oxide nanoparticles on cerebral [46] GuanX,LiX,YangX,etal.Theneuroprotectiveeffects
+infarctioninmice.JNanosciNanotechnol,2020,20(12): of carvacrol on ischemia/reperfusion-induced hippocam-
+7305-7310 pal neuronal impairment by ferroptosis mitigation. Life
+[35] Hirayama Y, Koizumi S. Hypoxia-independent mechan- Sci, 2019, 235: 116795
+isms of HIF-1α expression in astrocytes after ischemic [47] 葛建彬, 卢红建, 宋新建, 等. 枸杞多糖对小鼠脑缺血再
+preconditioning.Glia, 2017, 65(3): 523-530 灌注损伤的保护作用及其抗氧化应激的机制研究. 中
+[36] 饶政清, 梅志刚, 葛金文, 等. 脑泰方调控细胞铁转运抑 风与神经疾病杂志,2016, 33(9):790-794
+制铁死亡保护脑卒中缺血损伤的机制研究. 中草药, [48] Alim I, Caulfield JT, Chen Y, et al. Selenium drives a
+2021,52(21):6552-6560 transcriptional adaptive program to block ferroptosis and
+[37] Tuo Q, Lei P, Jackman KA, et al. Tau-mediated iron treatstroke. Cell, 2019, 177(5): 1262-1279.e25
+export prevents ferroptotic damage after ischemic stroke. [49] ShiY,HanL,ZhangX,etal.Seleniumalleviatescerebral
+Mol Psychiatry, 2017, 22(11): 1520-1530 ischemia/reperfusioninjurybyregulatingoxidativestress,
+[38] DingH,YanCZ,ShiH,etal.Hepcidinisinvolvediniron mitochondrial fusion and ferroptosis. Neurochem Res,
+regulation in the ischemic brain. PLoS One, 2011, 6(9): 2022, 47(10): 2992-3002
+e25324 [50] 尹顺花,金辉,肖志博,等.右美托咪定预处理激活PI3K/
+[39] Vela D. Hepcidin, an emerging and important player in mTOR/ULK1通路发挥抗氧化应激和保护大鼠脑缺血/
+brainiron homeostasis.J Transl Med, 2018, 16(1): 25 再灌注损伤的分子机制研究. 脑与神经疾病杂志, 2022,
+[40] Cui Y, Zhang Y, Zhao X, et al. ACSL4 exacerbates 30(11):688-693
+ischemic stroke by promoting ferroptosis-induced brain [51] HommaT,KobayashiS,SatoH,etal.Edaravone,afree
+injury and neuroinflammation. Brain Behav Immun, radicalscavenger,protectsagainstferroptoticcelldeathin
+2021, 93: 312-321 vitro. Exp Cell Res, 2019, 384(1): 111592
+[41] 邓玉娇. 罗格列酮抑制ACSL4介导的脂质过氧化通路 [52] 刘梅芳, 杨光至, 张霞辉, 等. 电针对缺血性脑卒中模型
+调控HUVEC铁死亡[D].天津:天津医科大学,2020 大鼠热休克蛋白HSP60表达的影响. 云南中医中药杂
+[42] AnthonymuthuTS,TyurinaYY,SunWY,etal.Resolving 志,2021, 42(5):69-72
+theparadoxofferroptoticcelldeath:ferrostatin-1bindsto [53] 范瑞娟, 罗亚非, 陈永顺, 等. 桃红四物汤对大鼠脑缺血
+15LOX/PEBP1complex,suppressesgenerationofperox- 再灌注损伤后大脑皮质神经元Caspase-3与p53表达的
+idized ETE-PE, and protects against ferroptosis. Redox 影响.神经解剖学杂志,2015, 31(6):739-745
+Biol, 2021, 38: 101744 [54] 蔡昱哲. 探讨安脑平冲方对大鼠脑出血后 SXc-/GPX4
+[43] Wenzel SE, Tyurina YY, Zhao J, et al. PEBP1 wardens 通路的影响[D]. 长沙:湖南中医药大学,2021
+ferroptosis by enabling lipoxygenase generation of lipid [55] Guan X, Li Z, Zhu S, et al. Galangin attenuated cerebral
+deathsignals.Cell, 2017, 171(3): 628-641.e26 ischemia-reperfusion injury by inhibition of ferroptosis
+[44] ChuLS,FangSH,ZhouY,etal.Minocyclineinhibits5- through activating the SLC7A11/GPX4 axis in gerbils.
+lipoxygenaseexpressionandacceleratesfunctionalrecov- Life Sci, 2021, 264: 118660
+eryinchronicphaseoffocalcerebralischemiainrats.Life [56] 许璐. 丹参酮A通过调节铁稳态抑制脑缺血模型中铁死
+Sci, 2010, 86(5-6): 170-177 亡的机制研究[D].合肥:安徽医科大学,2019

@@ -15,8 +15,9 @@ import pandas as pd
 import torch
 from rdkit import Chem
 from torch_geometric.data import HeteroData
+from tqdm import tqdm
 
-from ..data.features import build_compound_features
+from ..data.features import FeatureCache, build_compound_features
 
 logger = logging.getLogger(__name__)
 
@@ -63,6 +64,9 @@ def build_graphs_and_adj(
     use_compound_similarity_edges: bool = True,
     comp_sim_threshold: float = 0.7,
     comp_sim_top_k: int = 10,
+    compound_feature_cache: FeatureCache | None = None,
+    use_meta_paths: bool = False,
+    meta_path_density_threshold: float = 0.1,
 ):
     """构建同质图 + 异质图 + 邻接表（可选疾病节点和拓扑/ESM-2负样本）
 
@@ -94,7 +98,9 @@ def build_graphs_and_adj(
 
     # 化合物特征
     logger.info(f"  computing compound features ({n_compounds} compounds)...")
-    comp_feat, _, _, _ = build_compound_features(all_smiles)
+    comp_feat, _, _, _ = build_compound_features(
+        all_smiles, cache_manager=compound_feature_cache
+    )
 
     # 化合物-化合物 Tanimoto 相似性边 — 解决冷启动验证时化合物节点孤立问题
     comp_sim_edges: list[tuple[int, int]] = []
@@ -104,21 +110,25 @@ def build_graphs_and_adj(
             from rdkit import DataStructs
             from rdkit.Chem import AllChem
             ecfp4_fps = []
-            for smi in all_smiles:
+            valid_indices = []
+            for i, smi in enumerate(all_smiles):
                 mol = Chem.MolFromSmiles(smi)
                 if mol is None:
                     ecfp4_fps.append(None)
                 else:
                     ecfp4_fps.append(AllChem.GetMorganFingerprintAsBitVect(mol, 2, nBits=2048))
+                    valid_indices.append(i)
+            valid_fps = [ecfp4_fps[i] for i in valid_indices]
+            logger.info(f"    valid fingerprints: {len(valid_fps)}/{n_compounds}")
             n_comp_sim_edges = 0
-            for i in range(n_compounds):
-                if ecfp4_fps[i] is None:
-                    continue
+            for idx, i in enumerate(tqdm(valid_indices, desc="  compound similarity")):
+                fp_i = valid_fps[idx]
+                bulk_sims = DataStructs.BulkTanimotoSimilarity(fp_i, valid_fps)
                 sims = []
-                for j in range(n_compounds):
-                    if i >= j or ecfp4_fps[j] is None:
+                for k, sim in enumerate(bulk_sims):
+                    j = valid_indices[k]
+                    if i >= j:
                         continue
-                    sim = DataStructs.TanimotoSimilarity(ecfp4_fps[i], ecfp4_fps[j])
                     if sim >= comp_sim_threshold:
                         sims.append((j, sim))
                 sims.sort(key=lambda x: x[1], reverse=True)
@@ -217,9 +227,13 @@ def build_graphs_and_adj(
     # 异质图邻接表（用于 HGT 分支采样）
     hetero_adj = {
         ("compound", "interacts", "protein"): defaultdict(list),
+        ("protein", "rev_interacts", "compound"): defaultdict(list),
         ("compound", "similar_to", "compound"): defaultdict(list),
+        ("compound", "rev_similar_to", "compound"): defaultdict(list),
         ("protein", "ppi", "protein"): defaultdict(list),
+        ("protein", "rev_ppi", "protein"): defaultdict(list),
         ("protein", "belongs_to", "pathway"): defaultdict(list),
+        ("pathway", "includes", "protein"): defaultdict(list),
         ("protein", "associated_with", "disease"): defaultdict(list),
         ("disease", "involves", "protein"): defaultdict(list),
     }
@@ -238,8 +252,10 @@ def build_graphs_and_adj(
         smi = row["canonical_smiles"]
         gene = row["gene"]
         if smi in smi_to_idx and gene in gene_to_idx:
-            hetero_adj[("compound", "interacts", "protein")][smi_to_idx[smi]].append(
-                gene_to_idx[gene] - n_compounds)
+            c_idx = smi_to_idx[smi]
+            p_idx = gene_to_idx[gene] - n_compounds
+            hetero_adj[("compound", "interacts", "protein")][c_idx].append(p_idx)
+            hetero_adj[("protein", "rev_interacts", "compound")][p_idx].append(c_idx)
 
     for src, dst in comp_sim_edges:
         if src < n_compounds and dst < n_compounds:
@@ -249,14 +265,19 @@ def build_graphs_and_adj(
         src = str(row["source"]).strip().upper()
         tgt = str(row["target"]).strip().upper()
         if src in gene_to_idx and tgt in gene_to_idx:
-            hetero_adj[("protein", "ppi", "protein")][gene_to_idx[src] - n_compounds].append(
-                gene_to_idx[tgt] - n_compounds)
+            s_idx = gene_to_idx[src] - n_compounds
+            t_idx = gene_to_idx[tgt] - n_compounds
+            hetero_adj[("protein", "ppi", "protein")][s_idx].append(t_idx)
+            hetero_adj[("protein", "rev_ppi", "protein")][t_idx].append(s_idx)
 
     for gene, paths in gene_to_pathways.items():
         if gene in gene_to_idx:
             p_idx = gene_to_idx[gene] - n_compounds
             for pid in paths:
-                hetero_adj[("protein", "belongs_to", "pathway")][p_idx].append(pid)
+                if pid in pathway_to_idx:
+                    path_idx = pathway_to_idx[pid]
+                    hetero_adj[("protein", "belongs_to", "pathway")][p_idx].append(path_idx)
+                    hetero_adj[("pathway", "includes", "protein")][path_idx].append(p_idx)
 
     # 疾病-蛋白边构建（蛋白局部索引 <-> 疾病整数索引）
     if disease_df is not None and not disease_df.empty:
@@ -271,15 +292,6 @@ def build_graphs_and_adj(
 
     # 通路索引（已在特征构建阶段计算，此处复用）
     n_pathways = n_pathways_feat
-
-    # 通路ID完全数值化 — 将邻接表中的字符串通路ID转为整数索引，消除字符串匹配开销
-    new_pt_adj = defaultdict(list)
-    for prot_idx, path_list in hetero_adj[("protein", "belongs_to", "pathway")].items():
-        for pid in path_list:
-            if pid in pathway_to_idx:
-                new_pt_adj[prot_idx].append(pathway_to_idx[pid])
-    hetero_adj[("protein", "belongs_to", "pathway")] = new_pt_adj
-    logger.info(f"  通路ID数值化完成: {len(new_pt_adj)} 蛋白 → {n_pathways} 通路")
 
     # 预计算同通路蛋白邻居（用于中度负样本采样）
     prot_to_path_neighbors = build_pathway_neighbors(gene_to_pathways, gene_to_idx, n_compounds)
@@ -300,6 +312,12 @@ def build_graphs_and_adj(
             cpi_edges[0].append(src)
             cpi_edges[1].append(dst)
     hetero_data["compound", "interacts", "protein"].edge_index = torch.tensor(cpi_edges, dtype=torch.long)
+    # v68-fix: HGTConv 需要反向边才能将蛋白侧信息传回化合物节点。
+    # 训练子图采样虽已动态构造反向边，但全图验证用的 hetero_data 此前缺少它们，
+    # 导致验证化合物在冷启动验证中孤立，AUC/AUPR 崩塌。
+    hetero_data["protein", "rev_interacts", "compound"].edge_index = torch.tensor(
+        [cpi_edges[1][:], cpi_edges[0][:]], dtype=torch.long
+    ) if cpi_edges[0] else torch.zeros((2, 0), dtype=torch.long)
 
     # 化合物-化合物相似性边
     comp_sim_edges_tensor = [[], []]
@@ -323,6 +341,10 @@ def build_graphs_and_adj(
             ppi_edges[0].append(src)
             ppi_edges[1].append(dst)
     hetero_data["protein", "ppi", "protein"].edge_index = torch.tensor(ppi_edges, dtype=torch.long)
+    # v68-fix: 为 PPI 边添加反向边，确保 HGTConv 双向消息传递。
+    hetero_data["protein", "rev_ppi", "protein"].edge_index = torch.tensor(
+        [ppi_edges[1][:], ppi_edges[0][:]], dtype=torch.long
+    ) if ppi_edges[0] else torch.zeros((2, 0), dtype=torch.long)
 
     # 通路边（通路ID已数值化，dst 已是整数，无需再次转换）
     pt_edges = [[], []]
@@ -430,6 +452,35 @@ def build_graphs_and_adj(
                 "v41: 初始化 ESM-2 相似度负样本失败，回退到无此负样本"
             )
 
+    # v69: 元路径图构建（MHGNN-DTI + DHGT-DTI 论文核心创新）
+    meta_path_edge_indices: dict[str, torch.Tensor] = {}
+    meta_path_names: list[str] = []
+    if use_meta_paths:
+        logger.info("v69: 构建元路径图 (MHGNN-DTI / DHGT-DTI) ...")
+        try:
+            from .meta_path import MetaPathBuilder
+            # 构建 edge_index_dict 供 MetaPathBuilder 使用
+            mp_edge_index_dict = {}
+            for etype in hetero_data.edge_types:
+                ei = hetero_data[etype].edge_index
+                if ei is not None and ei.shape[1] > 0:
+                    mp_edge_index_dict[etype] = ei
+            mp_num_nodes = {nt: hetero_data[nt].x.shape[0] for nt in hetero_data.node_types}
+            mp_builder = MetaPathBuilder(
+                mp_edge_index_dict,
+                mp_num_nodes,
+                density_threshold=meta_path_density_threshold,
+            )
+            mp_builder.build_all_meta_paths()
+            for name in mp_builder.meta_path_names:
+                mp_ei = mp_builder.get_edge_index(name)
+                if mp_ei is not None:
+                    meta_path_edge_indices[name] = mp_ei
+            meta_path_names = mp_builder.meta_path_names
+            logger.info(f"v69: 元路径图构建完成: {len(meta_path_names)} 条元路径 ({list(meta_path_names)})")
+        except Exception:
+            logger.exception("v69: 元路径图构建失败，回退到无元路径模式")
+
     return {
         "x": x,
         "feat_dim": feat_dim,
@@ -449,5 +500,7 @@ def build_graphs_and_adj(
         "prot_to_path_neighbors": prot_to_path_neighbors,
         "prot_to_topo_medium_neighbors": prot_to_topo_medium_neighbors,
         "prot_to_topo_hard_neighbors": prot_to_topo_hard_neighbors,
-        "prot_to_esm_hard_neighbors": prot_to_esm_hard_neighbors,  # v41: ESM-2余弦相似度难负样本
+        "prot_to_esm_hard_neighbors": prot_to_esm_hard_neighbors,
+        "meta_path_edge_indices": meta_path_edge_indices,
+        "meta_path_names": meta_path_names,
     }

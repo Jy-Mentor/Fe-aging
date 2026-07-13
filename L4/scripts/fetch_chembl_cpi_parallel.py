@@ -195,7 +195,7 @@ def main():
         all_records.extend(records)
         all_stats.update(stats)
     
-    print(f"\n[步骤3] 保存结果...")
+    print("\n[步骤3] 保存结果...")
     if all_records:
         df_result = pd.DataFrame(all_records)
         before = len(df_result)

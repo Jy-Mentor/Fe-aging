@@ -6,11 +6,9 @@ CPI数据补充脚本 v28 - 从BindingDB和DrugBank补充铁衰老96基因的CPI
 import pandas as pd
 import numpy as np
 import sys
-import os
 import logging
 from pathlib import Path
 from rdkit import Chem
-from rdkit.Chem import Descriptors
 
 # 设置日志
 logging.basicConfig(
@@ -71,7 +69,7 @@ if "gene" in v26.columns:
 # 统计覆盖情况
 covered_genes = ferro_genes & all_covered_genes
 missing_genes = ferro_genes - all_covered_genes
-logger.info(f"\n覆盖统计:")
+logger.info("\n覆盖统计:")
 logger.info(f"  有CPI数据的基因: {len(covered_genes)} 个")
 logger.info(f"  无CPI数据的基因 (zero-shot): {len(missing_genes)} 个")
 logger.info(f"  Zero-shot基因列表: {sorted(missing_genes)}")
@@ -381,7 +379,7 @@ if all_supplements:
     
     # 统计补充了多少基因
     new_genes = set(merged["gene"]) & missing_genes
-    logger.info(f"\n补充统计:")
+    logger.info("\n补充统计:")
     logger.info(f"  最终补充记录: {len(merged)} 条")
     logger.info(f"  覆盖基因: {merged['gene'].nunique()} 个")
     logger.info(f"  其中新补充的zero-shot基因: {len(new_genes)} 个")

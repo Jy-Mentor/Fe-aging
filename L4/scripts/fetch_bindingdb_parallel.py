@@ -9,12 +9,8 @@ logger = logging.getLogger(__name__)
 import pandas as pd
 import requests
 import time
-import sys
 import os
-import csv
-import json
-from multiprocessing import Pool, Manager
-from functools import partial
+from multiprocessing import Pool
 
 BASE_DIR = r"d:\铁衰老 绝不重蹈覆辙"
 GENES_96_FILE = os.path.join(BASE_DIR, "L1", "results", "ferroaging_genes_96.csv")
@@ -142,7 +138,7 @@ def query_bindingdb_api(uniprot_id, gene_name, timeout=30):
 def query_uniprot_api(gene_name, timeout=30):
     """通过UniProt API获取蛋白的UniProt ID"""
     try:
-        url = f"https://rest.uniprot.org/uniprotkb/search"
+        url = "https://rest.uniprot.org/uniprotkb/search"
         params = {
             "query": f"gene:{gene_name}+AND+organism_id:9606+AND+reviewed:true",
             "format": "json",
@@ -218,7 +214,7 @@ def main():
         all_stats.update(stats)
     
     # 保存结果
-    print(f"\n[步骤3] 保存结果...")
+    print("\n[步骤3] 保存结果...")
     if all_records:
         df_result = pd.DataFrame(all_records)
         before = len(df_result)

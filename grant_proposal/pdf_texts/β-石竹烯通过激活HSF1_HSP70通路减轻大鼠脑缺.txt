@@ -1,0 +1,390 @@
+
+--- 第1页 ---
+ChineseJournalofNewDrugs2023,32(5)
+·实验研究·
+β-石竹烯通过激活 HSF1/HSP70 通路减轻大鼠脑缺血再灌注损伤
+左天睿，胡晴雯，刘京东，王 萱，邓 玲，董 志
+( 重庆医科大学药学院，重庆市生物化学与分子药理学重点实验室，重庆 400016)
+［摘要］ 目的:探究 β-石竹烯( β-caryophyllene，BCP) 通过激活热休克转录因子 1( heat shock factor 1，
+HSF1) /热休克蛋白70( heat shock proteins70，HSP70) 通路减轻大鼠脑缺血再灌注( cerebral ischemia-reperfu-
+sion，CIＲ) 损伤的机制。方法:将雄性SD大鼠随机分为假手术组、模型组、BCP 低、中、高剂量组(204，306，
+408 mg·kg－1) 、BCP(306 mg·kg－1) +Kribb11 组和Kribb11 组。采用线栓法建立大鼠 CIＲ 模型，再灌注24 h
+后进行神经行为学评分;2，3，5-三苯基氯化四氮唑染色法测定脑梗死体积; 苏木精-伊红染色、尼式染色观察
+皮层神经元病理变化;蛋白印迹法检测大鼠脑皮层中 HSP70，HSF1，p-HSF1 和凋亡相关蛋白( Chop，Caspase
+3，Bcl2，Bax) 的蛋白表达;免疫荧光染色检测 p-HSF1 和 HSP70 蛋白表达; Tunel 染色检测细胞凋亡水平; 化
+学比色法检测皮层组织中丙二醛( MDA) 含量和总超氧化物歧化酶( SOD) 及 Caspase 3 活性。结果:与模型
+组相比，BCP组大鼠脑梗死体积明显降低( P＜0．01) ，组织中 HSF1，p-HSF1，HSP70 和 Bcl2 蛋白表达显著增
+加( P＜0．01) ，Bax，Chop，Caspase 3 蛋白表达均明显减少( P ＜0．01) ，组织中 MDA 含量减少( P ＜0．01) 和
+SOD的活性增加( P＜0．01) ，Caspase 3 酶活性显著降低( P ＜0．05) ，细胞凋亡减少，从而改善了缺血再灌注
+损伤;与BCP组相比，BCP+Kribb11 组中 Kribb11 拮抗了 BCP 的疗效作用，HSF1，p-HSF1 和 HSP70 蛋白表
+达显著减少( P＜0．05，P＜0．01) ，组织氧化应激水平升高，皮层细胞死亡增多，CIＲ 损伤加重。结论:BCP 能
+够降低氧化应激水平，抑制细胞凋亡，从而改善大鼠CIＲ损伤，其机制可能与激活HSF1/HSP70 通路有关。
+［关键词］ 脑缺血再灌注损伤;β-石竹烯;HSF1/HSP70 信号通路;氧化应激;凋亡
+［中图分类号］Ｒ965 ［文献标志码］A ［文章编号］1003 －3734(2023)05 －0513 －09
+β-Caryophyllene reduces cerebral ischemia-reperfusion injury in rats
+by activating HSF1/HSP70 pathway
+ZUO Tian-rui，HU Qing-wen，LIU Jing-dong，WANG Xuan，DENG Ling，DONG Zhi
+( Chongqing Key Laboratory of Biochemistry and Molecular Pharmacology，School of Pharmacy，
+Chongqing Medical University，Chongqing 400016，China)
+［Abstract］ Objective: To investigate whether β-caryophyllene ( BCP) can reduce cerebral ischemia-
+reperfusion injury ( CIＲ) in rats via activating heat shock factor1 ( HSF1) /heat shock protein70 ( HSP70) pathway．
+Methods: Male SD rats were randomly assigned to the sham operation group，model group，BCP low，medium，
+and high dose groups (204，306，408mg·kg－1) ，BCP (306mg·kg－1) +Kribb11 intervention group，and Kribb11
+intervention group． The suture method was used to create a rat model of CIＲ injury，and the neurobehavioral score
+was recorded 24 hours after the reperfusion． The volume of the cerebral infarct was measured using 2，3，5-tripheny-
+ltetrazolium chloride staining，and the pathological changes of cortical neurons were observed using hematoxylin-eosin
+staining and Nissl staining． Western blotting was applied to detect protein expressions of HSP70，HSF1，p-HSF1，
+［基金项目］ 重庆市自然科学基金:重庆市基础研究与前沿探索专项( cstc2018jcyjAX0378);重庆市渝中区基础研究与前沿探索项目
+(20210121)
+［作者简介］ 左天睿，男，硕士研究生，主要从事神经药理学研究。E-mail:405852908@qq．com。
+［通讯作者］ 董志，男，博士，教授，主要从事神经药理学研究。E-mail:100798@cqmu．edu．cn。
+513
+中国新药杂志2023年第32卷第5期
+--- 第2页 ---
+ChineseJournalofNewDrugs2023,32(5)
+Chop，Caspase 3，Bcl2，and Bax in rat brain cortex; immunofluorescence staining was used to detect protein
+expressions of p-HSF1 and HSP70; and Tunel staining to evaluate cell apoptosis level． Malondialdehyde level in
+cortical tissue (MDA)，activities of total superoxide dismutase ( SOD) and Caspase 3 were measured using a chemical
+colorimetric technique． Ｒesults: Compared to the model group，the β-caryophyllene administration group indicated
+a lower cerebral infarct volume in rats ( P＜0．01) ，a lower level of MDA and Caspase3 activity in the tissue ( P＜
+0．01，P＜0．05) ，a decreased expression of Bax，Chop，and Caspase3 protein ( P＜0．01) ，a decreased occurrence
+of cell apoptosis，and increased protein expressions of HSF1，p-HSF1，HSP70，and Bcl2 in the tissue ( P＜0．01) ，
+and substantially greater SOD activity in the tissue ( P ＜0．01) ，reducing ischemia-reperfusion injury． Compared
+with the BCP group，Kribb11 in the BCP + Kribb11 group antagonized the curative effect of BCP，the protein
+expressions of HSF1，p-HSF1 and HSP70 were significantly reduced ( P＜0．05，P ＜0．01) ，and tissue oxidation
+stress levels increased，cortical cell death increased，and ischemia-reperfusion injury aggravated． Conclusion: In
+rats，β-caryophyllene can alleviate cerebral ischemia-reperfusion injury in rats by reducing oxidative stress and
+minimizing cell apoptosis，which is associated with the activation of the HSF1/HSP70 pathway．
+［Key words］ cerebral ischemia-reperfusion injury; β-caryophyllene; HSF1/HSP70 signal pathway; oxidative
+stress; apoptosis
+缺血性脑卒中是继癌症、心脏病后造成人类 起的血脑屏障损伤。
+严重残疾和死亡的主要疾病之一，常见病因是脑内 近年来，在中药和天然药物中寻找开发用于治
+血管阻塞，组织缺糖缺氧，引起严重的神经系统功能 疗缺血性脑卒中的药物一直受到广泛关注。β-石竹
+障碍［1－2］。由于其治疗时间窗口较短，若错过最佳 烯( β-caryophyllene，BCP) 是一种来源于丁香、肉桂
+的溶栓时间，恢复血供后易导致更为严重的缺血再 等植物的天然植物油，属于双环倍半萜烯类，具有抗
+灌注损伤［2－3］。脑缺血再灌注( cerebral ischemia- 炎、抗氧化、抗焦虑的药理活性［21－22］。相关研究表
+reperfusion，CIＲ) 损伤涉及许多复杂的病理过程，其 明，在一些神经系统疾病中，BCP能减少神经元的凋
+中氧化应激是引起组织脂质过氧化、炎症和细胞凋 亡坏死和炎症的发生，产生神经保护作用［2，13－14］。
+亡发生的重要原因之一［4－6］。热休克蛋白70( heat 本实验拟通过构建大鼠 CIＲ 模型，以 HSF1/HSP70
+shock proteins 70，HSP70) 属于热休克蛋白家族，是 通路调控细胞氧化应激和凋亡水平为切入点，观察
+一种高度保守的多肽类应激蛋白。HSP70 在大脑缺 BCP对CIＲ损伤大鼠的改善作用及作用机制，为其
+血梗死区域中被显著诱导，其过度表达能够增加组 防治提供新的思路和候选药物。
+织细胞对缺血缺氧的耐受性，同时清除氧自由基和
+材料与方法
+脂质过氧化，减少氧化应激细胞损伤，恢复神经功
+能［4，7－9］。另外，其作用功能高度依赖于热休克转录 1 药物与试剂
+因子 1( heat shock factor 1，HSF1) 的调控［7，11－12］。 BCP( 日本TCI公司，批号:C0796，纯度＞90%) ;
+在组织缺血、神经系统等疾病中，HSF1 参与了应激 Kribb11( MCE 公司，批号: HY-100872);2，3，5-三苯基
+适应、促进细胞存活等重要过程［13－17］。近年来研究 氯化四氮唑( TTC，美国Sigma 公司，批号:BCCC7515);
+发现，HSF1/HSP70 通路与细胞氧化损伤、炎症发生 HSF1 抗体( 中国博奥森生物科技公司，批号: bs-
+紧密相关［11－13，18－19］。在脑卒中，HSP70 的信号转导 3757Ｒ) ; p-HSF1 抗体( 批号: DF2947) 、HSP70 抗体
+可能通过干扰上游线粒体事件介导的 Caspase 依赖 ( 批号: AF5466) 、Caspase 3 抗体( 批号: AF6311) 、
+性途径和死亡受体介导的外在凋亡途径来促进细胞 Chop 抗体 ( 批号: DF6025) 、Bcl2 抗体 ( 批号:
+存活;同时抑制NF-κB和MAPK 活化进而中断下游 BF9103) 购自美国 Affinity 公司; Bax 抗体( 批号:
+炎症级联反应的发生，产生抗氧化、抗炎和抗凋亡的 60267-1-Ig) 、β-actin( 批号:66009-1-Ig) 购自中国三
+作用［4，7－9］。Sun 等［20］报道称，使用丙泊酚处理后 鹰生物技术公司; PAGE 凝胶快速制备凝胶试剂盒
+的星形胶质细胞，能明显增加HSF1 和NＲF2 的核转 10%( 中国雅酶公司，批号: PG112) ; Caspase 3 活性
+录水平，增加热休克蛋白表达，以此减轻氧糖剥夺引 检测试剂盒( 货号: C1116) 、丙二醛( MDA) 检测试
+514
+中国新药杂志2023年第32卷第5期
+--- 第3页 ---
+ChineseJournalofNewDrugs2023,32(5)
+剂盒( 货号: S0131S) 、总超氧化物歧化酶( SOD) 活 直线行走，沿对侧转圈;3 分: 无法正常行走，向对侧
+性检测试剂盒( 货号: S0109) 购自中国碧云天生物 偏瘫;4 分: 无法动弹，无自主活动。分值越高说明
+技术公司。 动物神经行为障碍越严重，1 ～4 分视为造模成功。
+2 仪器 7 2，3，5-三苯基氯化四氮唑(2，3，5-triphenyltet-
+Mini-protean tetra Cell 凝胶电泳仪( 美国 BIO- razolium chloride，TTC)染色法测定脑梗死体积［2］
+ＲAD公司) ; 凝胶成像系统( Bio-Ｒad 公司) ; 低温离 大鼠造模24 h 后，取脑，放入 －20 ℃冷固。沿
+心机( 美国 Thermo 公司) ; 酶标仪( 美国 Thermo 公 脑冠状面连续切5 片，每片约2 mm 厚。放入2%的
+司) ;正置显微镜( 日本Nikon公司) 。 TTC溶液中，37 ℃孵育20 min。加入4%的多聚甲
+3 动物 醛固定，4 ℃过夜拍照。采用 Image-J软件分析梗死
+SPF级雄性SD大鼠，体重250 ～290 g，购自重庆 体积。
+医科大学实验动物中心，许可证号:SYX渝2018-003。 8 苏木精-伊红(HE)染色［2］
+4 分组 大鼠造模24 h后麻醉，暴露出心脏。将磷酸盐
+根据前期研究，在34～408mg·kg－1浓度范围内， 缓冲溶液( PBS) 和4%多聚甲醛溶液从心尖灌注，
+BCP 能有效减轻大鼠CIＲ损伤，且具有剂量依赖性， 完毕后断头取脑，放入4%多聚甲醛溶液中浸泡过
+故本研究选取了204，306，408 mg·kg－1这3 种药物剂 夜。d2 脱水，石蜡包埋，切片( 5 um 厚) 。用 HE 染
+量。将SD大鼠按随机数字表法分为假手术组，模型 色，树脂封片。在正置显微镜下观察缺血侧脑组织
+组，BCP 低、中、高剂量组( 204，306，408 mg·kg－1) ， 病理学变化。拍照后进行统计分析，细胞存活率 =
+BCP (306 mg·kg－1) +Kribb11( HSF1 抑制剂［20－21］) 正常状态的细胞数目/该视野下所有的细胞总数。
+组，Kribb11 组，每组17 只。BCP 低、中、高剂量组: 9 尼氏(Nissl)染色［17］
+造模前分别以各剂量的BCP溶液连续7 d灌胃( ig) 按照“8”项中制作石蜡包埋切片。烤片，脱蜡
+给药( BCP原液溶于10%的聚氧乙烯蓖麻油 +生理 和水化后，用尼式染液染色，脱水，封片。标本于正
+盐水混合溶液) 。模型组与假手术组: 连续7 d 给予 置显微镜下观察拍照。计数，进行统计分析，神经元
+等体积的溶剂( 聚氧乙烯蓖麻油 + 生理盐水) ig。 细胞损伤率 =( 损伤神经元的数目/该视野下的神
+BCP+Kribb11 组: 连续7 d 以306 mg·kg－1BCP 溶 经元总数) ×100%。
+液 ig 给药，造模前 4 h 侧脑室注射 Kribb11 溶液 10 Tunel染色检测皮层组织的细胞凋亡水平［9］
+(1 mmol·L－1，10μL) 。Kribb11 组:连续7d以等体 按照“8”项中制作石蜡切片。脱蜡、抗原修复
+积溶剂( 聚氧乙烯蓖麻油+生理盐水) ig，造模前4 h 后，根据Tunel试剂盒说明书进行 Tunel 染色; 切片
+侧脑室注射Kribb11 溶液(1mmol·L－1，10μL) 。假 置于湿盒，加入 proteinase K，37 ℃下反应 0.5 h。
+手术组只进行麻醉和血管分离，其他各组采用大脑 PBS冲洗3 次，滴加Tunel检测液，45 ℃孵育2 h，避
+中动脉闭塞法( 线栓法) 构建大鼠CIＲ模型。 光。PBS冲洗3 次后封片。红色荧光为凋亡细胞，
+5 采用大脑中动脉闭塞( middle cerebral artery 蓝色荧光为细胞核。
+occlusion，MCAO)法构建大鼠CIＲ模型［2］ 11 Westren blot检测大鼠脑皮层组织中蛋白表达［21］
+腹腔注射4%的水合氯醛麻醉大鼠后，暴露出 用蛋白裂解液( ＲIPA∶ PMSF∶ 磷酸酶抑制剂 =
+右侧颈总动脉、颈外动脉、颈内动脉。依次结扎颈 100∶1∶2) 提取皮层组织蛋白。上样，经 10% SDS-
+总、颈外动脉，夹闭颈内动脉。将线栓从颈总动脉插 PAGE凝胶电泳分离后，切胶，湿转。5%BSA 溶液
+入大脑中动脉处，固定。1.5 h 后取出线栓，缝合伤 常温封闭2 h。加入一抗( HSP70，HSF1，p-HSF1，1∶
+口，再灌注24 h。术后大鼠出现明显神经行为学障 1000; Bcl2，1∶2000; Bax，1∶10000; Chop，Caspase
+碍( 见图3) 和右侧半脑出现明显水肿，即为造模成 3，1∶1000; β-actin，1∶5000) 4 ℃孵育过夜。孵育
+功。假手术组除不插栓外，其余操作步骤与模型组 二抗，50 min;孵育三抗，30 min。用超敏化学发光液
+相同。 显影。用Image lab软件分析统计。
+6 神经行为学评分［25］ 12 免疫荧光染色检测组织中 P-HSF1，HSP70 蛋
+根据Longa评分法评判。0 分: 大鼠活动正常; 白表达［2］
+1 分:提尾后，对侧前肢无法伸直，蜷缩状;2 分:无法 按照“8”项中制片。切片经脱蜡，抗原修复后。
+515
+中国新药杂志2023年第32卷第5期
+--- 第4页 ---
+ChineseJournalofNewDrugs2023,32(5)
+10%山羊血清室温封闭1 ～2h;加入p-HSF1，HSP70 用GraphPad Prism 6 软件处理，各组组间数据进行
+抗体(1∶2000) ，4 ℃过夜;加入荧光二抗，37 ℃避光 单因素方差( one-way ANOVA) 分析，Tukey’s test 用
+孵育1h;加入DAPI染核，避光孵育5min，封片。在 于组间差异比较。P＜0．05 为具有显著性差异，P ＜
+共聚焦显微镜下观察并拍摄。使用 Image-J 软件半 0．01 为具有极显著性差异。
+定量分析目的蛋白的平均荧光强度，平均荧光强度
+结 果
+( 相对荧光表达量) =目标区域的荧光强度总和/该
+区域面积。 1 不同剂量BCP对大鼠脑梗死面积和神经功能的
+13 皮层组织中Caspase 3 酶和SOD活性及 MDA 影响
+含量水平检测［21］ 与假手术相比，模型组出现大面积的白色脑梗
+各组大鼠皮层组织中 Caspase 3，SOD 活性和 死区域( P ＜0.01) ，表现出较高的神经行为障碍
+MDA含量均采用试剂盒进行测定。各组样品匀浆 ( P＜0．01) 。与模型组相比，BCP 低、中、高剂量组
+后严格按照各检测盒说明书操作，用酶标仪测定吸 都有不同程度的改善，脑梗死体积显著降低( P ＜
+光度( OD) 以计算出 Caspase 3，SOD活性和MDA 含 0.05，P＜0.01) ，神经行为学评分降低( P ＜0.01) ，
+量水平。 表明BCP的药效显著且具有剂量依赖性。其中，以
+14 统计学分析 306 mg·kg－1的 BCP中剂量组效果最佳，见图1 和
+所有实验数据均采用 x ±s 表示，统计学分析采 图2。
+A: TTC染色;B: 脑梗死体积分数的统计分析(x ±s，n=4);与假手术组比较，a: P＜0．01;与模型组比较，
+b: P＜0．05，c: P＜0．01;与BCP中剂量组比较，d: P＜0．01，e: P＜0．05
+图1 不同浓度的BCP对大鼠脑梗死体积的影响
+2 不同剂量BCP对大鼠脑损伤侧皮层组织形态的
+影响
+通过HE 染色观察皮层组织形态。假手术组
+中，皮层细胞轮廓清晰、排列规整。与假手术组相
+比，模型组中细胞排列紊乱、核固缩深染、周围组织
+空泡化、细胞大量死亡。与模型组相比，低、中、高剂
+量组中细胞死亡减少、核固缩和组织间质水肿得到
+改善，其中306 mg·kg－1的 BCP 中剂量组疗效最明
+显，见图3。
+结合“1”和“2”项的实验结果，为保证药物具
+与假手术组比较，a: P＜0．01;与模型组比较，b: P＜0．01;
+与BCP中剂量组比较，c: P＜0．01，d: P＜0．05
+有足够有效的治疗作用及安全性，选取 BCP 306
+图2 不同浓度的BCP对大鼠神经功能
+mg·kg－1作为最佳有效剂量进行后续生化指标的
+损伤的影响( x ±s，n=15) 检测。
+516
+中国新药杂志2023年第32卷第5期
+--- 第5页 ---
+ChineseJournalofNewDrugs2023,32(5)
+图3 各组大鼠皮层中组织形态的变化( ×400)
+3 BCP 对大鼠缺血侧皮层组织中 HSF1，p-HSF1， 蛋白表达显著增高( P ＜0.01) ，Bcl2 蛋白表达下降
+HSP70 及凋亡相关蛋白表达的影响 ( P＜0.01) ;与模型组比较，BCP组(306mg·kg－1) 中
+Western blot结果显示，与假手术组相比，模型 HSF1，p-HSF1，HSP70 蛋白表达进一步显著增高
+组中 HSF1，p-HSF1 及 HSP70 蛋白表达增高( P ＜ ( P＜0.01) ，Chop，Bax，Caspase 3 蛋白表达显著下降
+0.05，P＜0.01) ，凋亡相关蛋白 Chop，Bax，Caspase 3 ( P＜0.01) ，Bcl2蛋白表达增高( P＜0．01) ，见图4。
+A: Western blot检测蛋白表达;B，C: 蛋白相对表达量的统计分析(x ±s，n=5);与假手术组比较，
+a: P＜0．05，b: P＜0．01;与模型组比较，c: P＜0．01
+图4 各组皮层组织中相关蛋白表达水平
+4 HSF1 抑制剂联合 BCP 对缺血侧皮层组织病理 重，见图5A。Nissl染色结果显示: 假手术组大鼠皮
+形态结构的影响 层区细胞轮廓清晰形态正常，尼氏小体和胞核清晰
+HE染色结果显示: 与假手术组相比，模型组皮 可见。与假手术相比，模型组皮层区尼氏体大量减
+层区细胞大量死亡、核固缩和空泡样现象严重;与模 少、细胞轮廓不清、间隙增大、核固缩严重;与模型组
+型组相比，BCP组正常细胞数目明显增多、损伤程度 比较，BCP组尼氏体增多、细胞损伤明显减轻;与BCP
+较轻;与BCP组相比，Kribb11 +BCP 组中细胞核固 组相比，BCP+Kribb11 组中尼式小体减少、组织间隙
+缩现象加重、细胞死亡增多、空泡样明显; 与模型组 增大、细胞损伤加重，见图5B。提示BCP对CIＲ损伤
+相比，Kribb11 组皮层区组织损伤、细胞死亡更为严 的保护作用能被HSF1抑制剂Kribb11部分逆转。
+517
+中国新药杂志2023年第32卷第5期
+--- 第6页 ---
+ChineseJournalofNewDrugs2023,32(5)
+A: HE染色;B: Nissl染色;C: 皮层细胞存活率统计分析(HE，x ±s，n=3);D: 皮层神经元损伤率统计分析
+(Nissl，x ±s，n=3); 与假手术组相比，a: P＜0．01; 与模型组相比，b: P＜0．01;与BCP组相比，c: P＜0．01
+图5 各组大鼠皮层的组织病理变化和神经元结构变化( ×400)
+5 HSF1 抑制剂联合BCP对HSF1/HSP70 通路的 有所增强; 与模型组相比，BCP 组中 p-HSF1，HSP70
+影响 的红色荧光明显增强; 而与 BCP 组相比，BCP +
+免疫荧光结果显示，假手术组中p-HSF1，HSP70 Kribb11 组中p-HSF1，HSP70 的红色荧光明显减弱;
+的红色荧光微弱;与假手术相比，模型组中红色荧光 同时，Kribb11 组的荧光强度低于模型组，见图6。
+A: 免疫荧光检测p-HSF1的表达水平，B: 免疫荧光检测HSP70的表达水平;红色荧光分别为p-HSF1，HSP70蛋白，蓝
+色荧光为细胞核; C～D: p-HSF1和HSP70的相对荧光表达量统计分析( x ±s，n=3);与假手术组相比，a: P＜0．01;
+与模型组相比，b: P＜0．01，c: P＜0．05; 与BCP组相比，d: P＜0．01
+图6 各组皮层组织中p-HSF1 和HSP70 的蛋白表达( ×400)
+Western blot结果显示，与BCP组相比，Kribb11 + ( P＜0．01，P＜0．05) ，Bax 蛋白表达明显增加( P ＜
+BCP组中 p-HSF1，HSP70，HSF1 蛋白表达明显降低 0.01) ，Bcl2 蛋白表达明显减少( P ＜0．05) ，见图7。
+518
+中国新药杂志2023年第32卷第5期
+--- 第7页 ---
+ChineseJournalofNewDrugs2023,32(5)
+提示在CIＲ损伤中，HSF1 可以激活 HSP70 的表达， 蛋白表达。
+BCP可能通过激活HSF1/HSP70 通路调控下游凋亡
+A: Western blot检测相关蛋白表达;B: 蛋白相对表达量统计分析(x ±s，n=5);与假手术组比较，a: P＜0．05，
+b: P＜0．01;与模型组比较，c: P＜0．05，d: P＜0．01;与BCP组比较，e: P＜0．05，f: P＜0．01
+图7 各组皮层组织中相关蛋白的表达水平
+6 BCP对大鼠脑缺血侧皮层中细胞凋亡的影响 测显示，与假手术组相比，模型组中Caspas3 活性显
+Tunel染色结果显示，与假手术组相比，模型组 著增高( P ＜0.01) 。与模型组相比，BCP 给药组中
+中Tunel阳性细胞数量明显增加，细胞大量凋亡; 与 Caspase 3 酶的活性降低( P ＜0.05) 。与 BCP 组相
+模型组相比，BCP组中阳性细胞数量下降，细胞凋亡 比，Kribb11 加入后，BCP + Kribb11 组中 Caspase 3
+减少。与BCP组相比，BCP+Kribb11 组中阳性细胞 酶活性反而增加( P＜0．05) ，见图9。以上提示BCP
+数增多，细胞凋亡加重，见图8。Caspase 3 酶活性检 可能通过激活HSF1/HSP70 通路发挥抗凋亡作用。
+红色荧光:Tunel阳性;蓝色荧光:细胞核
+图8 各组皮层组织中细胞凋亡水平( ×400)
+7 BCP对大鼠缺血侧皮层中氧化应激水平的影响
+SOD活性和MDA含量检测结果显示，与假手术
+组相比，模型组的 SOD 活性显著下降( P ＜0．01) ，
+MDA含量明显增加( P＜0．01) ;与模型组相比，BCP
+组中 SOD 活性增加( P ＜ 0.01) ，MDA 含量减少
+( P＜0.01) ;在Kribb11 联合干预后，现象发生逆转，
+与BCP 组相比，BCP +Kribb11 组中 SOD 活性下降
+( P＜0.01) ，MDA含量增加( P＜0．01) ;而与模型组
+相比，Kribb11 组的氧化应激水平更高，见图10。以
+上提示BCP 可能通过激活 HSF1/HSP70 通路来发
+与假手术组比较，a: P＜0．01;与模型组比较，
+b: P＜0．05;与BCP组比较，c: P＜0．05
+挥抗氧化作用。
+图9 各组皮层组织中Caspase 3 酶
+活性水平( x ±s，n=4)
+519
+中国新药杂志2023年第32卷第5期
+--- 第8页 ---
+ChineseJournalofNewDrugs2023,32(5)
+A: SOD活性检测(x ±s，n=5);B: MDA含量测定(x ±s，n=5);与假手术组比较，a: P＜0．01;与模型组比较，
+b: P＜0．01;与BCP组比较，d: P＜0．01
+图10 各组皮层组织中氧化应激水平( SOD活性和MDA含量)
+组织缺血等疾病具有抗氧化抗凋亡的作用［11，13，18－19］。
+讨 论
+HSF1 是生物体内高度保守的转录因子，参与细胞存
+缺血性脑卒中是一种严重的神经系统疾病，发 活、抗炎、抗氧化等过程［12－17］。在神经疾病中，神经
+病率高，致残致死率高。脑血管快速再灌注后易发 元损伤与HSF1 降解有关［15－16］。生理条件下，HSF1
+生更严重的 CIＲ 损伤，加重病情，给临床治疗带来 在胞质内表达量低，以非活性单体形式存在; 应激
+困难［1－2］。目前临床上还没有明确的药物用于治疗 后，HSF1 激活形成三聚体促进核易位，同时发生磷
+CIＲ损伤。BCP是来源于许多天然植物( 丁香叶、肉 酸化等蛋白修饰( 如ser326 位点利于核因子的活化
+桂叶、樟树等) 的油状液体，属于双环倍半萜烯类。 和转录) ，随后与 DNA 上一些反应元件结合，诱导
+研究发现，其在 CIＲ 损伤、阿尔茨海默病等神经系 热休克蛋白、Snail 等下游基因的表达［7，26］。HSP70
+统疾病中具有明显的神经保护作用［5，21－22］。然而 作为分子伴侣蛋白，是分布最广和研究最多的热休
+其在 CIＲ 损伤中的具体机制及作用靶点尚未完全 克蛋白。在脑梗死及附近区域受到 HSF1 转录调
+清楚。本实验通过造模前给予不同剂量 BCP 干预 控，被显著诱导上调［7－9］。HSP70 基因敲除的小鼠
+证明BCP能显著减少大鼠脑梗死体积，降低神经行 在MCAO/Ｒ后，梗死面积增加，神经损伤加重［7］;在
+为障碍，改善缺血侧皮层组织的病理损伤，表明 BCP CIＲ模型小鼠中静脉注射( iv) 外源性重组 HSP70
+对CIＲ损伤具有明显的改善作用且具有剂量依赖性。 后，减少了梗死体积和大脑皮质损伤，同时促进神经
+CIＲ损伤涉及的许多复杂病理过程中氧化应激 生长［9］。大量研究表明，HSP70 是脑卒中的令人兴
+是引起组织脂质过氧化、炎症和细胞凋亡发生的重 奋的治疗靶点，过表达后能够能维持线粒体膜稳态，
+要原因之一［5－6］。当发生 CIＲ 损伤时，机体氧化应 降低氧自由基水平和Ca2+超载，抑制凋亡小体释放
+激水平增高，产生大量的氧自由基和活性氧( ＲOS) ， 和炎症的发生，对脑损伤有神经保护作用［7－9，11］。
+体内的氧化与抗氧化作用失衡引起组织损伤，如触 最近研究发现，在脑缺血中上调 HSF1/HSPB1( 与
+发DNA损伤、脂质过氧化，线粒体紊乱、炎症因子释 HSP70 同属于 HSPs 家族) 通路可减轻由脂质过氧
+放等导致细胞凋亡坏死，引起严重的神经功能障 化造成的神经元铁死亡的发生［17］。
+碍［6，10］。因此，降低细胞内氧化应激水平是减缓 Zhang 等［24］报道称，HSP70 信号转导的激活受
+CIＲ所致的神经损伤的一种重要治疗手段。本研究 到上游PI3K/AKT通路的调控; 同时在大鼠 CIＲ 损
+对BCP在CIＲ损伤所致的氧化损伤是否具有改善 伤中，BCP能够通过激活PI3K/Akt通路来减轻神经
+作用进行了相关探究，脂质过氧化物 MDA 和抗氧 损伤［24］。为进一步探究 BCP 的保护作用与 HSF1/
+化酶SOD是常见的内源性生化指标，反映机体的氧 HSP70 信号通路的关系，本研究以 HSF1 抑制剂
+化应激水平［10］。结果表明 BCP 处理后，皮层组织 Kribb11 作为阴性对照药物，进行了后续实验，结果
+中SOD活性增高、MDA 含量降低、神经元死亡数量 显示，与模型组相比，Kribb11 组中抑制了 HSF1，
+减少，减轻了CIＲ后组织的氧化损伤。 p-HSF1 和HSP70 蛋白表达，细胞氧化水平和组织
+研究表明，HSF1/HSP70 通路的激活在心血管、 损伤更严重。提示CIＲ损伤与HSF1/HSP70 通路具
+520
+中国新药杂志2023年第32卷第5期
+--- 第9页 ---
+ChineseJournalofNewDrugs2023,32(5)
+有相关性，抑制 HSF1 激活会加重缺血再灌注诱导 inducedneuroprotectionaftersurgeryinagedmice［J］． ExpGer-
+ontol，2019，119: 184－192．
+的氧化损伤。BCP预处理后，与模型组相比，HSF1，
+［12］ HUANGC，LU X，TONG LJ，et al． Ｒequirement for endoge-
+p-HSF1，HSP70 蛋白表达显著增加，而凋亡相关蛋 nousheatshockfactor1ininduciblenitricoxidesynthaseinduc-
+tion in murine microglia［J］． J Neuroinflammation，2015，12:
+白表达减少，组织氧化应激和细胞凋亡水平减少;联 189．
+用HSF1 抑制剂 Kribb11 阻断 HSF1 信号通路后，
+［13］ LIUW，XIAF，HAY，etal． NeuroprotectiveeffectsofHSF1in
+retinal ischemia-reperfusion injury［J］． Invest Ophthalmol Vis
+Kribb11 拮抗了BCP对缺血再灌注损伤的保护作用 Sci，2019，60(4): 965－977．
+［14］ JINYT，LI CY，XU DW，et al． Jagged1-mediated myeloid
+和抗氧化效应，逆转了相关通路蛋白表达，组织中氧
+Notch1 signaling activates HSF1/Snail and controls NLＲP3 in-
+化应激水平增高，细胞凋亡增多，脑缺血损伤加重。 flammasomeactivationinliverinflammatoryinjury［J］． Cell Mol
+Immunol，2020，17(12): 1245－1256．
+以上结果共同说明BCP能降低氧化应激水平，减少
+［15］ KIME，SAKATAK，LIAOFF． BidirectionalinterplayofHSF1
+细胞凋亡，从而改善缺血所致的氧化损伤，可能与激 degradation and UPＲ activation promotes tau hyperphosphoryla-
+tion［J］． PLoSGenet，2017，13(7): e1006849．
+活HSF1/HSP70 通路有关。 ［16］ GOMEZ-PASTOＲＲ，BUＲCHFIELET，NEEF DW，et al． Ab-
+normaldegradation of the neuronal stress-protective transcription
+综上所述，本研究探讨了BCP 在大鼠 CIＲ 损伤
+factorHSF1 inHuntington’s disease［J］． Nat Commun，2017，
+中新的靶点与作用机制，初步证实 BCP 能通过激活 8: 14405．
+［17］ 饶政清，梅志刚，葛金文，等． 脑泰方调控细胞铁转运抑制
+HSF1/HSP70 通路来产生抗氧化和抗凋亡作用，从
+铁死亡保护脑卒中缺血损伤的机制研究［J］． 中草药，2021，
+而改善大鼠 CIＲ 损伤。BCP 未来或许会成为临床 52(21): 6552－6560．
+［18］ ZHENGXB，XUF，LIANGH，etal． SIＲT1/HSF1/HSPpath-
+上一种高效治疗CIＲ损伤的新型药物。
+way is essential for exenatide-alleviated，lipid-induced hepatic
+endoplasmicＲeticulum stress［J］． Hepatology，2017，66(3):
+［ 参 考 文 献 ］ 809－824．
+［19］ ＲENZK，DONG ZH，XIE P，et al． PNU282987 inhibits amy-
+［1］ CAMPBELLBCV，DE SILVA DA，MACLEOD MＲ，et al． Is-
+loid-βaggregationbyupregulatingastrocyticendogenousαB-crys-
+chaemicstroke［J］． NatＲevDisPrimers，2019，5(1): 70．
+tallin and HSP-70 via regulation of the α7AChＲ，PI3K/Akt/
+［2］ 刘京东，陈莎，王钰淳，等． β-石竹烯作用于Notch1/NF-κB
+HSF-1 signalingaxis［J］． Mol Med Ｒep，2020，22(1): 201－
+208．
+信号轴对脑缺血再灌注损伤大鼠的改善作用［J］． 第三军医
+大学学报，2021，43(3): 218－225．
+［20］ SUN X，YIN YH，KONG LC，et al． The effect of propofol on
+［3］ CHENGYJ，DONGZ，LIUS． Β-Caryophylleneameliorates the
+hypoxia-modulated expression of heat shock proteins: potential
+Alzheimer-likephenotypeinAPP/PS1MicethroughCB receptor
+mechanismin modulating blood-brain barrier permeability［J］．
+2
+activationand the PPAＲγ pathway［J］． Pharmacology，2014，
+MolCellBiochem，2019，462(1－2): 85－96．
+94(1－2): 1－12．
+［21］ YANGM，LVYJ，TIANXC，etal． Neuroprotectiveeffectofβ-
+caryophylleneon cerebral ischemia-reperfusion injury via regula-
+［4］ JIANGYB，HEＲY，SHIYJ，etal． Plasmaexosomesprotecta-
+gainst cerebral ischemia/reperfusion injury via exosomal HSP70
+tionofnecroptoticneuronal death and inflammation: in vivo and
+mediatedsuppressionofＲOS［J］． LifeSci，2020，256: 117987．
+invitro［J］． FrontNeurosci，2017，11: 583．
+［5］ LIUSW，LIU JD，WANG YC，et al． Differentially expressed
+［22］ CHENGYJ，DONGZ，LIUS． Β-Caryophylleneamelioratesthe
+Alzheimer-likephenotypeinAPP/PS1MicethroughCB2receptor
+genesinducedby β-caryophyllene in a rat model of cerebral is-
+chemia-reperfusioninjury［J］． LifeSci，2021，273: 119293．
+activationand the PPAＲγ pathway［J］． Pharmacology，2014，
+［6］ SEKEＲDAG E，SOLAＲOGLU I，GUＲSOY-OZDEMIＲ Y． Cell
+94(1－2): 1－12．
+death mechanisms in stroke and novel molecular and cellular
+［23］ GEＲTSCHJ，LEONTI M，ＲADUNEＲ S，et al． Beta-caryo-
+treatment options［J］． Curr Neuropharmacol，2018，16(9):
+phylleneisadietarycannabinoid［J］． PNAS，2008，105(26):
+9099－9104．
+1396－1415．
+［7］ KIMJY，HANY，LEEJE，etal． The70-kDaheatshockprotein
+［24］ ZHANGQ，ANＲD，TIANXC，etal． Β-caryophyllenepretreat-
+mentalleviatesfocalcerebralischemia-reperfusioninjurybyacti-
+(Hsp70) asatherapeutictargetforstroke［J］． ExpertOpinTher
+Targets，2018，22(3): 191－199．
+vatingPI3K/Aktsignalingpathway［J］． Neurochem Ｒes，2017，
+［8］ LUOLL，LIYF，SHANHM，etal． L-glutamineprotectsmouse
+42(5): 1459－1469．
+brainfromischemicinjuryviaup-regulatingheatshockprotein70
+［25］ LONGA EZ，WEINSTEIN PＲ，CAＲLSON S，et al． Ｒeversible
+［J］． CNSNeurosciTher，2019，25(9): 1030－1041．
+middlecerebralarteryocclusionwithoutcraniectomyin rats［J］．
+［9］ DEMYANENKOS，NIKULV，ＲODKINS，etal． Exogenousre-
+Stroke，1989，20(1): 84－91．
+combinant Hsp70 mediates neuroprotection after photothrombotic
+［26］ YOONYJ，KIMJA，SHINKD，etal． KＲIBB11inhibitsHSP70
+synthesisthroughinhibitionofheatshockfactor1functionbyim-
+stroke［J］． CellStressChaperones，2021，26(1): 103－114．
+pairing therecruitmentofpositivetranscriptionelongationfactorb
+［10］ SUXT，WANG L，MA SM，et al． Mechanisms of acupuncture
+in the regulation of oxidative stress in treating ischemic stroke
+to the hsp70 promoter［J］． J Biol Chem，2011，286( 3):
+1737－1747．
+［J］． OxidMedCellLongev，2020，2020: 7875396．
+［11］ YAOMM，ZHAOZM，WEIL，etal． HSF1/HSPpathwayinthe
+Hippocampus is involved in SIＲT1-mediated caloric restriction-
+编辑:刘卓越/接受日期:2022－06－20
+521
+中国新药杂志2023年第32卷第5期

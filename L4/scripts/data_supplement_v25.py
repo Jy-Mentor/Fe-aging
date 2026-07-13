@@ -17,11 +17,9 @@ import sys
 import time
 import traceback
 
-import numpy as np
 import pandas as pd
 import requests
 from rdkit import Chem
-from rdkit.Chem import AllChem, DataStructs
 
 # ============================================================
 # 配置
@@ -361,7 +359,7 @@ def task3_kegg_pathway_supplement():
         total_wikipathways = len(wikipathways_supplemented)
         still_missing = wikipathways_failed  # 仍无法补充的
         
-        log(f"\n  --- 补充结果汇总 ---")
+        log("\n  --- 补充结果汇总 ---")
         log(f"  Reactome补充: {total_reactome} 个基因")
         log(f"  WikiPathways补充: {total_wikipathways} 个基因")
         log(f"  仍缺失: {len(still_missing)} 个基因")
@@ -489,7 +487,7 @@ def task4_protein_feature_supplement():
             # 礼貌延迟，避免API限流
             time.sleep(0.3)
         
-        log(f"\n  --- 补充结果汇总 ---")
+        log("\n  --- 补充结果汇总 ---")
         log(f"  UniProt补充成功: {len(supplemented_features)} 个基因")
         log(f"  补充失败: {len(failed_genes)} 个基因")
         if failed_genes:
@@ -533,7 +531,7 @@ def task5_generate_report():
         lines.append("-" * 70)
         t1 = supplement_results.get("task1", {})
         if t1.get("status") == "SUCCESS":
-            lines.append(f"  状态: ✅ 成功")
+            lines.append("  状态: ✅ 成功")
             lines.append(f"  原始行数: {t1['original_rows']}")
             lines.append(f"  清洗后行数: {t1['cleaned_rows']}")
             lines.append(f"  删除行数: {t1['removed_rows']}")
@@ -550,7 +548,7 @@ def task5_generate_report():
         lines.append("-" * 70)
         t2 = supplement_results.get("task2", {})
         if t2.get("status") == "SUCCESS":
-            lines.append(f"  状态: ✅ 成功")
+            lines.append("  状态: ✅ 成功")
             lines.append(f"  CPI训练集唯一SMILES: {t2['cpi_unique_smiles']}")
             lines.append(f"  TCM候选池SMILES数: {t2['tcm_smiles_count']}")
             lines.append(f"  重叠SMILES数: {t2['overlap_count']}")
@@ -567,7 +565,7 @@ def task5_generate_report():
         lines.append("-" * 70)
         t3 = supplement_results.get("task3", {})
         if t3.get("status") == "SUCCESS":
-            lines.append(f"  状态: ✅ 成功")
+            lines.append("  状态: ✅ 成功")
             lines.append(f"  铁衰老基因总数: {t3['ferroaging_genes_total']}")
             lines.append(f"  KEGG通路覆盖: {t3['in_kegg']} 个基因")
             lines.append(f"  KEGG通路缺失: {t3['missing_kegg']} 个基因")
@@ -577,11 +575,11 @@ def task5_generate_report():
             if t3['still_missing'] > 0:
                 lines.append(f"  仍缺失基因: {t3['still_missing_genes']}")
             if t3['reactome_supplemented'] > 0:
-                lines.append(f"  Reactome补充详情:")
+                lines.append("  Reactome补充详情:")
                 for g, paths in t3['reactome_genes'].items():
                     lines.append(f"    {g}: {', '.join(paths)}")
             if t3['wikipathways_supplemented'] > 0:
-                lines.append(f"  WikiPathways补充详情:")
+                lines.append("  WikiPathways补充详情:")
                 for g, paths in t3['wikipathways_genes'].items():
                     lines.append(f"    {g}: {', '.join(paths)}")
         else:
@@ -595,14 +593,14 @@ def task5_generate_report():
         lines.append("-" * 70)
         t4 = supplement_results.get("task4", {})
         if t4.get("status") == "SUCCESS":
-            lines.append(f"  状态: ✅ 成功")
+            lines.append("  状态: ✅ 成功")
             lines.append(f"  铁衰老基因总数: {t4['ferroaging_genes_total']}")
             lines.append(f"  已有蛋白特征: {t4['in_protein_features']} 个基因")
             lines.append(f"  缺失蛋白特征: {t4['missing_protein_features']} 个基因")
             lines.append(f"  UniProt API补充成功: {t4['uniprot_supplemented']} 个基因")
             lines.append(f"  UniProt API补充失败: {t4['uniprot_failed']} 个基因")
             if t4['uniprot_supplemented'] > 0:
-                lines.append(f"  UniProt补充详情:")
+                lines.append("  UniProt补充详情:")
                 for g, feat in t4['uniprot_features'].items():
                     lines.append(f"    {g} ({feat['uniprot_id']}): {feat['protein_name']}, "
                                f"长度={feat['length']}, 质量={feat['mass']:.0f}Da, "

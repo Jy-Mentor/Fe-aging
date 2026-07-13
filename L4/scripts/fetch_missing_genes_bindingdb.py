@@ -11,8 +11,6 @@ import numpy as np
 import requests
 import time
 import os
-import json
-import sys
 
 BASE_DIR = r"d:\铁衰老 绝不重蹈覆辙"
 OUTPUT_DIR = os.path.join(BASE_DIR, "L4", "results_v10_minibatch")
@@ -111,7 +109,7 @@ def search_bindingdb_tsv(gene_name, timeout=30):
         url = f"https://bindingdb.org/bind/ByUniprot.jsp?uniprot={gene_name}"
         resp = requests.get(url, timeout=timeout)
         if resp.status_code == 200 and "SMILES" in resp.text:
-            print(f"    TSV页面有数据，但需要解析")
+            print("    TSV页面有数据，但需要解析")
     except Exception:
         logger.exception("捕获到异常并继续执行（原 except '' 静默吞掉）")
 
@@ -189,22 +187,22 @@ def main():
         gene_records = []
         
         # 1. ChEMBL（多种活性类型）
-        print(f"  查询ChEMBL...")
+        print("  查询ChEMBL...")
         chembl_records = search_chembl_again(gene_name, uniprot_id)
         if chembl_records:
             gene_records.extend(chembl_records)
             print(f"    ChEMBL: {len(chembl_records)} 条")
         else:
-            print(f"    ChEMBL: 0 条")
+            print("    ChEMBL: 0 条")
         
         # 2. BindingDB REST
-        print(f"  查询BindingDB...")
+        print("  查询BindingDB...")
         bdb_records = search_bindingdb_rest(gene_name, uniprot_id)
         if bdb_records:
             gene_records.extend(bdb_records)
             print(f"    BindingDB: {len(bdb_records)} 条")
         else:
-            print(f"    BindingDB: 0 条")
+            print("    BindingDB: 0 条")
         
         gene_stats[gene_name] = len(gene_records)
         all_records.extend(gene_records)

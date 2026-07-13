@@ -31,7 +31,6 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from tqdm import tqdm
 
 # ── 路径设置 ──────────────────────────────────────────────
 PROJECT_ROOT = Path(__file__).parent.parent.parent.resolve()
@@ -207,7 +206,6 @@ def _check_gpu_memory_ablation(min_free_gb: float = 1.0) -> bool:
     """检查 GPU 显存是否足够"""
     try:
         import torch
-        import torch.nn as nn
         if not torch.cuda.is_available():
             return True
         free_mem = torch.cuda.mem_get_info()[0] / (1024 ** 3)
@@ -230,7 +228,6 @@ def _load_cpi_leak_smiles() -> set:
     leak_smiles = set()
     for tcm_path in [
         PROJECT_ROOT / "L3" / "results" / "tcm_compound_pool_v21_Alevel.csv",
-        PROJECT_ROOT / "L3" / "results" / "tcm_compound_pool_tox_filtered_noleak.csv",
         PROJECT_ROOT / "L3" / "results" / "tcm_compound_pool_tox_filtered.csv",
     ]:
         if tcm_path.exists():
@@ -422,7 +419,6 @@ def _run_variant_worker(
 
         import numpy as np
         import torch
-        import torch.nn as nn
 
         # 设置随机种子 (v28: 使用传入的 seed 参数)
         random.seed(seed)
@@ -476,8 +472,6 @@ def _run_variant_worker(
             _build_val_safe_hetero_adj,
             _build_val_safe_hetero_data,
             _build_val_safe_homo_edge_index,
-            _validate_hgt_protein_cold,
-            _validate_sage_protein_cold,
             train_hgt,
             train_sage,
         )

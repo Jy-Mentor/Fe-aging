@@ -32,7 +32,7 @@ cpi_df = pd.read_csv(L4_RESULTS / "experimental_actives_detail_cleaned.csv")
 CPI_GENES = set(cpi_df["gene"].dropna().unique())
 in_cpi = ALL_GENES & CPI_GENES
 not_in_cpi = ALL_GENES - CPI_GENES
-print(f"\n第1层: CPI 数据过滤")
+print("\n第1层: CPI 数据过滤")
 print(f"  在CPI中: {len(in_cpi)} 个基因")
 print(f"  不在CPI中: {len(not_in_cpi)} 个基因")
 print(f"  丢失基因: {sorted(not_in_cpi)}")
@@ -67,7 +67,7 @@ if esm2_path.exists():
     elif "gene_symbols" in esm2_data:
         esm2_genes = set(esm2_data["gene_symbols"])
 
-print(f"\n第2层: 蛋白特征过滤")
+print("\n第2层: 蛋白特征过滤")
 print(f"  target_protein_features.csv 中: {len(PROT_FEAT_GENES)} 个基因")
 print(f"  esm2_protein_embeddings.npz 中: {len(esm2_genes)} 个基因")
 in_cpi_and_feat = in_cpi & PROT_FEAT_GENES
@@ -84,7 +84,7 @@ for col in ["gene_a", "gene_b", "source", "target"]:
     if col in ppi_df.columns:
         ppi_genes |= {str(x).strip().upper() for x in ppi_df[col].dropna()}
 
-print(f"\n第3层: PPI 网络过滤")
+print("\n第3层: PPI 网络过滤")
 print(f"  PPI 网络中: {len(ppi_genes)} 个基因")
 print(f"  在CPI中但不在PPI中: {len(in_cpi - ppi_genes)} 个")
 
@@ -93,7 +93,7 @@ print(f"  在CPI中但不在PPI中: {len(in_cpi - ppi_genes)} 个")
 # ============================================================
 # gene_to_idx = cpi_genes ∪ prot_feat_genes ∪ ppi_genes
 all_graph_genes = CPI_GENES | PROT_FEAT_GENES | ppi_genes
-print(f"\n第4层: gene_to_idx（图结构）")
+print("\n第4层: gene_to_idx（图结构）")
 print(f"  图中总基因数: {len(all_graph_genes)}")
 in_graph = ALL_GENES & all_graph_genes
 not_in_graph = ALL_GENES - all_graph_genes
@@ -113,7 +113,7 @@ for col in top_df.columns:
     if col not in non_gene_cols and not col.endswith("_uncertainty"):
         output_genes.add(col)
 
-print(f"\n第5层: 最终输出（tcm_top_candidates_v21.csv）")
+print("\n第5层: 最终输出（tcm_top_candidates_v21.csv）")
 print(f"  输出靶标数: {len(output_genes)}")
 print(f"  输出基因: {sorted(output_genes)}")
 
@@ -165,4 +165,4 @@ for gene in sorted(missing_core):
         reasons.append("在gene_to_idx中但predict_tcm未返回（可能是local_p_idx=-1）")
     print(f"  {gene}: {' | '.join(reasons) if reasons else '原因未知'}")
 
-print(f"\n诊断完成。")
+print("\n诊断完成。")

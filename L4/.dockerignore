@@ -1,0 +1,49 @@
+# Docker 构建忽略文件
+# 减小构建上下文，加速镜像构建
+
+# Python 缓存
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+
+# 数据和结果（通过卷挂载）
+results/
+results_v10_minibatch/
+logs/
+data/
+
+# 模型检查点
+*.pt
+*.pth
+*.ckpt
+
+# MLflow
+mlruns/
+mlartifacts/
+
+# DVC
+.dvc/cache/
+.dvc/tmp/
+
+# Git
+.git/
+.gitignore
+
+# 测试缓存
+.pytest_cache/
+.ruff_cache/
+
+# 环境
+.venv/
+node_modules/
+
+# 系统文件
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# 临时文件
+*.tmp
+*.bak
+*.log

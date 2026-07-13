@@ -55,7 +55,13 @@ class SimpleHGNLinkPredictor(nn.Module):
                  decoder_type: str = "mlp",
                  decoder_init_scheme: str = "xavier",
                  decoder_final_bias_init: float = -0.5,
-                 decoder_max_residue_batch: int = 2):
+                 decoder_max_residue_batch: int = 2,
+                 use_graph_transformer: bool = False,
+                 gt_num_layers: int = 2,
+                 gt_num_heads: int = 4,
+                 gt_dropout: float = 0.3,
+                 use_cross_modal_fusion: bool = False,
+                 fusion_hidden_dim: int = 64):
         """初始化 SimpleHGN 链接预测模型。
 
         Args:
@@ -138,6 +144,18 @@ class SimpleHGNLinkPredictor(nn.Module):
 
         self.out_proj = nn.Identity() if hidden_dim == out_dim else nn.Linear(hidden_dim, out_dim, bias=False)
 
+        # v69: GraphTransformer 编码器 (DHGT-DTI 论文核心创新)
+        self.use_graph_transformer = use_graph_transformer
+        self.gt_encoder = None
+        if use_graph_transformer:
+            from .graph_transformer import GraphTransformerEncoder
+            self.gt_encoder = GraphTransformerEncoder(
+                in_dim=hidden_dim, hidden_dim=hidden_dim, out_dim=out_dim,
+                num_layers=gt_num_layers, num_heads=gt_num_heads,
+                dropout=gt_dropout, use_gated_residual=True,
+            )
+            logger.info(f"  SimpleHGN GraphTransformer 已启用: layers={gt_num_layers}, heads={gt_num_heads}")
+
         # 可插拔解码器
         if decoder_type == "mlp":
             self.decoder = MLPDecoder(out_dim, hidden_dim=64, dropout=pheno_head_dropout)
@@ -155,6 +173,17 @@ class SimpleHGNLinkPredictor(nn.Module):
             )
         else:
             raise ValueError(f"不支持的 decoder_type: {decoder_type}")
+
+        # CrossModalGatedFusion — 蛋白条件化药物特征调制 (CFM-DTI 风格)
+        self.use_cross_modal_fusion = use_cross_modal_fusion
+        self.cross_modal_fusion = None
+        if use_cross_modal_fusion:
+            from .conditioned_modulation import CrossModalGatedFusion
+            self.cross_modal_fusion = CrossModalGatedFusion(
+                drug_dim=out_dim, prot_dim=out_dim,
+                hidden_dim=fusion_hidden_dim, dropout=dropout,
+            )
+            logger.info(f"  SimpleHGN CrossModalGatedFusion 已启用: hidden_dim={fusion_hidden_dim}")
 
         # 铁死亡表型分类头
         self.pheno_head = nn.Sequential(
@@ -290,19 +319,44 @@ class SimpleHGNLinkPredictor(nn.Module):
             if nt in x_dict:
                 x_dict[nt] = self.out_proj(x_dict[nt])
 
+        # v69: GraphTransformer 多视角编码（DHGT-DTI 风格）
+        self._gt_compound_emb = None
+        if self.use_graph_transformer and self.gt_encoder is not None:
+            mp_ei = getattr(self, '_meta_path_edge_indices', None)
+            if "compound" in x_dict and mp_ei is not None:
+                compound_raw_feat = x_dict["compound"]
+                mp_ei_list = [ei.to(compound_raw_feat.device) for ei in mp_ei.values()]
+                if len(mp_ei_list) > 0:
+                    gt_compound = self.gt_encoder.forward_multi_view(
+                        compound_raw_feat, mp_ei_list
+                    )
+                    self._gt_compound_emb = gt_compound
+
         return x_dict
 
     def decode(self, comp_emb: torch.Tensor, prot_emb: torch.Tensor,
                prot_residue_indices: torch.Tensor | None = None) -> torch.Tensor:
-        """解码化合物-蛋白交互分数。"""
+        """解码化合物-蛋白交互分数，支持 CrossModalGatedFusion（CFM-DTI 风格）。"""
         with torch.amp.autocast('cuda', enabled=False):
             comp_emb = comp_emb.float()
             prot_emb = prot_emb.float()
             if prot_residue_indices is not None:
                 prot_residue_indices = prot_residue_indices.long()
+            # v69: CrossModalGatedFusion — 蛋白条件化药物特征调制
+            if self.cross_modal_fusion is not None:
+                comp_emb = self.cross_modal_fusion(comp_emb, prot_emb)
             if self.decoder_type == "residue_bilinear":
                 return self.decoder(comp_emb, prot_emb, prot_residue_indices)
             return self.decoder(comp_emb, prot_emb)
+
+    def set_meta_path_edge_indices(self, meta_path_edge_indices: dict[str, torch.Tensor] | None) -> None:
+        """注册元路径边索引，供 GraphTransformer 多视角编码使用。
+
+        Args:
+            meta_path_edge_indices: 元路径名称 → 边索引张量 (2, E) 的映射。
+                设为 None 可清除已注册的元路径边。
+        """
+        self._meta_path_edge_indices = meta_path_edge_indices
 
     def set_residue_features(self, embeddings: torch.Tensor, offsets: torch.Tensor,
                              lengths: torch.Tensor, prot_to_residue_idx: torch.Tensor,

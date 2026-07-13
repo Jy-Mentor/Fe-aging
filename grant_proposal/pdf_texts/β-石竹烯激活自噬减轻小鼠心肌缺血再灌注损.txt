@@ -1,0 +1,328 @@
+
+--- 第1页 ---
+中国循证心血管医学杂志2021年11月第13卷第11期 Chin J Evid Based Cardiovasc Med,November,2021,Vol.13,No.11 • 1379 •
+• 论著 •
+β-石竹烯激活自噬减轻小鼠心肌缺血再灌注损伤的
+作用及机制
+周智华1，杜琼颖2，郅青3
+【摘要】目的 研究β-石竹烯激活自噬减轻小鼠心肌缺血再灌注损伤的作用及机制。方法 选择
+雄性C57BL/6J小鼠，随机分为假手术组、模型组、β-石竹烯组、3-甲基腺嘌呤（3-MA）组、β-石竹
+烯+3-MA组共五组，采用左前降支结扎的方法建立心肌缺血再灌注模型，造模前给予β-石竹烯灌胃、
+3-MA腹腔注射。检测心电图改变，血清乳酸脱氢酶（LDH）、磷酸肌酸激酶同工酶（CK-MB）含量，
+心肌梗死面积及病理改变，自噬小体数目及Beclin-1、微管相关蛋白1轻链3（LC3）表达水平。结果 模
+型组ST段、血清LDH及CK-MB含量、心肌梗死面积、心肌中自噬小体数目及Beclin-1、LC3-II/LC3-I表
+达水平均高于假手术组（P＜0.05）；β-石竹烯组ST段、血清LDH及CK-MB含量、心肌梗死面积均低于
+模型组，心肌中自噬小体数目及Beclin-1、LC3-II/LC3-I表达水平均高于模型组（P＜0.05）；β-石竹
+烯+3-MA组ST段、血清LDH及CK-MB含量、心肌梗死面积均高于β-石竹烯组，心肌中自噬小体数目及
+Beclin-1、LC3-II/LC3-I表达水平均低于β-石竹烯组（P＜0.05）。结论 β-石竹烯能够减轻小鼠心肌再
+灌注损伤，激活自噬是可能的分子机制。
+【关键词】心肌缺血再灌注损伤；β-石竹烯；自噬
+【中图分类号】R541.4
+【文献标志码】A 开放科学（源服务）标识码（OSID）
+Effect and mechanism of β-caryophyllene on reducing myocardial ischemia-reperfusion injury by
+activating autophagy in mice Zhou Zhihua*, Du Qiongying, Zhi Qing. *Department of Cardiology, No. 988
+Hospital of the Joint Logistics Support Force of the People's Liberation Army Zhengzhou, 450000 Zhengzhou, China
+Corresponding author: Zhou Zhihua, Email: 2384777923@qq.com
+[Abstract] Objective To study the effect and mechanism of β-caryophyllene on reducing myocardial
+ischemia-reperfusion injury by activating autophagy in mice. Methods Male C57BL/6J mice were randomly
+divided into sham group, model group, β-caryophyllene group, 3-methyladenine (3-mA) group and
+β-caryophyllene+3-mA group. The myocardial ischemia-reperfusion model was established by ligation of left
+anterior descending coronary artery. Before modeling, β-caryophyllene was given by intragastric administration
+and 3-mA was intraperitoneally injected. The ECG changes, contents of lactate dehydrogenase (LDH) and
+creatine kinase isoenzyme (CK-MB) in serum, myocardial infarction area and pathological changes, the number of
+autophagosome and the expression levels of beclin-1 and microtubule-associated protein 1 light chain3(LC3) were
+detected. Results The ST segment, contents of LDH and CK-MB in serum, myocardial infarct size, the number of
+autophagosome and the expression levels of beclin-1 and LC3-II/LC3-I in model group were higher than those
+in sham group (P＜0.05); the ST segment, contents of LDH and CK-MB in serum, myocardial infarct size of
+β-caryophyllene group were lower than those in model group, the number of autophagosome and the expression
+levels of beclin-1 and LC3-II/LC3-I were higher than those in the model group (P＜0.05); the ST segment, contents
+of LDH and CK-MB in serum, myocardial infarct size of β-caryophyllene+3-MA group were higher than those
+ofβ-caryophyllene group, the number of autophagosome and the expression levels of beclin-1 and LC3-II/LC3-I
+were lower than those of β-caryophyllene group (P＜0.05). Conclusion β-caryophyllene can reduce myocardial
+reperfusion injury in mice, and activation of autophagy is a possible molecular mechanism.
+[Key words] Myocardial ischemia-reperfusion injury; β-caryophyllene; Autophagy
+急性心肌梗死是临床常见的心血管疾病，介 可明显减轻心肌损伤。但治疗后心肌会发生缺血
+入或溶栓等再灌注治疗是其急诊的有效疗法，及 再灌注损伤，造成梗死面积扩大、恶性心律失常
+时再通冠状动脉（冠脉）、恢复缺血心肌血供， 及心力衰竭发生风险的增加，对再灌注疗效产生
+不利影响，需积极防治[1,2]。心肌缺血再灌注损伤
+作者单位：1 450000 郑州,解放军郑州联勤保障部队第988医院 的机制复杂，其中细胞自噬在心肌再灌注过程中
+心内科;2 450000 郑州,郑州大学第二附属医院心电图科;3 450000 郑
+起到重要作用。多项研究发现，缺血再灌注心肌
+州,郑州大学第二附属医院心内科
+中细胞自噬明显激活，使用自噬激动剂雷帕霉素
+通讯作者：周智华,E-mail:2384777923@qq.com
+doi：10.3969/j.issn.1674-4055.2021.11.23 能够减轻心肌损伤、使用自噬抑制剂3-甲基腺嘌
+--- 第2页 ---
+• 1380 • 中国循证心血管医学杂志2021年11月第13卷第11期 Chin J Evid Based Cardiovasc Med,November,2021,Vol.13,No.11
+呤（3-MA）能加重心肌损伤[3,4]。自噬成为近年 将切片放入1%TTC染色液中，37℃避光染色
+来防治心肌缺血再灌注损伤的热门靶点之一。 30 min。完成后磷酸盐缓冲液清洗3遍，数码
+β-石竹烯是一类双环倍半萜型天然物质， 相机拍照记录并在Image J软件中分析心肌梗死
+广泛存在于肉桂、丁香等植物中，具有抗凋亡、 面积，梗死心肌呈灰白色、未梗死心肌呈砖红
+促自噬等生物学作用。脑缺血再灌注相关的动物 色，按照公式（心肌梗死面积之和/全心面积之
+实验发现，β-石竹烯能够减轻脑缺血再灌注损 和）×100%计算心肌梗死面积。
+伤并激活缺血脑组织的自噬，增加自噬标志基因 1.6 心肌HE染色 每组小鼠剩余8只，取缺血再灌
+beclin-1及LC3-II/LC3-I的表达[5]，但其在心肌缺 注的心肌组织适量，4%多聚甲醛固定后制作病
+血再灌注损伤中的作用及机制不楚。本研究将在 理切片，HE染色试剂盒行染色操作，中性树胶
+心肌缺血再灌注损伤小鼠中观察β-石竹烯激活 封片后在显微镜下观察心肌病理改变。
+自噬减轻心肌损伤的作用及机制，旨在为发现心 1.7 自噬小体的检测 取缺血再灌注的心肌组织
+肌缺血再灌注损伤新的防治药物提供实验依据。 适量，制成约1 mm3的组织块，在2.5%戊二醛溶
+1 材料与方法 液中固定并保存，检测时用0.1 mol/L磷酸盐缓
+冲液冲洗组织块3次，放入1%锇酸中、4℃固定
+1.1 动物 雄性C57BL/6J小鼠购自赛业模式生物研
+1 h，经70%、80%、95%、100%乙醇溶液梯度脱
+究中心（太仓）有限公司，体质量18~24 g，许可
+水后，环氧树脂包埋，-80℃聚合24 h，制作成
+证号：SCXK(苏)2018-0003。
+60~70 nm厚度的切片并用3%柠檬酸铅染色，透
+1.2 试剂与仪器 β-石竹烯、3-MA购自美国Sigma
+射电镜下观察，随机选择5个视野对自噬小体进
+公司，乳酸脱氢酶（LDH）、磷酸肌酸激酶同工
+行计数。
+酶（CK-MB）检测试剂盒购自上海酶联公司，
+1.8 自噬基因表达的检测 取缺血再灌注的心肌组
+TTC染色液购自南京森贝伽公司，HE染色试剂
+织适量，采用RIPA裂解液提取蛋白，采用BCA试
+盒、RIPA裂解液、BCA蛋白定量试剂盒购自北
+剂盒检测蛋白含量，取含有30 μg蛋白的样本进行
+京索莱宝公司，Beclin-1、微管相关蛋白1轻链3
+western blot检测，在SDS-聚丙烯酰胺凝胶中进行
+（LC3）一抗购自CST公司。正置显微镜为苏州上
+电泳，电转移至PVDF膜后用5%脱脂牛奶在室温
+光仪器有限公司，透射电镜为上海斯坦德检测公
+封闭1 h，4℃孵育1:1000稀释的 Beclin-1、LC3一
+司，凝胶电泳系统及成像系统为上海天能公司。
+抗或1:2500稀释的β-actin一抗过夜，洗膜3次后室
+1.3 动物分组、造模及给药 实验动物随机分为
+温孵育1:2000稀释的二抗1 h，最后在凝胶成像仪
+假手术组、模型组、β-石竹烯组、3-MA组、
+中曝光得到蛋白条带并计算灰度值，以Beclin-1/
+β-石竹烯+3-MA组共五组，每组各16只。假手
+β-actin、LC3-II/LC3-I的比值作为表达水平。
+术组：进行麻醉、开胸、分离冠脉等手术操作，
+1.9 统计学方法 用SPSS 13.0统计学软件进行统计分
+但不结扎；模型组：腹腔注射10%水合氯醛麻醉
+析。计量资料采用均数±标准差（x±s）表示，
+后气管插管、连接小动物呼吸机，开胸并分离左
+多组间比较采用单因素方差分析，多组间两两比较
+前降支，结扎缝线、使心肌缺血30 min，而后剪
+采用q检验。以P＜0.05为差异有统计学意义。
+断结扎的缝线、使心肌再灌注2 h，心电图监测
+ST段改变；β-石竹烯组：给予72 mg/kg β-石 2 结果
+竹烯灌胃，1/d，连续5 d，末次灌胃后1 h按照模 2.1 五组小鼠心电图的比较 五组小鼠心电图的变
+型组的方法行心肌缺血再灌注造模；3-MA组： 化（图1）。与假手术组比较，模型组小鼠心电
+造模前15 min给予15 mg/kg 3-MA腹腔注射，而 图ST段明显抬高（P＜0.05）；与模型组比较，
+后按照模型组方法进行心肌缺血再灌注造模； β-石竹烯组小鼠心电图ST段明显降低，3-MA组
+β-石竹烯+3-MA组：给予72 mg/kg β-石竹烯灌 小鼠心电图ST段明显抬高（P＜0.05）；与β-石
+胃，1/d，连续5 d，末次灌胃后1 h按照模型组的 竹烯组比较，β-石竹烯+3-MA组小鼠心电图ST
+方法进行心肌缺血再灌注造模，造模前15 min给 段明显抬高（P＜0.05），表1。
+予15 mg/kg 3-MA腹腔注射。 2.2 五组小鼠血清心肌酶含量的比较 与假手术组
+1.4 血清心肌酶含量的检测 经心脏取血1.0~1.5 ml， 比较，模型组小鼠血清中LDH、CK-MB的含量
+静置0.5 h后自然凝血，3000转离心10 min，分离 明显增加（P＜0.05）；与模型组比较，β-石竹
+血清后检测LDH和CK-MB含量，严格按试剂盒说 烯组小鼠血清中LDH、CK-MB的含量明显降低，
+明书操作。 3-MA组小鼠血清中LDH、CK-MB的含量明显增
+1.5 心肌TTC染色 每组小鼠随机选择8只，取 加（P＜0.05）；与β-石竹烯组比较，β-石竹
+心脏在-80℃冰冻1 h，制成2 mm切片、5~6片， 烯+3-MA组小鼠血清中LDH、CK-MB的含量明显
+--- 第3页 ---
+中国循证心血管医学杂志2021年11月第13卷第11期 Chin J Evid Based Cardiovasc Med,November,2021,Vol.13,No.11 • 1381 •
+图2 五组小鼠心肌梗死面积的比较（TTC染色）
+注：与假手术组比较，*P＜0.05；与模型组比较，#P＜0.05；与
+β-石竹烯组比较，&P＜0.05
++3-MA组心肌HE染色可见病理改变较β-石竹烯
+组加重（图3）。
+2.4 五组小鼠心肌中自噬小体的比较 与假手术组
+比较，模型组小鼠心肌中自噬小体数目明显增加
+（P＜0.05）；与模型组比较，β-石竹烯组小鼠
+心肌中自噬小体数目明显增加， 3-MA组小鼠心
+肌中自噬小体数目明显减少（P＜0.05）；与β-
+石竹烯组比较，β-石竹烯+3-MA组小鼠心肌中
+自噬小体数目明显减少（P＜0.05），图4。
+图1 五组小鼠心电图的变化
+表1 五组小鼠心电图ST段的比较（n=16）
+组别 ST段（mV）
+假手术组 0.22±0.07
+模型组 0.49±0.06a
+β-石竹烯组 0.31±0.05b
+β-石竹烯+3-MA组 0.52±0.08c
+3-MA组 0.67±0.10b
+注：与假手术组比较，aP＜0.05；与模型组比较，bP＜0.05；与
+β-石竹烯组比较，cP＜0.05
+增加（P＜0.05），表2。
+2.2 五组小鼠心肌梗死面积的比较 与假手术组
+图3 五组小鼠心肌病理改变的比较（HE染色）
+比较，模型组小鼠的心肌梗死面积明显增加（P
+＜0.05）；与模型组比较，β-石竹烯组小鼠的
+心肌梗死面积明显降低，3-MA组小鼠的心肌梗
+死面积明显增加（P＜0.05）；与β-石竹烯组比
+较，β-石竹烯+3-MA组小鼠的心肌梗死面积明
+显增加（P＜0.05），图2。
+2.3 五组小鼠心肌病理改变的比较 假手术组心肌
+HE染色可见细胞排列整齐、呈束状分布；模型
+图4 五组小鼠心肌中自噬小体的比较
+组心肌HE染色可见细胞肿胀且排列混乱、大量 注：黄色箭头所指为自噬小体。与假手术组比较，*P＜0.05；与
+炎症细胞浸润等病理改变；β-石竹烯组心肌HE 模型组比较，#P＜0.05；与β-石竹烯组比较，&P＜0.05
+染色可见病理改变较模型组改善，3-MA组心肌
+2.5 五组小鼠心肌中自噬标志基因表达的比较 与
+HE染色可见病理改变较模型组加重；β-石竹烯
+假手术组比较，模型组小鼠心肌中Beclin-1、
+表2 五组小鼠血清LDH、CK-MB含量的比较（n=16） LC3-II/LC3-I的表达水平明显增加（P＜0.05）；
+与模型组比较，β-石竹烯组小鼠心肌中
+组别 LDH（U/L） CK-MB（U/L）
+假手术组 194.28±39.48 23.48±6.48 Beclin-1、LC3-II/LC3-I的表达水平明显增加，
+模型组 394.95±64.28a 81.38±12.85a
+3-MA组小鼠心肌中Beclin-1、LC3-II/LC3-I的表
+β-石竹烯组 247.69±41.37b 37.72±8.58b
+β-石竹烯+3-MA组 375.42±58.79c 66.41±9.22c 达水平明显减少（P＜0.05）；与β-石竹烯组比
+3-MA组 527.61±74.58b 113.28±22.19b 较，β-石竹烯+3-MA组小鼠心肌中Beclin-1、
+注：LDH：乳酸脱氢酶；CK-MB：磷酸肌酸激酶同工酶；与假手
+LC3-II/LC3-I的表达水平明显减少（P＜0.05），
+术组比较，aP＜0.05；与模型组比较，bP＜0.05；与β-石竹烯组比
+较，cP＜0.05 见图5及表3。
+--- 第4页 ---
+• 1382 • 中国循证心血管医学杂志2021年11月第13卷第11期 Chin J Evid Based Cardiovasc Med,November,2021,Vol.13,No.11
+自噬是细胞内普遍存在的生物学现象，在脑
+缺血再灌注过程中细胞自噬过度激活且起到神经
+保护作用[19,20]；β-石竹烯相关的研究发现β-石
+竹烯对脑缺血再灌注过程中的细胞自噬具有激活
+作用[5]，提示β-石竹烯可能通过激活自噬发挥神
+经保护作用。本研究则在心肌缺血再灌注损伤过
+程中观察了β-石竹烯对自噬的调控作用，结果
+图5 五组小鼠心肌中Beclin-1、LC3-II、LC3-I的蛋白条带 发现：β-石竹烯干预能够使缺血心肌中自噬小
+表3 五组小鼠心肌中Beclin-1、LC3-II/LC3-I表达的比较（n=16） 体增多、自噬标志基因Beclin-1及LC3-II/LC3-I
+组别 LC3-II/LC3-I Beclin-1 的表达增加，表明β-石竹烯能够在心肌缺血再
+假手术组 1.34±0.22 0.24±0.06 灌注过程中激活自噬，这也可能是β-石竹烯发
+模型组 1.94±0.34a 0.40±0.05a
+挥心肌保护作用的分子机制。为验证这一机制，
+β-石竹烯组 2.77±0.45b 0.64±0.07b
+β-石竹烯+3-MA组 1.75±0.25c 0.22±0.03c 本研究进行了β-石竹烯及3-MA联合干预，发现
+3-MA组 1.24±0.18b 0.37±0.04b
+自噬抑制剂3-MA削弱了β-石竹烯的心肌保护作
+注：与假手术组比较，aP＜0.05；与模型组比较，bP＜0.05；与
+用，β-石竹烯联合3-MA干预后小鼠心电图ST
+β-石竹烯组比较，cP＜0.05
+段、血清中LDH及CK-MB的含量高于单用β-石
+3 讨论 竹烯，心肌梗死面积及心肌病理改变也较单用
+β-石竹烯加重，结果表明β-石竹烯减轻心肌缺
+心肌缺血再灌注损伤是影响急性心肌梗死再
+血再灌注损伤的作用与激活自噬有关。
+灌注治疗效果的重要因素，防治心肌缺血再灌注
+综上所述，β-石竹烯能够减轻小鼠心肌再
+损伤是近年来心血管研究的热点。β-石竹烯是
+灌注损伤，激活自噬是可能的分子机制。为使用
+广泛存在于多种植物中的双环倍半萜化合物，具
+β-石竹烯进行心肌缺血再灌注损伤的防治提供
+有抗炎、抗氧化、抗凋亡等生物学作用。多项脑
+了实验依据，也为阐明自噬在心肌缺血再灌注损
+缺血再灌注相关研究发现，β-石竹烯能够减轻
+缺血再灌注引起的神经损害[5-7]；另有研究发现， 伤中的作用、发现心肌缺血再灌注损伤新的防治
+靶点提供了思路。
+β-石竹烯在脑出血、衰老、抑郁等动物模型中
+也起到神经保护作用[8-10]。本研究将β-石竹烯用 参 考 文 献
+[1] González-Montero J,Brito R,Gajardo AI,et al. Myocardial
+于心肌缺血再灌注损伤的治疗。在小鼠心肌缺血
+reperfusion injury and oxidative stress: Therapeutic opportunities[J].
+再灌注损伤造模前给予β-石竹烯灌胃干预并观
+World J Cardiol,2018,10(9):74-86.
+察到：心电图ST段及血清中心肌酶LDH及CK-MB [2] Lakota J. Molecular mechanism of ischemia-Reperfusion injury after
+含量降低、梗死面积缩小、病理改变减轻，表明 myocardial infarction and its possible targeted treatment[J]. Int J
+Cardiol,2016,29(220):571-2.
+β-石竹烯能够减轻小鼠心肌再灌注损伤。
+[3] Li ZH,Wang YL,Wang HJ,et al. Rapamycin-Preactivated Autophagy
+心肌缺血再灌注损伤的病理生理机制复杂，
+Enhances Survival and Differentiation of Mesenchymal Stem Cells
+涉及凋亡、炎症、氧化应激、自噬等环节[11-13]。 After Transplantation into Infarcted Myocardium[J]. Stem Cell Rev
+自噬是细胞通过溶酶体吞噬衰老、受损蛋白质及 Rep,2020,16(2):344-56.
+[4] Zhang P,Li Y,Fu Y,et al. Inhibition of Autophagy Signaling via
+细胞器的过程，有助于维持细胞内环境稳定。自
+3-methyladenine Rescued Nicotine-Mediated Cardiac Pathological
+噬小体形成是自噬激活的特征，而Beclin-1和LC3
+Effects and Heart Dysfunctions[J]. Int J Biol Sci,2020,16(8):1349-62.
+两种基因在自噬小体形成过程中起关键作用、其 [5] 饶江燕,王倩,王钰淳,等. β-石竹烯通过激活自噬减轻小鼠脑缺
+表达也能反映自噬的激活程度[14-16]。既往心肌缺 血/再灌注损伤的研究[J]. 中国中药杂志,2020,45(4):932-6.
+血再灌注损伤[17]、心肌细胞缺氧复氧损伤[18]相关
+[6] Tian X,Liu H,Xiang F,et al. β-Caryophyllene protects against
+ischemic stroke by promoting polarization of microglia toward M2
+研究及本研究均发现：自噬在心肌缺血再灌注损
+phenotype via the TLR4 pathway[J]. Life Sci,2019,15(237):116915.
+伤过程中被激活，缺血心肌中自噬小体增多、 [7] Yang M,Lv Y,Tian X,et al. Neuroprotective Effect of
+Beclin-1及LC3-II/LC3-I的表达增加。本研究进 β-Caryophyllene on Cerebral Ischemia-Reperfusion Injury via
+Regulation of Necroptotic Neuronal Death and Inflammation:In Vivo
+一步在心肌缺血再灌注造模前给予自噬抑制剂
+and in Vitro[J]. Front Neurosci,2017,26(11):583.
+3-MA干预，旨在阐明自噬激活在心肌缺血再灌
+[8] Wang F,Teng Z,Liu D,et al. β-Caryophyllene Liposomes Attenuate
+注损伤中的作用，结果显示：3-MA预处理能够 Neurovascular Unit Damage After Subarachnoid Hemorrhage in
+加重心肌缺血再灌注损伤的程度，表明自噬激活 Rats[J]. Neurochem Res,2020,45(8):1758-68.
+[9] Hwang ES,Kim HB,Lee S,et al. Antidepressant-like effects of
+具有心肌保护作用，心肌缺血再灌注过程中自噬
+β-caryophyllene on restraint plus stress-induced depression[J].
+的激活可能是一种自我保护的代偿机制。
+Behav Brain Res,2020,17(380):112439.
+（下转1389页）
+--- 第5页 ---
+中国循证心血管医学杂志2021年11月第13卷第11期 Chin J Evid Based Cardiovasc Med,November,2021,Vol.13,No.11 • 1389 •
+率。本研究同时观察了患者对高血压的认知情况 [3] 中国高血压防治指南修订委员会,高血压联盟(中国), 中华医学会
+心血管病学分会,等. 中国高血压防治指南(2018年修订版) [J]. 中
+及治疗依从性，结果显示，无论哪种管理方式均
+国心血管杂志,2019,24(1):24-56.
+能提高患者对高血压认知，精细化管理提高更明
+[4] Wang Z,Chen Z,Zhang L,et al. Status of Hypertension in China:Results
+显，精细化管理有助于提高患者治疗依从性。 from the China Hypertension Survey,2012-2015[J]. Circulation,2018,
+综上所述，社区门诊可有效管理高血压患者 137(22):2344-56.
+[5] Williams B,Mancia G,Spiering W,et al. 2018 ESC/ESH guidelines
+使其血压控制达标，精细化管理能在一般管理基
+for the management of arterial hypertension[J]. Eur Heart
+础上进一步提高血压达标率，但精细化管理需专
+J,2018,39(33):3021-104.
+职人员参与、耗费精力较大，应不断壮大全科医 [6] Yu EY,Wan EY,Chan KH,et al. Evaluation of the quality of care
+护队伍。另外研究参与的高血压患者血压控制得 of a multi-disciplinary Risk Factor Assessment and Management
+Programme for Hypertension (RAMP-HT)[J]. BMC Fam
+到改善，但仍有很多患者对血压认识程度不足，
+Pract,2015,16:71.
+未接受正规治疗，因此加强知识宣传、提高对高
+[7] Wang HHX,Wong MCS,Tang JL,et al. Primary care-based lifestyle
+血压的认识非常重要，未来仍需进行大量工作。 interventions on blood pressure and lipid profiles among Chinese
+参 考 文 献 subjects: a meta-analysis[J]. World Congress of Cardiology Scientific
+Sessions,2012.
+[1] Lewington S,Clarke R,Qizilbash N,et al. Age-specific relevance
+[8] 程东英. 宁波农村高血压患者社区卫生干预效果分析[J]. 中国当
+of usual blood pressure to vascular mortality:a meta-analysis of
+代医药,2010,17(27):121-2.
+individual data for one million adults in 61 prospective studies[J].
+[9] 王子林. 社区综合干预1068例高血压病效果评估[J]. 吉林医
+Lancet,2002,360(9349):1903-13.
+学,2010,31(36):6741-2.
+[2] 中国心血管健康与疾病报告编写组. 中国心血管健康与疾病报
+本文编辑：孙竹
+告2019概要[J]. 中国循环杂志,2020,35(9):833-54.
+（上接1382页） [15] Du J, Li Y, Zhao W. Autophagy and Myocardial Ischemia[J]. Adv Exp
+[10] Lindsey LP,Daphney CM,Oppong-Damoah A,et al. The cannabinoid Med Biol, 2020, 1207:217-22.
+receptor 2 agonist, β-caryophyllene, improves working memory and [16] Abdellatif M,Ljubojevic-Holzer S,Madeo F,et al. Autophagy
+reduces circulating levels of specific proinflammatory cytokines in in cardiovascular health and disease[J]. Prog Mol Biol Transl
+aged male mice[J]. Behav Brain Res,2019,17(372):112012. Sci,2020,172:87-106.
+[11] An S,Wang X,Shi H,et al. Apelin protects against ischemia- [17] Lu Q,Li W,Li Z,et al. Effect of autophagy on cardiomyocyte membrane
+reperfusion injury in diabetic myocardium via inhibiting apoptosis Cx43 acute remodeling in rats with ischemia-reperfusion[J]. Int J
+and oxidative stress through PI3K and p38-MAPK signaling Clin Exp Pathol,2019,12(7):2639-45
+pathways[J]. Aging (Albany NY),2020,12(24):25120-37. [18] 卢青,李兆康,李志刚,等. 抑制自噬对缺氧复氧后H9c2心肌细
+[12] Cai H,Liu Y,Men H,et al. Protective Mechanism of Humanin Against 胞损伤及线粒体Cx43变化的影响[J]. 中华老年心脑血管病杂
+Oxidative Stress in Aging-Related Cardiovascular Diseases[J]. Front 志,2019,21(10):1070-5.
+Endocrinol (Lausanne),2021,10(12):683151. [19] Guo X,Liu Y,Zhao Y,et al. Role of the PI3K-mTOR autophagy
+[13] He B,Geng S,Zhou W,et al. MMI-0100 ameliorates lung inflammation pathway in nerve damage in rats with intermittent hypoxia-aggravated
+in a mouse model of acute respiratory distress syndrome by reducing whole brain ischemia[J]. Mol Med Rep,2019,20(2):1411-7.
+endothelial expression of ICAM-1[J]. Drug Des Devel Ther,2018,13 [20] Sun Y,Zhang T,Zhang Y,et al. Ischemic Postconditioning Alleviates
+(12):4253-60. Cerebral Ischemia-Reperfusion Injury Through Activating
+[14] Gu S,Li X. Regulation of Autophagy in Cardiovascular Diseases by Autophagy During Early Reperfusion in Rats[J]. Neurochem
+Natural Products[J]. Adv Exp Med Biol,2020,1207:731-6. Res,2018,43(9):1826-40.
+本文编辑：田洪榛
+（上接1386页） early myocardial ischemia-reperfusion--a 3-dimensional confocal
+[8] 胡盛寿,高润霖,刘力生,等. 《中国心血管病报告2018》概要[J]. laser microscopic study[J]. Circ J,2004,68(12):1210-4.
+中国循环杂志,2019,34(3) 209-20. [13] 黄斌,陆猛桂. 生脉注射液对冠心病三支病变患者急诊PCI术
+[9] 史利锋,林平. 经皮冠状动脉介入治疗患者术后心脏不良事件的 后心脏自主神经功能和心肌微循环的影响[J]. 辽宁中医杂
+发生情况及影响因素[J]. 中华护理杂志,2015,50(12):1449-53. 志,2020,47(1):120-3.
+[10] 戎成振,卢家忠,张标,等. 经皮冠状动脉介入治疗术中冠状动脉 [14] Terziyski KV,Draganova AI,Taralov ZZ,et al. The effect of continuous
+无复流的相关影响因素研究进展[J]. 山东医药,2020,60(23):92-4. positive airway pressure on heart rate variability during the night in
+[11] Wang W,Zhang X,Chen K,et al. Effects of nicorandil infusion on patients with chronic heart failure and central sleep apnoea[J]. Clin
+ECG parameters in patients with unstable angina pectoris and Exp Pharmacol Physiol, 2016,43(12):1185-90.
+percutaneous coronary intervention[J]. Ann Noninvasive Electrocardi [15] Peng R,Yang X,Liang X. Nicorandil effects on platelet function,Hs-
+ol,2020,25(4):e12736. CRP,MMP-9 and myocardial antioxidation in patients with unstable
+[12] Watanabe N,Akasaka T,Fujimoto K,et al. Effect of nicorandil, a K+ATP angina[J]. Exp Ther Med,2019,18(4):3095-9.
+-channel opener, on coronary capillary architecture and volume after 本文编辑：芦洁

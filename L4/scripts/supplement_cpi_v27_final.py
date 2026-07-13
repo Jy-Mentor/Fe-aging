@@ -11,7 +11,6 @@ CPI数据补充脚本 v27 - 最终版
 """
 import pandas as pd
 import os
-import sys
 import json
 import urllib.request
 import urllib.error
@@ -88,7 +87,7 @@ main_cpi_full = pd.read_csv(r"d:\铁衰老 绝不重蹈覆辙\L4\results\experim
 drugbank_smiles_map = {}
 # 首先从ChEMBL数据中获取所有SMILES（按drug_name索引）
 # ChEMBL数据中的molecule_pref_name可能包含drug名称
-print(f"    构建ChEMBL SMILES索引...")
+print("    构建ChEMBL SMILES索引...")
 
 # 从ChEMBL获取所有唯一化合物SMILES（按molecule_pref_name）
 chembl_smiles = {}
@@ -142,7 +141,7 @@ def get_smiles_from_pubchem(drug_name):
                 props = data['PropertyTable']['Properties']
                 if props and 'CanonicalSMILES' in props[0]:
                     return props[0]['CanonicalSMILES']
-    except Exception as e:
+    except Exception:
         logger.exception("捕获到异常并继续执行（原 except 'Exception as e' 静默吞掉）")
         pass
 
@@ -163,7 +162,7 @@ chembl_found = sum(1 for v in drugbank_smiles_map.values() if v['smiles'])
 
 # 对ChEMBL未找到的，尝试PubChem
 print(f"\n    ChEMBL找到: {chembl_found}/{len(drugbank_smiles_map)}")
-print(f"    尝试PubChem查找剩余药物...")
+print("    尝试PubChem查找剩余药物...")
 
 for db_id, info in drugbank_smiles_map.items():
     if info['smiles'] is None:
@@ -278,8 +277,8 @@ report_lines.append("")
 
 report_lines.append(f"铁衰老96基因总数: {len(genes_96)}")
 report_lines.append(f"主CPI中有SMILES的基因: {len(main_genes_with_smiles)}")
-report_lines.append(f"BindingDB中96基因覆盖: 20个(全在已有CPI中)")
-report_lines.append(f"DrugBank中96基因覆盖: 21个")
+report_lines.append("BindingDB中96基因覆盖: 20个(全在已有CPI中)")
+report_lines.append("DrugBank中96基因覆盖: 21个")
 report_lines.append(f"DrugBank补充文件中基因: {sorted(db_supp['gene'].unique())}")
 report_lines.append("")
 

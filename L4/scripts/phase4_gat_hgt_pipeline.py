@@ -37,6 +37,7 @@ Phase 4 v9: GAT + HGT 双图神经网络 — 拓扑-语义双视角互补融合
 
 from __future__ import annotations
 
+import ast
 import json
 import logging
 import random
@@ -45,7 +46,7 @@ import time
 import warnings
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -53,10 +54,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from rdkit import Chem, RDLogger
-from rdkit.Chem import AllChem, Descriptors, rdMolDescriptors
 from sklearn.metrics import (
     average_precision_score,
-    precision_recall_curve,
     roc_auc_score,
 )
 from torch_geometric.data import HeteroData
@@ -68,6 +67,16 @@ warnings.filterwarnings("ignore", category=DeprecationWarning, module="rdkit")
 warnings.filterwarnings("ignore", category=FutureWarning, module="rdkit")
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent
+L4_SRC = PROJECT_ROOT / "L4" / "src"
+sys.path.insert(0, str(L4_SRC))
+
+# v61-refactor: 使用统一的特征工程模块，避免与 features.py 中的重复实现
+from iron_aging_gnn.data.features import (  # noqa: E402
+    CompoundFeatureConfig,
+    FeatureCache,
+    build_compound_features as _build_compound_features_unified,
+)
+
 L1_RESULTS = PROJECT_ROOT / "L1" / "results"
 L2_RESULTS = PROJECT_ROOT / "L2" / "results"
 L3_RESULTS = PROJECT_ROOT / "L3" / "results"
@@ -135,116 +144,37 @@ RDKIT_DESCRIPTOR_NAMES = [
 ECFP4_NBITS = 2048
 
 
-def _compute_ecfp4(smiles_iter: list[str]) -> np.ndarray:
-    """计算 ECFP4 (Morgan radius=2, 2048 bits)"""
-    fps = np.zeros((len(smiles_iter), ECFP4_NBITS), dtype=np.float32)
-    n_parse_fail = 0
-    n_fp_fail = 0
-    for i, smi in enumerate(smiles_iter):
-        mol = None
-        try:
-            if pd.notna(smi):
-                mol = Chem.MolFromSmiles(str(smi))
-        except Exception as e:
-            logger.warning(f"ECFP4 SMILES 解析失败 索引 {i}: {smi!r}, 错误: {e}")
-            mol = None
-        if mol is None:
-            n_parse_fail += 1
-            continue
-        try:
-            fp = AllChem.GetMorganFingerprintAsBitVect(mol, 2, nBits=ECFP4_NBITS)
-            for bit in fp.GetOnBits():
-                fps[i, bit] = 1.0
-        except Exception as e:
-            n_fp_fail += 1
-            logger.warning(f"ECFP4 指纹生成失败 索引 {i}: {smi!r}, 错误: {e}")
-    total_fail = n_parse_fail + n_fp_fail
-    if total_fail > 0:
-        logger.warning(
-            f"ECFP4 处理完成: {len(smiles_iter)} 个化合物, "
-            f"SMILES 解析失败 {n_parse_fail} 个, 指纹生成失败 {n_fp_fail} 个"
-        )
-    if len(smiles_iter) > 0 and total_fail == len(smiles_iter):
-        raise ValueError("ECFP4 指纹生成全部失败，请检查输入 SMILES 格式")
-    return fps
-
-
-def _compute_maccs(smiles_iter: list[str]) -> np.ndarray:
-    fps = []
-    for smi in smiles_iter:
-        mol = None
-        try:
-            if pd.notna(smi):
-                mol = Chem.MolFromSmiles(str(smi))
-        except Exception:
-            mol = None
-        if mol is None:
-            fps.append(np.zeros(167, dtype=np.float32))
-            continue
-        try:
-            fp = rdMolDescriptors.GetMACCSKeysFingerprint(mol)
-            arr = np.zeros(167, dtype=np.float32)
-            arr[list(fp.GetOnBits())] = 1.0
-            fps.append(arr)
-        except Exception:
-            fps.append(np.zeros(167, dtype=np.float32))
-    return np.array(fps, dtype=np.float32)
-
-
-def _compute_rdkit_descriptors(smiles_iter: list[str]) -> np.ndarray:
-    desc_funcs = {name: getattr(Descriptors, name) for name in RDKIT_DESCRIPTOR_NAMES}
-    rows = []
-    for smi in smiles_iter:
-        mol = None
-        try:
-            if pd.notna(smi):
-                mol = Chem.MolFromSmiles(str(smi))
-        except Exception:
-            mol = None
-        if mol is None:
-            rows.append([np.nan] * len(RDKIT_DESCRIPTOR_NAMES))
-            continue
-        vals = []
-        for name in RDKIT_DESCRIPTOR_NAMES:
-            try:
-                vals.append(float(desc_funcs[name](mol)))
-            except Exception:
-                vals.append(np.nan)
-        rows.append(vals)
-    return np.array(rows, dtype=np.float32)
+# v61-refactor: 统一特征工程配置与缓存管理器
+_compound_feature_config = CompoundFeatureConfig(
+    ecfp4_nbits=ECFP4_NBITS,
+    use_maccs=True,
+    use_rdkit_descriptors=True,
+    rdkit_descriptor_names=list(RDKIT_DESCRIPTOR_NAMES),
+    cache_version="v9",
+)
+_compound_feature_cache = FeatureCache(
+    cache_dir=L4_RESULTS / "feature_cache_v9",
+    version="v9",
+)
 
 
 def build_compound_features(
     smiles_list: list[str],
     stats: tuple[np.ndarray, np.ndarray, np.ndarray] | None = None,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    """
-    v7: ECFP4 (2048) + MACCS (167) + RDKit 描述符 (17) = 2232 维
-    """
-    logger.info(f"  computing ECFP4 ({len(smiles_list)} compounds)...")
-    ecfp4 = _compute_ecfp4(smiles_list)
-    logger.info(f"  computing MACCS ({len(smiles_list)} compounds)...")
-    maccs = _compute_maccs(smiles_list)
-    logger.info(f"  computing RDKit descriptors ({len(smiles_list)} compounds)...")
-    desc = _compute_rdkit_descriptors(smiles_list)
+    """构建化合物特征矩阵：ECFP4 + MACCS + RDKit 描述符。
 
-    if stats is None:
-        col_mean = np.nanmean(desc, axis=0)
-        inds = np.where(np.isnan(desc))
-        desc[inds] = np.take(col_mean, inds[1])
-        desc = np.nan_to_num(desc, nan=0.0, posinf=1e6, neginf=-1e6)
-        mean = desc.mean(axis=0)
-        std = desc.std(axis=0) + 1e-8
-        desc = (desc - mean) / std
-    else:
-        mean, std, col_mean = stats
-        inds = np.where(np.isnan(desc))
-        desc[inds] = np.take(col_mean, inds[1])
-        desc = np.nan_to_num(desc, nan=0.0, posinf=1e6, neginf=-1e6)
-        desc = (desc - mean) / (std + 1e-8)
-
-    features = np.hstack([ecfp4, maccs, desc]).astype(np.float32)
-    return features, mean, std, col_mean
+    v61-refactor: 内部转发给统一的特征工程模块，消除与 features.py 的重复实现。
+    返回维度为 ECFP4 (2048) + MACCS (167) + RDKit 描述符 (17) = 2232 维。
+    """
+    # 校验/预测模式禁用内部缓存，避免不同数据拆分导致特征不一致
+    cache_manager = _compound_feature_cache if stats is None else None
+    return _build_compound_features_unified(
+        smiles_list=smiles_list,
+        stats=stats,
+        config=_compound_feature_config,
+        cache_manager=cache_manager,
+    )
 
 
 # ============================================================
@@ -350,7 +280,7 @@ def load_kegg_pathways() -> dict[str, list[str]]:
     for _, row in kegg.iterrows():
         genes_str = row["inputGenes"]
         try:
-            genes = eval(genes_str)
+            genes = ast.literal_eval(genes_str)
         except Exception as e:
             logger.warning(f"KEGG 回退通路基因解析失败: {genes_str!r}, 错误: {e}")
             continue
@@ -414,15 +344,12 @@ def load_protein_features() -> tuple[dict[str, np.ndarray], dict[str, str]]:
 
 
 def load_tcm_pool() -> pd.DataFrame:
-    noleak_path = L3_RESULTS / "tcm_compound_pool_tox_filtered_noleak.csv"
-    original_path = L3_RESULTS / "tcm_compound_pool_tox_filtered.csv"
-    tcm_path = noleak_path if noleak_path.exists() else original_path
+    tcm_path = L3_RESULTS / "tcm_compound_pool_tox_filtered.csv"
     if not tcm_path.exists():
         logger.error(f"TCM 候选池文件不存在: {tcm_path}")
         sys.exit(1)
     df = pd.read_csv(tcm_path, low_memory=False)
-    source_tag = "去泄漏版" if tcm_path == noleak_path else "原始版"
-    logger.info(f"TCM 候选池（{source_tag}）: {len(df)} 个化合物")
+    logger.info(f"TCM 候选池: {len(df)} 个化合物")
     return df
 
 
@@ -1900,8 +1827,7 @@ def main():
     prot_feat, gene_to_seq = load_protein_features()
     tcm_df = load_tcm_pool()
 
-    noleak_tcm = L3_RESULTS / "tcm_compound_pool_tox_filtered_noleak.csv"
-    tcm_file = noleak_tcm if noleak_tcm.exists() else (L3_RESULTS / "tcm_compound_pool_tox_filtered.csv")
+    tcm_file = L3_RESULTS / "tcm_compound_pool_tox_filtered.csv"
     input_files = {
         "cpi": str(L4_ROOT / "results" / "experimental_actives_detail_cleaned.csv"),
         "ppi": str(L1_RESULTS / "ppi_network_extended_significant_edges.csv"),

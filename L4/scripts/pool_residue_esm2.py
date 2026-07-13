@@ -170,8 +170,8 @@ def main() -> None:
     save_dict = {gene: pooled_embeddings[i] for i, gene in enumerate(genes)}
     # 同时保存元信息
     save_dict["__meta__"] = np.array([
-        f"pooled_from=esm2_150M_residue_features.pt",
-        f"pool_method=ResidueSelfAttentionPool",
+        "pooled_from=esm2_150M_residue_features.pt",
+        "pool_method=ResidueSelfAttentionPool",
         f"n_proteins={n_proteins}",
         f"embed_dim={embed_dim}",
         f"missing_genes={len(missing_genes)}",

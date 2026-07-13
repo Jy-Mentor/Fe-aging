@@ -9,12 +9,7 @@ BindingDB REST API不可用，使用TSV下载方式替代
 
 import pandas as pd
 import requests
-import time
-import sys
 import os
-import csv
-import io
-import gzip
 
 # ============================================================
 # 配置
@@ -100,7 +95,7 @@ def download_and_filter_bindingdb(target_uniprots, gene_uniprot_map):
     gene_stats = dict.fromkeys(gene_uniprot_map.keys(), 0)
     
     print(f"  目标UniProt ID数: {len(target_uniprots)}")
-    print(f"  开始下载BindingDB TSV文件...")
+    print("  开始下载BindingDB TSV文件...")
     print(f"  URL: {BINDINGDB_TSV_URL}")
     
     try:
@@ -237,7 +232,7 @@ def download_and_filter_bindingdb(target_uniprots, gene_uniprot_map):
         print(f"\n  处理完成: 共 {line_count} 行, 匹配 {matched_count} 条CPI记录")
         
     except requests.exceptions.Timeout:
-        print(f"  [超时] 下载超时")
+        print("  [超时] 下载超时")
     except requests.exceptions.ConnectionError as e:
         print(f"  [连接错误] {e}")
     except Exception as e:

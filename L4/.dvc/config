@@ -1,0 +1,12 @@
+[core]
+    remote = local
+    autostage = true
+
+['remote "local"']
+    url = ../../data/dvc_cache
+
+[hydra]
+    enabled = False
+
+[plots]
+    html_template = null

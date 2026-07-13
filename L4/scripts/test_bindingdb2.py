@@ -2,7 +2,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 import requests
-import json
 
 # Test with www subdomain
 url = "https://www.bindingdb.org/axis2/services/BDBService/getLigandsByUniprotID"

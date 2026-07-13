@@ -354,7 +354,7 @@ def train_evaluate_models_v4(X, y_reg, y_cls, w, target_gene, n_positives, n_hig
     from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
     from sklearn.linear_model import LogisticRegression
     from sklearn.svm import SVR, SVC
-    from sklearn.neighbors import KNeighborsRegressor, KNeighborsClassifier
+    from sklearn.neighbors import KNeighborsRegressor
 
     results = {
         "gene": target_gene, "n_positives": n_positives,
@@ -744,7 +744,7 @@ def rank_candidates_v4(pred_df, compound_data, top_n=50):
     logger.info(f"  Top {top_n} 候选: {L4_RESULTS / 'tcm_top_candidates.csv'} ({elapsed:.2f}s)")
 
     logger.info(f"\n{'='*80}")
-    logger.info(f"Top 20 候选化合物 (v4)")
+    logger.info("Top 20 候选化合物 (v4)")
     logger.info(f"{'='*80}")
     for _, row in top_df.head(20).iterrows():
         name = str(row["molecule_name"])[:35]
@@ -767,23 +767,23 @@ def generate_report_v4(results_df, top_df, pred_df, ef_df, compound_data):
     lines.append("# Phase 4: CIRI铁衰老中药单体ML筛选 - 模型构建报告 (v4深度优化)")
     lines.append(f"\n生成时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
-    lines.append(f"\n## 1. 数据概览")
+    lines.append("\n## 1. 数据概览")
     lines.append(f"- TCM化合物总数: {len(compound_data['mol_ids'])}")
     lines.append(f"- 目标靶标总数: {len(results_df)}")
-    lines.append(f"- v4策略: 软标签回归 + 多阈值置信度加权 + 回归分类融合")
+    lines.append("- v4策略: 软标签回归 + 多阈值置信度加权 + 回归分类融合")
 
     # 统计
     trained = results_df[results_df["status"] == "TRAINED"]
     no_data = results_df[results_df["status"] == "NO_DATA"]
     no_match = results_df[results_df["status"] == "NO_MATCH"]
 
-    lines.append(f"\n## 2. 靶标分层统计")
+    lines.append("\n## 2. 靶标分层统计")
     lines.append(f"- 可训练靶标: {len(trained)} 个")
     lines.append(f"- 无活性数据: {len(no_data)} 个")
     lines.append(f"- 无TCM匹配: {len(no_match)} 个")
 
     if len(trained) > 0:
-        lines.append(f"\n### 可训练靶标详情")
+        lines.append("\n### 可训练靶标详情")
         for _, row in trained.iterrows():
             rfc = row.get("RFC_AUC", "N/A")
             rfr = row.get("RFR_MSE", "N/A")
@@ -791,7 +791,7 @@ def generate_report_v4(results_df, top_df, pred_df, ef_df, compound_data):
                          f"低置信={int(row.get('n_low', 0))}, RFC_AUC={rfc}, RFR_MSE={rfr}")
 
     # 模型性能汇总
-    lines.append(f"\n## 3. 模型性能汇总")
+    lines.append("\n## 3. 模型性能汇总")
     if len(trained) > 0:
         for col in ["RFC_AUC", "RFR_MSE", "XGBC_AUC", "XGBR_MSE", "LR_AUC", "SVC_AUC"]:
             if col in trained.columns:
@@ -802,7 +802,7 @@ def generate_report_v4(results_df, top_df, pred_df, ef_df, compound_data):
 
     # 富集因子
     if len(ef_df) > 0:
-        lines.append(f"\n## 4. 富集因子分析")
+        lines.append("\n## 4. 富集因子分析")
         for pct in [1, 5, 10]:
             sub = ef_df[ef_df["top_percent"] == pct]
             if len(sub) > 0:
@@ -810,22 +810,22 @@ def generate_report_v4(results_df, top_df, pred_df, ef_df, compound_data):
                            f"max={sub['enrichment_factor'].max():.2f}")
 
     # Top候选
-    lines.append(f"\n## 5. Top 20 候选化合物")
-    lines.append(f"| 排名 | 化合物 | 综合得分 | 平均得分 | 高置信命中 | Top靶标 |")
-    lines.append(f"|------|--------|----------|----------|------------|---------|")
+    lines.append("\n## 5. Top 20 候选化合物")
+    lines.append("| 排名 | 化合物 | 综合得分 | 平均得分 | 高置信命中 | Top靶标 |")
+    lines.append("|------|--------|----------|----------|------------|---------|")
     for _, row in top_df.head(20).iterrows():
         name = str(row["molecule_name"])[:30]
         targets = str(row.get("top_targets", "N/A"))[:80]
         lines.append(f"| {int(row['rank'])} | {name} | {row['composite_score']:.4f} | "
                      f"{row['mean_score']:.4f} | {int(row['n_high'])} | {targets} |")
 
-    lines.append(f"\n## 6. v4改进总结")
-    lines.append(f"- 软标签回归: Tanimoto相似度作为连续目标")
-    lines.append(f"- 多阈值分层: 高(>0.7)/低(0.5-0.7)/弱(0.3-0.5)/负(<0.3)")
-    lines.append(f"- 置信度加权: 相似度作为样本权重")
-    lines.append(f"- 8模型集成: RFR+XGBR+SVR+KNNR+RFC+XGBC+LR+SVC")
-    lines.append(f"- 回归+分类融合: 0.5×reg + 0.5×cls")
-    lines.append(f"- 富集因子评估: EF@1%/5%/10%")
+    lines.append("\n## 6. v4改进总结")
+    lines.append("- 软标签回归: Tanimoto相似度作为连续目标")
+    lines.append("- 多阈值分层: 高(>0.7)/低(0.5-0.7)/弱(0.3-0.5)/负(<0.3)")
+    lines.append("- 置信度加权: 相似度作为样本权重")
+    lines.append("- 8模型集成: RFR+XGBR+SVR+KNNR+RFC+XGBC+LR+SVC")
+    lines.append("- 回归+分类融合: 0.5×reg + 0.5×cls")
+    lines.append("- 富集因子评估: EF@1%/5%/10%")
 
     report_path = L4_RESULTS / "phase4_report.md"
     with open(report_path, "w", encoding="utf-8") as f:

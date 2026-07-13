@@ -1,0 +1,3738 @@
+
+--- 第1页 ---
+分 类 号：R966 单位代码：10183
+研究生学号: 2021711020 密 级：公 开
+吉 林 大 学
+博士学位论文
+缺血诱导成纤维细胞衰老中 ALDH2 的作用及机制研究
+The effects and mechanisms of ALDH2 in the senescence of
+fibroblasts induced by ischemia
+作者姓名：惠文婷
+专 业：药理学
+研究方向：心脑血管药理学
+指导教师：陈霞 教授
+培养单位：吉林大学基础医学院
+2024 年 05 月
+I
+--- 第2页 ---
+缺血诱导成纤维细胞衰老中 ALDH2 的作用及机制研究
+The effects and mechanisms of ALDH2 in the senescence
+of fibroblasts induced by ischemia
+作者姓名：惠文婷
+专业名称：药理学
+指导教师：陈霞 教授
+学位类别：医学博士
+论文答辩日期：2024年 5 月 30 日
+授予学位日期： 年 月 日
+答辩委员会组成：
+姓名 职称 工作单位
+主席：王 放 教授 吉林大学
+委员：朱筱娟 教授 东北师范大学
+杜伟杰 教授 哈尔滨医科大学
+陈 立 教授 吉林大学
+张 明 教授 吉林大学
+II
+--- 第3页 ---
+摘 要
+缺血诱导成纤维细胞衰老中 ALDH2的作用及机制研究
+应激性细胞衰老在缺血损伤引起多种器官的急性和慢性功能障碍中起着关
+键作用。心肌成纤维细胞是维持心脏结构和功能的主要细胞，参与心肌损伤修
+复的全过程。文献报道，与心肌细胞相比，成纤维细胞对缺血损伤的耐受性更
+高。心肌梗死（Myocardial infarction，MI）后，小鼠心肌组织梗死区及梗死边
+缘区会出现衰老成纤维细胞，心肌成纤维细胞是缺血心肌组织中衰老细胞的主
+要类型。因此，缺血诱导的成纤维细胞衰老可能对于心肌损伤与修复的发生发
+展具有重要作用。但目前关于心肌缺血诱导成纤维细胞衰老的分子机制尚未阐
+明。
+缺血性损伤导致线粒体醛醛脱氢酶 2 （aldehyde dehydrogenase 2 family
+member，ALDH2）活性降低。ALDH2 是位于线粒体上的糖代谢酶和醛脱氢酶，
+在多种组织的成纤维细胞中大量表达。据报道，ALDH2可通过减少 4-羟基壬烯
+醛（4-hydroxynonenal，4-HNE）在组织内的累积，参与调控组织缺血性损伤的
+发生发展。4-HNE是ROS介导脂质过氧化的主要产物，目前4-HNE被认为一种
+细胞毒性物质，在细胞信号转导和命运调控中发挥关键作用。近年来ALDH2被
+证实参与调控内皮细胞及血管平滑肌细胞衰老，激活ALDH2可抑制应激性细胞
+衰老进程。但 ALDH2 是否可以通过 4-HNE 调控缺血后成纤维细胞衰老尚未见
+报道。
+本研究选择小鼠心肌梗死模型和氧糖剥夺（Oxygen-glucose deprivation，
+OGD）细胞模型作为诱导细胞衰老的应激性条件，观察缺血诱导成纤维细胞衰
+老的动态变化；探究 ALDH2 基于 4-HNE 调控缺血诱导成纤维细胞衰老的分子
+机制，明确激活ALDH2抑制成纤维细胞衰老对心肌缺血损伤的改善作用，为寻
+找干预缺血性疾病的药物靶标提供新的思路及理论依据。
+实验目的：
+观察缺血对成纤维细胞应激性衰老的影响。探究ALDH2在缺血诱导成纤维
+细胞衰老的作用及机制，为寻找干预缺血后心肌成纤维细胞衰老的药物靶点，
+VIII
+--- 第4页 ---
+以及改善缺血心肌损伤的新策略提供理论和实验依据。
+实验方法：
+1. 通过结扎小鼠冠状动脉左前降支建立心肌梗死模型，采用 Western Blot方
+法检测心肌组织细胞衰老标志蛋白表达情况，采用免疫荧光法观察衰老细胞和
+成纤维细胞共定位情况，观察心梗对心肌成纤维细胞衰老的影响。建立小鼠
+NIH3T3 成纤维细胞 OGD 模型，采用 Western Blot、免疫荧光、β-半乳糖苷酶
+（Beta-galactosidase，β-gal）染色及活性检测、RT-qPCR等方法检测细胞衰老标
+志物，明确 OGD对小鼠成纤维细胞衰老的影响。
+2. 筛选心梗及 OGD诱导成纤维细胞衰老的关键基因并验证筛选结果。利用
+关键基因 ALDH2 的特异性抑制剂 CVT-10216 和特异性激活剂 Alda-1，明确
+ALDH2 对 OGD 后成纤维细胞衰老的调控作用。采用共聚焦显微镜观察线粒体
+形态，Western Blot方法检测线粒体融合和裂变蛋白表达情况，采用JC-1染色法
+检测线粒体膜电位，利用微量法检测 ATP 含量，利用荧光探针 DCFH-DA 检测
+ROS含量，明确 ALDH2对 OGD后成纤维细胞线粒体损伤的影响。通过外源补
+充4-HNE，明确 ALDH2基于4-HNE对 OGD后成纤维细胞衰老的调控作用。
+3. 采用Co-IP-MS方法筛选OGD后 ALDH2的相互作用蛋白，通过 Co-IP、
+Western Blot和免疫荧光等方法验证蛋白互作组学分析结果。利用 siRNA干扰互
+作蛋白后，采用 DSS 交联等方法探究 ALDH2 互作蛋白对其酶活性的影响及其
+具体机制，并通过Western Blot、β-gal染色及活性检测、RT-qPCR等方法，明确
+ALDH2互作蛋白对 OGD后成纤维细胞衰老的调控作用。
+4. 在体外分离新生小鼠心肌成纤维细胞，通过 Western Blot、β-gal染色及活
+性检测、RT-qPCR等方法，检测激活 ALDH2 对 OGD后心肌成纤维细胞衰老及
+4-HNE 含量的影响。建立小鼠心肌成纤维细胞-心肌细胞共培养体系，通过
+CCK-8 细胞活力检测和 TUNEL 染色等方法，检测激活 ALDH2 抑制 OGD 后心
+肌成纤维细胞衰老对共培养心肌细胞损伤的影响。给予心梗小鼠ALDH2激活剂
+Alda-1，心梗 3天后收集小鼠心肌组织，采用免疫荧光法明确激活 ALDH2对心
+梗后心肌成纤维细胞衰老的影响。采用超声心动图、TTC染色和H&E染色等方
+法，检测激活ALDH2对小鼠心功能、心肌梗死面积等的影响。
+IX
+--- 第5页 ---
+实验结果：
+1. 缺血对成纤维细胞衰老的影响
+小鼠心肌成纤维细胞数据集 GSE111059 中的 DEGs 富集分析结果显示，小
+鼠心梗 3 天后的细胞衰老信号通路显著激活（p<0.05）。细胞衰老标志物检测结
+果显示，心梗3天及 OGD 4 h后细胞衰老标志物表达均显著增加（p<0.05），是
+诱导成纤维细胞衰老的关键时间点。
+2. ALDH2在缺血诱导成纤维细胞衰老中的作用机制
+小鼠心梗3天后心肌成纤维细胞DEGs和OGD 4 h后NIH3T3细胞差异蛋白
+数据整合分析结果显示ALDH2可能为缺血诱导成纤维细胞衰老的关键靶点。采
+用 NIH3T3细胞 OGD模型发现，OGD后细胞中 ALDH2的蛋白表达水平显著增
+加（p<0.05），酶活性显著降低（p<0.05）；激活 ALDH2 后可显著抑制细胞衰老
+标志物的表达（p<0.05）；ALDH2 对 OGD 4 h 后细胞糖酵解速率无明显影响
+（p>0.05），但可明显减少 OGD 4 h 后细胞中 4-HNE 含量（p<0.05）。体外补充
+不同浓度的 4-HNE 发现，1-10 μM 的 4-HNE 可明显诱导 NIH3T3 细胞衰老
+（p<0.05）。以上结果说明 ALDH2 可减少 4-HNE 含量抑制 OGD 后成纤维细胞
+衰老。
+3. 缺血条件下 HSPA8与 ALDH2相互作用诱导成纤维细胞衰老
+采用 NIH3T3 细胞 OGD 模型发现，OGD 可诱导 HSPA8 与 ALDH2 发生相
+互作用；OGD 处理可诱导部分 HSPA8 蛋白易位至线粒体（p<0.05）。利用
+siRNA 抑制细胞中 HSPA8 表达，可增加 OGD 后细胞中 ALDH2 四聚体的表达
+（p<0.05）和 ALDH2 酶活性（p<0.05）；抑制 HSPA8 可以显著抑制 OGD 后
+NIH3T3细胞衰老（p<0.05）。
+4. ALDH2调控心肌成纤维细胞衰老影响缺血心肌的作用机制
+采用新生小鼠心肌原代成纤维细胞 OGD 模型发现，激活 ALDH2 可显著抑
+制 OGD 4 h 后心肌成纤维细胞衰老（p<0.05），细胞中 4-HNE 含量显著下降
+（p<0.05）。体外构建小鼠心肌成纤维细胞-心肌细胞共培养体系发现，激活心
+肌成纤维细胞中的ALDH2可明显改善OGD后共培养心肌细胞存活率（p<0.05），
+并减少心肌细胞凋亡（p<0.01）。采用小鼠心梗模型发现，给予 ALDH2 激活剂
+Alda-1 可明显抑制心梗 3 天后心肌组织中成纤维细胞的衰老（p<0.01），改善心
+X
+--- 第6页 ---
+梗后小鼠心功能，减小心肌梗死面积（p<0.001）。
+实验结论
+1. ALDH2可减少成纤维细胞中4-HNE的含量，改善缺血诱导的细胞衰老。
+2. HSPA8与 ALDH2相互作用，抑制 ALDH2酶活性，诱导 OGD后成纤维
+细胞衰老。
+3. 激活ALDH2可抑制缺血诱导的心肌成纤维细胞衰老，改善心梗小鼠心功
+能。
+关键词：
+心肌梗死，成纤维细胞衰老，ALDH2，4-HNE
+XI
+--- 第7页 ---
+Abstract
+The effects and mechanisms of ALDH2 in the senescence of
+fibroblasts induced by ischemia
+Stress-induced cellular senescence is crucial in causing acute and chronic
+dysfunction in multiple organs due to ischemic injury. Studies have shown that
+fibroblasts are more resistant to ischemic injury compared to cardiomyocytes.
+Senescent fibroblasts have been identified in the infarct and marginal areas of mouse
+myocardial tissue after MI. It is suggested that myocardial fibroblasts are the main type
+of senescent cells in ischemic myocardial tissue. Therefore, regulating ischemia-
+induced fibroblast senescence may play a key role in the occurrence and development
+of myocardial injury and its repair. However, the molecular mechanism of fibroblast
+senescence induced by myocardial ischemia has not been fully understood.
+Ischemic injury decreased the activity of mitochondrial aldehyde dehydrogenase 2
+family member (ALDH2). ALDH2 is a glucose metabolic enzyme and aldehyde
+dehydrogenase located in mitochondria, which is expressed in large quantities in
+fibroblasts of various tissues. ALDH2 has been found to play a role in regulating the
+occurrence and development of ischemic tissue injury by decreasing the accumulation
+of 4-hydroxynonenal (4-HNE) in the tissues. 4-HNE is the main product of lipid
+peroxidation caused by reactive oxygen species (ROS). Currently, 4-HNE is considered
+to be a toxic substance and plays a significant role in cell signaling and fate regulation.
+It has been confirmed that ALDH2 is involved in regulating the senescence of
+endothelial cells and vascular smooth muscle cells. Activating ALDH2 can inhibit
+stress-induced cell senescence. However, it is not known whether ALDH2 can regulate
+fibroblast senescence after ischemia through 4-HNE.
+In this study, we used the mouse myocardial infarction model and the Oxygen-
+glucose deprivation (OGD) cell model to induce cell senescence under stress conditions.
+We observed the dynamic changes of fibroblast senescence induced by ischemia. The
+aim was to investigate how ALDH2 regulates ischemia-induced fibroblast senescence
+XII
+--- 第8页 ---
+based on 4-HNE, and how to activate ALDH2 to inhibit fibroblast senescence and
+improve myocardial ischemic injury. This research provides new ideas and a theoretical
+basis for identifying drug targets to intervene in ischemic diseases.
+Experimental Objective
+The aim is to observe the effect of ischemia on stress senescence of fibroblasts. To
+explore the role and mechanism of ALDH2 in ischemia-induced aging of fibroblasts
+and to provide a theoretical and experimental basis for finding drug targets to interfere
+with the aging of myocardial fibroblasts after ischemia and new strategies to improve
+ischemic myocardial injury..
+Experimental methods
+1. The MI model was established by ligating the left anterior descending branch of
+the mouse coronary artery. The expression of senescence marker protein in myocardial
+tissue was detected using the Western Blot method. Co-localization of senescent cells
+and fibroblasts was observed using the immunofluorescence double staining method to
+verify the effect of MI on the senescence of myocardial fibroblasts. The OGD model of
+mouse NIH3T3 fibroblasts was established, and the markers of cell senescence were
+detected using Western Blot, immunofluorescence, β-Galactosidase (β-gal) staining,
+activity detection, and RT-qPCR to investigate the effect of OGD on mouse fibroblast
+senescence.
+2. The key genes of fibroblast senescence induced by MI and OGD were screened,
+and the screening results were verified. The specific inhibitor CVT-10216 of the key
+gene ALDH2 and the specific activator Alda-1 were used to determine the regulatory
+effect of ALDH2 on fibroblast senescence after OGD. Confocal microscopy was used
+to observe mitochondrial morphology, and the Western Blot method was used to detect
+mitochondrial fusion and fission protein expression. JC-1 staining was used to detect
+mitochondrial membrane potential, while ATP content and ROS content were detected
+by a kit to clarify the effect of ALDH2 on mitochondrial damage in fibroblasts after
+OGD. The regulatory effect of ALDH2 based on 4-HNE on fibroblast senescence after
+OGD was determined by exogenous 4-HNE supplementation.
+XIII
+--- 第9页 ---
+3. Protein interaction omics were used to screen the interacting proteins of ALDH2
+after OGD. Co-IP, molecular docking, Western Blot, and immunofluorescence were
+used to verify the results of the protein interaction omics analysis. After siRNA
+interference with interacting proteins, DSS cross-linking and other methods were used
+to explore the effect of ALDH2 interacting proteins on their enzyme activity and its
+specific mechanism. Western Blot, β-gal staining, activity detection, RT-qPCR, and
+other methods were used to clarify the regulatory role of ALDH2 interacting proteins
+on aging fibroblasts after OGD.
+4. Neonatal mouse cardiac fibroblasts were isolated in vitro. The study examined the
+effects of ALDH2 activation on senescence and 4-HNE content of cardiac fibroblasts
+after OGD using Western Blot, β-gal staining, activity detection, and RT-qPCR. A co-
+culture system for mouse cardiac fibroblasts and cardiomyocytes was established to
+assess the effect of senescence of cardiac fibroblasts after ALDH2 activation and OGD
+inhibition on co-cultured cardiomyocytes using CCK-8 cell viability assay and TUNEL
+staining. MI mice were administered the ALDH2 activator Alda-1, and myocardial
+tissue was collected 3 days after MI to determine the effect of activating ALDH2 on the
+aging of myocardial fibroblasts using immunofluorescence double staining.
+Echocardiography, TTC staining, and H&E staining were used to assess the effects of
+ALDH2 activation on cardiac function, myocardial infarction size, and myocardial
+tissue injury in mice.
+Experimental results
+1. Influence of ischemia on fibroblast senescence
+The results of differential expressed genes (DEGs) enrichment analysis in a mouse
+myocardial fibroblast dataset (GSE111059) showed that DEGs were enriched in the cell
+senescence pathway after myocardial infarction (MI) for 3 days (p<0.05). The detection
+results of cell senescence markers showed that the expression of cell senescence marker
+was significantly increased after 3 days of MI and 4 hours of OGD (p<0.05), which was
+the critical time point for inducing fibroblast senescence.
+2. The mechanism of ALDH2 in fibroblast senescence induced by ischemia
+XIV
+--- 第10页 ---
+The integrated analysis of differential protein data of myocardial fibroblast DEGs 3
+days after MI and NIH3T3 4 hours after OGD showed that ALDH2 might be the key
+target of ischemic-induced fibroblast senescence. The OGD model of NIH3T3 cells
+showed that the protein expression level of ALDH2 was significantly increased after
+OGD (p<0.05), and the enzyme activity was significantly decreased (p<0.05).
+Activation of ALDH2 could significantly inhibit the expression of cell senescence
+markers (p < 0.05). ALDH2 had no significant effect on the rate of glycolysis after OGD
+4 h (p>0.05) but could significantly reduce the content of 4-HNE in cells after OGD 4
+h (p<0.05). In vitro supplementation of different concentrations of 4-HNE showed that
+1-10 μM of 4-HNE could significantly induce senescence of NIH3T3 cells (p<0.05).
+These results indicate that ALDH2 regulates fibroblast senescence after OGD based on
+4-HNE.
+3. The interaction between HSPA8 and ALDH2 induced fibroblast senescence
+under ischemic condition
+The OGD model of NIH3T3 cells revealed that OGD can lead to an interaction
+between HSPA8 and ALDH2. Treatment with OGD resulted in the partial translocation
+of HSPA8 protein to the mitochondria (p<0.05). Inhibiting the expression of HSPA8
+using siRNA increased the expression of ALDH2 tetramer (p<0.05) and the activity of
+ALDH2 enzyme (p<0.05) after OGD. Additionally, inhibiting HSPA8 significantly
+prevented senescence of NIH3T3 cells after OGD (p<0.05).
+4. Mechanism by which ALDH2 regulates myocardial fibroblast senescence and
+influences ischemic myocardium
+The OGD model of neonatal cardiac primary fibroblasts showed that activating
+ALDH2 could significantly inhibit the senescence of cardiac fibroblasts 4 hours after
+OGD (p<0.05), and the content of 4-HNE in the cells was significantly decreased
+(p<0.05). It was found that activating ALDH2 in myocytes significantly improved the
+survival rate of myocytes after OGD (p<0.05) and reduced the apoptosis of myocytes
+(p<0.01). In the mouse MI model, it was found that the administration of ALDH2
+activator Alda-1 could significantly inhibit the aging of fibroblasts in myocardial tissue
+XV
+--- 第11页 ---
+after 3 days of MI (p<0.01), improve the cardiac function and myocardial tissue damage
+in mice after MI, and reduce the myocardial infarction size (p<0.001).
+Experiment conclusion
+1. ALDH2 can reduce the content of 4-HNE in fibroblasts and improve the cellular
+senescence induced by ischemia.
+2. HSPA8 interacts with ALDH2, inhibits ALDH2 enzyme activity, and induces
+fibroblast senescence after OGD.
+3. Activation of ALDH2 can inhibit the senescence of myocardial fibroblasts induced
+by ischemia and improve the cardiac function of myocardial infarction mice.
+Keywords
+Myocardial infarction, Fibroblast senescence, ALDH2, 4-HNE
+XVI
+--- 第12页 ---
+目 录
+引言 ............................................................................................................. 1
+第 1 章 文献综述 ...................................................................................... 3
+1.1 细胞衰老的研究现状 ....................................................................... 3
+1.1.1 细胞衰老概述 ............................................................................. 3
+1.1.2 细胞衰老的特征 ......................................................................... 4
+1.1.3 细胞衰老的生物学功能 ............................................................. 7
+1.1.4 细胞衰老与线粒体动力学 ......................................................... 8
+1.2 缺血与细胞衰老 ............................................................................. 10
+1.2.1 缺血对细胞衰老的影响 ........................................................... 10
+1.2.2 缺血诱导细胞衰老的相关机制 ............................................... 11
+1.2.3 抗细胞衰老疗法在缺血性疾病中的研究现状及前景 .......... 12
+1.3 ALDH2 在缺血性疾病和细胞衰老中的研究现状 ...................... 14
+1.3.1 ALDH2 概述 ............................................................................. 14
+1.3.2 ALDH2 与缺血性疾病 ............................................................. 14
+1.3.3 ALDH2 与细胞衰老 ................................................................. 15
+1.3.4 ALDH2 与 4-HNE ................................................................... 16
+1.4 HSP70 在缺血性疾病和细胞衰老中的研究现状 ........................ 16
+1.4.1 HSP70 概述 .............................................................................. 16
+1.4.2 HSP70 与缺血性疾病 .............................................................. 18
+1.4.3 HSP70 与细胞衰老 .................................................................. 19
+1.5 心肌缺血与成纤维细胞................................................................. 20
+1.5.1 心肌缺血概述 ........................................................................... 20
+1.5.2 心肌缺血中的成纤维细胞 ....................................................... 21
+1.5.3 成纤维细胞衰老在心肌缺血中的研究现状 .......................... 22
+第 2 章 缺血对成纤维细胞衰老的影响 ................................................ 25
+2.1 实验材料 ......................................................................................... 25
+2.1.1 实验动物 ................................................................................... 25
+2.1.2 细胞系 ....................................................................................... 25
+2.1.3 实验主要仪器 ........................................................................... 26
+2.1.4 实验试剂 ................................................................................... 27
+2.2 实验方法 ......................................................................................... 31
+2.2.1 生物信息学分析 ....................................................................... 31
+2.2.2 心肌梗死模型构建 ................................................................... 31
+2.2.3 超声心动图检测 ....................................................................... 31
+--- 第13页 ---
+2.2.4 冰冻切片免疫荧光检测 ........................................................... 31
+2.2.5 细胞氧糖剥夺模型构建 ........................................................... 32
+2.2.6 组织及细胞蛋白提取 ............................................................... 32
+2.2.7 Western Blot 检测 ..................................................................... 33
+2.2.8 细胞增殖检测 ........................................................................... 33
+2.2.9 细胞免疫荧光检测 ................................................................... 34
+2.2.10 β-半乳糖苷酶染色及活性检测 .............................................. 34
+2.2.11 细胞 RNA 提取 ...................................................................... 35
+2.2.12 RT-qPCR 检测 ........................................................................ 35
+2.2.13 ROS 检测 ................................................................................. 36
+2.2.14 统计学分析 ............................................................................. 36
+2.3 实验结果 ......................................................................................... 37
+2.3.1 心肌梗死后小鼠心肌成纤维细胞差异基因的生物信息学分
+析 ....................................................................................................... 37
+2.3.2 心肌梗死对小鼠心肌成纤维细胞衰老的影响 ...................... 39
+2.3.3 氧糖剥夺对小鼠成纤维细胞衰老的影响 .............................. 43
+2.4 讨论 ................................................................................................. 50
+2.5 本章小结 ......................................................................................... 52
+第 3 章 ALDH2 在缺血诱导成纤维细胞衰老中的作用机制 ............. 55
+3.1 实验材料 ......................................................................................... 55
+3.1.1 细胞系 ....................................................................................... 55
+3.1.2 实验主要仪器 ........................................................................... 56
+3.1.3 实验试剂 ................................................................................... 56
+3.2 实验方法 ......................................................................................... 57
+3.2.1 生物信息学分析 ....................................................................... 57
+3.2.2 细胞给药及分组 ....................................................................... 57
+3.2.3 糖酵解速率检测 ....................................................................... 58
+3.2.4 细胞蛋白提取 ........................................................................... 58
+3.2.5 Western Blot 检测 ..................................................................... 58
+3.2.6 ALDH2 酶活性检测 ................................................................. 58
+3.2.7 CCK-8 检测 .............................................................................. 58
+3.2.8 β-gal 染色及活性检测 .............................................................. 59
+3.2.9 细胞 RNA 提取 ........................................................................ 59
+3.2.10 RT-qPCR 检测 ........................................................................ 59
+3.2.11 JC-1 染色 ................................................................................ 59
+3.2.12 ATP 含量检测 .......................................................................... 59
+3.2.13 ROS 含量检测 ......................................................................... 60
+3.2.14 免疫荧光检测 ......................................................................... 60
+--- 第14页 ---
+3.2.15 统计学分析 ............................................................................. 60
+3.3 实验结果 ......................................................................................... 60
+3.3.1 心梗及 OGD 诱导成纤维细胞衰老的关键基因的筛选及验证
+........................................................................................................... 60
+3.3.2 ALDH2 对 OGD 后成纤维细胞衰老的影响 ........................ 67
+3.3.3 ALDH2 对 OGD 后成纤维细胞线粒体损伤的影响 ............ 72
+3.3.4 ALDH2 基于 4-HNE 对成纤维细胞衰老的调控作用 ......... 77
+3.4 讨论 ................................................................................................. 83
+3.5 本章小结 ......................................................................................... 86
+第4章 缺血条件下 HSPA8 与 ALDH2 相互作用诱导成纤维细胞衰
+老 ............................................................................................................. 87
+4.1 实验材料 ......................................................................................... 87
+4.1.1 细胞系 ....................................................................................... 87
+4.1.2 实验主要仪器 ........................................................................... 87
+4.1.3 实验试剂 ................................................................................... 88
+4.2 实验方法 ......................................................................................... 89
+4.2.1 Co-IP 检测 ................................................................................. 89
+4.2.2 LC-MS/MS 检测 ....................................................................... 90
+4.2.3 线粒体蛋白提取 ....................................................................... 90
+4.2.4 Western Blot 检测 ..................................................................... 91
+4.2.5 免疫荧光检测 ........................................................................... 91
+4.2.6 ALDH2 酶活性检测 ................................................................. 91
+4.2.7 DSS 交联检测 ........................................................................... 91
+4.2.8 β-gal 染色及活性检测 .............................................................. 91
+4.2.9 细胞 RNA 提取 ........................................................................ 91
+4.2.10 RT-qPCR 检测 ........................................................................ 91
+4.2.12 siRNA 转染 .............................................................................. 92
+4.2.13 统计学分析 ............................................................................. 92
+4.3 实验结果 ......................................................................................... 92
+4.3.1 OGD 条件下 ALDH2 互作蛋白分析及验证 ........................ 92
+4.3.2 OGD 对 HSPA8 在成纤维细胞内定位的影响 ..................... 95
+4.3.3 OGD 条件下 HSPA8 对 ALDH2 酶活性的影响及其机制 96
+4.3.4 OGD 条件下 HSPA8 对成纤维细胞衰老的影响 ............... 100
+4.4 讨论 ............................................................................................... 102
+4.5 本章小结 ....................................................................................... 104
+第 5 章 ALDH2 调控心肌成纤维细胞衰老影响缺血心肌的作用机制
+............................................................................................................... 105
+5.1 实验材料 ....................................................................................... 105
+--- 第15页 ---
+5.1.1 实验动物 ................................................................................. 105
+5.1.2 细胞系 ..................................................................................... 106
+5.1.3 实验主要仪器 ......................................................................... 106
+5.1.4 实验试剂 ................................................................................. 106
+5.2 实验方法 ....................................................................................... 108
+5.2.1 小鼠心肌原代成纤维细胞提取 ............................................. 108
+5.2.2 免疫荧光检测 ......................................................................... 108
+5.2.3 细胞蛋白提取 ......................................................................... 108
+5.2.4 Western Blot 检测 ................................................................... 108
+5.2.5 β-gal 染色及活性检测 ............................................................ 108
+5.2.6 细胞 RNA 提取 ...................................................................... 109
+5.2.7 RT-qPCR 检测 ........................................................................ 109
+5.2.8 CCK-8 检测 ............................................................................ 109
+5.2.9 TUNEL 染色 ............................................................................ 109
+5.2.10 动物分组及给药 ................................................................... 109
+5.2.11 冰冻切片免疫荧光染色 ....................................................... 109
+5.2.12 超声心动图检测 ................................................................... 109
+5.2.13 TTC 染色 ............................................................................... 110
+5.2.14 H&E 染色 .............................................................................. 110
+5.2.15 统计学分析 ........................................................................... 110
+5.3 实验结果 ....................................................................................... 110
+5.3.1 激活 ALDH2 对 OGD 后心肌原代成纤维细胞衰老的影响
+......................................................................................................... 110
+5.3.2 激活 ALDH2 对 OGD 后共培养心肌细胞的影响 ........... 115
+5.3.3 激活 ALDH2 对心梗后心肌成纤维细胞衰老的影响 ........ 117
+5.3.4 激活 ALDH2 对心梗后缺血心肌的影响 ............................ 119
+5.4 讨论 ............................................................................................... 121
+5.5 本章小结 ....................................................................................... 123
+第 6 章 结论........................................................................................... 125
+参考文献 ................................................................................................. 127
+--- 第16页 ---
+英文缩写词表
+英文缩写 英文全称 中文全称
+AAD Aortic aneurysm/dissection 主动脉瘤/夹层
+ALDH2 Aldehyde dehydrogenase 2 family 乙醛脱氢酶 2
+member
+CABG Coronary artery bypass grafting 冠状动脉旁路移植术
+CBD C-terminal substrate binding domain C端底物结合域
+CCF Cytoplasmic chromatin fragments 细胞质染色质片段
+CDKs Cyclin-dependent kinases 细胞周期蛋白依赖性激酶
+CMA Chaperone-mediated autophagy 分子伴侣介导的自噬
+Co-IP Co-immunoprecipitation 免疫共沉淀
+CFs Cardiac fibroblasts 心肌成纤维细胞
+CVDs Cardiovascular diseases 心血管疾病
+DAMPs Damage-associated molecular patterns 损伤相关分子模式
+DEG Differentially expressed gene 差异表达基因
+Drp1 Dynamin-related protein 1 动力蛋白相关蛋白-1
+DR4 Death receptors 4 死亡受体4
+DR5 Death receptors 5 死亡受体5
+DSS Disuccinimidyl suberate 双琥珀酰亚胺辛二酸酯
+ECM Extracellular matrix 细胞外基质
+EF Ejection fraction 射血分数
+E2F E2 promoter binding factor E2启动子结合因子
+Fis1 Fission 1 裂变蛋白-1
+FS Fractional shortening 缩短分数
+GSEA Gene Set Enrichment Analysis 基因集富集分析
+HSP70 Heat Shock Protein 70 热休克蛋白 70
+HSPA8 Heat Shock 70kDa Protein 8 70kDa热休克蛋白 8
+XXVI
+--- 第17页 ---
+续表
+英文缩写 英文全称 中文全称
+HMGB1 High mobility group box-1 protein 高迁移率族蛋白 B1
+HP1α Heterochromatin protein 1α 异染色质蛋白 1α
+HUVEC Human umbilical vein endothelial cell 人脐静脉内皮细胞
+IL-6 Interleukin-6 白细胞介素-6
+Klf5 Krüppel-like factor 5 Krüppel样因子 5
+LAMP2A Lysosome associated membrane protein 溶酶体相关膜蛋白 2A
+2A
+MDA Malondiadehyde 丙二醛
+MFN1 Mitofusin 1 线粒体融合蛋白 1
+MFN2 Mitofusin 2 线粒体融合蛋白 2
+MMP Matrix metalloproteinases，MMP） 基质金属蛋白酶
+MI Myocardial infarction 心肌梗死
+mtDNA Mitochondrial DNA 线粒体DNA
+NBD N-terminal nucleotide binding domain N端核苷酸结合域
+NF-kB Nuclear factor-kappaB 核因子-κB
+OGD Oxygen glucose deprivation 氧糖剥夺
+PCI Percutaneous coronary intervention 经皮冠状动脉介入治疗
+Postn Periostin 骨膜蛋白
+ROS Reactive oxygen 活性氧
+SASP Senescence-associated secretory 衰老相关分泌表型
+phenotype
+SAHF Senescence-associated heterochromatin 衰老相关异染色质病灶
+foci
+SCAP Senescent cell antiapoptotic pathways 衰老细胞抗凋亡通路
+TNF-α Tumor necrosis factor-α 肿瘤坏死因子-α
+VSMC Vascular smooth muscle cell 血管平滑肌细胞
+α-SMA α-smooth muscle actin α-平滑肌肌动蛋白
+XXVII
+--- 第18页 ---
+续表
+英文缩写 英文全称 中文全称
+β-gal β-galactosidase β-半乳糖苷酶
+4-HNE 4-hydroxynonenal 4-羟基壬烯醛
+XXVIII
+--- 第19页 ---
+引 言
+引 言
+近年研究表明，细胞衰老影响缺血组织的损伤修复，抑制细胞衰老可以缓
+解组织缺血损伤[1, 2]。心脏是机体中对能量需求最高的器官，因此心脏功能极易
+受到缺血的影响。研究发现，心肌缺血诱导成纤维细胞衰老的发生，衰老的成
+纤维细胞会产生并分泌衰老相关分泌表型（Senescence-associated secretory
+phenotype, SASP），进一步激活心脏不良重塑，最终导致心脏功能障碍[3]。然而，
+心肌缺血损伤诱导成纤维细胞衰老的机制尚未完全阐明。
+ALDH2 是定位于线粒体中的乙醛脱氢酶，在心脏中大量表达[4]。有研究表
+明缺血心肌组织中 ALDH2 酶活性明显降低，ALDH2 的激活或过表达可有效减
+小心肌梗死面积并改善心功能障碍。ALDH2 在缺血心肌损伤中的关键作用与其
+对线粒体功能的调控密切相关[5]，其中线粒体功能障碍及 ROS 产生增加已被证
+实是细胞衰老的主要驱动因素之一[6]，而 ROS 的脂质过氧化产物 4-HNE 是
+ALDH2 的重要底物。ALDH2 通过减少 4-HNE 在组织中的积累，有助于改善组
+织缺血性损伤。此外，研究发现激活ALDH2有助于抑制各种病理因素诱导的细
+胞衰老[7]。但目前尚未有研究明确缺血诱导的成纤维细胞衰老中 ALDH2的作用
+及机制。
+因此，本文以缺血诱导成纤维细胞衰老这一现象为出发点，基于体内缺血
+模型（MI）和体外缺血模型（OGD），探究 ALDH2在调控缺血诱导成纤维细胞
+中的潜在作用及机制，并明确调控缺血条件下ALDH2酶活性的重要因素。最后
+进一步分析激活 ALDH2对于缺血心肌的保护作用。
+图1 缺血诱导成纤维细胞衰老中 ALDH2的作用及机制的科学假说图
+1
+--- 第20页 ---
+吉林大学博士学位论文
+2
+--- 第21页 ---
+第1章 文献综述
+第 1 章 文献综述
+1.1 细胞衰老的研究现状
+1.1.1 细胞衰老概述
+细胞衰老（Cellular senescence），通常定义为稳定的细胞周期停滞，与胚胎
+发生、伤口愈合和生物体衰老（Aging）等生物过程有关[8]。细胞衰老不仅发生
+在体外（即细胞培养模型），也发生在体内的各种组织器官中。衰老细胞在许多
+不同的生理背景和生命的各个阶段都可以被观察到，细胞衰老的急性诱导代表
+了胚胎发育和成体组织稳态[9-11]，具有深远的影响。
+复制性衰老是第一种被报道的细胞衰老类型。1961年，Leonard Hayflick和
+Paul Moorhead 用二倍体成纤维细胞系首次描述了细胞衰老现象，该细胞系在倍
+增至 40-60 倍群体无法进一步分裂[12]。细胞衰老也可能由许多其他内在和外在
+因素引发（如图 1.1 所示），特别是氧化应激、代谢功能障碍、细胞因子、癌基
+因激活和化疗药物[13]，。所有这些因素都可以诱导正常细胞和癌细胞的 DNA 损
+伤和衰老，并导致与年龄相关的病变，包括糖尿病、心血管和阿尔茨海默病、
+骨关节炎、癌症等[14]。随着实验技术的进步和基因敲除小鼠模型的发展，目前
+对细胞衰老的原因和表型的认识有所提高。但目前仍缺乏特异性的细胞衰老标
+志物和对衰老细胞定义的共识。需要注意的是，尽管细胞衰老与生物体衰老具
+有密切联系，但 Senescence 和 Aging 并不是同义词[15]。事实上，无论生物体年
+龄如何，细胞都可能被各类应激源诱导衰老。因此，衰老细胞在任何生命阶段
+都可以被检测到。
+衰老细胞性状会随着时间的推移动态地发生改变，揭示出多方面的性质，
+根据诱导后衰老特性的出现，可以按时间顺序分为“早期”和“深度”衰老[16,
+17]。这些衰老特征包括细胞周期退出、代谢特征失调、大分子损伤的积累以及
+产生主要由促炎因子组成的独特 SASP。一旦 SASP开始产生，早期衰老细胞就
+有可能发展到“深度”或“完全”衰老[8]。
+3
+--- 第22页 ---
+吉林大学博士学位论文
+图 1.1细胞衰老的诱因及其病理生理学作用[18]
+Fig.1.1 The inducement of cellular senescence and its pathophysiological effect.
+1.1.2 细胞衰老的特征
+衰老细胞的基本特征如图1.2所示。首先，不可逆的细胞周期停滞是大部分
+衰老细胞的一个共同特征，这可能是由有害刺激或异常增殖引发的警报反应。
+这种细胞周期停滞不同于静止和终末分化[19]。静止是一种暂时的停滞状态，通
+过适当的刺激可以恢复增殖；终末分化是细胞获得特定功能，并伴有持久的细
+胞周期停滞。尽管衰老细胞周期停滞通常是不可逆的，但在某些情况下可能会
+发生细胞周期重新进入，特别是在肿瘤细胞中[20]。细胞衰老程序由 p53，
+p16INK4a/Rb 和 p21CIP1肿瘤抑制通路启动，其中 p16INK4a和 p21CIP1是周期蛋白依
+赖性激酶抑制剂，p53是肿瘤抑制因子。这些蛋白共同抑制驱动细胞周期的细胞
+周期蛋白依赖性激酶(Cyclin-dependent kinases, CDKs)和转录激活因子 E2启动子
+结合因子（E2 promoter binding factor，E2F）家族[21]。
+衰老细胞保持着活跃的代谢状态，可分泌具有环境依赖性生物学功能的炎
+症细胞因子、趋化因子、基质金属蛋白酶和生长因子，这种标志被称为SASP。
+SASP 以自分泌和旁分泌的方式加强和传播细胞衰老，并激活免疫反应。SASP
+的触发受到多种上游信号调控，并且因衰老诱导剂而异，主要包括 DNA损伤、
+触发 I 型干扰素反应的细胞质染色质片段（Cytoplasmic chromatin fragments，
+CCF）和激活炎症小体的损伤相关分子模式（Damage-associated molecular
+patterns，DAMPs）[22-24]。此外，SASP 的组成和强度有很大差异，取决于衰老
+的持续时间，促衰老刺激的应激源和细胞类型[25, 26]。
+4
+--- 第23页 ---
+第1章 文献综述
+细胞衰老中第一个被发现的分子特征是端粒缩短，这是连续传代期间 DNA
+末端复制异常的结果[27]。增殖过程中的端粒缩短最终导致端粒解帽，产生端粒
+功能障碍诱导的病灶，激活 DNA损伤反应，最终导致细胞周期停滞。这种反应
+也可以通过抑制或改变参与端粒维持的基因来引发。尽管衰老细胞中近乎一半
+的持续性DNA损伤病灶定位于端粒，但其他细胞毒性刺激可通过诱导无法修复
+的 DNA 损伤来引发衰老。包括辐射（电离和紫外线）、药物（例如某些化疗药
+物）和氧化应激。衰老细胞可能具有持续的核 DNA 损伤灶，称为 DNA-
+SCARS[15]。但并非所有诱导衰老的刺激都会产生持续的 DNA 损伤反应，因此
+DNA-SCARS只是部分衰老细胞的特征。
+蛋白质和脂质损伤也可用于识别细胞衰老。蛋白质损伤的一个主要来源是
+ROS[28]。许多蛋白酪氨酸磷酸酶的活性位点中含有半胱氨酸残基，可被 ROS 氧
+化失活，这种失活将导致ERK信号通路过度激活进而触发细胞衰老[29]。ROS在
+金属离子存在下，可使脯氨酸、苏氨酸、赖氨酸和精氨酸残基羰化。羰化的残
+基可与氨基反应形成希夫碱基，促进蛋白质聚集，并与糖和脂质交联形成不溶
+性聚集体，称为脂褐素。使用生物素化的苏丹黑 B 类似物 GL13 可标记衰老细
+胞中的脂褐素，使其在光学显微镜下即可被观测到[30]。脂质对于细胞膜完整性、
+能量产生和信号转导至关重要。研究发现，衰老小鼠肝脏和大脑中有大量脂质
+沉积，通过遗传学或药理学手段抑制细胞衰老后，这一现象被明显改善。衰老
+细胞中的脂质积累也可以使用各种商业染料进行标记，或通过脂质相关蛋白的
+免疫染色来观察。但由于衰老相关脂质谱的高度变异性，将脂质损伤作为衰老
+生物标志物的使用仍然具有局限性[31]。
+与细胞衰老密切相关的特性是细胞体增大或“肥大”。细胞大小的变化与细
+胞增殖有关：在标准培养条件下，分裂细胞必须不断增加其质量以补偿由于分
+裂而损失的任何质量，因此细胞大小受到细胞分裂速率变化的影响[32]。细胞增
+殖的加速导致细胞尺寸变小，而增殖的减慢会增加胞体尺寸。活细胞成像显示，
+体细胞增大的晚期传代细胞需要更多时间来启动细胞分裂[33]。总之，随着细胞
+衰老的进展，体细胞大小逐渐增加，同时细胞分裂所需的时间也会增加。衰老
+细胞还具有大核、多核和染色质重组的特征，包括染色体凝聚、再分布和异染
+色质灶的形成，这可能是由于核膜内表面层粘连蛋白 B1（Lamin B1）的丢失所
+5
+--- 第24页 ---
+吉林大学博士学位论文
+致[34]。衰老细胞细胞质中的空泡化、颗粒和细胞内碎片也有报道[35]。一些细胞
+器表现出异常的形态变化，如线粒体肿胀、溶酶体数量增加和内质网扩张。在
+细胞培养物中很容易观测到细胞的形态变化，但由于衰老细胞的增大会受到组
+织结构的限制，这一变化很难在体内检测到。
+细胞衰老过程中的另一个重要事件是 Lamin B1的耗竭。这导致层粘连蛋白
+相关异染色质的丢失和富含 H3K9me3的异染色质的从头形成，这一过程可导致
+异染色质蛋白1α（Heterochromatin protein 1α，HP1α）病灶或衰老相关异染色质
+病灶（Senescence-associated heterochromatin foci, SAHF）的形成[36]。1995 年，
+Dimiri等人发现，衰老细胞中表达一种 β-半乳糖苷酶，可在 pH 6的环境下检测
+到。该标志物主要由衰老的成纤维细胞和角质形成细胞表达[37]。如今，β-半乳
+糖苷酶活性增加被认为是细胞衰老的最常见标志。研究表明，β-半乳糖苷酶来
+源于溶酶体，其活性增加是因为衰老细胞中溶酶体含量的增加。而细胞衰老过
+程中溶酶体含量的增加可能是旧溶酶体积累或溶酶体生物发生增强的结果[38]。
+图 1.2 衰老细胞的一般形态、结构和功能改变[39]
+Fig.1.2 General morphological, structural, and functional changes of
+senescent cells
+6
+--- 第25页 ---
+第1章 文献综述
+1.1.3 细胞衰老的生物学功能
+细胞衰老既有有益的功能，也有有害的功能，这取决于组织环境及其在组
+织中的持久性。细胞衰老最初被报道为一种肿瘤抑制机制，限制了潜在的致癌
+细胞的生长。最近的研究表明，程序性和短暂的细胞衰老通过促进短寿命结构
+的消除，在胚胎的器官发生过程中起着重要作用[40]。此外，组织中衰老细胞的
+瞬时存在可以促进邻近细胞的去分化和细胞可塑性。组织重塑（如伤口愈合）
+受到短期细胞衰老的积极影响，短期细胞衰老通过抑制肌成纤维细胞的增殖减
+少组织纤维化[41]。
+与上述有益功能相反，衰老细胞的持续存在与机体衰老、慢性炎症和与年
+龄相关的疾病的发展密切相关（如图 1.3 所示），例如肌肉骨骼功能障碍（包括
+骨关节炎、骨质疏松症和肌肉减少症）[42]、纤维化[41]、神经退行性疾病（例如
+阿尔茨海默氏症和帕金森氏症）[43]、癌症[44]和糖尿病[45]。受损后的组织再生取
+决于组织内细胞的增殖，以及干细胞的增殖和分化。然而，衰老细胞在分化组
+织中的持续积累，以及干细胞自我更新和增殖能力的丧失，将损害再生潜力和
+组织功能。此外，衰老细胞凋亡抗性的内在机制也可以保护癌细胞在获得完全
+衰老表型之前免于死亡，绕过生长停滞并恢复增殖[44]。衰老细胞的持续积累也
+可以通过 SASP 的分泌来破坏组织稳态。SASP 会导致随着年龄增长而发展的慢
+性低度炎症（炎症），以及与年龄相关的适应性免疫下降（免疫衰老）[46]。
+7
+--- 第26页 ---
+吉林大学博士学位论文
+图 1.3 细胞衰老的生物学功能[39]
+Fig.1.3 Biological function of cellular senescence
+1.1.4 细胞衰老与线粒体动力学
+线粒体是一个动态的细胞器。首先，线粒体可以有小球体，短管或长管，
+或相互连接的小管等多种形态。线粒体融合和裂变是线粒体形态的主要调控者。
+例如，短管状的线粒体可以融合在一起形成长管，而管状的线粒体通过线粒体
+裂变可分裂成小球体（如图 1.4 所示）。另一方面线粒体质量控制机制可选择性
+去除功能失调的线粒体，进而确保线粒体种群的健康性。在许多细胞中，线粒
+体具有高度的运动性，并沿着细胞骨架在细胞质中移动[47]。
+线粒体动力学的核心机制是线粒体的融合与裂变。线粒体融合是两个线粒
+体合并为一个。由于线粒体有双层膜，线粒体融合由外膜融合和内膜融合共同
+介导。线粒体融合的使得两个线粒体的内容物混合，基质成分在新形成的线粒
+体中扩散。线粒体融合需要动力蛋白超家族的三种大型 GTP 水解酶。外膜融合
+由线粒体融合蛋白MFN1和MFN2介导，内膜融合由Opa1蛋白介导。线粒体裂
+变是指一个线粒体分裂成两个较小的线粒体。线粒体裂变的中心介质是动力蛋
+白相关蛋白 1(Dynamin-related protein 1，DRP1)，它也是一种 GTP 水解酶[48]。
+当线粒体裂变发生时，细胞质中的 Drp1 蛋白会被招募到线粒体表面，自我组装
+8
+--- 第27页 ---
+第1章 文献综述
+成螺旋结构，缠绕并收缩线粒体小管，促进线粒体裂变。
+线粒体动力学对维持线粒体功能十分重要。首先，线粒体融合和裂变调控
+线粒体的大小、数量和形状。线粒体形状可能直接影响线粒体的能量产生，细
+长线粒体的 ATP 产生效率往往更高。线粒体融合的一个关键功能是促进不同线
+粒体膜和内容物的混合，这有助于促进线粒体群体的均质化，进而减少细胞器
+间的变异，尽可能避免异质性线粒体DNA（Mitochondrial DNA，mtDNA）突变
+的有害影响[49]。线粒体裂变可能有助于促进线粒体向两个子细胞的公平分配，
+在调控线粒体遗传中发挥重要作用。此外，线粒体裂变可将受损的线粒体分割
+为适当大小的碎片以被自噬体吞噬，有助于功能失调的线粒体被自噬机制识别。
+因此，线粒体融合和裂变过程平衡的丧失会对线粒体功能产生严重的损害，线
+粒体融合或裂变的原发性缺陷会导致2A型腓骨肌萎缩症和某些形式的顽固性癫
+痫等。
+许多研究表明，失调的线粒体融合、裂变和线粒体自噬可能参与细胞衰老。
+线粒体高度拉长，伴有嵴结构增强和线粒体含量增加，在应激诱导的过早衰老
+期间已有报道[50]。在 p21 诱导的衰老癌前细胞中观察到，大多数细胞的线粒体
+受损，线粒体被过度拉长或裂解，嵴的形态发生改变[51]，表明线粒体动力学受
+到干扰。Young Yeon Kim等人研究发现，p53通过抑制 Drp1向线粒体的易位，
+诱导线粒体伸长导致线粒体功能障碍，随后细胞内 ROS 水平升高，促进了细胞
+衰老[52]。此外有类似的研究表明，线粒体磷酸酶 PGAM5 的缺失导致线粒体融
+合增加和线粒体周转减少，造成细胞内 ROS 水平升高和细胞衰老，而 PGMA5
+是通过去磷酸化 Drp1进行线粒体裂变所必需的。以上研究表明了增加线粒体裂
+变，抑制线粒体过度融合有助于缓解细胞衰老。
+然而，过度的线粒体裂变也会加速细胞衰老。在暴露于香烟烟雾提取物的
+人支气管上皮细胞中，敲低线粒体融合蛋白（Opa1或MFN）诱导线粒体片段化，
+可促进线粒体 ROS 的产生并加速细胞衰老[53]。在血管平滑肌细胞（Vascular
+smooth muscle cell，VSMC）中，Krüppel样因子5（Krüppel-like factor 5，Klf5）
+下调导致线粒体裂变和ROS产生过多，导致VCMS衰老。Klf5通过激活真核翻
+译起始因子 5a（eIF5a）转录，促进 eIF1a启动子与 MFN1相互作用，抑制线粒
+体裂变可和 VSMC 衰老[54]。在另一项研究中发现，S-腺苷同型半胱氨酸水解酶
+9
+--- 第28页 ---
+吉林大学博士学位论文
+的抑制使得血管内皮细胞中 Drp1表达上调，线粒体裂变增加，细胞衰老相关蛋
+白p53、p21和p16表达增加。此外，APOE小鼠中Drp1的上调促进了血管衰老
+和动脉粥样硬化进展[55]。因此，调控线粒体动力学的平衡是抑制细胞衰老进程
+的关键点，如何更好的调控应激状态下细胞中线粒体裂变和融合的相对平衡值
+得深入挖掘。
+图 1.4 线粒体动力学示意图[47]
+Fig.1.4 Schematic diagram of mitochondrial dynamics
+1.2 缺血与细胞衰老
+1.2.1 缺血对细胞衰老的影响
+目前来自人体研究和动物模型的证据表明，细胞衰老在缺血心肌中起着重
+要作用。一些研究已经关注到了诱导心肌缺血后细胞衰老的上游信号通路。在
+心肌梗死小鼠模型中，梗死边缘区衰老标志物的积累与 Drp1水平的增加有关，
+Drp1 是心肌梗死后的线粒体裂变的关键调节因子。在体外 H9c2 心肌细胞缺氧
+复氧模型中，抑制 Drp1可降低衰老标志物的表达，提示缺血介导的线粒体功能
+障碍可能引发细胞衰老[56]。此外，缺氧条件下的 H9c2 细胞中 AKT-mTOR 通路
+的激活与衰老标志物的存在相关，而该通路的失活伴随着细胞衰老的减少[57]。
+但细胞衰老在心肌缺血发病机制中的作用现在仍是有争议的。Teng Feng 等人研
+究发现心尖切除术（Apical resection，AR）能诱导心肌细胞分泌基质蛋白CCN1
+促进成纤维细胞衰老，抑制肌成纤维细胞增殖，可防止不良心脏重构和并改善
+10
+--- 第29页 ---
+第1章 文献综述
+心功能，对心肌梗死可能具有潜在的治疗作用[58]。也有研究表明，心肌成纤维
+细胞衰老可限制心肌缺血后过度纤维化反应[59]。然而，在近几年的多数研究中，
+研究者普遍认为细胞衰老对于心肌梗死损伤修复具有不利影响。例如Fiona等人
+指出，衰老细胞的存在导致心梗后心脏再生受损[1]；血红素加氧酶-1（Heme
+oxygenase-1, HO-1）通过减轻缺血性损伤诱导的心肌细胞衰老来改善心肌梗死
+后的心功能[60]；衰老细胞抑制动脉粥样硬化中血管平滑肌细胞的修复功能，可
+能增加斑块破裂和心肌梗死的风险[61]。总之，大量数据表明心肌缺血会诱导细
+胞衰老的发生，并影响缺血心肌的损伤修复。
+此外，多项研究表明，在脑缺血、肾脏缺血中同样存在细胞衰老现象。例
+如，在小鼠局灶性脑缺血模型及人类卒中患者中，Coral Torres-Querol 等人发现
+大脑梗死区域大量 SASP分子的mRNA表达水平显著增加[62]。Seo Rin Kim等人
+通过对缺血肾脏进行单细胞 RNA测序分析，发现进行性细胞衰老参与介导缺血
+性肾病中的肾功能不全[63]。Letian Yang 等人在缺血/再灌注诱导的肾小管上皮细
+胞损伤模型中，也发现了明显的细胞衰老现象[64]。
+总之，许多数据显示出了缺血性疾病与细胞衰老的相关性，但细胞衰老在
+介导缺血并发症和预防并发症中的确切作用，以及对缺血阶段、损伤和细胞类
+型影响的依赖关系仍然不明确。
+1.2.2 缺血诱导细胞衰老的相关机制
+与其他由各种应激刺激引起的细胞衰老一样，缺血诱导细胞衰老的机制是
+十分复杂的，包括氧化应激、线粒体功能障碍、炎症反应和表观遗传学修饰等
+等[65]。
+缺血损伤的主要特征是线粒体功能障碍和 ROS的大量产生。ROS会诱发组
+织中的氧化应激反应，缺血诱导的线粒体功能障碍和氧化应激可能进一步导致
+细胞衰老，这一过程主要由 p21 和 p16 信号激活介导[6]。Miao 等人报道，缺血/
+再灌注会抑制Klotho，这是一种广泛报道的与抗衰老相关的因子，导致Wnt1和
+Wnt9a诱导的线粒体损伤和肾脏细胞衰老[66]。
+缺血后 ROS 和 mtDNA 的产生增加，有助于中性粒细胞浸润和大量促炎细
+胞因子释放，这在细胞衰老中起着至关重要的作用。越来越多的研究表明，缺
+11
+--- 第30页 ---
+吉林大学博士学位论文
+血损伤中衰老与炎症之间存在复杂的相互作用[67]。一方面，过度活跃的炎症反
+应是应激诱导细胞衰老的主要因素之一。另一方面，衰老细胞可能通过 SASP
+引起附近细胞的衰老，从而放大随后的炎症反应[68, 69]。，进一步探索可能有助于
+缓解 缺血再灌注诱导的多器官损伤。
+表观遗传修饰是指在 DNA序列没有任何改变的情况下发生的基因组变化，
+包括组蛋白乙酰化、DNA甲基化、miRNA、LncRNA和m6A修饰。越来越多的
+证据表明，表观遗传修饰与多器官缺血损伤中的细胞衰老具有复杂的相互作用。
+例如，肾缺血/再灌注损伤增加了组蛋白H3乙酰化，触发了G2/M停滞和细胞衰
+老[70]。Castellano 等人指出，在缺血/再灌注损伤之后，参与细胞周期调控的
+DNA 区域异常甲基化将导致肾小管上皮细胞的细胞周期停滞和衰老[71]。心肌缺
+血后 m6A 甲基转移酶 METTL3 的激活可导致心肌细胞周期停滞[72]。此外，Liu
+T等人报道，miR-493靶向STMN-1可促进缺氧诱导的上皮细胞周期停滞，导致
+肾纤维化[73]。
+综上所述，线粒体功能障碍、炎症和细胞衰老之间的正反馈回路、表观遗
+传调控与多器官缺血损伤密切相关，调控细胞衰老可能是改善或预防缺血损伤
+的新治疗方向。
+1.2.3 抗细胞衰老疗法在缺血性疾病中的研究现状及前景
+基于对蛋白质组学和转录组学数据分析，研究者发现衰老细胞中存在一种
+或多种衰老细胞抗凋亡通路（Senescent cell antiapoptotic pathways，SCAP）的上
+调。SCAP通路类似于某些类型癌细胞的通路，例如B细胞淋巴瘤细胞或慢性淋
+巴细胞白血病细胞，它们也会释放破坏组织的促凋亡因子，但本身会逃避细胞
+凋亡[74]。SCAP通路的瞬时阻滞会导致分泌组织破坏性SASP的衰老细胞凋亡，
+而非衰老细胞或分泌促生长、非凋亡 SASP 的衰老细胞仍然存活[75]。生物信息
+学分析确定了 46种靶向 SCAP通路的化合物可能具有潜在的抗衰老作用[76]。目
+前，选作第一批抗细胞衰老药物的特征包括：（1）靶向多种 SCAP；（2）可以
+口服给药；（3）是具有已知安全性的天然产品或已被 FDA 批准用于其他适应症
+的药物。其中包括 SRC 酪氨酸激酶抑制剂达沙替尼，存在于水果和其他食物中
+的类黄酮槲皮素和漆黄素。目前正在使用高通量文库筛选和其他方法鉴定第二
+12
+--- 第31页 ---
+第1章 文献综述
+代抗细胞衰老药物，一种方法基于许多衰老细胞中溶酶体质量和衰老相关β-半
+乳糖苷酶活性的增加，研究表明低聚半乳糖包被的纳米颗粒和 β-半乳糖苷酶激
+活的前药可消除部分衰老细胞[77]。另一种方法是基于一些衰老细胞的高溶酶体
+活性，使它们对溶酶体 ATP 酶抑制剂敏感[78]。第一、二代抗衰老药物作用机制
+如图1.5所示。
+目前，已有多项研究表明，抗衰老药物对于治疗缺血性疾病发挥积极作用。
+例如，Ju-Ro Lee等人报道，在缺血损伤的心脏中局部递送抗衰老药物 ABT263-
+PLGA 可抑制心脏不良重塑并恢复受损的心脏功能。另有研究发现，静脉注射
+ABT263可有效消除大鼠脑缺血组织中的衰老细胞，同时显著减少了脑梗死面积
+并改善了大鼠神经功能[2]。在单侧肾缺血/再灌注损伤的小鼠中，口服递送达沙
+替尼加槲皮素，可以去除衰老的肾小管上皮细胞并抑制肾纤维化。综上所述，
+抗细胞衰老疗法在各类缺血性疾病的治疗中具有广阔前景，探究细胞衰老潜在
+调控靶点，将有助于相关药物的开发研究。
+图 1.5 第一、二代抗衰老药物作用机制[78]
+Fig.1.5 Mechanism of action of the first and second generation senolytics.
+13
+--- 第32页 ---
+吉林大学博士学位论文
+1.3 ALDH2在缺血性疾病和细胞衰老中的研究现状
+1.3.1 ALDH2概述
+ALDH2属于乙醛脱氢酶家族，由517个氨基酸和四个大小为56 kDa相同亚
+基组成。每个亚基包含三个结构域：催化结构域、辅酶烟酰胺腺嘌呤二核苷酸
+（NAD）结构和寡聚化结构域。除了脱氢酶活性外，ALDH2还具有还原酶和酯
+酶活性[4]。无活性的ALDH2 rs671或ALDH2低表达会导致乙醛、4-HNE和丙二
+醛等醛类产物的积累[79]。ALDH2酶广泛分布于人体许多器官的细胞线粒体基质
+中，在肝脏中最为丰富，并且在需要高线粒体氧化磷酸化的器官（如心脏和大
+脑）中也大量表达[4]。
+人类线粒体醛脱氢酶在 1980 年代初首次被揭示，但关于该酶的大部分研究
+都与其在乙醇代谢中的作用有关。然而，近几年出现了大量证据表明ALDH2在
+多种疾病的预防与治疗中可以发挥重要作用。据报道，失活的 ALDH2 rs671 多
+态性存在于全球8%的人口和多达50%的东亚人口中，与冠状动脉疾病、酒精性
+心功能障碍、肺动脉高压、心力衰竭和药物性心脏毒性等心血管疾病的风险增
+加有关[80]。ALDH2多态性与主动脉瘤/夹层（Aortic aneurysm/dissection, AAD）
+的各种危险因素有关，包括高血压、动脉粥样硬化和高胆固醇血症[81]；ALDH2
+通过调节线粒体裂变和平滑肌细胞增殖可抑制肺动脉高压的发展[82]；ALDH2通
+过 cGAS-STING-TBK1 介导的线粒体自噬调节，有助于褪黑激素诱导 APP/PS1
+突变引起的心脏损伤的保护[83]；EHMT2/NFYA-ALDH2信号转导轴调节 RAF通
+路以克服肺癌治疗中的紫杉醇耐药[84]。因此，ALDH2有望成为临床治疗中的有
+力靶点。
+1.3.2 ALDH2与缺血性疾病
+研究表明，ALDH2 在调控多种缺血性疾病的发生及发展过程中发挥重要作
+用，包括心肌缺血、脑缺血、肾缺血和肝脏缺血等。
+在心肌缺血条件下，ALDH2 通过 PI3K/AKT/mTOR 通路调节糖尿病心肌病
+中的线粒体融合和裂变，减轻缺血和再灌注损伤[85]。心肌缺血/再灌注损伤后的
+肥厚预处理心脏保护作用涉及 ALDH2 依赖性代谢调节[86]。在肾缺血/再灌注诱
+14
+--- 第33页 ---
+第1章 文献综述
+导的急性肾损伤小鼠模型中，敲除肾小管上皮细胞中的ALDH2会抑制线粒体自
+噬激活并加重肾损伤[5]。通过整合全基因组关联数据和人脑蛋白质组数据，
+Chengcheng Zhang等人筛选出 ALDH2可能腔隙性卒中治疗的潜在靶点[87]
+Alda-1 (N-piperonyl-2,6-dichlorobenzamide)于2008年通过一系列高通量筛选
+被确定为一种有效的 ALDH2 激动剂。在 10 μM 浓度下，Alda-1 对野生型
+ALDH2和ALDH2*2的醛氧化作用分别提高了2倍和10倍[88]。一项动物研究显
+示，在心肌缺血/再灌注损伤模型中，Alda-1 治疗可使梗死面积减少 60%[89]。
+Sun等人在线粒体移植前使用Alda-1治疗来增加线粒体中ALDH2的活化，可以
+提高线粒体移植对I/R损伤的整体治疗效果和疗效[90]。因此，Alda-1显示出作为
+心血管疾病候选药物的巨大潜力。此外，多项动物研究表明，Alda-1 对肺、脑、
+肝和肠缺血性损伤均具有一定的保护作用[91]。
+由此可见，靶向ALDH2治疗缺血性疾病具有很大的潜力，但需要进一步的
+研究和分析。
+1.3.3 ALDH2与细胞衰老
+脂质过氧化及其最终产物，即脂质衍生的醛，如 4-HNE，长期以来被认为
+在氧化还原信号、氧化应激以及细胞和机体衰老中起着重要作用[92]。ALDH2是
+公认的醛解毒酶，对于清除内源性活性醛至关重要[93]。近年来，研究者关注到
+ALDH2可能对调控细胞衰老发挥关键作用。
+在复制性衰老的内皮细胞模型中，Li Xue 等人发现慢性乙醇治疗通过保留
+ALDH2 的活性，缓解了人主动脉内皮细胞中衰老相关表型[94]。为了研究
+ALDH2 对内皮细胞衰老的直接作用，G Nannelli 等人在人脐静脉内皮细胞
+（Human umbilical vein endothelial cell，HUVEC）中抑制ALDH2表达后，发现
+SA-β-Gal活性和衰老标志物p53和p21蛋白表达均明显增加，证实ALDH2抑制
+内皮细胞衰老的发生[95]。Hong Zhu 等人在小鼠体内研究表明，ALDH2 减轻了
+氧化低密度脂蛋白诱导的线粒体活性氧（mROS）的过量产生和下游
+p53/p21/p16 通路的激活，ALDH2缺乏可能通过加速 mROS介导的 VSMC衰老
+来促进动脉粥样硬化斑块的不稳定性[96]。ALDH2的激活缓解内皮细胞衰老的作
+用在动脉粥样硬化动物模型中得到进一步证实。
+15
+--- 第34页 ---
+吉林大学博士学位论文
+目前ALDH2在细胞衰老中的研究仍处于初步阶段，且大多研究都集中于内
+皮细胞衰老，ALDH2对于其他类型细胞衰老的作用仍需要进一步研究。
+1.3.4 ALDH2与4-HNE
+ALDH2在去除氧化应激引发的脂质过氧化产生的 4-HNE和 MDA等内源性
+醛类中起关键作用[97]。4-HNE 是脂质过氧化的主要副产物，脂质过氧化过程在
+缺血诱导的线粒体功能障碍和氧化应激的条件下被加剧[98]。据报道，4-HNE 在
+肝脏缺血[99]、肠道缺血[100]、心肌缺血[101]、脑缺血[102]等多种缺血组织中积累。
+4-HNE 被认为是“自由基的第二毒性信使”，也是“生理上最活跃的脂质过氧化物
+之一”、“氧化应激的主要发生者之一”和“主要的脂质过氧化产物”。这是因为 4-
+HNE 的产量相对较大，并且这种醛非常活泼，既作为信号分子，又作为脂质过
+氧化的细胞毒性产物，在体内和体外均可累积至高达10μM-5mM的水平[103]，能
+够引起长期的生物学后果[104]。4-HNE 的过度积累会诱导细胞器和蛋白质损伤，
+在细胞增殖、细胞分化、细胞凋亡和细胞衰老等多种生物学途径中发挥重要作
+用[105]。4-HNE在 ALDH2的作用下生成 4-羟基-2-壬烯酸，其余的则被其他还原
+酶催化催化成谷胱甘肽-HNE 和 1,4-二羟基-2-壬烯。ALDH2 生物活性的丧失或
+抑制将会干扰其对醛类的解毒作用，进而触发 ROS 的产生，放大对细胞的氧化
+损伤，并导致多种人类疾病[7]。激活ALDH2可以通过减少缺血损伤后的4-HNE，
+发挥对缺血组织的保护作用。
+1.4 HSP70 在缺血性疾病和细胞衰老中的研究现状
+1.4.1 HSP70概述
+HSP70是分子量约70kD的热休克蛋白，是热休克蛋白家族中最重要的一员，
+几乎在蛋白质从合成到降解的所有阶段发挥作用，因此对于维持蛋白质稳态至
+关重要，对人类健康有直接影响[106]。生物体通常具有多种不同的HSP70蛋白，
+这些 HSP70蛋白通常可分为经典型和非经典型。经典 HSP70包含所有三个典型
+的 HSP70结构特征：N端核苷酸结合域（N-terminal nucleotide binding domain，
+NBD）、C端底物结合域（C-terminal substrate binding domain，CBD）和结构域
+16
+--- 第35页 ---
+第1章 文献综述
+之间的无序连接子。非经典HSP70包含NBD但缺乏其他结构特征之一。在人类
+中，有13种HSP70蛋白亚型，包括8种典型蛋白（HSPA1A、HSPA1L、HSPA2、
+HSPA5、HSPA6、HSPA8、HSPA9 和 Dnak）和 5 种非典型蛋白（HSPA7，
+HSP12A，HSP12B，HSPA13和HSPA14[107]，如图1.6所示。
+图 1.6 HSP70典型蛋白分类[107]
+Fig.1.6 Classification of HSP70 typical proteins
+HSPA8在主要定位于细胞质和细胞核中，在细胞质中非常丰富的 HSPA8在
+细胞质和细胞核/核仁之间穿梭，使 HSPA8 能够以 ADP/ATP 依赖性方式将细胞
+质中的客户蛋白导入细胞核。当恢复正常情况时，HSPA8 从其核/核仁中释放并
+重新分布到细胞质中[108]。HSPA8 最有名的功能是它在伴侣介导的自噬（CMA）
+中的作用。CMA 代表了在其氨基酸序列中具有 KFERQ 或 KFERQ 样基序的胞
+质蛋白的高度选择性降解过程。在 CMA 期间，存在于蛋白质底物中的 KFERQ
+基序被胞质 HSPA8 识别，负责其去折叠并随后转运到溶酶体相关膜蛋白 2A
+（Lysosome associated membrane protein 2A，LAMP2A），后者作为 CMA的特异
+性受体。转运到溶酶体腔内的蛋白质最终被溶酶体蛋白酶降解，降解产物（氨
+基酸）可能被回收以维持细胞稳态并促进细胞存活[109]。除了在细胞质和细胞核
+中发挥作用外，近年有研究发现HSPA8与线粒体外膜蛋白FUNDC1相互作用，
+促进未折叠胞质蛋白的线粒体易位，对于调控细胞衰老具有潜在作用[110]。
+17
+--- 第36页 ---
+吉林大学博士学位论文
+1.4.2 HSP70与缺血性疾病
+近年研究表明，HSP70 家族蛋白是组织缺血损伤的有前途的治疗靶点[111]。
+在心肌缺血再灌注期间，HSP70 的表达在心肌细胞中显着上调。研究指出，
+HSP70 参与调控心肌缺血损伤中的多个信号通路，包括氧化应激、钙超负荷、
+细胞凋亡和炎症反应等（如图 1.7 所示）。在肝缺血再灌注损伤中，肝细胞
+HSPA12A 抑制巨噬细胞趋化性和活化，进而抑制糖酵解介导的 HMGB1 乳酸化
+和肝细胞分泌来减轻肝组织损伤[112]。在局灶性脑缺血中，HSP70 蛋白介导的自
+噬信号传导调节脑组织中的细胞凋亡[113]。在肾缺血中，HSP70 蛋白通过干预核
+磷蛋白介导的细胞死亡影响急性肾损伤期间的细胞存活[114]。总之，多项研究已
+证实HSP70是缺血损伤的高敏感性标志物。
+炎症是多种组织缺血损伤的关键特征。一旦炎症细胞被激活，这些细胞就
+会释放出多种细胞毒性物质，被认为是缺血性细胞死亡的关键因素。HSP70 蛋
+白被证明与促炎因子相互作用，如核因子-κB（Nuclear factor-kappaB，NF-kB）、
+基质金属蛋白酶（Matrix metalloproteinases，MMP）和 ROS，调节炎症反应。
+细胞外 HSP70 还通过 Toll 样受体与巨噬细胞、小胶质细胞和树突状细胞相互作
+用，参与先天免疫反应[115]。此外，HSP70 可以与内源性凋亡信号通路中的死亡
+受体相互作用，例如死亡受体4（Death receptors 4，DR4）和5（Death receptors
+5，DR5）结合，诱导 TNF 相关的细胞凋亡。尽管现已证明 HSP70 可通过调节
+细胞死亡和炎症反应等机制影响缺血性损伤，但对其家族各亚型蛋白在缺血组
+织中的研究还不充分，仍需进一步探究[116]。
+18
+--- 第37页 ---
+第1章 文献综述
+图 1.7 HSP70蛋白在心肌缺血再灌注损伤中的作用机制[111]
+Fig.1.7 The mechanism of HSP70 protein in myocardial ischemia-reperfusion
+injury
+1.4.3 HSP70与细胞衰老
+蛋白稳态的紊乱可通过导致线粒体功能障碍诱导细胞衰老，作为调控线粒
+体稳态的重要分子，HSP70 家族蛋白对于细胞衰老的调控近年来也被证实[117]。
+在应激诱导的人成纤维细胞 MRC-5 的过早衰老模型中，使用雷帕霉素增加
+HSP70 恢复蛋白稳态，能够部分减弱细胞衰老[118]。在人成纤维细胞的复制性衰
+老模型中，lncRNA MAGI2-AS3的下调通过稳定 HSPA8蛋白水平来延迟细胞衰
+老[119]。使用细胞外机械刺激处理人髓核细胞，诱导细胞内 ROS 水平升高和
+HSPA5升高，进而导致人髓核细胞衰老[120]。Hyun Ju Ko等人研究发现，天然氨
+基酸麦角硫因通过抑制 HSP70 的下调，改善了紫外线 B 照射诱导的成纤维细胞
+衰老[121]。Yanjun Li 等人的一项研究表明，敲除 HSPA8 阻碍了客户蛋白向线粒
+体的易位，并缓解了细胞衰老样表型。相反，HSP70 的敲除增加了线粒体中客
+户蛋白的积累并加剧了衰老样表型。以上研究提示，尽管 HSP70 家族蛋白通过
+调控衰老细胞中蛋白稳态的紊乱有助于缓解细胞衰老表型，但不同蛋白亚型在
+不同的应激条件下作用效果并不完全一致，具体机制值得进一步探究。
+19
+--- 第38页 ---
+吉林大学博士学位论文
+1.5 心肌缺血与成纤维细胞
+1.5.1 心肌缺血概述
+心肌缺血通常由血栓阻塞动脉或旁路移植物引起，其特征是流向心肌的血
+流量突然减少，最终导致心力衰竭和死亡[122]。恢复血流以挽救缺氧缺血组织被
+认为是一种有效的策略。溶栓、经皮冠状动脉介入治疗（Percutaneous coronary
+intervention，PCI）和冠状动脉旁路移植术（Coronary artery bypass grafting，
+CABG）是临床上治疗急性心肌梗死的最常见方法[123]。尽管这些方法显着降低
+了患者的死亡率，但这些疗法可能带来多种并发症，包括出血、缺血再灌注损
+伤和冠状动脉再狭窄[124]。因此，有必要寻求更具创新性和有效性的途径来保护
+心肌功能并避免心力衰竭。
+心肌缺血后，损伤心肌的炎症、纤维化和血管生成阶段重叠（如图 1.8 所
+示）。缺血缺氧时，心肌细胞的大量凋亡在受损组织内引发炎症反应，免疫细胞
+浸润，释放促炎细胞因子和趋化因子。随着免疫细胞的募集和促炎性信号的转
+导，成纤维细胞产生胶原，激活内皮细胞中血管生成信号。新生的毛细血管将
+营养物质带到梗死边缘区，可在成纤维细胞向肌成纤维细胞转化过程中提供能
+量，对于代偿性维持心脏结构和功能的完整性至关重要。细胞信号通路在调节
+这些病理生理状况中介导细胞的存活、增殖、凋亡、分化、衰老等表型。探究
+调控各类细胞命运的信号转导通路，有助于发现新的治疗策略[125]。
+20
+--- 第39页 ---
+第1章 文献综述
+图 1.8 缺血心肌中的细胞类型和代表性信号通路[125]
+Fig.1.8 Cell types and representative signaling pathways in ischemic myocardium
+1.5.2 心肌缺血中的成纤维细胞
+成纤维细胞对于维持正常心肌结构十分重要。心肌缺血发生时，心肌成纤
+维细胞被激活并增殖，以在心肌细胞丢失时稳定梗死区域，这一过程称为“替代
+纤维化”。成纤维细胞是梗死心脏中胶原蛋白的主要产生者[126]。成纤维细胞在
+梗死愈合的三个阶段经历多次表型转变[127]。在炎症期，缺血区的常驻心肌成纤
+维细胞获得促炎表型，并可能通过分泌细胞因子介导白细胞的募集[128]。在增殖
+阶段，梗死区域的成纤维细胞通过向非梗死区域的增殖和迁移。很大一部分梗
+死成纤维细胞转化为肌成纤维细胞，表达收缩蛋白，如 α-平滑肌肌动蛋白（α-
+smooth muscle actin，α-SMA），并合成大量 ECM蛋白。最后，在成熟阶段，肌
+成纤维细胞分并转化为用于维持瘢痕的特化细胞，被称为基质纤维细胞[129]。
+成纤维细胞的慢性和病理性激活会损害心肌的机电偶联，并通过旁分泌效
+应介导其与心肌细胞、内皮细胞和免疫细胞的直接细胞通讯[130]。此外，成纤维
+细胞产生的细胞因子也可以向心肌细胞发出信号。例如，由成纤维细胞产生的
+白细胞介素-33 (interleukin-33, IL-33)在压力过载后抑制心肌细胞肥大和纤维化，
+提示IL-33可能作为成纤维细胞产生的旁分泌信号，调节心肌细胞对肥厚刺激的
+反应[131]。James E Cartledg等人使用共培养方法和条件培养基来研究成纤维细胞
+21
+--- 第40页 ---
+吉林大学博士学位论文
+和心肌细胞之间的旁分泌相互作用。发现所有成纤维细胞类型都会降低心肌细
+胞活力并增加心肌细胞体积。反过来，心肌细胞释放可溶性介质，影响成纤维
+细胞增殖[132]。XiaoQiang Chen 等人研究发现，新生大鼠心肌成纤维细胞分泌大
+量整合素 ITGBL1，可作为成纤维细胞-心肌细胞相互作用的重要功能介质，诱
+导新生大鼠心肌细胞肥大，是心衰患者心脏重塑的潜在靶点[133]。在对新生小鼠
+心脏的发育研究中，Luis Hortells等人发现表达骨膜蛋白（Periostin, Postn）的心
+脏成纤维细胞的有助于新生小鼠心肌细胞的成熟和神经元发育[134]。因此，特定
+成纤维细胞群的分泌组影响受损心肌的修复与纤维化，可能为心血管疾病的治
+疗提供有希望的靶标[135]。
+1.5.3 成纤维细胞衰老在心肌缺血中的研究现状
+早年研究发现，在培养物中连续传代培养后，原代成纤维细胞的增殖能力
+有限。在心血管系统中，成纤维细胞被认为是最丰富的细胞群。在应激作用下，
+心脏成纤维细胞通常会经历表型转化为肌成纤维细胞，并调节心脏中的 α-SMA
+和ECM成分。随着应激源的持续存在，心脏成纤维细胞发展为不可逆的衰老，
+细胞周期蛋白和 SASP表达增加。最近的研究报道，衰老生物标志物（包括 p16
+和p21）在心肌梗死后小鼠心脏中的表达显著增加。α-SMA与p53或p16共染色
+证实梗死边缘区域的衰老成纤维细胞增加[3]。p21 和成纤维细胞标志物的双重染
+色表明，心脏重塑过程中的衰老细胞是成纤维细胞和肌成纤维细胞[136]。
+衰老成纤维细胞在心肌缺血损伤修复期间可能发挥双面作用。Shibamoto 等
+人观察到，阻断 DNA损伤反应会促进心肌成纤维细胞增殖，并加剧心肌梗死后
+的心脏纤维化[137]。因此，部分研究人员认为衰老成纤维细胞在心肌缺血后早期
+促进了侧支血管生成和局限性心肌纤维化。但是，心肌梗死后心脏成纤维细胞
+介导的胶原沉积对于提供机械强度和预防心脏破裂仍然至关重要。Zhu 等研究
+表明，p53介导的成纤维细胞衰老限制了胶原沉积和心脏纤维化，导致心肌梗死
+后心脏破裂和心功能不全。相反，敲除 p53 可抑制成纤维细胞衰老，并增强梗
+死后胶原沉积和修复性纤维化[3]。
+心肌缺血是一个动态和复杂的过程，涉及不同的细胞。各类型细胞在缺血
+不同阶段同样也可能经历表型和功能的转化，细胞间通讯的变化也可能导致损
+22
+--- 第41页 ---
+第1章 文献综述
+伤修复的不同结果。但目前，成纤维细胞衰老在缺血心肌组织中的作用仍处于
+初步研究阶段，仍需要进一步探究在缺血不同阶段，衰老成纤维细胞所处的地
+位及其作用机制。
+23
+--- 第42页 ---
+吉林大学博士学位论文
+24
+--- 第43页 ---
+第2章 缺血对成纤维细胞衰老的影响
+第 2 章 缺血对成纤维细胞衰老的影响
+心肌成纤维细胞对维持正常的心肌功能至关重要，而且在心肌缺血等病理
+条件下的心肌重构中也发挥着关键作用[138]。近年研究发现，心肌梗死后小鼠心
+肌组织中的衰老标志物表达增加。成纤维细胞标志物与细胞衰老标志物共定位
+证实了心梗后的衰老细胞大多为成纤维细胞[3]。持续性缺血可导致成纤维细胞
+耗竭和功能障碍，已有研究表明，心肌梗死诱导的成纤维细胞衰老参与调节心
+梗损伤与修复[139]，但关于心肌缺血诱导成纤维细胞衰老的机制尚未阐明。在本
+章研究中，对心梗后小鼠心肌成纤维细胞转录组数据集进行生物信息学分析，
+并建立小鼠心梗模型验证，分别在心梗后 1、3和 7天收集心肌组织进行免疫荧
+光染色，以明确心肌缺血对心肌成纤维细胞衰老的动态影响。
+OGD 模型被广泛用作缺血性疾病的体外模型[140]，为了进一步在体外验证
+缺血对成纤维细胞衰老的影响，建立小鼠NIH3T3成纤维细胞OGD模型,检测细
+胞增殖情况，采用Western Blot、β-gal染色及酶活性检测、RT-qPCR等方法，明
+确体外 OGD 处理对成纤维细胞衰老的动态影响。活性氧（Reactive oxygen
+species，ROS）在心肌梗死的病理进展中起关键作用[141]，同时ROS也是细胞衰
+老的主要应激源之一[142]，我们通过原位装载荧光探针 DCFH-DA 进行活性氧检
+测，明确OGD不同时间点对成纤维细胞内 ROS产生的影响。
+2.1 实验材料
+2.1.1 实验动物
+8-10周龄的健康雄性无特定病原体（Specific pathogen Free，SPF）C57BL/6
+小鼠，体重约为 18-22g，购自长春亿斯实验动物技术有限公司，合格证书号为
+SCXK(2020—0002)。本实验遵守实验动物伦理福利的要求，在吉林大学基础医
+学院动物实验中心屏障环境设施中开展。接受吉林大学基础医学院实验动物伦
+理福利委员会监督，实验条件严格依照 GB14925-2010进行。
+2.1.2 细胞系
+小鼠 NIH3T3 成纤维细胞系购自上海中乔新舟生物科技有限公司，货号
+25
+--- 第44页 ---
+吉林大学博士学位论文
+ZQ0096。
+2.1.3 实验主要仪器
+表 2.1 实验仪器列表
+仪器名称 生产厂家
+彩色多普勒超声诊断仪 Sigma公司
+冰冻切片机 Thermo公司
+光学显微镜 OLYMPUS公司
+倒置荧光显微镜 ZEISS公司
+-80℃超低温冰箱 海尔公司
+脱色摇床 其林贝尔公司
+二氧化碳细胞培养箱 Panasonic公司
+细胞低氧培养小室 迈沃德公司
+超净工作台 苏州净化设备有限公司
+高压灭菌器 ZEALWAY公司
+电泳仪 君意公司
+凝胶成像仪 Tanon公司
+超速冷冻离心机 索孚公司
+高速冷冻微量离心机 大龙公司
+低速离心机 平凡公司
+精密pH计 雷磁公司
+恒温振荡器 一恒公司
+磁力加热搅拌器 中大公司
+酶标仪 Thermo公司
+梯度PCR仪 Thermo公司
+超微量紫外分光光度计 鼎昊源公司
+QuantStudio 3实时荧光定量 PCR仪 Thermo公司
+电子天平 赛多利斯公司
+26
+--- 第45页 ---
+第2章 缺血对成纤维细胞衰老的影响
+续表
+仪器名称 生产厂家
+电子天平 赛多利斯公司
+掌上离心机 科雅公司
+小动物麻醉机 瑞沃德公司
+电热鼓风干燥箱 博讯公司
+纯水仪 芷昂公司
+雪花制冰机 比朗公司
+2.1.4 实验试剂
+表 2.2 实验试剂列表
+试剂名称 生产厂家
+4%多聚甲醛 碧云天公司
+OCT包埋剂 莱卡公司
+Vimentin抗体 Proteintech公司
+p21抗体 Proteintech公司
+Hif-1α抗体 Affinity公司
+p53抗体 Affinity公司
+p16抗体 Abclonal公司
+GAPDH抗体 Affinity公司
+Cy3标记山羊抗兔 IgG(H+L) 碧云天公司
+HRP山羊抗兔IgG 碧云天公司
+HRP山羊抗小鼠 IgG 碧云天公司
+柠檬酸钠抗原修复液 碧云天公司
+ECL显色剂 Proteintech公司
+BCA蛋白浓度测定试剂盒 索莱宝公司
+27
+--- 第46页 ---
+吉林大学博士学位论文
+续表
+试剂名称 生产厂家
+蛋白酶抑制剂Cocktail Roche公司
+高效RIPA裂解液(组织/细胞) 索莱宝公司
+Protein ladder Thermo公司
+磷酸酶抑制剂PhosSTOP Roche公司
+Tris-HCl 索莱宝公司
+Tris Biosharp公司
+30% Acrylamide Biosharp公司
+细胞增殖检测试剂盒 碧云天公司
+β-半乳糖苷酶染色试剂盒 索莱宝公司
+β-半乳糖苷酶活性检测试剂盒 索莱宝公司
+TransZol Up 全式金公司
+逆转录试剂盒 全式金公司
+SYBR Green荧光定量试剂 罗氏公司
+ROS含量检测试剂盒 索莱宝公司
+胎牛血清 依科赛公司
+高糖DMEM培养基 Gibco公司
+无糖DMEM培养基 Gibco公司
+0.25 %胰酶 Gibco公司
+链霉素-青霉素溶液 Gibco公司
+BCA蛋白浓度测定试剂盒 索莱宝公司
+试剂配制方法
+（1）1×PBS缓冲液：
+KCl 0.4 g
+KH PO 0.4 g
+2 4
+NaCl 16 g
+Na HPO ·12H O 6.96 g
+2 4 2
+28
+--- 第47页 ---
+第2章 缺血对成纤维细胞衰老的影响
+加蒸馏水定容至 2L
+（2）0.3% TritonX-100：
+TritonX-100 300ul
+PBS 100 ml
+（3）5%山羊血清：
+山羊血清 5 ml
+PBS 95 ml
+（4）5%的浓缩胶（5 ml）
+蒸馏水 3.4 ml
+30% Acrylamide 0.83 ml
+1.5M Tris （pH6.8） 0.63 ml
+10% SDS 0.05 ml
+10% APS 0.05 ml
+TEMED 0.005 ml
+（5）12%的分离胶（10 ml）
+ddH O 3.4 ml
+2
+30% Acrylamide 4.0 ml
+1.5M Tris（pH 8.8） 2.5 ml
+10%SDS 0.10 ml
+10%APS 0.10 ml
+TEMED 0.004 ml
+（6）15%的分离胶（10 ml）
+ddH O 2.4 ml
+2
+30% Acrylamide 5.0 ml
+1.5M Tris（pH 8.8） 2.5 ml
+10%SDS 0.10 ml
+29
+--- 第48页 ---
+吉林大学博士学位论文
+10%APS 0.10 ml
+TEMED 0.004 ml
+（7）1×Tank Buffer（2 L）
+Tris 6.05 g
+SDS 2.0 g
+甘氨酸 28.84 g
+ddH O 定容至2 L
+2
+（8）Transfer Buffer（2 L）
+甘氨酸 28.84 g
+Tris-base 6.06 g
+甲醇 80 ml
+ddH O 定容至2000 L
+2
+（9）1×TBS（2 L）
+Tris-base 4.846 g
+NaCl 16.012 g
+ddH O 定容至2000 L
+2
+（10）1×TBST（2 L）
+1×TBS 2 L
+Tween-20 2 ml
+（11）5%脱脂奶粉（50 ml）
+脱脂奶粉 2.5 g
+1×TBST 50 ml
+30
+--- 第49页 ---
+第2章 缺血对成纤维细胞衰老的影响
+2.2 实验方法
+2.2.1 生物信息学分析
+小鼠心肌梗死后心肌成纤维细胞的基因表达数据集 GSE111059来源于 GEO
+数据库，使用 GEO2R 在线分析工具（https://www.ncbi.nlm.nih.gov/geo/geo2r）
+提取和分析差异表达基因（Differentially expressed genes，DEGs）。使用 R 包
+“complexheatmap”和“ggplot2”可视化从数据集中获得的 DEGs，分别生成热图和
+火山图。使用R包“clusterProfiler”对 DEGs进行基因集富集分析（GSEA）。
+2.2.2 心肌梗死模型构建
+本实验采用心肌梗死模型模拟心肌缺血条件。实验遵守实验动物伦理福利
+的要求，在吉林大学基础医学院动物实验中心屏障环境设施中开展，接受吉林
+大学基础医学院实验动物伦理福利委员会监督。将 8-10周龄的健康雄性 SPF 级
+C57BL/6 小鼠饲养在无菌 IVC 笼中，适应性饲养 1 周后，随机将小鼠分为假手
+术组（Sham）和心肌梗死组（MI）。小鼠麻醉后对胸部皮肤进行消毒，备皮后
+充分暴露手术区域，剪开第三、四肋间皮肤，钝性分离肌肉后暴露心脏，使用
+6-0 号丝线于左心耳下缘进针，迅速结扎冠状动脉左前降支，此时结扎部位以下
+由鲜红色变为苍白色。将心脏复位后迅速关闭胸腔并缝合伤口。假手术组小鼠
+只穿线不结扎，其余操作一致。分别于心梗造模完成后 1、3和 7天后收集小鼠
+心脏组织进行后续实验。
+2.2.3 超声心动图检测
+使用小动物剃毛器，麻醉小鼠，备皮后在小鼠胸部涂抹适量耦合剂，使用
+Sigma彩色超声诊断仪，检测小鼠心功能。
+2.2.4 冰冻切片免疫荧光检测
+1. 收集小鼠心肌组织后，置于 4%多聚甲醛溶液中固定 24 h，使用30%蔗糖
+溶液脱水。用 OCT包埋剂包埋后切片。使用 4%多聚甲醛固定切片 10 min后，
+31
+--- 第50页 ---
+吉林大学博士学位论文
+用PBS缓冲液洗涤 3次，每次5 min。
+2. 将切片浸泡在 1×柠檬酸钠抗原修复液中，95℃加热约20 min。待切片冷
+却至室温后，用 PBS缓冲液缓慢振荡洗涤 3次，每次5 min。
+3. 完成抗原修复后，用0.3 %的TritonX-100室温通透20 min，用PBS缓冲
+液洗涤3次，每次 5 min。
+4. 封闭：用含 5％山羊血清的PBS室温封闭切片 1 h。
+5. 使用新鲜封闭液配置的一抗混合液将切片 4℃过夜孵育。
+6. 吸出一抗混合液，用 PBS洗涤切片 3次，每次 10 min。室温下，用二抗
+混合液避光孵育切片 2 h。
+7. 吸出二抗溶液，用 PBS避光洗涤切片 3次，每次10 min。
+8. 最后滴加含 DAPI 的抗荧光淬灭封片剂，于荧光显微镜下观察并采集图
+像。用ImageJ软件对图像进行分析。
+2.2.5 细胞氧糖剥夺模型构建
+本实验采用 OGD模型在体外模拟缺血条件。采用 3~5代 NIH3T3细胞进行
+实验。造模前使用含有1% 链霉素-青霉素溶液和10%胎牛血清的高糖DMEM培
+养基，将细胞置于在37℃，5% CO 的细胞培养箱中培养，待细胞生长至适宜密
+2
+度时进行OGD模型的构建。构建OGD模型时，将细胞置于无糖DMEM培养基
+中，在37℃，1% O ，5% CO 条件下分别缺氧 2 h、4 h和8 h。
+2 2
+2.2.6 组织及细胞蛋白提取
+取小鼠心肌组织 0.1g，加液氮在研钵中研磨成粉状，移至 1.5 ml EP管中，
+加入500 ul含有蛋白酶和磷酸酶抑制的 RIPA裂解液，后续操作与下文细胞实验
+一致。细胞造模完成后弃去培养基，用预冷的PBS清洗2次，每孔加入50 µl 含
+有蛋白酶和磷酸酶抑制剂的 RIPA 裂解液，刮下细胞移至 1.5 ml EP 管中，于冰
+上裂解30 min。在 4℃，12000 rpm条件下离心 20 min，将上清转移至新的洁净
+EP 管中。使用 BCA 蛋白浓度测定试剂盒检测蛋白样品浓度。将加入适量
+5×loading buffer的蛋白于金属浴中加热变性5 min，迅速置于冰上，-20℃保存。
+32
+--- 第51页 ---
+第2章 缺血对成纤维细胞衰老的影响
+2.2.7 Western Blot检测
+1. 根据目标蛋白分子量配置适宜浓度的分离胶及5%的浓缩胶，待上下层胶
+均凝固后，置于预冷的 1×Tank buffer 中，轻轻拔出上样梳，避免产生气泡。每
+组取30 µg左右的蛋白样品，连同适量 Protein ladder依次缓慢加入泳道。
+2. 电泳：浓缩胶部分电压设置为 100 V，400 mA 恒流，约 20-30 min，待
+Protein ladder全部分离后，将电压设置为 200 V，400 mA恒流，约 40-45 min。
+当溴酚蓝电泳条带到达底部时结束电泳。
+3. 转膜：裁剪适量大小 PVDF 膜于甲醇中激活后覆于胶块上，在转膜夹的
+两面依次放置海绵和滤纸，将覆盖有 PVDF 膜的胶块置于转膜夹中，并去除气
+泡后，一同置于转膜槽。转膜槽中加入预冷的 1×Transfer buffer，将电流设置为
+300 mA，200 V恒压，并根据蛋白分子量设定转膜时长。
+4. 封闭：转膜结束后取出PVDF膜置于摇床上用TBST清洗后，再置于5%
+的脱脂牛奶中，置于摇床上室温封闭 2 h。
+5. 一抗孵育：结束封闭后的PVDF膜用TBST清洗3次，每次10 min。置于
+稀释好的一抗中 4℃过夜。
+6. 二抗孵育：结束一抗孵育的PVDF膜用TBST清洗3次，每次10 min。置
+于稀释好的二抗中室温孵育 1 h。孵育TBST清洗3次，每次10 min。
+7. ECL显影：将膜浸泡在配制好的 ECL显影液中，完全浸泡后于凝胶成像
+仪中显影。实验结果使用 ImageJ软件进行统计分析。
+2.2.8 细胞增殖检测
+1. 细胞造模完成后吸除培养液，用 1×PBS 洗涤 1次。按照六孔板每孔加入
+1 ml固定液的比例，在孔板中加入固定液，室温固定10 min。
+2. 吸除固定液，洗涤液洗涤 3次，每次 10 min。每孔加入 1 ml免疫染色封
+闭液，室温封闭 20 min。
+3. 吸除免疫染色封闭液，每孔加入 1 ml Ki67兔单抗，4ºC孵育过夜。
+4. 吸除 Ki67兔单抗，洗涤液洗涤3次，每次10 min。
+5. 每孔加入 1 ml抗兔Cy3，室温孵育 1 h。
+33
+--- 第52页 ---
+吉林大学博士学位论文
+6. 洗涤液洗涤 2次，每次10 min。
+7. 滴加适量含有 DAPI 的的抗荧光淬灭封片液，封片后在荧光显微镜下观
+察。红色荧光指示 Ki67，蓝色荧光指示细胞核。
+2.2.9 细胞免疫荧光检测
+1. 提前一天准备细胞爬片，待细胞生长至适宜密度后造模处理。
+2. 造模结束后，用 1×PBS浸洗细胞爬片 5 min，共重复3次。
+3. 用4%的多聚甲醛固定爬片15 min，1×PBS清洗玻片5 min，共重复3次。
+4. 加入 0.3% Triton X-100室温通透30 min。
+5. 1×PBS清洗玻片 5 min，共重复3次，吸干PBS后，加入适量 5% BSA，
+室温封闭1 h。
+6. 弃去封闭液，滴加适量的稀释好的一抗溶液放入湿盒中，4℃ 孵育过夜。
+7. PBST清洗玻片 10 min，共重复3次。滴加稀释好的荧光二抗溶液放入湿
+盒中，室温避光孵育 1 h，PBST清洗玻片 10 min，共重复3次。
+8. 最后滴加含 DAPI 的抗荧光淬灭封片剂，于荧光显微镜下观察并采集图
+像。用ImageJ软件对图像进行分析。
+2.2.10 β-半乳糖苷酶染色及活性检测
+1. 染色：吸除细胞培养液，用 PBS洗涤一次，加入 1 ml β-gal固定液，室温
+固定15 min。吸除细胞固定液，用PBS洗涤细胞3次，每次3 min。按照说明书
+比例配置染色工作液，每孔加入 1 ml工作液。用保鲜膜封住孔板，37 ℃孵育过
+夜后，在普通光学显微镜下观察被染为蓝绿色的衰老细胞。
+2. 活性检测：收集细胞到离心管内，离心后弃上清；按照每 500 万细胞加
+入 1 ml提取液，超声波破碎细胞后，15000 g，4℃，离心 10 min，取上清，置
+冰上待测。酶标仪预热 30 min以上，调节波长至 400 nm。用蒸馏水将标准液稀
+释至200、100、50、25、12.5、6.25、0 nmol/ml 标准溶液待测。在 96孔板中按
+照说明书依次加入检测试剂和样本，充分混匀，于 400 nm处测定吸光值 A，分
+别记为 A测定管、A对照管、A标准管、A空白管。计算 ΔA测定=A测定管-A
+34
+--- 第53页 ---
+第2章 缺血对成纤维细胞衰老的影响
+对照管，ΔA 标准=A 标准管-A 空白管。根据标准管的吸光度（x，ΔA 标准）和
+浓度（y，nmol/ml）建立标准曲线，将 ΔA（x，ΔA测定）带入标准曲线中，计
+算样本生成的产物量 y（nmol/ml）。依据试剂盒说明书计算 β-gal活力。
+2.2.11 细胞 RNA提取
+1. 细胞造模结束后用 1×PBS清洗一次。每孔细胞中加入 500 μl的 TransZol
+Up，并使其均匀分布于细胞表面，用细胞刮勺剥离细胞后收集至 1.5 ml EP管中，
+放置于冰上。每个 EP管中加入100 μl RNA Extraction Agent，用移液枪反复吹吸
+直至裂解液中无明显沉淀后，室温静置5 min。
+2. 10000 g 4℃离心15 min。此时样品分成三层,将含有RNA的上层无色水相
+转移至新的 EP 管中，每管加入 100 μl 异丙醇，上下颠倒混匀，-20 ℃孵育 30
+min左右。
+3. 10000 g 4℃离心15 min。弃去上清，留下管底形成的白色胶状沉淀。
+4. 向沉淀中加 1 ml 75%酒精（无酶水配置），剧烈涡旋重悬沉淀。
+5. 7500 g 4℃离心5 min。
+7. 弃去上清，室温 5 min，晾干沉淀。
+8. 将沉淀溶于 20-50 μl无酶水中。
+2.2.12 RT-qPCR检测
+按照表 2.3在无酶的 200 μl EP管中配置号样品混合液，利用梯度 PCR仪系
+统进行逆转录程序。
+表 2.3 RT-PCR加样表
+Reagent Volume
+Total RNA 500 ng
+Oligo dT 1 μl
+E-mix 1 μl
+R-mix 10 μl
+RNase-free Water To 20 µl
+35
+--- 第54页 ---
+吉林大学博士学位论文
+按照表 2.4 在 PCR 8 联排管中配置好样品混合液，利用 QuantStudio 3 实时
+荧光定量PCR系统进行 mRNA表达量的检测。引物序列如表 2.5所示。
+表 2.4 qPCR加样表
+Reagent Volume (μl)
+FastStart Universal SYBR Green 10
+Master (ROX)
+Forward Primer (300 nM) 1
+Reverse Primer (300 nM) 1
+cDNA模板 2
+RNase-free Water To 20 µl
+表 2.5 引物序列
+Gene name Forward（5’-3’） Reverse（5’-3’）
+TNF-α GGACTAGCCAGGAGGGAGAACAG GCCAGTGAGTGAAAGGGACAGAAC
+IL-6 CTTCTTGGGACTGATGCTGGTGAC TCTGTTGGGAGTGGTATCCTCTGTG
+HMGB1 AGGCTGACAAGGCTCGTTATGAAAG GGGCGGTACTCAGAACAGAACAAG
+GAPDH GGCAAATTCAACGGCACAGTCAAG TCGCTCCTGGAAGATGGTGATGG
+2.2.13 ROS检测
+细胞造模完成后，用无血清培养基将 DCFH-DA 探针稀释至 10μmol/L。去
+除细胞培养液后，加入适当体积稀释好的 DCFH-DA 探针使其能完全覆盖细胞。
+置于 37℃培养箱中孵育 20 min，用无血清培养基清洗 3次后，使用荧光酶标仪
+检测细胞内ROS含量。
+2.2.14 统计学分析
+通过GraphPad Prism 9.0对实验数据进行统计学分析，使用Student’s t检验，
+ANOVA分析和 Holm-Sidak的多重比较检验评估数据集之间的差异，p < 0.05有
+统计学意义。每个实验至少重复三次。
+36
+--- 第55页 ---
+第2章 缺血对成纤维细胞衰老的影响
+2.3 实验结果
+2.3.1 心肌梗死后小鼠心肌成纤维细胞差异基因的生物信息学分析
+为明确心梗对成纤维细胞衰老信号通路的影响，提取 GEO 数据库中基因表
+达谱GSE111059，分别选取数据集中的对照组（Uninjured），心梗后3天组（3D
+post-MI）和心梗后 7 天组（7D post-MI）的小鼠心肌成纤维细胞（Cardiac
+fibroblasts, CFs）样本作为研究对象，样本的分组信息和样本质量水平见图2.1 A。
+数据分析结果显示，与对照组相比，心梗后 3 天共获得 2458 个 DEGs，其中有
+1235个上调基因，1223个下调基因。心梗 7天后共获得 1779个 DEGs。与对照
+组相比有 932个上调基因，847个下调基因。火山图和差异基因热图如图 2.1 B-
+C所示。
+37
+--- 第56页 ---
+吉林大学博士学位论文
+图 2.1 小鼠心肌梗死后心肌成纤维细胞差异基因分析
+Fig. 2.1 DEGs analysis of myocardial fibroblasts in mice after myocardial
+infarction. (A) Sample grouping information and quality level of GSE111059 dataset.
+(B) Respective volcano plots of sifted out DEGs for datasets in the accordance with
+public database GSE111059. Red and Green plot represent up- and down-regulated
+38
+--- 第57页 ---
+第2章 缺血对成纤维细胞衰老的影响
+genes, respectively. Blank plot represents the remaining genes with no significant
+difference. (C) Respective heat map of sifted out DEGs for datasets in the accordance
+with public database GSE111059.
+为进一步明确小鼠心肌梗死后心肌成纤维细胞中细胞衰老相关基因集的变
+化，分别对心梗3天和心梗7天后的DEGs进行GSEA富集分析。分析结果如图
+2.2 A-B 所示，心梗 3 天后， 成纤维细胞中 Cellular senescence 信号通路明显激
+活；心梗7天后，Cellular senescence通路无显著性差异。以上结果提示，心梗3
+天可能是诱导心肌成纤维细胞衰老的关键时间点。
+图 2.2 小鼠心肌成纤维细胞差异基因 GSEA分析
+Fig. 2.2 Gene Set Enrichment Analysis (GSEA) of DEGs. (A) GSEA analysis of
+DEGs 3 days after myocardial infarction. (B) GSEA analysis of DEGs 7 days after
+myocardial infarction.
+2.3.2 心肌梗死对小鼠心肌成纤维细胞衰老的影响
+为进一步验证生物信息学分析结果，通过结扎 C57BL/6 小鼠冠状动脉左前
+降支建立心肌梗死模型，分别在心梗后 1天、3天和7天后，利用超声心动图检
+测小鼠心功能。小鼠心功能检测结果如图 2.3 A-B 所示，与假手术组（Sham）
+相比，心梗后1天（MI 1d），3天（MI 3d）和7天（MI 7d）组小鼠心脏射血分
+数（Ejection fraction，EF）均显著降低（p<0.001, p<0.001, p<0.001），缩短分数
+39
+--- 第58页 ---
+吉林大学博士学位论文
+（Fraction shortening，FS）均显著降低（p<0.001, p<0.001, p<0.001），表明小鼠
+心功能显著降低。
+图 2.3 小鼠心功能检测
+Fig. 2.3 Detection of cardiac function in mice. (A) Echocardiography of the mice. (B)
+Statistical analysis chart of echocardiography. ***p < 0.001 compared with the Sham
+group, n=8. EF: Ejection fraction, FS: Fraction shortening.
+40
+--- 第59页 ---
+第2章 缺血对成纤维细胞衰老的影响
+收集心梗后 1天、3天和 7天小鼠心肌组织，采用 Western Blot方法检测细
+胞衰老标志物 p53、p21 和 p16 蛋白表达水平。检测结果如图 2.4 所示，与假手
+术组相比，心梗后 1天、3天和 7天小鼠心肌组织中 p16、p21、p53蛋白表达均
+显著增加（p<0.05, p<0.05, p<0.05）；与心梗后3天组相比，心梗后7天组小鼠心
+肌组织中p16和p53蛋白表达明显降低（p<0.05, p<0.01）。以上结果提示，心梗
+后 3 天心肌组织中细胞衰老信号显著增强，而心梗后 7 天细胞衰老信号有所减
+弱。
+图 2.4 MI对小鼠心肌组织细胞衰老标志物 p53，p21和p16
+蛋白表达的影响
+Fig.2.4 Effect of MI on the expression of p16, p21 and p53 proteins in mouse
+myocardial tissue. (A) Western blot analysis of p16, p21 and p53 in NIH3T3 cells. (B)
+Statistical analysis of (A). *p < 0.05, **p < 0.01, ***p < 0.001 compared with the Sham
+group. #p < 0.05, ##p < 0.01 compared with the MI 3d group, n=4.
+41
+--- 第60页 ---
+吉林大学博士学位论文
+为明确梗死心肌组织中衰老的成纤维细胞数量，收集心梗后 1天、3天和 7
+天小鼠心肌组织，取心肌梗死区域组织制备冰冻切片。采用 DAPI 标记细胞核
+（蓝色），采用波形蛋白 Vimentin标记心肌组织中的成纤维细胞[143]（绿色），细
+胞衰老标志物 p21 标记衰老细胞（红色）。免疫荧光检测结果显示（图 2.5）：与
+假手术组相比，心梗后 1天、3天和 7天组均明显出现 p21阳性的衰老成纤维细
+胞（p<0.001，p<0.001，p<0.01）。与心梗后3天组相比，心梗后7天组p21阳性
+的衰老成纤维细胞数量显著降低（p<0.001）。以上结果表明，心梗后3天是诱导
+心肌成纤维细胞衰老的关键时间点。
+42
+--- 第61页 ---
+第2章 缺血对成纤维细胞衰老的影响
+图 2.5 MI对小鼠心肌成纤维细胞衰老的影响
+Fig. 2.5 Effect of MI on cellular senescence of mouse cardiac fibroblasts. (A)
+Representative images of Vimentin (green) and p21 (red) staining in sham or mice with
+MI. Scale bar=50 μm. (B) Quantitative analysis of p21+/Vimentin+ double-positive cells
+in sham or mice with MI. **p < 0.01, ***p < 0.001 compared with the Sham group, ###p
+< 0.001 compared with the MI 3d group, n=6.
+2.3.3 氧糖剥夺对小鼠成纤维细胞衰老的影响
+在体外建立小鼠NIH3T3成纤维细胞OGD模型，设置OGD时长为2 h、4 h
+和8 h。Western Blot检测结果显示（图2.6 A-B），与对照（CON）组相比，OGD
+2 h、4 h和8 h组缺氧诱导因子 Hif-1α的表达显著增加（p<0.05, p<0.05, p<0.01），
+核膜内表面层粘连蛋白 LaminB1 蛋白表达水平均显著降低（p<0.05, p<0.05,
+p<0.01），提示OGD处理诱导成纤维细胞出现明显缺氧反应，细胞增殖异常。
+43
+--- 第62页 ---
+吉林大学博士学位论文
+图 2.6 OGD对 NIH3T3细胞 Hif-1α和 Lamin B1蛋白表达的影响
+Fig.2.6 Effect of OGD on Hif-1α and Lamin B1 protein expression in fibroblasts.
+(A) Western blot analysis of Hif-1α and Lamin B1 in NIH3T3 cells. (B) Statistical
+analysis of (A). *p < 0.05, **p < 0.01 compared with the CON group, n=3.
+为进一步明确 OGD对细胞增殖的影响，通过免疫荧光检测了细胞内增殖标
+志物Ki67的表达情况。采用DAPI标记细胞核（蓝色），Ki67标记增殖细胞（红
+色）。检测结果如图2.7 A-B所示，与对照组相比，OGD 2 h、4 h和8 h后，Ki67
+阳性细胞数量显著减少(p<0.01, p<0.001，p<0.001)，提示 OGD 处理明显抑制成
+纤维细胞增殖。
+44
+--- 第63页 ---
+第2章 缺血对成纤维细胞衰老的影响
+图 2.7 OGD对 NIH3T3细胞增殖的影响
+Fig.2.7 Effect of OGD on proliferation of NIH3T3 cells. (A) Cell proliferation was
+detected by Ki67 staining. Scale bar = 50 μm. (B) Statistical analysis of (A). **p < 0.01,
+***p < 0.001 compared with the CON group, n=6.
+为明确 OGD对成纤维细胞衰老的影响，首先采用 Western Blot方法检测细
+胞衰老标志蛋白 p53、p21和 p16蛋白表达情况。结果显示（图 2.8 A-B），与对
+45
+--- 第64页 ---
+吉林大学博士学位论文
+照组相比，OGD 4 h后 p53蛋白表达水平显著增加（p<0.05），OGD 2 h和4 h后
+p21蛋白表达水平显著增加（p<0.05, p<0.01），OGD 4 h和8 h后 p16蛋白表达水
+平显著增加（p<0.05, p<0.05）。以上结果表明 OGD 4 h衰老相关蛋白表达均显著
+增加。
+图 2.8 OGD对 NIH3T3细胞衰老标志物 p53，p21和 p16
+蛋白表达的影响
+Fig. 2.8 Effects of OGD on expression of p53, p21 and p16 proteins in NIH3T3 cells
+(A) Western blot analysis of p53, p21 and p16 in NIH3T3 cells. (B) Statistical analysis
+of (A). *p < 0.05, **p < 0.01 compared with the CON group. ###p < 0.001 compared with
+the OGD 4h group, n=3.
+为明确 OGD对成纤维细胞衰老数量的影响，采用免疫荧光方法检测 p21阳
+性细胞数量。检测结果显示（图 2.9 A-B），与对照组相比，OGD 2 h组和 OGD
+4 h组p21阳性的NIH3T3细胞数量显著增加（p<0.01，p<0.001）；与OGD 4 h组
+相比，OGD 8 h组p21阳性的NIH3T3细胞数量显著降低（p<0.001），其中OGD
+4 h后衰老的成纤维细胞数量最多。
+46
+--- 第65页 ---
+第2章 缺血对成纤维细胞衰老的影响
+图 2.9 OGD对 NIH3T3细胞 p21阳性细胞数量的影响
+Fig. 2.9 Effect of OGD on the number of p21 positive cells in NIH3T3 cells. (A)
+Results of p21 staining of NIH3t3 cells. Scale bar = 50 μm. (B) Statistical analysis of
+(A). **p < 0.01, ***p < 0.001 compared with the CON group, ###p < 0.001 compared
+with the OGD 4h group, n=6.
+采用 β-gal染色方法检测了OGD对 NIH3T3细胞中β-gal酶活性的影响，染
+色结果显示（图 2.10 A），与对照组相比，OGD 4 h后呈现蓝绿色的 β-gal阳性衰
+47
+--- 第66页 ---
+吉林大学博士学位论文
+老细胞数量明显增多。利用 β-gal 活性检测试剂盒，定量检测了 OGD 不同时间
+点NIH3T3细胞中β-gal活性，检测结果显示（图2.10 B），与对照组相比，OGD
+2 h、4 h和8 h后细胞中 β-gal活性均显著增加（p<0.05, p<0.001, p<0.05），其中
+OGD 4 h后细胞中 β-gal活性增加最为明显。与OGD 4 h组相比，OGD 8 h后细
+胞中β-gal活性显著降低（p<0.01）。以上结果表明，OGD 4 h NIH3T3细胞中β-
+gal活性增加程度最高。
+图 2.10 OGD对 NIH3T3细胞 β-gal活性的影响
+Fig. 2.10 Effect of OGD on β-gal activity in NIH3T3 cells. (A) β-gal staining of
+NIH3T3 cells. Scale bar=50 μm. (B) β-gal antivity analysis in NIH3T3 cells. *p < 0.05,
+***p < 0.001 compared with the CON group, n=3.
+采用 RT-qPCR方法检测了SASP分子中 IL-6, TNF-α和HMGB1 mRNA表达
+情况。检测结果显示（图2.11 A-C），与对照组相比，OGD 4 h后HMGB1 mRNA
+表达显著增加（p<0.01），而OGD 8 h后HMGB1 mRNA表达显著降低（p<0.05）；
+OGD 4 h后IL-6 mRNA表达显著增加（p<0.01），OGD 8h后IL-6 mRNA表达显
+著降低（p<0.01）；OGD 2 h和 4 h后 TNF-α mRNA表达均显著增加（p<0.01，
+p<0.05）。以上结果表明 OGD 4 h NIH3T3细胞 SASP mRNA均显著增加，提示
+48
+--- 第67页 ---
+第2章 缺血对成纤维细胞衰老的影响
+体外OGD 4 h是诱导成纤维细胞衰老的关键时间点。
+图 2.11 OGD对 NIH3T3细胞 SASP mRNA表达的影响
+Fig.2.11 Effect of OGD on SASP mRNA expression in NIH3T3 cells. (A) RT-qPCR
+analysis IL-6 mRNA in NIH3T3 cells. **p < 0.01 compared with the CON group, n=6.
+(B) RT-qPCR analysis TNF-α mRNA in NIH3T3 cells. *p < 0.05, **p < 0.01 compared
+with the CON group, n=6. (C) RT-qPCR analysis HMGB1 mRNA in NIH3T3 cells. *p
+< 0.05, **p < 0.01 compared with the CON group, n=6.
+ROS 是缺血条件下细胞命运的重要调控因素。为明确 OGD 对成纤维细胞
+ROS产生的影响，我们在NIH3T3细胞中原位装载荧光探针DCFH-DA，通过荧
+光酶标仪检测细胞内 ROS相对含量。检测结果如图2.12所示，与对照组相比，
+OGD 2 h后细胞中 ROS含量变化无显著性差异，OGD 4 h后细胞中 ROS含量显
+著增加（p<0.05），OGD 8 h后细胞中ROS含量进一步增加（p<0.001）。
+49
+--- 第68页 ---
+吉林大学博士学位论文
+图 2.12 OGD对 NIH3T3细胞内 ROS含量的影响
+Fig.2.12 Effect of OGD on ROS content in NIH3T3 cells. *p < 0.05, ***p < 0.01
+compared with the CON group, n=6.
+2.4 讨论
+细胞衰老的特征是不可逆的细胞周期停滞，可进一步分为复制性衰老、癌
+基因诱导的衰老和应激诱导的过早衰老[144]。在氧化应激、DNA 损伤、线粒体
+功能障碍、炎症等多种应激刺激下都会加速细胞衰老[145]。在小鼠局灶性脑缺血
+模型及人类脑卒中患者中，Coral Torres-Querol 等人发现大脑梗死区域大量
+SASP分子的 mRNA表达水平显著增加[62]。Letian Yang等人在缺血/再灌注诱导
+的肾小管上皮细胞损伤模型中，发现了明显的细胞衰老现象[64]。Seo Rin Kim等
+人通过对缺血肾脏进行单细胞 RNA测序分析，发现细胞衰老参与介导了缺血性
+肾病中的肾功能不全[63]。在心肌梗死小鼠模型中，梗死边缘区衰老标志物的明
+显积累。在体外大鼠 H9c2心肌细胞缺氧复氧模型中，也发现细胞衰老标志物表
+达明显增加[56]。以上研究证实，细胞衰老在缺血诱导的不同器官疾病的发生和
+进展发挥重要作用，对缺血组织的损伤修复具有重要影响[146, 147]。
+由于不同类型的细胞，对缺血性损伤的敏感性并不相同，其命运变化也有
+所区别。例如严重心肌缺血会导致高危区域的心肌细胞广泛坏死。相比之下，
+间质非心肌细胞对缺血性损伤的敏感性要低得多。研究报道，成纤维细胞对缺
+50
+--- 第69页 ---
+第2章 缺血对成纤维细胞衰老的影响
+血性死亡的抵抗力远强于心肌细胞[148]，并有数据表明，成纤维细胞是心肌梗死
+后主要的衰老细胞类型，大约占 60%[149]。心肌缺血发生后，受损心肌的修复需
+要及时激活炎症级联反应，清除缺血部位坏死细胞和基质碎片，诱导细胞外基
+质的沉积。早期研究表明，心肌成纤维细胞在应激条件下可能具有很强的死亡
+抵抗力[150]，可以作为哨兵细胞感知心肌损伤并触发炎症和修复反应[128]。心肌
+梗死后的缺血心肌的损伤修复反应可分为三个重叠阶段：炎症期、增殖期和成
+熟期，成纤维细胞在这三个阶段会经历显著的表型转变[151]。因此，成纤维细胞
+状态变化对心梗后的心脏重塑具有重要影响[152]。在本章研究中，我们对
+GSE111059数据集中心梗3天和7天后小鼠心肌成纤维细胞中的DEGs进行生物
+信息学分析，结果提示心梗 3 天可能是诱导成纤维细胞衰老的关键时间点。为
+验证上述结果，我们建立了小鼠心肌梗死模型，分别在心梗后 1、3和 7天检测
+心肌成纤维细胞衰老情况，证实了心梗 3 天是诱导成纤维细胞衰老的关键时间
+点。
+同时，体内研究结果提示，随着心肌缺血时长的增加，衰老细胞的数量并
+未呈现出时间依赖性增加。我们推测这一现象可能与应激源的类型，强度和微
+环境的条件有关[153]。在心肌缺血相关的研究中，研究人员发现在老年兔心梗后
+长达 12 周期间，心肌瘢痕组织中 α-SMA 标记的衰老肌成纤维细胞的百分比都
+是随着时间的推移而不断升高，并且在老年心梗患者的心肌瘢痕组织中也观察
+到了类似的现象。而在幼年兔心梗后的心肌瘢痕组织中，研究者观察到衰老肌
+成纤维细胞数量仅在心梗后前 2 周相对较高，而在心梗后第 3 周基本消退[149]。
+另有研究指出，在成年心梗小鼠心脏中，心梗后第 3 天左右梗死及梗死边界区
+中出现衰老细胞，并在第 7 天大部分消退，而这些衰老细胞大多数是 Vimentin
+标记的心肌成纤维细胞[3, 137]。以上研究提示，在不同个体中，心肌缺血诱导的
+衰老成纤维细胞在组织内的驻留时间也有所区别。
+另一方面，我们推测可能是由于缺血时长的增加及体内微环境的进一步变
+化，导致细胞内 DNA损伤的程度改变，影响了成纤维细胞的命运。在其他应激
+源诱导的细胞衰老中，已有类似的报道。例如，在 Anna Lewinska 等人的研究
+中，不同的实验条件下沉默 NIH3T3 细胞中甲基转移酶 Dnmt2 导致不同的细胞
+命运。他们观察到仅沉默Dnmt2表达会促进细胞衰老，而加以H O 处理会诱导
+2 2
+51
+--- 第70页 ---
+吉林大学博士学位论文
+细胞凋亡[154]。但在很多研究中 H O 常被用作细胞衰老的诱导剂[119, 155]。在
+2 2
+Carlos Anerillas 等人的研究中发现，暴露于不同剂量的依托泊苷的人 IMR-90成
+纤维细胞命运变化，揭示在低剂量依托泊苷造成 DNA轻度损伤的情况下，细胞
+呈现出明显的衰老特征。而在高剂量依托泊苷造成 DNA高度损伤的情况下，细
+胞呈现出明显的凋亡特征[156]。
+为进一步验证上述推测，我们在体外模拟缺血条件，建立了小鼠 NIH3T3
+成纤维细胞 OGD 模型[140]。本部分研究发现，OGD 处理 4 h 时 NIH3T3 细胞呈
+现出明显的衰老特征，包括细胞增殖标志物Ki67和LaminB1表达明显降低，细
+胞衰老标志物p16，p21和p53蛋白表达显著增加，β-gal阳性细胞数量增加且β-
+gal 酶活性显著增加，SASP 重要组分 IL-6，TNF-α 和 HMGB1 mRNA 表达显著
+增加。而 OGD处理 8 h时 NIH3T3细胞没有呈现出明显的细胞衰老特征，更偏
+向于细胞凋亡特征。以上结果提示 OGD 4 h 是诱导成纤维细胞衰老的关键时间
+点。在其他类型细胞中，也有类似的现象被报道。例如在星形胶质细胞中，
+Songhyun Lim等人发现，OGD 4 h后复氧20 h诱导细胞出现明显的衰老特征[2]。
+在视网膜神经节细胞中，Jing Liao等人发现 OGD 4 h后复氧72 h诱导细胞出现
+明显的衰老特征[157]。
+在缺血应激期间，线粒体损伤导致 ROS 产生增加，对缺血组织修复具有不
+利影响[158]。同时，ROS是诱导细胞周期停滞的重要驱动因素，在调控细胞死亡
+和细胞衰老等多种细胞命运中发挥重要作用[4, 159]。在我们的实验中，证实了随
+着OGD处理时长的增加，NIH3T3细胞中 ROS含量不断增加。但我们也注意到
+OGD 诱导的成纤维细胞衰老与 ROS 的含量不存在明显的依赖性关系，即随着
+ROS 含量的不断增加，衰老细胞数量并未持续增加。因此，我们推测能够诱导
+细胞衰老的ROS也是限定在某一范围内的。
+以上研究分别在体内 MI 条件下和体外 OGD 条件下验证了缺血对成纤维细
+胞衰老的影响，但目前对于缺血诱导细胞衰老的分子机制尚不完全明确。对于
+这一问题，我们将在本文后续研究中进行探讨。
+2.5 本章小结
+体内实验结果显示，MI 后第 3 天是成纤维细胞衰老的关键时间点。体外实
+52
+--- 第71页 ---
+第2章 缺血对成纤维细胞衰老的影响
+验结果显示，OGD 4 h是诱导成纤维细胞衰老的关键时间点。
+53
+--- 第72页 ---
+吉林大学博士学位论文
+54
+--- 第73页 ---
+第3章 ALDH2在缺血诱导成纤维细胞衰老中的作用机制
+第 3 章 ALDH2 在缺血诱导成纤维细胞衰老中的作用机制
+上文研究已明确体内、外缺血条件均可诱导成纤维细胞衰老，但其具体机
+制尚不明确，为进一步探究缺血后诱导成纤维细胞衰老的潜在机制。我们筛选
+出心梗及 OGD 后诱导成纤维细胞衰老的关键基因 ALDH2。据报道，线粒体
+ALDH2 的异常表达已被证明与心肌缺血、脑缺血和肝脏缺血等疾病的发生发展
+密切相关[5, 85, 86]。近年来，研究者关注到 ALDH2可能在调控细胞衰老中发挥关
+键作用。激活ALDH2能通过改善线粒体动力学，有效抑制内皮细胞衰老，缓解
+动脉粥样硬化进展[96]。但目前，尚未有研究表明 ALDH2 在调控成纤维细胞衰
+老中的作用。4-HNE是ROS介导的脂质过氧化的主要产物[160]，也是ALDH2作
+为醛解毒酶发挥作用的主要底物[101]。现有研究表明，ALDH2 对细胞衰老的影
+响与其对4-HNE含量的调控具有重要关联[161]。
+在本章节中，基于生物信息学分析揭示 ALDH2 可能是调控心梗及 OGD 诱
+导成纤维细胞衰老的关键分子。在体外建立 NIH3T3 细胞 OGD 模型，采用
+Western Blot 方法检测 NIH3T3 细胞中 ALDH2 蛋白表达，采用微量法检测
+ALDH2酶活性，验证OGD对成纤维细胞中ALDH2蛋白表达及酶活性的影响。
+采用 Western Blot 方法，检测 OGD 对成纤维细胞中 4-HNE 含量的影响。给予
+ALDH2特异性抑制剂 CVT-10216和特异性激动剂 Alda-1，采用 Western Blot、
+β-gal染色及酶活性检测、RT-qPCR等方法，明确ALDH2对OGD诱导成纤维细
+胞衰老的影响；采用 Western Blot、JC-1 染色、ATP 含量检测及 ROS 含量检测
+等方法，明确 ALDH2 对 OGD 后成纤维细胞线粒体损伤的影响。通过外源性补
+充不同浓度4-HNE，明确ALDH2通过调控4-HNE的含量对OGD诱导成纤维细
+胞衰老的影响。
+3.1 实验材料
+3.1.1 细胞系
+同 2.1.2。
+55
+--- 第74页 ---
+吉林大学博士学位论文
+3.1.2 实验主要仪器
+表 3.1 实验仪器列表
+仪器名称 生产厂家
+光学显微镜 OLYMPUS公司
+倒置荧光显微镜 ZEISS公司
+激光共聚焦显微镜 OLYMPUS公司
+电泳仪 君意公司
+凝胶成像仪 Tanon公司
+酶标仪 Thermo公司
+多功能荧光酶标仪 安捷伦公司
+超微量紫外分光光度计 鼎昊源公司
+QuantStudio 3实时荧光定量 PCR仪 Thermo公司
+梯度PCR仪 Thermo公司
+3.1.3 实验试剂
+表 3.2 实验试剂列表
+试剂名称 生产厂家
+糖酵解检测试剂盒 Abcam公司
+p53抗体 Affinity公司
+p21抗体 Affinity公司
+p16抗体 Abclonal公司
+GAPDH抗体 Affinity公司
+JC-1染色试剂盒 索莱宝公司
+ATP含量检测试剂盒 索莱宝公司
+ROS含量检测试剂盒 索莱宝公司
+MFN1抗体 Proteintech公司
+MFN2抗体 Proteintech公司
+56
+--- 第75页 ---
+第3章 ALDH2在缺血诱导成纤维细胞衰老中的作用机制
+续表
+试剂名称 生产厂家
+Drp1抗体 Proteintech公司
+Fis1抗体 Proteintech公司
+4-HNE抗体 Abclonal公司
+ALDH酶活性检测试剂盒 索莱宝公司
+β-半乳糖苷酶染色试剂盒 索莱宝公司
+β-半乳糖苷酶活性检测试剂盒 索莱宝公司
+TransZol Up 全式金公司
+逆转录试剂盒 全式金公司
+SYBR Green荧光定量试剂 罗氏公司
+CVT-10216 MCE公司
+Alda-1 MCE公司
+MitoTracker Red Thermo公司
+3.2 实验方法
+3.2.1 生物信息学分析
+小鼠衰老成纤维细胞的基因表达数据集 GSE28416 来源于 GEO 数据库，小
+鼠NIH3T3细胞蛋白组学数据集来源于ProteomeXchange数据库，数据集编号为
+PXD021469。数据分析方法同 2.2.1。
+3.2.2 细胞给药及分组
+NIH3T3 细胞分为对照组（CON）、对照组+抑制剂组（CON+20 μM CVT-
+10216）组、对照组+激动剂组（CON+20 μM Alda-1）、氧糖剥夺组（OGD），氧
+糖剥夺组+抑制剂组（OGD+20 μM CVT-10216）组、氧糖剥夺组+激动剂组
+（OGD+20 μM Alda-1）。OGD模型构建方法同 2.2.4。
+57
+--- 第76页 ---
+吉林大学博士学位论文
+3.2.3 糖酵解速率检测
+将适当数量的细胞种植在 96 孔板中。造模完成后，除去上清液，用 100 μl
+呼吸缓冲液彻底洗涤细胞两次。随后，向每个孔中小心地加入 150 μl 呼吸缓冲
+液，然后加入 10 μl糖酵解检测试剂。使用 BioTek Gen5多功能荧光酶标仪检测
+细胞的糖酵解速率。
+3.2.4 细胞蛋白提取
+同 2.2.6。
+3.2.5 Western Blot检测
+同 2.2.7。
+3.2.6 ALDH2酶活性检测
+1. 收集 500万细胞，加入 1 ml提取液，在冰上用匀浆器进行快速匀浆。
+2. 4℃ 600 g离心 10 min。
+3. 将上清液移至另一离心管中，4℃ 11000 g离心15 min，弃上清，留沉淀。
+4. 在沉淀中加入 400 μl提取液，超声波破碎（功率 200 W，超声 5 s，间隔
+10 s，重复15次），用于 ALDH2活性测定。
+5. 酶标仪预热 30 min以上，调节波长至 340 nm。工作液37℃预热10 min。
+6. 在96孔板中加入检测试剂，充分混匀后于 340 nm处测定 1 min时的吸光
+值 A1，迅速置于 37℃水浴或培养箱 30 min拿出迅速擦干测定 31 min时的吸光
+值A2。根据细胞数量及吸光值变化进一步计算 ALDH2酶活性。
+3.2.7 CCK-8检测
+在 96孔板中加入 100 μl的细胞悬液正常培养。待细胞生长至密度为 80%左
+右时开始造模，造模前向每孔加入 10 μl CCK-8 溶液。将培养板在培养箱内孵育
+4 h。用酶标仪测定在 450 nm处的吸光度，计算各组细胞存活率。
+58
+--- 第77页 ---
+第3章 ALDH2在缺血诱导成纤维细胞衰老中的作用机制
+3.2.8 β-gal染色及活性检测
+同 2.2.10。
+3.2.9 细胞 RNA提取
+同 2.2.11。
+3.2.10 RT-qPCR检测
+同 2.2.12。
+3.2.11 JC-1染色
+1. 吸除培养液，用 PBS洗涤细胞一次，加入 1 ml细胞培养液。
+2. 加入1 ml JC-1染色工作液，充分混匀。细胞培养箱中37 ℃孵育20 min。
+3. 在孵育期间，配制适量的 1×JC-1染色缓冲液，并放置于冰浴。
+4. 37℃孵育结束后，吸除上清，用 1×JC-1染色缓冲液洗涤 2次。
+5. 加入 2 ml细胞培养液。
+6. 荧光显微镜下观察。利用 ImageJ统计荧光强度。
+3.2.12 ATP含量检测
+先收集细胞到离心管内，弃上清，按照细胞数量（104 个）：提取液体积
+（ml）为500：1的比例，超声波破碎1 min（冰浴，强度20%或200 W，超声2
+s，停1 s），10000g 4 ℃离心10 min；取上清液至另一 EP管中，加入 500 μl的
+氯仿充分震荡混匀，10000g 4℃离心 3 min，取上清，置冰上待测。酶标仪预热
+30 min 以上，调节波长到 340 nm。将反应液一起放入 37℃水浴中反应 3 min，
+拿出擦拭干净立即测定其在 3 min 10 s时的吸光值 A2。分别计算 ΔA测定=A2测
+定管-A1 测定管，ΔA 标准=A2 标准管-A1 标准管。根据试剂盒说明书计算细胞
+中ATP含量。
+59
+--- 第78页 ---
+吉林大学博士学位论文
+3.2.13 ROS含量检测
+同 2.2.13。
+3.2.14 免疫荧光检测
+同 2.2.9。
+3.2.15 统计学分析
+同 2.2.14。
+3.3 实验结果
+3.3.1 心梗及 OGD诱导成纤维细胞衰老的关键基因的筛选及验证
+为明确心肌梗死及 OGD 诱导成纤维细胞衰老的关键基因，在
+ProteomeXchange 数据库中获取 OGD 4 h 后 NIH3T3 细胞蛋白表达数据集
+PXD021469。将 GSE111059数据集中小鼠心梗 3天后 CFs中的 DEGs与 OGD 4
+h后 NIH3T3 细胞中的差异蛋白进行对比。对比结果如图 3.1所示，有 181个基
+因在转录水平和蛋白水平均具有显著差异。在表3.3中列出了部分基因的详细信
+息。
+图 3.1 共有基因韦恩图
+Fig.3.1 The Venn diagrams of the overlapping data among the two datasets.
+60
+--- 第79页 ---
+第3章 ALDH2在缺血诱导成纤维细胞衰老中的作用机制
+表 3.3 181 个共有差异基因列表（部分）
+Gene Symbol Gene Name
+Eif4g1 eukaryotic translation initiation factor 4, gamma 1
+Bcat1 branched chain aminotransferase 1, cytosolic
+Fscn1 fascin actin-bundling protein 1
+Pnp purine-nucleoside phosphorylase
+Hmmr hyaluronan mediated motility receptor (RHAMM)
+Dnajc2 DnaJ heat shock protein family (Hsp40) member C2
+Kpna2 karyopherin subunit alpha 2
+Nup155 nucleoporin 155
+Kpna3 karyopherin subunit alpha 3
+Psat1 phosphoserine aminotransferase 1
+Hsp90b1 heat shock protein 90, beta (Grp94), member 1
+Cdkn2aip CDKN2A interacting protein
+Gstm1 glutathione S-transferase, mu 1
+Cdh2 cadherin 2
+Gstm2 glutathione S-transferase
+Gstm5 glutathione S-transferase
+Serpinh1 serine (or cysteine) peptidase inhibitor, clade H, member 1
+Golga3 golgin A3
+Chtf18 CTF18, chromosome transmission fidelity factor 18
+Nudt21 nudix hydrolase 21
+Stmn1 stathmin 1
+Ddx18 DEAD box helicase 18
+Prep prolyl endopeptidase
+Mphosph10 M-phase phosphoprotein 10
+Larp7 La ribonucleoprotein 7, transcriptional regulator
+Trip10 thyroid hormone receptor interactor 10
+Aldh18a1 aldehyde dehydrogenase 18 family, member A1
+Pdcd4 programmed cell death 4
+Tubb5 tubulin, beta 5 class I
+Kif23 kinesin family member 23
+Copg1 coatomer protein complex, subunit gamma 1
+61
+--- 第80页 ---
+吉林大学博士学位论文
+续表
+Gene Symbol Gene Name
+Aldh2 aldehyde dehydrogenase 2 family member
+Fkbp5 FK506 binding protein 5
+Sh3bgrl SH3-binding domain glutamic acid-rich protein like
+Mtpn myotrophin
+Tyms thymidylate synthase
+Ppid peptidylprolyl isomerase D (cyclophilin D)
+Prdx5 peroxiredoxin 5
+Gnl3 guanine nucleotide binding protein nucleolar 3
+Xdh xanthine dehydrogenase
+Rrm1 ribonucleotide reductase M1
+Rrm2 ribonucleotide reductase M2
+Mif macrophage migration inhibitory factor
+Pdia6 protein disulfide isomerase associated 6
+为明确 181个共有基因中是否存在细胞衰老相关调控基因，我们在 CellAge
+数据库收集了人类基因组中驱动细胞衰老的 866个基因，对比分析结果如图 3.2
+所示，心梗 3天后和OGD 4 h后成纤维细胞共有差异基因中有 26个基因在细胞
+衰老的调控中发挥重要作用。在表 3.4 中列出了相关基因的详细信息，其中
+ALDH2、FDPS、FSCN1和MIF在调控应激诱导的细胞衰老中发挥重要作用。
+图 3.2 共有基因韦恩图
+Fig.3.2 The Venn diagrams of the overlapping data among the two datasets.
+62
+--- 第81页 ---
+第3章 ALDH2在缺血诱导成纤维细胞衰老中的作用机制
+表 3.4 26个细胞衰老调控基因列表
+Senescence
+Gene symbol Gene name Type of senescence
+Effect
+ALDH2 aldehyde dehydrogenase 2 Stress-induced Inhibits
+family member
+CALR calreticulin Unclear Inhibits
+CD34 CD34 molecule Unclear Induces
+CDK6 cyclin dependent kinase 6 Replicative Inhibits
+CDKN2AIP CDKN2A interacting Replicative Induces
+protein
+CKAP2 cytoskeleton associated Unclear Inhibits
+protein 2
+DDAH2 dimethylarginine Unclear Inhibits
+dimethylaminohydrolase 2
+ENO1 enolase 1 Oncogene-induced Inhibits
+FDPS farnesyl diphosphate Stress-induced Inhibits
+synthase
+FSCN1 fascin actin-bundling Stress-induced Inhibits
+protein 1
+LGALS3 galectin 3 Unclear Inhibits
+LOX lysyl oxidase Oncogene-induced Inhibits
+MCM7 minichromosome Unclear Inhibits
+maintenance complex
+component 7
+MIF macrophage migration Stress-induced Inhibits
+inhibitory factor
+MSN moesin Unclear Inhibits
+MTHFD2 methylenetetrahydrofolate Unclear Inhibits
+dehydrogenase (NADP+
+dependent) 2,
+methenyltetrahydrofolate
+cyclohydrolase
+NOLC1 nucleolar and coiled-body Unclear Induces
+phosphoprotein 1
+63
+--- 第82页 ---
+吉林大学博士学位论文
+续表
+Senescence
+Gene symbol Gene name Type of senescence
+Effect
+NUTF2 nuclear transport factor 2 Unclear Inhibits
+PDCD4 programmed cell death 4 Replicative Inhibits
+RAN RAN, member RAS Unclear Inhibits
+oncogene family
+RRM1 ribonucleotide reductase Oncogene-induced Inhibits
+catalytic subunit M1
+RRM2 ribonucleotide reductase Oncogene-induced Inhibits
+regulatory subunit M2
+RUNX1 RUNX family Unclear Induces
+transcription factor 1
+TIMELESS timeless circadian Oncogene-induced Inhibits
+regulator
+TPX2 TPX2 microtubule Unclear Inhibits
+nucleation factor
+TYMS thymidylate synthetase Oncogene-induced Inhibits
+通过 Tabula Muris 数据库进一步获取 ALDH2、FDPS、FSCN1 和 MIF 在小
+鼠心肌成纤维细胞中的表达情况。检索结果如图 3.3 A-E 所示，ALDH2 在心肌
+成纤维细胞中的表达量最高。据此，我们选择ALDH2作为核心基因，探究其在
+缺血诱导成纤维细胞衰老中的作用。
+64
+--- 第83页 ---
+第3章 ALDH2在缺血诱导成纤维细胞衰老中的作用机制
+图 3.3 ALDH2、FDPS、FSCN1和 MIF在小鼠心肌组织中的分布情况
+Fig.3.3 Distribution of ALDH2, FDPS, FSCN1 and MIF in myocardial tissue of
+65
+--- 第84页 ---
+吉林大学博士学位论文
+mice. (A) Cell ontology class of mouse myocardial tissue. (B) Distribution and
+expression of ALDH2 in mouse myocardial tissue. (C) Distribution and expression of
+FDPS in mouse myocardial tissue. (D) Distribution and expression of FSCN1 in
+myocardial tissue of mouse myocardial tissue. (E) Distribution and expression of MIF
+in mouse myocardial tissue.
+采用Western Blot方法检测了OGD对NIH3T3细胞中ALDH2蛋白表达的影
+响。检测结果如图 3.4所示，与对照组相比，OGD 2 h、4 h和 8 h组ALDH2蛋
+白表达水平均显著增加（p<0.05, p<0.01, p<0.01）。
+图 3.4 OGD对 NIH3T3细胞 ALDH2蛋白表达的影响
+Fig.3.4 Effect of OGD on ALDH2 protein expression in NIH3T3 cells. *p < 0.05, **p
+< 0.01 compared with the CON group, n=3.
+由于 ALDH2 的生物学功能与其酶活性密切相关，我们检测了 OGD 对
+NIH3T3细胞中ALDH2酶活性的影响。检测结果如图3.5所示，与对照组相比，
+OGD 2 h、4 h和 8 h组ALDH2酶活性均显著降低（p<0.01, p<0.001, p<0.001）,
+并且呈现出时间依赖性。
+66
+--- 第85页 ---
+第3章 ALDH2在缺血诱导成纤维细胞衰老中的作用机制
+图 3.5 OGD对 NIH3T3细胞 ALDH2酶活性的影响
+Fig.3.5 Effect of OGD on ALDH2 enzyme activity in NIH3T3 cells. **p < 0.01, ***p
+< 0.001 compared with the CON group, #p < 0.05 compared with the OGD 2h group,
+$$p < 0.01 compared with the OGD 4h group, n=3.
+3.3.2 ALDH2对 OGD后成纤维细胞衰老的影响
+为明确ALDH2是否影响OGD 4 h诱导的成纤维细胞衰老，参考相关研究文
+献，利用10 μM ALDH2特异性抑制剂CVT-10216 [162]和20 μM ALDH2特异性激
+动剂Alda-1干预 NIH3T3细胞中ALDH2的表达及活性[163]。Western Blot检测结
+果显示（图 3.6 A-B），与 OGD 组相比，OGD+CVT-10216 组细胞中 ALDH2 蛋
+白表达显著降低(p<0.05)，但 OGD+Alda-1 对细胞中 ALDH2 蛋白表达无明显变
+化(p>0.05)。ALDH2 酶活性检测结果显示（图 3.66 C），与 OGD 组相比，
+OGD+CVT-10216组细胞中 ALDH2酶活性无明显影响(p>0.05)，OGD+Alda-1组
+细胞中 ALDH2酶活性显著增加(p<0.05)。CCK-8检测结果显示（图 3.6 D），10
+μM CVT-10216和 20 μM Alda-1均对细胞活力无明显影响。
+67
+--- 第86页 ---
+吉林大学博士学位论文
+图 3.6 ALDH2特异性抑制剂/激动剂对 ALDH2蛋白表达及酶活性的影响
+Fig.3.6 Effects of ALDH2 inhibitors/agonists on ALDH2 protein expression and
+enzyme activity. (A) Western blot analysis of ALDH2 in NIH3T3 cells. (B)
+Quantification of (A). *p < 0.05, **p < 0.01 compared with the Control group, #p < 0.05
+compared with the OGD group, n=4. (C) Changes of ALDH2 activity in NIH3T3 cells
+with the agonist/inhibitor treatment. *p < 0.05, **p < 0.01 compared with the CON group,
+#p < 0.05 compared with the OGD group, n=3. (D) Result of CCK-8 assay. n=6. C+C:
+CON+CVT-10216, C+A: CON+Alda-1, O+C: OGD+CVT-10216, O+A: OGD+Alda-
+1.
+68
+--- 第87页 ---
+第3章 ALDH2在缺血诱导成纤维细胞衰老中的作用机制
+随后采用 Western Blot方法检测给予 ALDH2特异性抑制剂或激动剂后，对
+OGD诱导成纤维细胞衰老相关蛋白p53、p21和p16表达的影响。检测结果如图
+3.7 A-B 所示，与对照组相比，OGD 组细胞中 p53、p21 和 p16 表达均显著增加
+（p<0.01, p<0.001, p<0.001）；与 OGD组相比，OGD+Alda-1组细胞中 p53、p21
+和p16表达均显著降低（p<0.05, p<0.05, p<0.05）。上述结果提示，激活 ALDH2
+抑制OGD后成纤维细胞中衰老相关蛋白的表达。
+图 3.7 ALDH2对 OGD后 NIH3T3细胞衰老相关蛋白表达的影响
+Fig.3.7 Effect of ALDH2 on the expression of senescence-related proteins in
+69
+--- 第88页 ---
+吉林大学博士学位论文
+NIH3T3 cells after OGD. (A) Western blot analysis of p53, p21 and p16 in NIH3T3
+cells. (B) Quantification of (A). **p < 0.01, ***p < 0.001 compared with the CON group,
+#p < 0.05 compared with the OGD group. C+C: CON+CVT-10216, C+A: CON+Alda-
+1, O+C: OGD+CVT-10216, O+A: OGD+Alda-1.
+β-gal染色检测结果如图3.8 A所示，与对照组相比，OGD组β-gal阳性细胞
+数量明显增加；与OGD组相比，OGD+Alda-1组β-gal阳性细胞数量明显减少。
+β-gal 活性检测结果如图 3.8 B 所示，与对照组相比，OGD 组 β-gal 活性显著增
+加；与OGD组相比，OGD+Alda-1组β-gal活性显著降低（p<0.001）。上述结果
+提示，激活 ALDH2可降低 OGD后成纤维细胞中 β-gal活性。
+图 3.8 ALDH2对 OGD后 NIH3T3细胞 SA-β-gal活性的影响
+70
+--- 第89页 ---
+第3章 ALDH2在缺血诱导成纤维细胞衰老中的作用机制
+Fig.3.8 Effect of ALDH2 on SA-β-gal activity in NIH3T3 cells after OGD. (A) β-
+gal staining in NIH3T3 cells with the agonist/inhibitor treatment. Scale bar = 50 μm (B)
+β-gal activity analysis in NIH3T3 cells with the agonist/inhibitor treatment. ***p < 0.001
+compared with the CON group, ###p < 0.001 compared with the OGD group, n=4. C+C:
+CON+CVT-10216, C+A: CON+Alda-1, O+C: OGD+CVT-10216, O+A: OGD+Alda-
+1.
+采用RT-qPCR方法检测OGD后成纤维细胞中SASP mRNA表达情况。检测
+结果如图 3.9 所示，与对照组相比，OGD 组细胞中 IL-6, TNF-α 和 HMGB1
+mRNA表达显著增加(p<0.05, p<0.001, p<0.01);与 OGD组相比，OGD+Alda-1组
+IL-6, TNF-α 和 HMGB1 mRNA 表 达 显 著 降 低(p<0.05, p<0.01, p<0.05)，
+OGD+CVT-10216 组细胞中 HMGB1 mRNA 表达显著增加(p<0.05)。以上实验结
+果提示，OGD条件下激活ALDH2能明显改善 OGD 4 h后NIH3T3细胞衰老。
+图 3.9 ALDH2对 OGD后 NIH3T3细胞 SASP mRNA表达的影响
+Fig.3.9 Effect of ALDH2 on SASP mRNA expression in NIH3T3 cells after OGD.
+(A) RT-qPCR analysis IL-6 mRNA in NIH3T3 cells. **p < 0.01 compared with the CON
+group, #p < 0.05 compared with the OGD group n=6. (B) RT-qPCR analysis TNF-α
+71
+--- 第90页 ---
+吉林大学博士学位论文
+mRNA in NIH3T3 cells. ***p < 0.001 compared with the CON group, ##p < 0.01
+compared with the OGD group, n=6. (C) RT-qPCR analysis HMGB1 mRNA in
+NIH3T3 cells. **p < 0.01 compared with the CON group, #p < 0.05 compared with the
+OGD group, n=6. C+C: CON+CVT-10216, C+A: CON+Alda-1, O+C: OGD+CVT-
+10216, O+A: OGD+Alda-1.
+3.3.3 ALDH2对 OGD后成纤维细胞线粒体损伤的影响
+近年已有多项研究表明，线粒体动力学失衡造成线粒体功能受损，增加
+ROS 的产生，与各种应激源诱导的细胞衰老密切相关[52, 53]。为明确 ALDH2 是
+否影响 OGD 后成纤维细胞中的线粒体融合和裂变，采用 MitotrakerRed 标记线
+粒体，通过共聚焦显微镜观察NIH3T3细胞中的线粒体形态，检测结果如图3.10
+所示，与对照组相比，OGD组细胞中点状的线粒体碎片明显增加（p<0.01）；与
+OGD组相比，OGD+Alda-1组点状的线粒体碎片明显减少（p<0.05）。
+72
+--- 第91页 ---
+第3章 ALDH2在缺血诱导成纤维细胞衰老中的作用机制
+图 3.10 ALDH2对 OGD后 NIH3T3细胞线粒体形态的影响
+Fig.3.10 Effect of LDH2 on mitochondrial morphology in NIH3T3 cells after OGD.
+(A) Morphology of mitochondria detected by confocal microscopy. Scale bar=50 μm.
+(B) Statistical analysis of mitochondrial fragmentation. **p < 0.01 compared with the
+CON group, #p < 0.05 compared with the OGD group, n=6. C+C: CON+CVT-10216,
+C+A: CON+Alda-1, O+C: OGD+CVT-10216, O+A: OGD+Alda-1.
+采用 Western Blot方法检测线粒体融合蛋白和裂变蛋白的表达情况。结果如
+图3.11所示，与对照组相比，OGD组线粒体融合蛋白MFN1和MFN2蛋白表达
+水平显著降低（p<0.01, p<0.01），线粒体裂变蛋白 Drp1和 Fis1蛋白表达水平显
+著增加（p<0.01, p<0.01）；与 OGD 组相比，OGD+Alda-1 组 MFN2 蛋白表达水
+平显著增加(p<0.05)，Fis1 蛋白表达水平显著降低（p<0.05），但给予 Alda-1 对
+OGD后NIH3T3细胞中MFN1和Drp1蛋白表达无明显影响。以上结果提示，激
+活ALDH2可以部分改善 OGD后成纤维细胞中线粒体融合和裂变失衡。
+73
+--- 第92页 ---
+吉林大学博士学位论文
+图 3.11ALDH2对 NIH3T3细胞线粒体融合及裂变相关蛋白表达的影响
+Fig.3.11 Effect of ALDH2 on expression of mitochondrial fusion and fission-
+related proteins in NIH3T3 cells. (A) Western blot analysis of MFN1, MFN2, Drp1
+in NIH3T3 cells. (B) Quantification of (A). **p < 0.01 compared with the CON group,
+#p < 0.05 compared with the OGD group, n=3. C+C: CON+CVT-10216, C+A:
+CON+Alda-1, O+C: OGD+CVT-10216, O+A: OGD+Alda-1.
+74
+--- 第93页 ---
+第3章 ALDH2在缺血诱导成纤维细胞衰老中的作用机制
+利用 JC-1 为荧光探针，检测 NIH3T3 细胞中线粒体膜电位变化。结果如图
+3.12 所示，与对照组相比，CON+CVT-10216 组和 OGD 组细胞中绿色荧光强度
+明显增强（p<0.01, p<0.001），提示 JC-1 单体（monomer）增加，线粒体膜电位
+降低；与OGD组相比，OGD+Alda-1组细胞中绿色荧光强度明显降低(p<0.05)，
+提示 JC-1 单体减少，线粒体膜电位增加（p<0.05）。以上结果说明，ALDH2 酶
+活性降低造成线粒体膜电位降低，激活ALDH2活性可以增加线粒体膜电位。
+图 3.12 ALDH2对 NIH3T3细胞线粒体膜电位的影响
+Fig.3.12 Effect of ALDH2 on mitochondrial membrane potential in NIH3T3 cells.
+(A) Mitochondrial membrane potential was detected by JC-1 staining. (B)
+Quantification of (A). **p < 0.01, ***p < 0.001 compared with the CON group, #p < 0.05
+compared with the OGD group, n=3. C+C: CON+CVT-10216, C+A: CON+Alda-1,
+O+C: OGD+CVT-10216, O+A: OGD+Alda-1.
+NIH3T3 细胞中 ATP 含量检测结果如图 3.13 所示，与对照组相比，
+CON+CVT-10216组及 OGD组 ATP含量显著降低（p<0.001, p<0.001）;与 OGD
+组相比，OGD+Alda-1组 ATP含量显著增加（p<0.05）。以上结果提示，ALDH2
+酶活性的降低可造成线粒体能量产生异常，激活 ALDH2 可以增加细胞内 ATP
+75
+--- 第94页 ---
+吉林大学博士学位论文
+含量。
+图 3.13 ALDH2对 NIH3T3细胞 ATP含量的影响
+Fig.3.13 Effect of ALDH2 on ATP content in NIH3T3 cells. ***p < 0.001 compared
+with the CON group, #p < 0.05 compared with the OGD group, n=3. C+C: CON+CVT-
+10216, C+A: CON+Alda-1, O+C: OGD+CVT-10216, O+A: OGD+Alda-1.
+通过荧光酶标仪检测细胞内 ROS相对含量，结果如图 3.14所示，与对照组
+相比，OGD组ROS相对含量显著增加（p<0.01）；与OGD组相比，OGD+Alda-
+1组 ROS相对含量显著降低（p<0.05）。以上结果提示，OGD后 ALDH2酶活性
+的降低可造成细胞内 ROS水平过高，激活 ALDH2可以抑制ROS产生。
+图 3.14 ALDH2对 NIH3T3细胞 ROS含量的影响
+76
+--- 第95页 ---
+第3章 ALDH2在缺血诱导成纤维细胞衰老中的作用机制
+Fig.3.14 Effect of ALDH2 on ROS content in NIH3T3 cells. **p < 0.01 compared
+with the CON group, #p < 0.05 compared with the OGD group, n=3. C+C: CON+CVT-
+10216, C+A: CON+Alda-1, O+C: OGD+CVT-10216, O+A: OGD+Alda-1.
+3.3.4 ALDH2基于 4-HNE对成纤维细胞衰老的调控作用
+ALDH2作为代谢酶，可以参与调节糖酵解途径中丙酮酸向乙酰辅酶A的转
+化。此外，ALDH2是体内重要的醛解毒酶，在清除脂质过氧化产物4-HNE中发
+挥重要作用。为明确ALDH2通过何种途径调控缺血诱导的细胞衰老，我们分别
+检测了 ALDH2对 OGD 4 h后 NIH3T3细胞糖酵解速率和 4-HNE水平的影响。
+糖酵解检测结果如图 3.15 所示，与对照组相比，OGD 4 h 后细胞糖酵解速率显
+著增加（p<0.001），然而给予 ALDH2抑制剂或激活剂后对细胞糖酵解速率无明
+显影响。提示ALDH2并非通过糖酵解途径影响 OGD 4 h后成纤维细胞衰老。
+图 3.15 ALDH2对 NIH3T3细胞糖酵解速率的影响
+Fig.3.15 Effect of ALDH2 on glycolysis rate in NIH3T3 cells. ***p < 0.001 compared
+with the CON group, n=4.
+4-HNE含量检测结果如图 3.16所示，与对照组相比，OGD组 NIH3T3细胞
+中 4-HNE 形成显著增加（p<0.001）;与 OGD 组相比，OGD+Alda-1 组 NIH3T3
+77
+--- 第96页 ---
+吉林大学博士学位论文
+细胞中 4-HNE 含量明显减少（p<0.05），以上结果提示，ALDH2 可能通过减少
+OGD 4 h后细胞中 4-HNE含量抑制成纤维细胞衰老。
+图 3.16 ALDH2对 NIH3T3细胞 4-HNE含量的影响
+Fig.3.16 Effect of ALDH2 on 4-HNE content in NIH3T3 cells. (A) Western blot
+analysis of 4-HNE in NIH3T3 cells. (B) Quantification of (A). *p < 0.05, ***p < 0.001
+compared with the CON group, #p < 0.05 compared with the OGD group, n=3.
+为进一步明确 4-HNE 含量变化与 OGD 后成纤维细胞衰老的相关性，我们
+首先检测了 OGD 不同时间点 NIH3T3 细胞中 4-HNE 含量的变化。Western Blot
+检测结果显示（图 3.17），与对照组相比，OGD 2 h组NIH3T3细胞中 4-HNE含
+量无明显变化，OGD 4 h 组 NIH3T3 细胞中 4-HNE 含量明显增加（p<0.05），
+OGD 8 h组NIH3T3细胞中4-HNE含量进一步显著增加（p<0.001）。据此，我们
+推测OGD后ALDH2失活导致成纤维细胞内有毒醛4-HNE积累，可能是诱发细
+胞衰老的重要因素。
+78
+--- 第97页 ---
+第3章 ALDH2在缺血诱导成纤维细胞衰老中的作用机制
+图 3.17 OGD对 NIH3T3细胞 4-HNE含量的影响
+Fig.3.17 Effect of OGD on 4-HNE content in NIH3T3 cells. (A) Western blot analysis
+of 4-HNE in NIH3T3 cells. (B) Quantification of (A). *p < 0.05, ***p < 0.001 compared
+with the CON group, n=4.
+为明确 4-HNE是否会影响细胞衰老，我们首先利用Pubchem数据库获取4-
+HNE 作用靶点共计 1041 个，通过 DAVID 数据分析平台对靶基因进行 KEGG
+pathway 富集分析。分析结果如图 3.18 所示，4-HNE 靶基因可明显富集于细胞
+衰老途径(mmu04218)，提示4-HNE参与调控细胞衰老。
+图 3.18 4-HNE作用靶点的 KEGG pathway富集分析
+Fig.3.18 KEGG pathway enrichment analysis of 4-HNE targets
+79
+--- 第98页 ---
+吉林大学博士学位论文
+为验证 4-HNE在调控成纤维细胞衰老中的作用，外源补充 1μM、10 μM和
+100 μM 4-HNE分别与NIH3T3细胞共孵育 4 h，检测不同浓度 4-HNE对成纤维
+细胞衰老的影响。Western Blot 检测结果显示（图 3.19），与对照组相比，1μM
+4-HNE 可诱导 NIH3T3 细胞中 p16、p21 和 p53 蛋白表达明显增加（p<0.01，
+p<0.01， p<0.05），10μM 4-HNE可诱导 NIH3T3细胞中p16、p21和p53蛋白表
+达明显增加（p<0.001， p<0.01， p<0.01），100μM 4-HNE 可诱导 NIH3T3 细胞
+中p53蛋白表达明显增加（p<0.01）；与 OGD 4 h组相比，100μM 4-HNE可诱导
+NIH3T3 细胞中 p16 和 p21 蛋白表达显著降低（p<0.001，p<0.05）。以上结果提
+示，1-10 μM的4-HNE可激活成纤维细胞衰老信号通路。
+图 3.19 4-HNE对 NIH3T3细胞衰老相关蛋白表达的影响
+80
+--- 第99页 ---
+第3章 ALDH2在缺血诱导成纤维细胞衰老中的作用机制
+Fig.3.19 Effects of 4-HNE on the expression senescence-related proteins in
+NIH3T3 cells. (A) Western blot analysis of p53, p21 and p16 in NIH3T3 cells. (B)
+Quantification of (A). *p < 0.05, **p < 0.01, ***p < 0.001 compared with the CON group,
+#p < 0.05, ###p < 0.01 compared with the OGD 4h group, n=6.
+为明确不同浓度 4-HNE 对衰老成纤维细胞数量的影响，采用免疫荧光方法
+检测p21阳性细胞数量。检测结果显示（图3.20 A-B），与对照组相比，1 μM 4-
+HNE 组和 10 μM 4-HNE 组 p21 阳性的 NIH3T3 细胞数量显著增加（p<0.001，
+p<0.001）；与10 μM 4-HNE组相比，100 μM 4-HNE组p21阳性的 NIH3T3细胞
+数量显著降低（p<0.001）。
+图 3.20 4-HNE对 NIH3T3细胞 p21阳性细胞数量的影响
+81
+--- 第100页 ---
+吉林大学博士学位论文
+Fig. 3.20 Effect of 4-HNE on the number of p21 positive cells in NIH3T3 cells. (A)
+Results of p21 staining of NIH3t3 cells. Scale bar = 50 μm. (B) Statistical analysis of
+(A). ***p < 0.001 compared with the CON group, ###p < 0.001 compared with the 10
+μM 4-HNE group, n=6.
+β-gal染色检测结果如图 3.21 A所示，与对照组相比，1 μM组 β-gal阳性细
+胞数量明显增加，10 μM组β-gal阳性细胞数量进一步增加；与110 μM组相比，
+100μM 组 β-gal 阳性细胞数量显著减少，并且细胞呈现出凋亡特征。β-gal 活性
+检测结果如图 3.20 B 所示，与对照组相比，1 μM 组细胞中 β-gal 活性明显增加
+（p<0.05）, 10 μM组细胞中β-gal活性进一步显著增加（p<0.001）；与10 μM组
+相比，100 μM 组细胞中 β-gal 活性显著降低（p<0.001）。上述结果提示，1-10
+μM的4-HNE可诱导成纤维细胞中β-gal活性显著增加。
+图 3.21 4-HNE对 NIH3T3细胞 SA-β-gal活性的影响
+Fig.3.21 Effect of 4-HNE on SA-β-gal activity in NIH3T3 cells. (A) The β-gal
+staining results were obtained after incubation of NIH3T3 cells with different
+concentrations of 4-HNE for 4h. Scale bar = 50 μm (B) β-gal activity analysis in
+NIH3T3 cells with the agonist/inhibitor treatment. *p < 0.05, ***p < 0.001 compared
+with the CON group, ###p < 0.001 compared with the OGD group, n=4.
+82
+--- 第101页 ---
+第3章 ALDH2在缺血诱导成纤维细胞衰老中的作用机制
+3.4 讨论
+上文研究揭示 OGD 4 h 可诱导 NIH3T3 细胞出现明显的细胞衰老特征，在
+本部分研究中，我们依据蛋白组学和转录组学整合分析策略[164]，将课题组前期
+小鼠NIH3T3细胞OGD 4 h后差异蛋白（PXD021469）的分析结果[165]与小鼠MI
+3 天后心肌成纤维细胞 DEGs（GSE111059）的分析结果进行对比，筛选出 181
+个在蛋白和 mRNA 表达水平均具有显著差异的基因。GO 富集分析结果显示共
+有基因主要富集于 DNA损伤相关信号通路，这一结果符合细胞衰老的基本特征
+[166]。此外，GO 富集分析和 KEGG 通路富集结果均显示糖代谢途径中的基因也
+可能发挥重要作用。我们在 GEO 数据库中获取了 DNA 损伤诱导的小鼠衰老成
+纤维细胞数据集 GSE28416，通过对该数据集中的 DEGs进行 GSEA富集分析，
+发现DEGs也显著富集于糖酵解通路。于是我们对OGD 4 h后NIH3T3细胞的糖
+酵解速率进行了检测，结果显示 OGD 4 h 后 NIH3T3 细胞中糖酵解速率显著增
+加，提示糖酵解通路相关的基因中可能存在调控成纤维细胞衰老的潜在靶点。
+依据上述数据集分析结果，在与糖酵解途径的相关基因中，我们发现
+ALDH2在衰老成纤维细胞、OGD 4 h后的 NIH3T3细胞以及心梗 3天后的心肌
+成纤维细胞中的表达均显示出明显差异。研究表明，ALDH2是由分子量约为56
+kDa 相同亚基组成的四聚体酶。除具有脱氢酶活性外，ALDH2 还具有还原酶和
+酯酶活性[167]。ALDH2 普遍表达在所有组织中，并且在需要高线粒体氧化磷酸
+化的器官中大量存在，例如心脏、肝脏和大脑[4]。现有研究表明，ALDH2 在调
+控多种缺血性疾病的发生及发展过程中发挥重要作用。在心肌缺血条件下，
+ALDH2通过调节线粒体融合和裂变，减轻心肌缺血损伤[85]。在肾缺血条件下，
+ALDH2 通过调控线粒体自噬影响肾损伤修复[5]。此外，多项体内研究表明，激
+活 ALDH2 对肺、脑、肝和肠缺血性损伤均具有一定的保护作用[91]。由此可见，
+靶向ALDH2治疗缺血性疾病具有巨大潜力。
+最近研究发现，ALDH2 可能在调控各类型细胞的衰老中发挥重要作用。在
+一项细胞衰老相关基因预后指数（Cellular senescence-related gene prognostic
+index, CSGPI）的研究中，Dechao Feng等人提出ALDH2可作为细胞衰老相关基
+因预测预测前列腺癌转移和放射耐性[168]。另有研究表明，激活 ALDH2 能抑制
+内皮细胞过早衰老并具有抗动脉粥样硬化的作用[169]，而 ALDH2 缺乏通过诱导
+83
+--- 第102页 ---
+吉林大学博士学位论文
+血管平滑肌细胞衰老加剧了动脉粥样硬化斑块的不稳定性[96]。此外，在急性心
+肌梗死后 Li Xue 等人发现心肌组织中的 ALDH2 酶活性显著降低，而在体外激
+活 ALDH2 可显著抑制缺氧诱导的心肌细胞衰老[170]。在本部分研究中，我们发
+现 OGD 4 h 后 NIH3T3 细胞中 ALDH2 酶活性明显下降。使用 ALDH2 激动剂
+Alda-1可以明显抑制 OGD 4h后 NIH3T3细胞衰老，提示激活 ALDH2能够改善
+缺血诱导的细胞衰老。为明确其发挥抗细胞衰老的潜在机制，我们关注了
+ALDH2对于线粒体功能的调控作用。
+平衡的线粒体动力学是维持组织正常结构和功能的基础。在小鼠心肌缺血/
+再灌注模型中，线粒体融合被明显抑制，褪黑激素通过 AMPK 信号通路增加
+OPA1 的稳定性促进线粒体融合，改善了缺血/再灌注损伤[171]。在小鼠心肌梗死
+模型中，lncRNA Malat1通过miR-26b-5p/MFN1轴介导的线粒体动力学调节小鼠
+心梗后的微血管功能[172]。近年研究发现，失调的线粒体融合、裂变和线粒体自
+噬可能参与细胞衰老。在 p21 诱导的衰老癌前细胞中观察到，大多数细胞的线
+粒体受损，线粒体被过度拉长或裂解，嵴的形态发生改变[51]，表明线粒体动力
+学受到干扰。Young Yeon Kim等人研究发现，p53通过抑制 Drp1向线粒体的易
+位，诱导线粒体伸长导致线粒体功能障碍，随后细胞内 ROS 水平升高，促进了
+细胞衰老[52]。此外有类似的研究表明，线粒体磷酸酶 PGAM5 的缺失导致线粒
+体融合增加和线粒体周转减少，造成细胞内 ROS 水平升高和细胞衰老，而
+PGMA5 是通过 Drp1 去磷酸化进行线粒体裂变所必需的。以上研究表明了增加
+线粒体裂变，抑制线粒体过度融合有助于缓解细胞衰老。但是，过度的线粒体
+裂变也会加剧细胞衰老表型。在暴露于香烟烟雾提取物的人支气管上皮细胞中，
+敲低线粒体融合蛋白（OPA1 或 MFN）诱导线粒体片段化，可促进线粒体 ROS
+的产生并加速细胞衰老[53]。在血管平滑肌细胞（VCMS）中，Krüppel 样因子 5
+（Krüppel-like factor 5，Klf5）通过激活真核翻译起始因子 5a（Eukaryotic
+translation initiation factor 5a，eIF5a）转录，促进 eIF1a 启动子与 MFN1 相互作
+用，抑制线粒体裂变、ROS 产生和 VSMC 衰老[54]。在另一项研究中发现，S-腺
+苷同型半胱氨酸水解酶的抑制使得血管内皮细胞中 Drp1表达上调，线粒体裂变
+增加，细胞衰老相关蛋白 p53，p21和 p16 表达增加。因此，调控线粒体动力学
+的平衡是抑制细胞衰老进程的关键点，如何更好的调控应激状态下细胞中线粒
+84
+--- 第103页 ---
+第3章 ALDH2在缺血诱导成纤维细胞衰老中的作用机制
+体裂变和融合的相对平衡值得深入挖掘。在我们的研究中发现，ALDH2 能够调
+控OGD后成纤维细胞中 MFN2和Fis1的异常表达，提示 ALDH2能够部分改善
+线粒体动力学。
+线粒体融合与裂变的失衡会造成线粒体功能障碍，线粒体膜电位是反映线
+粒体功能的重要指标[173]。本项研究发现，ALDH2 酶活性的降低伴随着线粒体
+膜电位的降低，激活 ALDH2 能增加线粒体膜电位，并且增加 ATP 的产生，进
+一步证实了 ALDH2 在调控线粒体功能中的作用。在机体衰老（Aging）背景下，
+线粒体结构和功能的异常被认为是导致年龄相关功能障碍的主要因素[174]。近年
+来，研究人员开始关注线粒体功能障碍与细胞衰老之间的复杂关系[175]。线粒体
+功能障碍引发细胞衰老的最公认的机制之一是细胞内过量 ROS 的产生[176]。在
+本项研究中，我们同样发现，激活 ALDH2 可以明显抑制 OGD 后成纤维细胞中
+ROS 的产生。据此，我们推测 ALDH2 通过部分改善线粒体动力学失衡，改善
+OGD后的线粒体功能障碍，发挥对成纤维细胞衰老的调控作用。
+为明确ALDH2是通过何种途径调控缺血诱导的细胞衰老，我们重点关注了
+ALDH2 的两种主要的生物学功能。首先，ALDH2 是糖酵解/糖异生途径中的一
+个代谢酶，据报道，ALDH2 通过调节糖酵解通量改善了后肢缺血小鼠的细胞治
+疗效果[177]。然而，我们在 NIH3T3 细胞糖酵解速率的检测结果中发现，激活
+ALDH2对OGD后的糖酵解速率无明显的调节作用，提示ALDH2可能并不是通
+过糖代谢途径介导缺血后的成纤维细胞衰老。
+此外，ALDH2 还是机体内一种重要的醛解毒酶，在清除氧化应激引发的脂
+质过氧化产生的 4-HNE 和丙二醛 （Malondialdehyde，MDA）等内源性醛类中
+起关键作用[91]。值得注意的是，4-HNE和 MDA均为 ROS介导的脂质过氧化产
+物，其中4-HNE被认为是“自由基的第二毒性信使”，也是“生理上最活跃的脂质
+过氧化物之一”、“氧化应激的主要发生者之一”和“主要的脂质过氧化产物”。这
+是因为 4-HNE 的产量相对较大，并且这种醛非常活泼，既作为信号分子，又作
+为脂质过氧化的细胞毒性产物，在体内和体外均可累积至高达 10μM-5mM 的水
+平[103]，能够引起长期的生物学后果[104]。目前已有少量研究发现 4-HNE 在诱导
+内皮细胞衰老中发挥作用[94, 95],但4-HNE在诱导其他类型细胞衰老中的作用仍有
+待探索。而 ALDH2 通过清除 4-HNE 减轻组织缺血损伤的作用已在心肌缺血[85]、
+85
+--- 第104页 ---
+吉林大学博士学位论文
+脑缺血[178]、肝脏缺血[179]等多种缺血模型中证实。在我们的实验中发现，激活
+ALDH2可以显著降低 OGD 4 h后NIH3T3细胞及细胞上清中4-HNE含量，提示
+ALDH2可能通过清除 4-HNE抑制 OGD后的成纤维细胞衰老。同时我们也发现
+OGD处理2 h、4 h和 8 h均可显著增加细胞及细胞上清中的 4-HNE含量，这一
+趋势与前文 ROS 的检测结果一致，提示 ROS 的不断产生造成 4-HNE 的不断积
+累，而 4-HNE 含量变化可能介导了细胞命运的不同走向。因此，我们在
+NIH3T3 细胞中补充了不同浓度的 4-HNE（1μM、10μM 和 100μM），检测结果
+显示 1μM—10μM 的 4-HNE 明显激活细胞衰老信号通路，并在这一浓度范围内，
+随着 4-HNE 浓度的增加，衰老的成纤维细胞数量也在不断增加。而 100μM 4-
+HNE 处理后的 NIH3T3 细胞中细胞衰老信号明显减弱，衰老细胞数量显著减少，
+细胞呈现出凋亡的形态特征。以上结果说明，缺血条件下成纤维细胞命运受到
+4-HNE 含量的影响，较低浓度的 4-HNE 更易诱导细胞衰老，而较高浓度的 4-
+HNE可能诱导细胞死亡。
+此外，在本项研究中我们注意到，尽管 OGD 后 ALDH2 蛋白表达显著增加，
+但其酶活性显著下降。并且我们发现在 OGD 条件下，给予 NIH3T3 细胞 CVT-
+10216 抑制 ALDH2 蛋白表达，但对其酶活性没有明显影响的情况下，细胞衰老
+的情况并未继续加重。而在给予 NIH3T3 细胞 Alda-1 显著增加其酶活性，但对
+其蛋白表达没有明显影响的情况下，细胞衰老的情况得到了明显改善。提示
+ALDH2 酶活性是影响缺血诱导细胞衰老的关键因素。在类似的体内研究中，研
+究人员在心肌梗死诱导的心力衰竭大鼠模型中，并未观察到ALDH2蛋白表达的
+明显变化，而给予 Alda-1 增加其酶活性后，明显改善了心衰后心肌组织的线粒
+体功能[180]。据此，我们推测 ALDH2 酶活性的变化是调节缺血损伤的关键因素。
+在下文研究中，我们将具体探究介导缺血后成纤维细胞中ALDH2酶活性变化的
+潜在机制。
+3.5 本章小结
+ALDH2 是调控缺血诱导成纤维细胞衰老的关键基因。激活 ALDH2 改善线
+损伤，减少细胞中 4-HNE含量，抑制缺血条件下的成纤维细胞衰老。
+86
+--- 第105页 ---
+第4章 缺血条件下HSPA8与ALDH2相互作用诱导成纤维细胞衰老
+第 4 章 缺血条件下 HSPA8 与 ALDH2 相互作用诱导成纤维
+细胞衰老
+上文研究揭示，OGD 后成纤维细胞中 ALDH2 酶活性降低可能是导致细胞
+衰老的重要因素。但尚不明确 OGD 影响 ALDH2 酶活性的具体机制。已有研究
+表明，多蛋白复合物的形成是调节酶活性的普遍机制[181]。为明确多蛋白复合物
+的形成是否影响 OGD 后 ALDH2 酶活性。在本章节研究中，通过 ALDH2 的蛋
+白互作分析与免疫共沉淀技术，揭示了 OGD 后 HSPA8 与 ALDH2 发生相互作
+用。通过分离线粒体蛋白和免疫荧光技术，明确了 OGD 诱导 HSPA8 易位至线
+粒体。利用 siRNA干扰成纤维细胞中 HSPA8的表达，采用 Co-IP、DSS交联和
+Western Blot等方法验证了HSPA8与ALDH2相互作用影响其酶活性的具体机制；
+采用 Western Blot、β-gal 染色及活性检测、RT-qPCR 等方法，明确抑制 HSPA8
+增加ALDH2酶活性对 OGD后成纤维细胞衰老的影响。
+4.1 实验材料
+4.1.1 细胞系
+同 2.1.2。
+4.1.2 实验主要仪器
+表 4.1 实验仪器列表
+仪器名称 生产厂家
+Q Exactive质谱仪 Thermo公司
+光学显微镜 OLYMPUS公司
+电泳仪 君意公司
+凝胶成像仪 Tanon公司
+磁力加热搅拌器 中大公司
+酶标仪 Thermo公司
+87
+--- 第106页 ---
+吉林大学博士学位论文
+续表
+仪器名称 生产厂家
+梯度PCR仪 Thermo公司
+超微量紫外分光光度计 鼎昊源公司
+QuantStudio 3实时荧光定量 PCR仪 Thermo公司
+4.1.3 实验试剂
+表 4.2 实验试剂列表
+试剂名称 生产厂家
+Co-IP试剂盒 Absin公司
+线粒体蛋白提取试剂盒 南京建成公司
+DSS交联剂 Thermo公司
+p53抗体 Affinity公司
+p21抗体 Affinity公司
+p16抗体 Abclonal公司
+HRP山羊抗兔IgG 碧云天公司
+Anti-GAPDH Affinity公司
+HRP山羊抗小鼠 IgG 碧云天公司
+ECL显色剂 Proteintech公司
+BCA蛋白浓度测定试剂盒 索莱宝公司
+RIPA裂解液 Beyotime公司
+Tris-HCl 索莱宝公司
+Tris-base Biosharp公司
+30% Acrylamide Biosharp公司
+β-半乳糖苷酶染色试剂盒 索莱宝公司
+β-半乳糖苷酶活性检测试剂盒 索莱宝公司
+Trizol UP 全式金公司
+逆转录试剂盒 全式金公司
+88
+--- 第107页 ---
+第4章 缺血条件下HSPA8与ALDH2相互作用诱导成纤维细胞衰老
+续表
+试剂名称 生产厂家
+SYBR Green荧光定量试剂 罗氏公司
+Protein ladder Thermo公司
+考马斯亮蓝染色液 碧云天公司
+Lipo2000 Thermo公司
+MitoTracker Red Thermo公司
+4.2 实验方法
+4.2.1 Co-IP检测
+1. 弃去细胞培养基后，用预冷的1×PBS洗涤细胞一次。
+2. 每个培养皿加入 0.2 ml 预冷的 Lysis buffer，用细胞刮勺剥离细胞后收集
+至1.5 ml EP管中，置于冰上孵育10 min。
+3. 14000 g，4℃，离心 10 min，将上清转移到新的EP管中。上清液即为细
+胞裂解物，取出部分上清液作为 Input组置于-80℃冰箱保存
+4. 向剩余细胞裂解物中添加2μg ALDH2或HSPA8抗体，同时采用同源 IgG
+抗体作为对照组，在4 °C旋转混合过夜。
+5. 抗体孵育过夜后，加入 5 μl Protein A 和5 μl Protein G。在 4 °C旋转混合
+2 h。
+6. 4℃，12000 g 离心1 min，保留沉淀。使用 0.5 ml 1×Wash buffe清洗沉淀，
+12000 g离心1 min，保留沉淀。反复清洗 3次。
+7. 在沉淀中加入 40 μl 1×SDS样品缓冲液，涡旋振荡重悬沉淀，使用掌上离
+心机离心 30 s。
+8. 95°C加热样品 5 min，然后在14000 g离心1 min，取上清液。
+9. 用 Western Blot法分析样品,每组上样量为 20 μl。
+89
+--- 第108页 ---
+吉林大学博士学位论文
+4.2.2 LC-MS/MS检测
+1. 考染胶条切下后放入 EP管中
+2. 在每个 EP管内加入1 ml ddH O，清洗 10 min，共重复操作 2次。
+2
+3. 在每个 EP 管内加入 1 ml 胶内消化脱色液，清洗 10 min，移除脱色液移
+除，共重复操作 2次。
+4. 加入乙腈脱水至胶粒完全变白，真空抽干乙腈。
+5. 加入10 mM DTT，待胶粒吸收完全后放入水浴锅内，56℃孵育1 h。
+6. 移除DTT溶液，加入55mM IAM，室温避光孵育45 min，孵育完毕后，
+移除IAM溶液，加入 25 mM 碳酸氢铵清洗 10 min，共重复操作 2次。
+7. 移除碳酸氢铵，加入脱色液清洗 10 min，共重复操作2次。
+8. 加入乙腈脱水至胶粒完全变白，真空抽干乙腈。
+9. 用5 mM 碳酸氢铵将1 μg/μL的酶储液稀释15倍，加入脱水后的胶粒中，
+待其充分吸收后，加入 25 mM碳酸氢铵并使其没过胶粒，放入水浴锅内，37℃
+过夜孵育。
+10. 孵育结束后，加入终浓度为0.1%的FA终止消化。
+11. 取10 μl样品使用质谱仪检测。
+4.2.3 线粒体蛋白提取
+1. 收集细胞后用1×PBS清洗一次，加入 1 ml预冷的裂解液 1重悬细胞，置
+于冰上孵育 15 min。将细胞悬液转移到洁净的玻璃匀浆器内，冰浴研磨细胞
+30~40次。
+2. 将细胞匀浆液转移到1.5 ml EP管中，4℃，800 g离心5 min，取上清。
+3. 在另一个新的预冷的 1.5 ml EP管中预先加入0.5ml 溶液 A，将匀浆后的
+上清液 0.5 ml 沿管壁小心地加入预冷的 EP 管中，使其覆盖于溶液 A 的上层。
+4℃，15000 g离心 10 min。离心后的上清为胞浆蛋白，沉淀为线粒体。
+4. 向沉淀中加入200 μl漂洗液重悬线粒体沉淀，4℃，15000 g离心10 min。
+5. 在1 ml预冷的裂解液2中加入10 μl磷酸酶抑制剂，1 μl蛋白酶抑制剂和
+5 μl 100 mM PMSF，混匀后置于冰上保存。
+90
+--- 第109页 ---
+第4章 缺血条件下HSPA8与ALDH2相互作用诱导成纤维细胞衰老
+6. 每组线粒体提取物中加入30 μl上述配制好的预冷裂解液2工作液。4 ℃，
+温和振荡15 min。
+7. 12000 rpm，4℃，离心 15 min，取上清为线粒体蛋白提取物，使用BCA
+蛋白浓度测定试剂盒检测线粒体和胞浆蛋白样品浓度。加入适量 5×loading
+buffer 95℃加热变性 5 min，置于-20℃保存。
+4.2.4 Western Blot检测
+同 2.2.7。
+4.2.5 免疫荧光检测
+同 2.2.9。
+4.2.6 ALDH2酶活性检测
+同 3.2.6。
+4.2.7 DSS交联检测
+收集细胞并用冰冷的 PBS洗涤两次。将 DSS溶液加入细胞裂解液中至终浓
+度为 500 μM，并将反应混合物在室温下孵育 30 min。加入终浓度为 10 mM 的
+Tris溶液，，在室温下孵育 15 min淬灭反应。通过 Western blot分析裂解物。
+4.2.8 β-gal染色及活性检测
+同 2.2.10
+4.2.9 细胞 RNA提取
+同 2.2.11。
+4.2.10 RT-qPCR检测
+操作步骤同 2.2.12。部分新增引物序列如表 2.4所示。
+91
+--- 第110页 ---
+吉林大学博士学位论文
+表 2.4 引物序列
+Gene name Forward（5’-3’） Reverse（5’-3’）
+HSPA8 GCAGAAGCGTACCTCGGAAAGAC GCAGCAGCAGTTGGTTCATTGATG
+4.2.12 siRNA转染
+1. 转染前一天将细胞铺入六孔板中正常培养，待细胞密度为 30%-50%进行
+转染。
+2. A管：将5 μl 5 nmol siRNA或Nc溶于200 μl无血清DMEM培养基中。
+B管：将 5 μl lipo2000溶于200 μl无血清 DMEM培养基中，室温放置 5 min。将
+B两管液体加入 A管中混合，室温放置20 min。
+3. 每个孔中加入 400 μl siRNA混合液，另加 1600 μl无血清培养基，培养 4-
+6 h后换成正常培养基。
+4. 分别在培养24、48 h和72 h后，提取细胞RNA和蛋白质，通过RT-qPCR
+或Western Blot方法检测转染效率。
+4.2.13 统计学分析
+同 2.2.12。
+4.3 实验结果
+4.3.1 OGD条件下 ALDH2互作蛋白分析及验证
+为明确 OGD 对 ALDH2 互作蛋白的影响，通过 Co-IP-MS 技术进行了蛋白
+互作分析。使用 ALDH2抗体进行 Co-IP实验后，进行蛋白质 MS鉴定分析。图
+4.1 为 Mascot 打分得到匹配肽段和蛋白的柱状图，结果显示正确的肽段匹配分
+值需要大于28。
+92
+--- 第111页 ---
+第4章 缺血条件下HSPA8与ALDH2相互作用诱导成纤维细胞衰老
+图 4.1 多肽评分分布
+Fig.4.1 Peptide score distribution. Individual ions scores > 28 indicate identity
+orextensive homology (p<0.05).
+检测结果显示，对照组共鉴定到 90 个蛋白，OGD 组共鉴定到 76 个蛋白。
+表 4.3 和表 4.4 中分别列出了评分前 5 的蛋白。分析检测结果，发现 OGD 后
+HSPA8 与 ALDH2 存在相互作用，但在对照组未发现 HSPA8 与 ALDH2 存在相
+互作用。据此我们推测，OGD可能诱导 HSPA8与ALDH2结合。
+表 4.3 CON组蛋白鉴定列表（TOP 5）
+Gene Name Mass Score Matches Sequences emPAI Coverage
+Hspa9 73701 662 45(25) 32(22) 1.85 40%
+Aldh2 57073 525 59(24) 27(18) 2.43 52%
+Hnrnph1 51470 485 47(19) 18(11) 1.38 37%
+Hnrnph2 49533 409 45(19) 19(12) 1.63 40%
+Syncrip 62733 404 33(15) 23(13) 1.04 39%
+Ddx5 69750 386 55(20) 35(15) 1.88 45%
+93
+--- 第112页 ---
+吉林大学博士学位论文
+表 4.4 OGD组蛋白鉴定列表（TOP 5）
+Gene Name Mass Score Matches Sequences emPAI Coverage
+Actb 42052 1438 126(65) 30(21) 16.71 72%
+Actb 42084 1291 113(58) 29(19) 12.08 69%
+Impdh2 56119 603 39(24) 24(20) 3.15 44%
+Aldh2 57073 600 66(35) 26(18) 2.84 51%
+Hspa8 71041 418 29(15) 25(14) 1.26 37%
+Hnrnph1 51470 299 27(11) 13(7) 0.98 26%
+为验证上述 Co-IP-MS检测结果，利用 Co-IP技术，明确 OGD后 HSPA8与
+ALDH2 是否存在相互作用。结果如图 4.2 A 所示。与对照组相比，OGD 后
+HSPA8与ALDH2的相互作用明显增强。提示OGD可诱导HSPA8与ALDH2发
+生相互作用。此外，Western Blot检测结果显示（图 4.3 B-C），与对照组相比，
+OGD后细胞中HSPA8蛋白表达水平显著增加（p<0.001）。
+图 4.2 OGD对 NIH3T3细胞 ALDH2和 HSPA8相互作用及
+HSPA8蛋白表达的影响
+Fig.4.2 Effect of OGD on the interaction of ALDH2 and HSPA8 and the expression
+of HSPA8 protein in NIH3T3 cells (A) Subcellular fractionation of NIH3T3 cells
+treated with OGD for 4 h were immunoprecipitated, and bound proteins were analyzed
+by western blot. (B) Western blot analysis of HSPA8 in NIH3T3 cells. (C)
+Quan tification of (B). ***p < 0.001 compared with the CON group, n=3.
+94
+--- 第113页 ---
+第4章 缺血条件下HSPA8与ALDH2相互作用诱导成纤维细胞衰老
+4.3.2 OGD对 HSPA8在成纤维细胞内定位的影响
+由于 ALDH2 是定位于线粒体的酶，而 HSPA8 主要定位于细胞质和细胞核，
+据此我们推测 OGD 处理造成了 HSPA8 在细胞内定位发生了改变，进而促使两
+者结合。我们分离了线粒体蛋白和胞浆蛋白，采用 Western Blot方法分别检测了
+线粒体和胞浆中 HSPA8 和 ALDH2 的表达情况，其中位于线粒体外膜的电压依
+赖性阴离子通道 1(Voltage-dependent anion channel, VDAC1)蛋白用于指示线粒体。
+检测结果如图 4.3所示，与对照组相比，OGD组细胞线粒体中 HSPA8蛋白表达
+显著增加（p<0.05），但胞浆内HSPA8蛋白表达量无显著性变化（p>0.05）。
+图 4.3 OGD 4 h对 NIH3T3细胞 HSPA8在线粒体和胞浆中表达的影响
+Fig.4.3 Effects of OGD 4h on the expression of HSPA8 in mitochondria and
+cytoplasm of NIH3T3 cells. (A) Western blot analysis of HSPA8 in mitochondria and
+cytoplasm of NIH3T3 cells. (B) Quantification of (A). *p < 0.05 compared with the
+CON group, n=4.
+95
+--- 第114页 ---
+吉林大学博士学位论文
+为验证 Western Blot 检测结果，利用线粒体红色荧光探针 MitoTracker Red
+标记线粒体，采用免疫荧光技术，检测了 OGD 后 HSPA8 在线粒体中的表达情
+况，结果如图 4.4 所示，绿色荧光指示 HSPA8 蛋白，红色荧光指示线粒体。与
+对照组相比，OGD组中黄绿色荧光强度增加，提示 OGD处理可诱导 HSPA8蛋
+白易位至线粒体。
+图 4.4 免疫荧光检测 HSPA8在 NIH3T3细胞线粒体中的表达情况
+Fig.4.4 The expression of HSPA8 in mitochondria of NIH3T3 cells was detected by
+immunofluorescence. Green fluorescence represents HSPA8 protein, red fluorescence
+represents mitochondria, and blue fluorescence represents the nucleus. Scale bar=50
+μm.
+4.3.3 OGD条件下 HSPA8对 ALDH2酶活性的影响及其机制
+为明确 OGD 后 ALDH2 酶活性的降低与 HSPA8 有关，利用 HSPA8 siRNA
+转染 NIH3T3 细胞，抑制细胞中 HSPA8 的表达。为确定适宜的转染条件，分别
+在转染24 h, 48 h和72 h后检测转染效率。RT-qPCR检测结果显示（图 4.5 A），
+与 Nc 组相比，siRNA 组 HSAP8 mRNA 在转染 48 h 和 72 h 后表达均显著降低
+（p<0.001, p<0.001），而转染 24 h后HSAP8 mRNA表达无显著性差异（p<0.05）。
+Western Blot检测结果显示（图 4.5 B-C），与 Nc组相比，siRNA组HSAP8蛋白
+在转染48 h和72 h后表达均显著降低（p<0.05, p<0.01），而转染 24 h后HSAP8
+蛋白表达无显著性差异（p<0.05）。因此，选择转染 48 h作为后续实验条件。
+96
+--- 第115页 ---
+第4章 缺血条件下HSPA8与ALDH2相互作用诱导成纤维细胞衰老
+图 4.5 HSPA8 siRNA转染效率检测
+Fig.4.5 Inhibitory effect of transfection with small interfering RNA (siRNA) on
+HSPA8. (A) The effect of transfection time on HSPA8 mRNA expression was detected
+by RT-qPCR. ***p < 0.001 compared with the Nc group, n=6. (B) The effect of
+transfection time on HSPA8 protein expression was detected by Western Blot. (C)
+Quantification of (B). *p < 0.05, **p < 0.01 compared with the Nc group, n=3. Nc:
+negative control.
+转染 siRNA抑制 NIH3T3细胞中 HSPA8的表达后，采用 Co-IP方法检测了
+ALDH2相互作用情况。检测结果如图 4.6所示，与 CON + Nc组相比，OGD +
+Nc 组 ALDH2 与 HSPA8 相互作用明显增强。与 OGD + Nc 组相比，OGD +
+siHSPA8组ALDH2与 HSPA8相互作用明显减弱。以上结果表明，抑制 NIH3T3
+细胞中HSPA8表达后，可减少 OGD后HSPA8与ALDH2的结合。
+97
+--- 第116页 ---
+吉林大学博士学位论文
+图 4.6 抑制 HSPA8后对 NIH3T3细胞 ALDH2和 HSPA8相互作用的影响
+Fig.4.6 Effect of HSPA8 inhibition on the interaction of ALDH2 and HSPA8 in
+NIH3T3 cells (A) Subcellular fractionation of NIH3T3 cells treated with OGD for 4 h
+were immunoprecipitated, and bound proteins were analyzed by western blot.
+为明确 HSPA8对 ALDH2酶活性的影响，通过转染 siRNA抑制 NIH3T3细
+胞内 HSPA8表达后，检测了 ALDH2酶活性变化。结果如图 4.7所示，与 CON
++ Nc组相比，CON + siHSPA8组ALDH2酶活性无明显变化（p>0.05），OGD +
+Nc组ALDH2酶活性显著降低（p<0.001）;与OGD + Nc组相比，OGD + siHSPA8
+组ALDH2酶活性显著增加(p<0.05)。以上结果表明，抑制 HSPA8表达可以增加
+OGD后ALDH2酶活性。
+图 4.7 抑制 HSPA8对 NIH3T3细胞 ALDH2酶活性的影响
+98
+--- 第117页 ---
+第4章 缺血条件下HSPA8与ALDH2相互作用诱导成纤维细胞衰老
+Fig.4.7 Effect of inhibiting HSPA8 on ALDH2 enzyme activity in NIH3T3 cells.
+***p < 0.001 compared with the Con + Nc group. #p < 0.05, compared with the OGD +
+Nc group. Nc: negative control.
+ALDH2 存在二聚体和四聚体两种形式，但仅有四聚体的 ALDH2 具有酶活
+性[182]。因此，我们采用DSS交联实验检测了HSPA8是否影响ALDH2四聚体的
+形成。结果显示（图 4.8），与CON + Nc组相比，CON + siHSPA8组ALDH2四
+聚体表达量无明显变化（p>0.05），OGD + Nc 组 ALDH2 四聚体表达显著降低
+（p<0.01）;与OGD + Nc组相比，OGD + siHSPA8组ALDH2四聚体表达显著增
+加（p<0.05）。以上结果表明，OGD 诱导 HSPA8 易位至线粒体与 ALDH2 相互
+作，抑制了ALDH2四聚体的形成导致其酶活性降低。
+图 4.8 抑制 HSPA8对 ALDH2四聚体形成的影响
+Fig 4.8 The effect of inhibiting HSPA8 on the formation of ALDH2 tetramer. (A)
+Cell lysates were treated with disuccinimidyl suberate (DSS) for 30 min and protein
+levels of ALDH2 were examined. (B) Quantification of (A). **p < 0.01 compared with
+the CON group, #p < 0.05 compared with the OGD group. Nc: negative control.
+99
+--- 第118页 ---
+吉林大学博士学位论文
+4.3.4 OGD条件下 HSPA8对成纤维细胞衰老的影响
+利用 siRNA 抑制 NIH3T3 细胞中 HSPA8 表达，检测 OGD 后细胞中衰老相
+关蛋白p53，p21和p16表达的变化。结果如图4.9所示，与CON + Nc组相比，
+OGD + Nc组p53, p21和p16蛋白表达水平显著上调（p<0.05, p<0.01, p<0.05）;
+与OGD + Nc组相比，OGD + siHSPA8组 p53、p21和p16蛋白表达水平显著下
+调（p<0.05, p<0.05, p<0.05）。以上结果表明，抑制 HSPA8 可以降低 OGD 后成
+纤维细胞中衰老相关蛋白的表达水平。
+图 4.9 抑制 HSPA8对 OGD后 NIH3T3细胞衰老相关蛋白表达的影响
+Fig.4.9 Effect of inhibiting HSPA8 on expression of senescence related protein in
+NIH3T3 cells after OGD. (A) Western blot analysis of p53, p21, p16 in NIH3T3 cells.
+(B) Quantification of (A). *p < 0.05, **p < 0.01 compared with the Con + Nc group. #p
+< 0.05 compared with the OGD + Nc group, n=3. Nc: negative control.
+100
+--- 第119页 ---
+第4章 缺血条件下HSPA8与ALDH2相互作用诱导成纤维细胞衰老
+利用 siRNA抑制 NIH3T3细胞中HSPA8表达，检测 OGD后细胞中 β-gal活
+性变化。β-gal染色检测结果如图 4.10 A所示，与CON + Nc组相比，OGD + Nc
+组β-gal阳性细胞数量明显增加；与 OGD + Nc组相比，OGD+ siHSPA8组β-gal
+阳性细胞数量明显减少。β-gal活性检测结果如图 4.10 B所示，与 CON + Nc组
+相比，OGD + Nc 组 β-gal 活性显著增加（p<0.001）；与 OGD + Nc 组相比，
+OGD+ siHSPA8 组 β-gal 活性显著降低（p<0.01）。以上结果表明，抑制 HSPA8
+可降低OGD后成纤维细胞中 β-gal活性。
+图 4.10 抑制 HSPA8对 OGD后 NIH3T3细胞β-gal活性的影响
+Fig.4.10 Effect of inhibiting HSPA8 on β-gal activity of NIH3T3 cells after OGD.
+(A) β-gal staining in NIH3T3 cells. (B) β-gal activity analysis in NIH3T3 cells. ***p <
+0.001 compared with the CON + Nc group, ##p < 0.01 compared with the OGD + Nc
+group, n=4. Nc: negative control.
+利用 siRNA抑制 NIH3T3细胞中 HSPA8表达，检测 OGD 后细胞中 IL-6，
+TNF-α 和 HMGB1 mRNA 表达的变化。RT-qPCR 检测结果显示（图 4.11），与
+CON + Nc组相比，OGD + Nc组IL-6, TNF-α和HMGB1 mRNA表达水平显著增
+101
+--- 第120页 ---
+吉林大学博士学位论文
+加（p<0.001, p<0.001, p<0.01）;与OGD + Nc组相比，OGD + siHSPA8组IL-6,
+TNF-α 和 HMGB1 mRNA 表达水平显著降低（p<0.01, p<0.05, p<0.01）。以上结
+果表明，抑制HSPA8可以降低OGD后成纤维细胞中 SASP mRNA表达水平。
+图 4.11 抑制 HSPA8对OGD后 NIH3T3细胞SASP mRNA表达的影响
+Fig.4.11 Effect of inhibiting HSPA8 on SASP mRNA expression in NIH3T3 cells
+after OGD. **p < 0.01, ***p < 0.001 compared with the Con + Nc group. #p < 0.05，
+##p < 0.01 compared with the OGD + Nc group, n=6. Nc: negative control.
+4.4 讨论
+HSPA8（Heat Shock 70kDa Protein 8）是热休克蛋白70（70-kDa Heat shock
+protein，HSP70）家族的一个成员，在调控蛋白质稳态中发挥重要作用。近年
+研究表明，HSP70 家族蛋白是组织缺血损伤的有前途的治疗靶点[111]。有研究指
+出，在心肌缺血再灌注期间，HSP70 的表达在心肌细胞中显著上调，并且
+HSP70 参与调控心肌缺血损伤中的多个信号通路，包括氧化应激、钙超负荷、
+细胞凋亡和炎症反应等。在肝缺血再灌注损伤中，肝细胞HSPA12A抑制巨噬细
+胞趋化性和活化，进而抑制糖酵解介导的 HMGB1 乳酸化和肝细胞分泌来减轻
+肝组织损伤[112]。在局灶性脑缺血损伤中，HSP70 蛋白介导的自噬信号传导调节
+脑组织中的细胞凋亡[113]。在肾缺血损伤中，HSP70 蛋白通过干预核磷蛋白介导
+的细胞死亡，影响急性肾损伤期间的细胞存活[114]。总之，多项研究已证实
+102
+--- 第121页 ---
+第4章 缺血条件下HSPA8与ALDH2相互作用诱导成纤维细胞衰老
+HSP70 是缺血损伤的高敏感性标志物。此外，HSP70 家族蛋白在调控细胞衰老
+方面也具有一定作用。例如，在应激诱导的人成纤维细胞 MRC-5的过早衰老模
+型中，使用雷帕霉素增加 HSP70 恢复蛋白稳态，能够部分减弱细胞衰老[118]。
+Hyun Ju Ko等人研究发现，天然氨基酸麦角硫因通过抑制 HSP70的下调，改善
+了紫外线B照射诱导的成纤维细胞衰老[121]。
+HSPA8 作为分子伴侣，参与调控多种细胞过程，包括新合成多肽的折叠和
+转运、伴侣介导的自噬、错误折叠蛋白质水解的激活以及蛋白质复合物的形成
+和解离，在蛋白质质量控制系统中起着举足轻重的作用。HSPA8 最有名的功能
+是它在伴侣介导的自噬（Chaperone-mediated autophagy，CMA）中的作用。
+CMA 代表了在其氨基酸序列中具有 KFERQ 或 KFERQ 样基序的胞质蛋白的高
+度选择性降解过程。在 CMA期间，存在于蛋白质底物中的 KFERQ基序被胞质
+HSPA8 识别，负责其去折叠并随后转运到 CMA 的特异性受体-溶酶体相关膜蛋
+白 2A（Lysosome associated membrane protein 2A，LAMP2A）上。转运到溶酶
+体腔内的蛋白质最终被溶酶体蛋白酶降解，降解产物（氨基酸）可能被回收，
+维持细胞稳态并促进细胞存活[109]。
+目前，HSPA8 已被证实能够在组织缺血损伤中发挥一定的作用。例如，在
+左肾动脉结扎诱导的大鼠脊髓缺血/再灌注损伤模型中，Mi J等人发现HSPA8表
+达显著增加，并导致血脑屏障破坏，脊髓神经元和运动功能急剧丧失。敲除
+HSPA8 可抑制脊髓缺血/再灌注损伤后的脊髓星形胶质细胞损伤，有效地改善了
+脊髓组织损伤并促进了运动功能恢复[183]。在脑血管内皮细胞中 Ying Liu等人发
+现，HSPA8 和 eEF1A1 之间存在伴侣形式的相互作用，并通过抑制 JNK 信号通
+路的激活在缺血性脑卒中过程中发挥保护作用[184]。
+除了在细胞质和细胞核中发挥作用外，近年有研究发现 HSPA8 与线粒体外
+膜蛋白 FUNDC1 相互作用，未折叠蛋白在线粒体上的过度积累损害了线粒体的
+完整性并激活 AMPK，导致细胞衰老[110]。此外，在人成纤维细胞复制性衰老模
+型中，HSPA8是IncRNA MAGI2-AS3的相互作用蛋白，参与调控细胞衰老[119]。
+本章研究中，我们通过蛋白互作组学技术，首次发现成纤维细胞中的 HSPA8 与
+ALDH2能够在OGD后发生相互作用，并且这一作用干扰了ALDH2的酶活性。
+类似地，Leonardo A Parra等人研究发现，HSPA8可以与酪氨酸羟化酶相互作用
+103
+--- 第122页 ---
+吉林大学博士学位论文
+影响其酶活性[185]，揭示了 HSPA8 具有与其他蛋白酶相互作用并调节酶活性的
+功能。ALDH2 主要定位于线粒体中[83]，而 HSPA8 主要定位于细胞质和细胞核
+中，能够在细胞质和细胞核/核仁之间穿梭[108]。那么，分布在不同细胞器的蛋
+白之间是如何发生相互作用的呢？近年研究发现，HSPA8 可以与线粒体外膜蛋
+白结合，促进胞质蛋白的转移进入线粒体[110]，揭示了 HSPA8 可能向线粒体易
+位。据此，我们通过分离线粒体和胞浆蛋白检测 HSPA8 表达情况，发现 OGD
+后 HSPA8 在线粒体中的表达显著增加，后续又通过免疫荧光实验证实了这一结
+果。说明OGD可诱导部分 HSPA8易位至线粒体与 ALDH2相互作用。
+早期研究揭示，ALDH2 是由两个等效二聚体组装而成的同源四聚体。但二
+聚体形式的ALDH2是无活性的，而四聚体的ALDH2具有较高活性[186]。此外，
+有研究指出，在酒精性脂肪肝中，p53 直接与 ALDH2 结合并阻止其活性四聚体
+的形成[187]。提示 ALDH2 互作蛋白可能影响其多聚体结构。据此，我们通过
+DSS 交联实验检测了 HSPA8 对 ALDH2 二聚体和四聚体形成的影响，结果显示
+OGD 后成纤维细胞中 ALDH2 二聚体形成增加，而抑制 HSPA8 可以增加 OGD
+后ALDH2四聚体的形成。说明HSPA8对ALDH2酶活性的调控作用是通过对其
+多聚体结构的影响实现的。
+随后我们明确了抑制HSPA8通过增加OGD后成纤维细胞中的ALDH2酶活
+性，改善了成纤维细胞衰老。但由于 HSPA8 对于调控细胞内的蛋白稳态必不可
+少，因此选择合适的时间点及干预程度以避免 HSPA8 过度抑制带来的不良作用，
+是未来我们需要解决的问题之一。
+4.5 本章小结
+OGD 4 h诱导 HSPA8易位至线粒体与 ALDH2相互作用，抑制 HSPA8可促
+进 OGD 后 ALDH2 四聚体的形成，进而提高其酶活性，改善 OGD 后的成纤维
+细胞衰老。
+104
+--- 第123页 ---
+第5章 ALDH2调控心肌成纤维细胞衰老影响缺血心肌的作用机制
+第 5 章 ALDH2 调控心肌成纤维细胞衰老影响缺血心肌的作
+用机制
+上文研究基于生物信息学分析提示 ALDH2 可能是调控心肌缺血和 OGD 后
+成纤维细胞衰老的关键基因。通过体外实验明确了 ALDH2 在调控 OGD 诱导成
+纤维细胞衰老中的作用，并揭示了可能导致 OGD 后 ALDH2 酶活性降低的重要
+原因。本章研究旨在建立心肌缺血模型，探究ALDH2对缺血诱导心肌成纤维细
+胞衰老的调控作用，是否影响缺血心肌组织损伤。
+近年来，细胞衰老的抑制被证实有助于心肌梗死后的心肌损伤修复。例如
+Nadia Salerno 等人发现，达沙替尼联合槲皮素给药可改善心肌梗死后小鼠的心
+肌功能[188]；Navitoclax 给药抑制细胞衰老可显著减少心肌梗死后的年龄依赖性
+心脏重塑，改善心脏功能和生存结局[189]。因此，开发选择性抑制细胞衰老的药
+物有望成为改善心肌损伤的新疗法。在本部分研究中，通过提取新生小鼠心肌
+成纤维细胞，采用Western Blot、β-gal染色及活性检测、RT-qPCR等实验明确了
+ALDH2激动剂 Alda-1 对 OGD后心肌成纤维细胞衰老的影响。建立心肌成纤维
+细胞-心肌细胞共培养体系，采用 CCK-8和TUNEL染色等方法明确Alda-1改善
+心肌成纤维细胞衰老后对共培养心肌活力和凋亡的影响。建立小鼠心肌梗死模
+型，采用免疫荧光检测明确 Alda-1 对心梗组织中成纤维细胞衰老的影响；采用
+超声心动图评价 Alda-1对心梗后小鼠心功能的影响；采用 TTC染色检测 Alda-1
+对心梗后小鼠心肌梗死面积的影响；采用H&E染色检测Alda-1对心梗后小鼠心
+肌组织损伤的影响。通过以上研究，有望为开发基于抗细胞衰老疗法改善缺血
+心肌损伤的策略提供理论依据。
+5.1 实验材料
+5.1.1 实验动物
+同 2.1.1。
+105
+--- 第124页 ---
+吉林大学博士学位论文
+5.1.2 细胞系
+小鼠 HL-1 心肌细胞系购自上海中乔新舟生物科技有限公司，货号 ZQ0920。
+5.1.3 实验主要仪器
+表 5.1 实验仪器列表
+仪器名称 生产厂家
+彩色多普勒超声诊断仪 Sigma公司
+冰冻切片机 Thermo公司
+荧光显微镜 OLYMPUS公司
+激光共聚焦显微镜 OLYMPUS公司
+电泳仪 Tanon公司
+凝胶成像仪 Tanon公司
+酶标仪 Thermo公司
+梯度PCR仪 Thermo公司
+超微量紫外分光光度计 鼎昊源公司
+小动物麻醉机 瑞沃德公司
+5.1.4 实验试剂
+表 5.2 实验试剂列表
+试剂名称 生产厂家
+4%多聚甲醛 碧云天公司
+OCT包埋剂 莱卡公司
+Vimentin抗体 Proteintech公司
+p21抗体 Proteintech公司
+p53抗体 Affinity公司
+p16抗体 Abclonal公司
+GAPDH抗体 Affinity公司
+106
+--- 第125页 ---
+第5章 ALDH2调控心肌成纤维细胞衰老影响缺血心肌的作用机制
+续表
+试剂名称 生产厂家
+Cy3标记山羊抗兔 IgG(H+L) 碧云天公司
+HRP山羊抗兔IgG 碧云天公司
+HRP山羊抗小鼠 IgG 碧云天公司
+柠檬酸钠抗原修复液 碧云天公司
+ECL显色剂 Proteintech公司
+BCA蛋白浓度测定试剂盒 索莱宝公司
+蛋白酶抑制剂Cocktail Roche公司
+磷酸酶抑制剂PhosSTOP Roche公司
+预染蛋白质分子量标准 Thermo 公司
+Tris-base Biosharp公司
+30%丙烯酰胺 Biosharp公司
+β-半乳糖苷酶染色试剂盒 索莱宝公司
+β-半乳糖苷酶活性检测试剂盒 索莱宝公司
+TransZol Up 全式金公司
+逆转录试剂盒 全式金公司
+SYBR Green荧光定量试剂 罗氏公司
+胎牛血清 依科赛公司
+无糖DMEM培养基 Gibco公司
+0.25 %胰酶 Gibco公司
+链霉素-青霉素溶液 Gibco公司
+BCA蛋白浓度测定试剂盒 索莱宝公司
+高效RIPA裂解液(组织/细胞) 索莱宝公司
+Protein Ladder Thermo公司
+Alda-1 MCE公司
+TTC 索莱宝公司
+甘油明胶封片液 碧云天公司
+107
+--- 第126页 ---
+吉林大学博士学位论文
+5.2 实验方法
+5.2.1 小鼠心肌原代成纤维细胞提取
+1. 取 8-10只出生 1-3天内的 C57BL/6乳鼠，用灭菌后的组织剪剪开胸腔，
+用眼科镊迅速取出心脏，置于含 1%双抗的预冷的 PBS中清洗3次。
+2. 剔除心脏周围结缔组织，置于平皿中剪碎，平皿内加 4-5 ml 0.125%的胰
+酶，用巴氏管反复吹打混匀。
+3. 收集混合液，置于 37 ℃水浴消化 5 min，取上清，加 2倍体积含 10%胎
+牛血清的DMEM培养基，混匀。
+4. 剩余组织块再次加胰酶消化，重复操作 5-10次。
+5. 将收集到的所有上清液用筛网过滤后，1000 rpm，离心5 min，弃上清，
+留沉淀。
+6. 用 PBS重悬沉淀，1000 rpm，离心 5 min，反复离心3次。
+7. 用含有20%胎牛血清的高糖DMEM培养基重悬细胞，于25 cm2培养瓶中
+培养。
+8. 培养 2 h后，将未贴壁的细胞悬液吸出并更换新的完全培养基，2-3天后
+常规传代（1:2）。
+5.2.2 免疫荧光检测
+同 2.2.9。
+5.2.3 细胞蛋白提取
+同 2.2.6。
+5.2.4 Western Blot检测
+同 2.2.7。
+5.2.5 β-gal染色及活性检测
+同 2.2.10。
+108
+--- 第127页 ---
+第5章 ALDH2调控心肌成纤维细胞衰老影响缺血心肌的作用机制
+5.2.6 细胞 RNA提取
+同 2.2.11。
+5.2.7 RT-qPCR检测
+同 2.2.12。
+5.2.8 CCK-8检测
+同 3.2.7。
+5.2.9 TUNEL染色
+细胞造模完成后，用 1×PBS洗涤一次。用免疫染色固定液固定细胞 30 min。
+用 1×PBS 洗涤 1 次。加入含 0.3% Triton X-100 的 PBS，室温孵育 5 min。用
+1×PBS 洗涤 2 次。按照说明书配置 TUNEL 检测工作液，每孔样品上加 50 μl
+TUNEL检测工作液，37℃避光孵育 60 min。1×PBS 洗涤 3次后，用含有 DAPI
+的抗荧光淬灭封片液封片，置于荧光显微镜下观察，使用ImageJ分析图像。
+5.2.10 动物分组及给药
+C57B/6 小鼠分为假手术组（Sham），假手术组+ALDH2 激动剂组
+（Sham+Alda-1），心梗 3 天组（MI 3d），心梗 3 天+ALDH2 激动剂组（MI
+3d+Alda-1）。其中 Alda-1 体内给药剂量为 10mg/kg/天，连续给药 3 天。小鼠心
+肌梗死模型构建方法同 2.2.2。
+5.2.11 冰冻切片免疫荧光染色
+同 2.2.4。
+5.2.12 超声心动图检测
+同 2.2.3。
+109
+--- 第128页 ---
+吉林大学博士学位论文
+5.2.13 TTC染色
+麻醉小鼠后，打开胸腔剪下心脏，去除小鼠右心室的心肌组织并将剩余的
+左心室修剪平滑整齐，横向切片。将切片放置在装有 1% TTC 染色液的棕色小
+瓶中，在37℃水浴5 min左右进行染色。将染好色的心脏切片放在装有4 %多聚
+甲醛的小瓶中固定备用。固定好的心脏切片整齐放置照相，心肌梗死面积用
+ImageJ进行分析测量。
+5.2.14 H&E染色
+将心肌组织冰冻切片恢复至室温后，用4%多聚甲醛固定10 min。将切片浸
+入蒸馏水中润洗 2 min。用苏木素染色液染色 10 min。将切片浸入自来水中，置
+于摇床上缓慢振荡 10 min，洗去多余的染色液。再用蒸馏水洗涤数秒后，用伊
+红染色液染色2 min，滴加适量甘油明胶封片液，封片后直接在显微镜下观察。
+5.2.15 统计学分析
+同 2.2.14。
+5.3 实验结果
+5.3.1 激活 ALDH2对OGD后心肌原代成纤维细胞衰老的影响
+为进一步明确ALDH2对心肌成纤维细胞衰老的调控作用，本部分研究中提
+取了 C57BL/6 乳鼠的心肌成纤维细胞进行体外实验，详细的提取步骤见实验方
+法 5.2.1。利用成纤维细胞特异性标记物 Vimentin 对提取到的心肌成纤维细胞进
+行标记，采用免疫荧光技术检测提取效率。检测结果如图5.1所示，该方法获取
+的心肌成纤维细胞纯度较高，可用于后续实验。
+110
+--- 第129页 ---
+第5章 ALDH2调控心肌成纤维细胞衰老影响缺血心肌的作用机制
+图 5.1心肌成纤维细胞免疫荧光染色结果
+Fig. 5.1 Results of immunofluorescence staining of myocardial fibroblasts. Green
+fluorescence represents fibroblasts, red fluorescence represents mitochondria, and blue
+fluorescence represents the nucleus. Scale bar=50μm.
+给予 ALDH2特异性激动剂 Alda-1 20 μM，检测心肌成纤维细胞中 ALDH2
+酶活性及 4-HNE水平变化。ALDH2酶活性检测结果如图 5.2所示，与对照组相
+比，OGD组 ALDH2酶活性显著下降（p<0.001）；与 OGD组相比，OGD+Alda-
+1组ALDH2酶活性显著增加（p<0.01）.以上结果提示， 20 μM Alda-1也可显著
+增加OGD后心肌成纤维细胞中 ALDH2酶活性。
+图 5.2 Alda-1对心肌成纤维细胞 ALDH2酶活性的影响
+Fig.5.2 Effect of Alda-1 on ALDH2 enzyme activity in myocardial fibroblasts. ***p <
+0.001 compared with the CON group. ##p < 0.01, compared with the OGD group. C+A:
+CON+Alda-1, O+A: OGD+Alda-1.
+111
+--- 第130页 ---
+吉林大学博士学位论文
+给予心肌成纤维细胞 Alda-1后，利用 Western Blot方法检测激活ALDH2对
+心肌成细胞中4-HNE表达水平的影响。检测结果如图5.3所示，与对照组相比，
+OGD 组心肌成纤维细胞中 4-HNE 含量显著增加（p<0.01）；与 OGD 组相比，
+OGD+Alda-1组心肌成纤维细胞中 4-HNE含量显著降低（p<0.05）
+图5.3 激活 ALDH2对心肌成纤维细胞中 4-HNE含量的影响
+Fig.5.3 Effect of activation of ALDH2 on 4-HNE content in myocardial fibroblasts.
+**p < 0.01 compared with the CON group, #p < 0.05 compared with the OGD group,
+n=3.
+利用 Western Blot 方法检测 OGD 后心肌成纤维细胞中衰老相关蛋白 p53，
+p21和p16的表达。检测结果如图 5.4 A-B所示，与对照组相比，OGD组细胞中
+p53，p21 和 p16 蛋白表达均显著增加（p<0.01, p<0.01, p<0.01）；与 OGD 组相
+比，OGD+Alda-1 组细胞中 p53，p21 和 p16 表达均显著降低（p<0.05, p<0.05,
+p<0.05）。结果提示，特异性激动ALDH2表达后可抑制OGD后成纤维细胞中衰
+老相关蛋白的表达。
+112
+--- 第131页 ---
+第5章 ALDH2调控心肌成纤维细胞衰老影响缺血心肌的作用机制
+图 5.4 激活 ALDH2对OGD后心肌成纤维细胞衰老相关蛋白表达的影响
+Fig.5.4 Effect of activation of ALDH2 on expression of senescence related protein
+in cardiac fibroblasts after OGD. (A) Western blot analysis of p53, p21 and p16 in
+cardiac fibroblasts. (B) Quantification of (A). **p < 0.01 compared with the CON group,
+#p < 0.05 compared with the OGD group. C+A: CON+Alda-1, O+A: OGD+Alda-1.
+给予 Alda-1后，检测 OGD后心肌成纤维细胞 β-gal活性变化。β-gal染色检
+测结果如图5.5 A所示，与对照组相比，OGD组β-gal阳性细胞数量明显增加；
+与 OGD 组相比，OGD+Alda-1 组 β-gal 阳性细胞数量明显减少。β-gal 活性检测
+结果如图5.5 B所示，与对照组相比，OGD组β-gal活性显著增加（p<0.01）；与
+OGD 组相比，OGD+Alda-1 组 β-gal 活性显著降低（p<0.05）。结果提示，特异
+性激动ALDH2表达后可降低OGD后成纤维细胞中 β-gal活性。
+113
+--- 第132页 ---
+吉林大学博士学位论文
+图 5.5 激活 ALDH2对OGD后心肌成纤维细胞 β-半乳糖苷酶活性的影响
+Fig.5.5 Effect of ALDH2 activation on β-gal activity of cardiac fibroblasts after
+OGD. (A) β-gal staining in cardiac fibroblasts. Scale bar=50 μm. (B) β-gal activity
+analysis in cardiac fibroblasts. **p < 0.01 compared with the CON , #p < 0.05 compared
+with the OGD + Nc group, n=3.
+给予 Alda-1 后，采用 RT-qPCR 方法检测 OGD 后心肌成纤维细胞中 SASP
+mRNA 表达情况。检测结果如图 5.6 所示，与对照组相比，OGD 组细胞中 IL-6、
+114
+--- 第133页 ---
+第5章 ALDH2调控心肌成纤维细胞衰老影响缺血心肌的作用机制
+TNF-α和 HMGB1 mRNA表达显著增加(p<0.01, p<0.001, p<0.001);与 OGD组相
+比，OGD+Alda-1组IL-6、TNF-α和HMGB1 mRNA表达显著降低(p<0.05, p<0.05,
+p<0.001)。以上实验结果表明，激活 ALDH2能明显改善OGD 4 h后心肌成纤维
+细胞衰老。
+图 5.6 ALDH2对 OGD后心肌成纤维细胞 SASP mRNA表达的影响
+Fig.5.6 Effect of ALDH2 on SASP mRNA expression in cardiac fibroblasts after
+OGD. (A) RT-qPCR analysis IL-6 mRNA in cardiac fibroblasts. **p < 0.01 compared
+with the CON group, #p < 0.05 compared with the OGD group, n=6. (B) RT-qPCR
+analysis TNF-α mRNA in cardiac fibroblasts. ***p < 0.001 compared with the CON
+group, #p < 0.05 compared with the OGD group, n=6. (C) RT-qPCR analysis HMGB1
+mRNA in cardiac fibroblasts. ***p < 0.001 compared with the CON group, ###p < 0.001
+compared with the OGD group, n=6. C+A: CON+Alda-1, O+A: OGD+Alda-1.
+5.3.2 激活 ALDH2对OGD后共培养心肌细胞的影响
+为明确衰老成纤维细胞是否可通过旁分泌效应影响心肌细胞，我们收集不
+同处理条件下的心肌成纤维细胞培养上清，与小鼠 HL-1心肌细胞建立共培养体
+系。CCK-8 检测结果显示（图 5.7），与对照组相比，OGD 组 HL-1 细胞存活率
+显著下降（p<0.001）。与 OGD 组相比，给予 OGD 处理的成纤维细胞培养上清
+后，HL-1细胞存活率进一步下降（p<0.01），当给予OGD+Alda-1处理的成纤维
+细胞培养上清后，HL-1细胞存活率明显上升（p<0.05），提示激活心肌成纤维细
+胞中ALDH2可以增加共培养心肌细胞存活率。
+115
+--- 第134页 ---
+吉林大学博士学位论文
+图 5.7 激活 ALDH2对OGD后共培养心肌细胞存活率的影响
+Fig.5.7 Effect of ALDH2 activation on the survival rate of co-cultured
+cardiomyocytes after OGD. ***p < 0.001 compared with the HC group, ##p < 0.05, ##p
+< 0.01 compared with the HO group, $p < 0.05 compared with the H+F-O group, n=6.
+H: HL-1 cell, F: cardiac fibroblasts, C：Con, CA：Con+Alda-1, O：OGD, OA：
+OGD+Alda-1.
+采用TUNEL染色法，检测共培养心肌细胞凋亡情况。结果显示（图5.8），
+与对照组相比，OGD组 HL-1细胞凋亡数量显著增加（p<0.001）。与 OGD组相
+比，给予 OGD 处理的成纤维细胞培养上清后，HL-1 细胞凋亡数量进一步增加
+（p<0.05）。与给予 OGD处理的成纤维细胞培养上清的 HL-1细胞组相比，给予
+OGD+Alda-1 处理的成纤维细胞培养上清后，HL-1 细胞凋亡数量明显减少
+（p<0.01）。提示激活心肌成纤维细胞中ALDH2可抑制OGD后共培养心肌细胞
+凋亡。
+116
+--- 第135页 ---
+第5章 ALDH2调控心肌成纤维细胞衰老影响缺血心肌的作用机制
+图 5.8 激活 ALDH2对OGD后共培养心肌细胞凋亡的影响
+Fig.5.8 Effect of activating ALDH2 on apoptosis of co-cultured cardiomyocytes
+after OGD. Red fluorescence represents apoptotic cells and blue fluorescence
+represents the nucleus. ***p < 0.001 compared with the HC group, #p < 0.05, ###p <
+0.001 compared with the HO group, $$p < 0.01 compared with the H+F-O group, n=5.
+Scale bar = 50μm. H: HL-1 cell, F: cardiac fibroblasts, C：Con, CA：Con+Alda-1, O：
+OGD, OA：OGD+Alda-1.
+5.3.3 激活 ALDH2对心梗后心肌成纤维细胞衰老的影响
+为明确激活ALDH2是否能在体内抑制心梗后的心肌成纤维细胞衰老，建立
+了小鼠心肌梗死模型。心肌梗死 3 天后收集心肌组织制备冰冻切片，利用
+117
+--- 第136页 ---
+吉林大学博士学位论文
+Vimentin 标记成纤维细胞（绿色），p21 标记衰老细胞（红色）。检测结果如图
+5.7 所示，与假手术组相比，心梗 3 天组衰老成纤维细胞明显增多（p<0.001），
+给予 ALDH2 特异性激动剂 Alda-1 后，衰老成纤维细胞数量明显减少（p<0.01）。
+以上结果提示，激活 ALDH2可以抑制心梗后心肌成纤维细胞衰老。
+图 5.9 激活 ALDH2对心梗后小鼠心肌成纤维细胞衰老的影响
+Fig. 5.9 Effect of activating ALDH2 on senescence of ccardiac fibroblasts in mice
+118
+--- 第137页 ---
+第5章 ALDH2调控心肌成纤维细胞衰老影响缺血心肌的作用机制
+after myocardial infarction. (A) Representative images of Vimentin (green) and p21
+(red) staining in sham or mice with MI. (B) Quantitative analysis of p21+/Vimentin+
+double-positive cells in sham or mice with MI. ***p < 0.001 compared with the Sham
+group, ##p < 0.01 compared with the MI 3d group, n=6. Scale bar = 100 μm.
+5.3.4 激活 ALDH2对心梗后缺血心肌的影响
+上述结果明确激活ALDH2会抑制心肌梗死后的成纤维细胞衰老，为明确这
+一作用是否有助于缓解心梗后的心肌损伤。我们首先采用超声心动图检测了小
+鼠心脏功能。结果如图 5.10 A-B 所示，与假手术组相比，心梗后 3 天组小鼠心
+脏 EF 值和 FS 值均显著降低（p<0.001，p<0.001）。给予 ALDH2 特异性激动剂
+Alda-1后，与 MI 3d组相比，MI 3d+Alda-1组小鼠心脏 EF值和 FS值均显著升
+高（p<0.001）。提示激活 ALDH2明显改善小鼠心梗后的心脏功能。
+图 5.10 激活 ALDH2对小鼠心功能的影响
+119
+--- 第138页 ---
+吉林大学博士学位论文
+Fig.5.10 Effect of ALDH2 activation on cardiac function in mice. (A)
+Echocardiography of the mice. (B) Statistical analysis chart of echocardiography. ***p
+< 0.001 compared with the Sham group, ###p < 0.001 compared with the MI 3d group
+n=8. EF, Ejection fraction. FS, Fraction shortening.
+TTC染色结果显示（图 5.11），与假手术组相比，心梗 3天组小鼠心肌梗死
+面积明显增加。与心梗 3天组相比，心梗 3天+Alda-1组小鼠心肌梗死面积显著
+降低（p <0.001），提示激活 ALDH2 能明显减小小鼠心梗 3 天后的心肌梗死面
+积。
+图 5.11 激活 ALDH2对小鼠心肌梗死面积的影响
+Fig.5.11 Effect of ALDH2 activation on myocardial infarction size in mice. (A)
+TTC staining results. The green circle shows the infarct site. (B) Statistical analysis of
+TTC staining results. ***p < 0.001 compared with the MI 3d group, n=6.
+H&E染色显示（图5.12），假手术组小鼠心肌纤维排列整齐，细胞核清
+晰，胞浆染色均匀。心梗3天组小鼠心肌纤维排列紊乱，大面积坏死，炎症细
+120
+--- 第139页 ---
+第5章 ALDH2调控心肌成纤维细胞衰老影响缺血心肌的作用机制
+胞浸润。给予Alda-1后，心梗3天组小鼠心肌组织损伤情况得到明显改善。
+图 5.12 激活 ALDH2对小鼠心肌组织损伤的影响
+Fig.5.10 Effect of ALDH2 activation on myocardial tissue injury in mice.
+Scale bar = 50 μm
+5.4 讨论
+早期研究表明，ALDH2*2基因型缺陷变体在高达 40%的东亚人中普遍存在，
+且该研究将ALDH2活性不足确定为治疗和预防冠状动脉痉挛和急性心肌梗死的
+危险因素[190]。近年来，ALDH2 在调控心肌梗死后心肌损伤中的作用得到了广
+泛研究。Lei-Lei Ma 等人研究发现，心肌肥厚应激预处理通过改善线粒体代谢、
+减少氧化/硝化应激和抑制细胞凋亡的机制保护心脏免受缺血再灌注损伤,而
+ALDH2是在心脏肥厚预处理过程中的重要介质[86]。Wen-Jun Ding等人研究发现，
+激活 ALDH2可防止心肌梗死后氧化应激诱导的心肌细胞凋亡[162]。Nene A等人
+在探究 ALDH2磷酸化位点的过程中，指出通过翻译后修饰激活 ALDH2可以减
+轻心肌梗死后的心肌损伤[191]。以上研究均表明增强 ALDH2 酶活性是治疗心肌
+缺血的可行策略。
+近几年，ALDH2 通过调控细胞衰老缓解心血管损伤的作用也开始受到关注。
+121
+--- 第140页 ---
+吉林大学博士学位论文
+2016年 Li Xue等人研究发现 Alda-1对 ALDH2的激活可以减轻缺氧诱导的心肌
+细胞衰老[170]。2019 年 Hong Zhu 等人研究发现 ALDH2 缺乏会增加动脉粥样硬
+化斑块面积，同时可能通过加速线粒体 ROS 介导的心血管平滑肌细胞衰老来促
+进斑块不稳定。但目前，ALDH2 调控成纤维细胞衰老发挥心肌保护作用的研究
+尚未见报道。为明确这一问题，我们提取新生小鼠原代心肌成纤维细胞，在体
+外建立心肌成纤维细胞 OGD 模型，明确激活 ALDH2 可明显改善 OGD 诱导的
+心肌成纤维细胞衰老，同时也建立了小鼠心肌梗死模型，明确激活ALDH2可明
+显减少缺血心肌组织中的衰老成纤维细胞。
+据报道，衰老细胞可以通过 SASP 的分泌可影响邻近细胞及组织稳态。例
+如，在肾脏缺血再灌注模型中，受损肾脏中积累的衰老细胞分泌大量促炎性的
+SASP 分子，诱导了肾脏慢性炎症和纤维化[192]。在糖尿病小鼠模型中，衰老的
+多能心脏干细胞分泌 SASP，抑制了心脏再生并损害心功能[45]。为明确激活
+ALDH2 对衰老成纤维细胞的抑制作用是否有助于保护心肌组织，本研究在体内、
+外心肌缺血模型中分别进行了检测分析。
+心肌梗死后，心肌损伤修复在一系列涉及多种细胞类型的步骤中进行。近
+年的一项单细胞研究表明，心肌成纤维细胞是心脏中传出信号分子的枢纽[130]。
+心肌成纤维细胞在很大程度上决定了心脏的微环境和细胞之间的物理串扰[193]。
+心肌细胞是心肌组织中最主要的细胞类型，但其介导细胞间通讯作用有限。最
+近的研究发现，心肌成纤维细胞和心肌细胞之间的 crosstalk 对病理性的心脏功
+能异常具有重要的调节作用[194]，但具体的分子机制仍有待探索。在本部分研究
+中，我们将小鼠心肌成纤维细胞与小鼠 HL-1心肌细胞在体外建立共培养体系。
+研究发现，OGD 条件下 HL-1 细胞存活率显著降低，细胞凋亡明显增加。当给
+予 OGD 处理后的小鼠心肌成纤维细胞上清液后，HL-1 细胞活力进一步降低，
+细胞凋亡进一步增加。而给予 OGD+Alda-1 处理过的心肌成纤维细胞上清液后，
+HL-1 细胞存活率明显增加，细胞凋亡数量明显减少。通过上述实验，在体外明
+确了激活 ALDH2 抑制 OGD 后心肌成纤维细胞衰老，可明显改善共培养体系中
+心肌细胞损伤。
+ALDH2激动剂Alda-1在缓解心肌损伤方面的作用目前已有多项研究证实。
+Alda-1最早是由Che-Hong Chen等人通过高通量筛选技术筛选出的 ALDH2小分
+122
+--- 第141页 ---
+第5章 ALDH2调控心肌成纤维细胞衰老影响缺血心肌的作用机制
+子激活剂，并且他们发现给予 Alda-1 的大鼠心肌梗死面积减少了 60%，提示了
+Alda-1在治疗心肌缺血性损伤中的潜力[89]。随后几年Lihan Sun等人发现，Alda-
+1与硝酸甘油的共同给药抑制了硝酸甘油单独诱导的大鼠心肌梗死后心功能障碍
+[195]。Katia M S Gomes等人发现选择性激活线粒体 ALDH2通过减少醛超载对线
+粒体生物能量学和活性氧生成的毒性作用，改善了心力衰竭的预后，指出
+ALDH2 激动剂 Alda-1 对治疗心衰患者具有潜在的治疗价值[180]。在本项研究中，
+我们发现给予心梗后连续每天给予小鼠 Alda-1，明显减少了心梗 3 天后心肌组
+织中的衰老成纤维细胞的同时，显著改善了小鼠心功能和心肌组织损伤，减少
+了心肌梗死面积。揭示了 Alda-1 改善心肌损伤的新机制。综合以上研究，我们
+认为ALDH2激动剂作为缺血心肌损伤的治疗药物值得进一步开发研究。
+5.5 本章小结
+体外实验结果表明，激活 ALDH2 可减少心肌成纤维细胞中的 4-HNE 含量，
+并抑制 OGD诱导的心肌成纤维细胞衰老，抑制共培养心肌细胞凋亡；体内实验
+结果表明，激活ALDH2可抑制心梗后心肌成纤维细胞衰老并改善心肌组织损伤。
+123
+--- 第142页 ---
+吉林大学博士学位论文
+124
+--- 第143页 ---
+第6章 结论
+第 6 章 结论
+1. ALDH2可减少成纤维细胞中4-HNE的含量，改善缺血诱导的细胞衰老。
+2. HSPA8与 ALDH2相互作用，抑制 ALDH2酶活性，诱导 OGD后成纤维
+细胞衰老。
+3. 激活ALDH2可抑制缺血诱导的心肌成纤维细胞衰老，改善心梗小鼠心功
+能。
+125
+--- 第144页 ---
+吉林大学博士学位论文
+126
+--- 第145页 ---
+参考文献
+参考文献
+[1] LEWIS-MCDOUGALL F, RUCHAYA P, DOMENJO-VILA E, et al. Aged-
+senescent cells contribute to impaired heart regeneration [J]. Aging Cell, 2019,
+18(3): e12931-e12946.
+[2] LIM S, KIM T, KIM Y, et al. Senolytic Therapy for Cerebral Ischemia-
+Reperfusion Injury [J]. Int J Mol Sci, 2021, 22(21): 11967-11980.
+[3] ZHU F, LI Y, ZHANG J, et al. Senescent cardiac fibroblast is critical for cardiac
+fibrosis after myocardial infarction [J]. PLoS ONE, 2013, 8(9): e74535- e74547.
+[4] CHEN C, FERREIRA J, GROSS E, et al. Targeting aldehyde dehydrogenase 2:
+new therapeutic opportunities [J]. Physiol Rev, 2014, 94(1): 1-34.
+[5] XU T, GUO J, WEI M, et al. Aldehyde dehydrogenase 2 protects against acute
+kidney injury by regulating autophagy via the Beclin-1 pathway [J]. JCI insight,
+2021, 6(15) : e138183- e138205.
+[6] STRAUSSER S, NAKANO D, SOUMA T. Acute kidney injury to chronic
+kidney disease transition: insufficient cellular stress response [J]. Curr Opin
+Nephrol Hypertens, 2018, 27(4): 314-322.
+[7] GAO J, HAO Y, PIAO X, et al. Aldehyde Dehydrogenase 2 as a Therapeutic
+Target in Oxidative Stress-Related Diseases: Post-Translational Modifications
+Deserve More Attention [J]. Int J Mol Sci, 2022, 23(5):2682-2709.
+[8] MEHDIZADEH M, AGUILAR M, THORIN E, et al. The role of cellular
+senescence in cardiac disease: basic biology and clinical relevance [J]. Nat Rev
+Cardiol, 2022, 19(4): 250-264.
+[9] MUñOZ-ESPíN D, CAñAMERO M, MARAVER A, et al. Programmed cell
+senescence during mammalian embryonic development [J]. Cell, 2013, 155(5):
+1104-1118.
+[10] DEMARIA M, OHTANI N, YOUSSEF S, et al. An essential role for senescent
+cells in optimal wound healing through secretion of PDGF-AA [J]. Dev Cell,
+2014, 31(6): 722-733.
+[11] YUKI Y, TSUBASA F, SHUICHI O, et al. Prototyping an Ontological
+Framework for Cellular Senescence Mechanisms: A Homeostasis Imbalance
+Perspective [J]. Sci Data, 2024, 11(1):485-500.
+[12] HAYFLICK L, MOORHEAD P. The serial cultivation of human diploid cell
+strains [J]. Exp Cell Res, 1961, 25: 585-621.
+[13] D'ADDA DI FAGAGNA F. Living on a break: cellular senescence as a DNA-
+damage response [J]. Nat Rev Cancer, 2008, 8(7): 512-522.
+[14] ZHANG L, PITCHER L, PRAHALAD V, et al. Targeting cellular senescence
+with senotherapeutics: senolytics and senomorphics [J]. The FEBS journal,
+2023, 290(5): 1362-1383.
+[15] RODIER F, CAMPISI J. Four faces of cellular senescence [J]. The Journal of
+cell biology, 2011, 192(4): 547-556.
+[16] UNDEFINED U, UNDEFINED U, UNDEFINED U, et al. Integrating the DNA
+damage and protein stress responses during cancer development and treatment
+127
+--- 第146页 ---
+吉林大学博士学位论文
+[J]. J Pathol, 2018, 246(1): 12–40.
+[17] VAN DEURSEN J. The role of senescent cells in ageing [J]. Nature, 2014,
+509(7501): 439-446.
+[18] ZHANG L, PITCHER L, YOUSEFZADEH M, et al. Cellular senescence: a key
+therapeutic target in aging and diseases [J]. The Journal of clinical investigation,
+2022, 132(15): e158450-e158463.
+[19] HE S, SHARPLESS N. Senescence in Health and Disease [J]. Cell, 2017,
+169(6): 1000-1011.
+[20] ALI S, JORDAN M, NAGARAJAN P, et al. Nerve Density and Neuronal
+Biomarkers in Cancer [J]. Cancers, 2022, 14(19): 4817-4832.
+[21] MOHRIN M, SHIN J, LIU Y, et al. Stem cell aging. A mitochondrial UPR-
+mediated metabolic checkpoint regulates hematopoietic stem cell aging [J].
+Science, 2015, 347(6228): 1374-1377.
+[22] ACOSTA J, BANITO A, WUESTEFELD T, et al. A complex secretory program
+orchestrated by the inflammasome controls paracrine senescence [J]. Nat Cell
+Biol, 2013, 15(8): 978-990.
+[23] DAVALOS A, KAWAHARA M, MALHOTRA G, et al. p53-dependent release
+of Alarmin HMGB1 is a central mediator of senescent phenotypes [J]. The
+Journal of cell biology, 2013, 201(4): 613-629.
+[24] LI T, CHEN Z. The cGAS-cGAMP-STING pathway connects DNA damage to
+inflammation, senescence, and cancer [J]. The Journal of experimental medicine,
+2018, 215(5): 1287-1299.
+[25] ÖZCAN S, ALESSIO N, ACAR M, et al. Unbiased analysis of senescence
+associated secretory phenotype (SASP) to identify common components
+following different genotoxic stresses [J]. Aging, 2016, 8(7): 1316-1329.
+[26] WILEY C, FLYNN J, MORRISSEY C, et al. Analysis of individual cells
+identifies cell-to-cell variability following induction of cellular senescence [J].
+Aging Cell, 2017, 16(5): 1043-1050.
+[27] SHAY J, WRIGHT W. Telomeres and telomerase: three decades of progress [J].
+Nat Rev Genet, 2019, 20(5): 299-309.
+[28] HöHN A, WEBER D, JUNG T, et al. Happily (n)ever after: Aging in the context
+of oxidative stress, proteostasis loss and cellular senescence [J]. Redox biology,
+2017, 11: 482-501.
+[29] DESCHêNES-SIMARD X, GAUMONT-LECLERC M, BOURDEAU V, et al.
+Tumor suppressor activity of the ERK/MAPK pathway by promoting selective
+protein degradation [J]. Genes Dev, 2013, 27(8): 900-915.
+[30] MYRIANTHOPOULOS V, EVANGELOU K, VASILEIOU P, et al. Senescence
+and senotherapeutics: a new field in cancer therapy [J]. Pharmacol Ther, 2019,
+193: 31-49.
+[31] OGRODNIK M, SALMONOWICZ H, GLADYSHEV V. Integrating cellular
+senescence with the concept of damage accumulation in aging: Relevance for
+clearance of senescent cells [J]. Aging Cell, 2019, 18(1): e12841-e12862.
+[32] GINZBERG M, KAFRI R, KIRSCHNER M. Cell biology. On being the right
+(cell) size [J]. Science, 2015, 348(6236): 1245075-1245091.
+128
+--- 第147页 ---
+参考文献
+[33] NASSRALLY M, LAU A, WISE K, et al. Cell cycle arrest in replicative
+senescence is not an immediate consequence of telomere dysfunction [J]. Mech
+Ageing Dev, 2019, 179: 11-22.
+[34] FREUND A, LABERGE R, DEMARIA M, et al. Lamin B1 loss is a senescence-
+associated biomarker [J]. Mol Biol Cell, 2012, 23(11): 2066-2075.
+[35] YANG H, KIM H, CHEN H, et al. Litchi chinensisReactive oxygen species and
+nitric oxide induce senescence of rudimentary leaves and the expression profiles
+of the related genes in [J]. Horticulture research, 2018, 5: 23-36.
+[36] SATI S, BONEV B, SZABO Q, et al. 4D Genome Rewiring during Oncogene-
+Induced and Replicative Senescence [J]. Mol Cell, 2020, 78(3): 522-538.e529.
+[37] DIMRI G, LEE X, BASILE G, et al. A biomarker that identifies senescent
+human cells in culture and in aging skin in vivo [J]. Proc Natl Acad Sci U S A,
+1995, 92(20): 9363-9367.
+[38] HERNANDEZ-SEGURA A, NEHME J, DEMARIA M. Hallmarks of Cellular
+Senescence [J]. Trends Cell Biol, 2018, 28(6): 436-453.
+[39] VARELA-EIRíN M, DEMARIA M. Cellular senescence [J]. Current biology :
+CB, 2022, 32(10): R448-R452.
+[40] STORER M, MAS A, ROBERT-MORENO A, et al. Senescence is a
+developmental mechanism that contributes to embryonic growth and patterning
+[J]. Cell, 2013, 155(5): 1119-1130.
+[41] ZHANG D, LIU Y, ZHU Y, et al. A non-canonical cGAS-STING-PERK
+pathway facilitates the translational program critical for senescence and organ
+fibrosis [J]. Nat Cell Biol, 2022, 24(5): 766-782.
+[42] LIU F, YUAN Y, BAI L, et al. LRRc17 controls BMSC senescence via
+mitophagy and inhibits the therapeutic effect of BMSCs on ovariectomy-
+induced bone loss [J]. Redox biology, 2021, 43: 101963-101977.
+[43] GUERRERO A, DE STROOPER B, ARANCIBIA-CáRCAMO I. Cellular
+senescence at the crossroads of inflammation and Alzheimer's disease [J].
+Trends Neurosci, 2021, 44(9): 714-727.
+[44] SCHMITT C, WANG B, DEMARIA M. Senescence and cancer - role and
+therapeutic opportunities [J]. Nat Rev Clin Oncol, 2022, 19(10): 619-636.
+[45] MARINO F, SCALISE M, SALERNO N, et al. Diabetes-Induced Cellular
+Senescence and Senescence-Associated Secretory Phenotype Impair Cardiac
+Regeneration and Function Independently of Age [J]. Diabetes, 2022, 71(5):
+1081-1098.
+[46] BUDAMAGUNTA V, FOSTER T, ZHOU D. Cellular senescence in lymphoid
+organs and immunosenescence [J]. Aging, 2021, 13(15): 19920-19941.
+[47] CHAN D. Mitochondrial Dynamics and Its Involvement in Disease [J]. Annu
+Rev Pathol, 2020, 15: 235-259.
+[48] PAGLIUSO A, COSSART P, STAVRU F. The ever-growing complexity of the
+mitochondrial fission machinery [J]. Cellular and molecular life sciences :
+CMLS, 2018, 75(3): 355-374.
+[49] WEAVER D, EISNER V, LIU X, et al. Distribution and apoptotic function of
+outer membrane proteins depend on mitochondrial fusion [J]. Mol Cell, 2014,
+129
+--- 第148页 ---
+吉林大学博士学位论文
+54(5): 870-878.
+[50] YOON Y, YOON D, LIM I, et al. Formation of elongated giant mitochondria in
+DFO-induced cellular senescence: involvement of enhanced fusion process
+through modulation of Fis1 [J]. J Cell Physiol, 2006, 209(2): 468-480.
+[51] GALANOS P, VOUGAS K, WALTER D, et al. Chronic p53-independent p21
+expression causes genomic instability by deregulating replication licensing [J].
+Nat Cell Biol, 2016, 18(7): 777-789.
+[52] KIM Y, UM J, YOON J, et al. p53 regulates mitochondrial dynamics by
+inhibiting Drp1 translocation into mitochondria during cellular senescence [J].
+FASEB journal : official publication of the Federation of American Societies for
+Experimental Biology, 2020, 34(2): 2451-2464.
+[53] HARA H, ARAYA J, ITO S, et al. Mitochondrial fragmentation in cigarette
+smoke-induced bronchial epithelial cell senescence [J]. Am J Physiol Lung Cell
+Mol Physiol, 2013, 305(10): L737-746.
+[54] MA D, ZHENG B, LIU H, et al. Klf5 down-regulation induces vascular
+senescence through eIF5a depletion and mitochondrial fission [J]. PLoS Biol,
+2020, 18(8): e3000808- e3000844.
+[55] YOU Y, CHEN X, CHEN Y, et al. Epigenetic modulation of Drp1-mediated
+mitochondrial fission by inhibition of S-adenosylhomocysteine hydrolase
+promotes vascular senescence and atherosclerosis [J]. Redox biology, 2023, 65:
+102828-102843.
+[56] NISHIMURA A, SHIMAUCHI T, TANAKA T, et al. Hypoxia-induced
+interaction of filamin with Drp1 causes mitochondrial hyperfission-associated
+myocardial senescence [J]. Sci Signal, 2018, 11(556): eaat5185.
+[57] LIN B, FENG D, XU J. Cardioprotective effects of microRNA-18a on acute
+myocardial infarction by promoting cardiomyocyte autophagy and suppressing
+cellular senescence via brain derived neurotrophic factor [J]. Cell & bioscience,
+2019, 9: 38-50.
+[58] FENG T, MENG J, KOU S, et al. CCN1-Induced Cellular Senescence Promotes
+Heart Regeneration [J]. Circulation, 2019, 139(21): 2495-2498.
+[59] SHI J, SUN J, LIU L, et al. P16ink4a overexpression ameliorates cardiac
+remodeling of mouse following myocardial infarction via CDK4/pRb pathway
+[J]. Biochem Biophys Res Commun, 2022, 595: 62-68.
+[60] SHAN H, LI T, ZHANG L, et al. Heme oxygenase-1 prevents heart against
+myocardial infarction by attenuating ischemic injury-induced cardiomyocytes
+senescence [J]. EBioMedicine, 2019, 39: 59-68.
+[61] CHILDS B, ZHANG C, SHUJA F, et al. Senescent cells suppress innate smooth
+muscle cell repair functions in atherosclerosis [J]. Nature aging, 2021, 1(8):
+698-714.
+[62] TORRES-QUEROL C, TORRES P, VIDAL N, et al. Acute ischemic stroke
+triggers a cellular senescence-associated secretory phenotype [J]. Scientific
+reports, 2021, 11(1): 15752-15761.
+[63] KIM S, PURANIK A, JIANG K, et al. Progressive Cellular Senescence
+Mediates Renal Dysfunction in Ischemic Nephropathy [J]. Journal of the
+130
+--- 第149页 ---
+参考文献
+American Society of Nephrology : JASN, 2021, 32(8): 1987-2004.
+[64] YANG L, WANG B, GUO F, et al. FFAR4 improves the senescence of tubular
+epithelial cells by AMPK/SirT3 signaling in acute kidney injury [J]. Signal
+transduction and targeted therapy, 2022, 7(1): 384-399.
+[65] CHEN C, ZHENG M, HOU H, et al. Cellular senescence in
+ischemia/reperfusion injury [J]. Cell death discovery, 2022, 8(1): 420-432.
+[66] MIAO J, HUANG J, LUO C, et al. Klotho retards renal fibrosis through
+targeting mitochondrial dysfunction and cellular senescence in renal tubular
+cells [J]. Physiological reports, 2021, 9(2): e14696- e14709.
+[67] HERRANZ N, GIL J. Mechanisms and functions of cellular senescence [J]. The
+Journal of clinical investigation, 2018, 128(4): 1238-1246.
+[68] JIN H, ZHANG Y, DING Q, et al. Epithelial innate immunity mediates tubular
+cell senescence after kidney injury [J]. JCI insight, 2019, 4(2): e125490-
+e125504.
+[69] DENG B, LIN Y, CHEN Y, et al. Plasmacytoid dendritic cells promote acute
+kidney injury by producing interferon-α [J]. Cell Mol Immunol, 2021, 18(1):
+219-229.
+[70] TANG J, ZHUANG S. Histone acetylation and DNA methylation in
+ischemia/reperfusion injury [J]. Clinical science (London, England : 1979),
+2019, 133(4): 597-609.
+[71] CASTELLANO G, FRANZIN R, SALLUSTIO F, et al. Complement
+component C5a induces aberrant epigenetic modifications in renal tubular
+epithelial cells accelerating senescence by Wnt4/βcatenin signaling after
+ischemia/reperfusion injury [J]. Aging, 2019, 11(13): 4382-4406.
+[72] GONG R, WANG X, LI H, et al. Loss of mA methyltransferase METTL3
+promotes heart regeneration and repair after myocardial injury [J]. Pharmacol
+Res, 2021, 174: 105845-105859.
+[73] LIU T, LIU L, LIU M, et al. MicroRNA-493 targets STMN-1 and promotes
+hypoxia-induced epithelial cell cycle arrest in G/M and renal fibrosis [J].
+FASEB journal : official publication of the Federation of American Societies for
+Experimental Biology, 2019, 33(2): 1565-1577.
+[74] CHEN L, BALAKRISHNAN K, GANDHI V. Inflammation and survival
+pathways: chronic lymphocytic leukemia as a model system [J]. Biochem
+Pharmacol, 2010, 80(12): 1936-1945.
+[75] CHAIB S, TCHKONIA T, KIRKLAND J. Cellular senescence and senolytics:
+the path to the clinic [J]. Nat Med, 2022, 28(8): 1556-1568.
+[76] ZHU Y, TCHKONIA T, PIRTSKHALAVA T, et al. The Achilles' heel of
+senescent cells: from transcriptome to senolytic drugs [J]. Aging Cell, 2015,
+14(4): 644-658.
+[77] MUñOZ-ESPíN D, ROVIRA M, GALIANA I, et al. A versatile drug delivery
+system targeting senescent cells [J]. EMBO Mol Med, 2018, 10(9): e9355-
+e9373.
+[78] DöRR J, YU Y, MILANOVIC M, et al. Synthetic lethal metabolic targeting of
+cellular senescence in cancer therapy [J]. Nature, 2013, 501(7467): 421-425.
+131
+--- 第150页 ---
+吉林大学博士学位论文
+[79] ZHANG H, FU L. The role of ALDH2 in tumorigenesis and tumor progression:
+Targeting ALDH2 as a potential cancer treatment [J]. Acta pharmaceutica Sinica.
+B, 2021, 11(6): 1400-1411.
+[80] ZHANG J, GUO Y, ZHAO X, et al. The role of aldehyde dehydrogenase 2 in
+cardiovascular disease [J]. Nat Rev Cardiol, 2023, 20(7): 495-509.
+[81] YANG K, REN J, LI X, et al. Prevention of aortic dissection and aneurysm via
+an ALDH2-mediated switch in vascular smooth muscle cell phenotype [J]. Eur
+Heart J, 2020, 41(26): 2442-2453.
+[82] ZHAO Y, WANG B, ZHANG J, et al. ALDH2 (Aldehyde Dehydrogenase 2)
+Protects Against Hypoxia-Induced Pulmonary Hypertension [J].
+Arteriosclerosis, thrombosis, and vascular biology, 2019, 39(11): 2303-2319.
+[83] WANG S, WANG L, QIN X, et al. ALDH2 contributes to melatonin-induced
+protection against APP/PS1 mutation-prompted cardiac anomalies through
+cGAS-STING-TBK1-mediated regulation of mitophagy [J]. Signal
+transduction and targeted therapy, 2020, 5(1): 119-132.
+[84] WANG W, WANG J, LIU S, et al. An EHMT2/NFYA-ALDH2 signaling axis
+modulates the RAF pathway to regulate paclitaxel resistance in lung cancer [J].
+Mol Cancer, 2022, 21(1): 106-124.
+[85] TAN X, CHEN Y, ZOU S, et al. ALDH2 attenuates ischemia and reperfusion
+injury through regulation of mitochondrial fusion and fission by
+PI3K/AKT/mTOR pathway in diabetic cardiomyopathy [J]. Free Radic Biol
+Med, 2023, 195: 219-230.
+[86] MA L, DING Z, YIN P, et al. Hypertrophic preconditioning cardioprotection
+after myocardial ischaemia/reperfusion injury involves ALDH2-dependent
+metabolism modulation [J]. Redox biology, 2021, 43: 101960-101974.
+[87] ZHANG C, QIN F, LI X, et al. Identification of novel proteins for lacunar stroke
+by integrating genome-wide association data and human brain proteomes [J].
+BMC Med, 2022, 20(1): 211-222.
+[88] PEREZ-MILLER S, YOUNUS H, VANAM R, et al. Alda-1 is an agonist and
+chemical chaperone for the common human aldehyde dehydrogenase 2 variant
+[J]. Nat Struct Mol Biol, 2010, 17(2): 159-164.
+[89] CHEN C, BUDAS G, CHURCHILL E, et al. Activation of aldehyde
+dehydrogenase-2 reduces ischemic damage to the heart [J]. Science, 2008,
+321(5895): 1493-1495.
+[90] SUN X, GAO R, LI W, et al. Alda-1 treatment promotes the therapeutic effect
+of mitochondrial transplantation for myocardial ischemia-reperfusion injury [J].
+Bioactive materials, 2021, 6(7): 2058-2069.
+[91] KIMURA M, YOKOYAMA A, HIGUCHI S. Aldehyde dehydrogenase-2 as a
+therapeutic target [J]. Expert Opin Ther Targets, 2019, 23(11): 955-966.
+[92] FLOR A, KRON S. Lipid-derived reactive aldehydes link oxidative stress to
+cell senescence [J]. Cell Death Dis, 2016, 7(9): e2366-e2369.
+[93] DINGLER F, WANG M, MU A, et al. Two Aldehyde Clearance Systems Are
+Essential to Prevent Lethal Formaldehyde Accumulation in Mice and Humans
+[J]. Mol Cell, 2020, 80(6): 996-1012.
+132
+--- 第151页 ---
+参考文献
+[94] XUE L, YANG F, HAN Z, et al. ALDH2 mediates the dose-response protection
+of chronic ethanol against endothelial senescence through SIRT1/p53 pathway
+[J]. Biochem Biophys Res Commun, 2018, 504(4): 777-783.
+[95] NANNELLI G, TERZUOLI E, GIORGIO V, et al. ALDH2 Activity Reduces
+Mitochondrial Oxygen Reserve Capacity in Endothelial Cells and Induces
+Senescence Properties [J]. Oxid Med Cell Longev, 2018, 2018: 9765027-
+9765040.
+[96] ZHU H, WANG Z, DONG Z, et al. Aldehyde dehydrogenase 2 deficiency
+promotes atherosclerotic plaque instability through accelerating mitochondrial
+ROS-mediated vascular smooth muscle cell senescence [J]. Biochimica et
+biophysica acta. Molecular basis of disease, 2019, 1865(7): 1782-1792.
+[97] LIDIJA M, NEVEN Z, ZLATKO M, et al. The 4-Hydroxynonenal-Protein
+Adducts and Their Biological Relevance: Are Some Proteins Preferred Targets?
+[J]. Antioxidants (Basel), 2023, 12(4): 856-874.
+[98] LIGIA A K, DARLAN S C, LUIZ R G B, et al. 4-Hydroxynonenal impairs
+miRNA maturation in heart failure via Dicer post-translational modification [J].
+Eur Heart J, 2023, 44(44): 4696-4712.
+[99] YONGJUN Z, HUA W, MENGMEI W, et al. Dexmedetomidine alleviates
+ferroptosis following hepatic ischemia-reperfusion injury by upregulating
+Nrf2/GPx4-dependent antioxidant responses [J]. Biomed Pharmacother, 2023,
+169(0).
+[100] YUNXIANG W, BIN L, GUANTING L, et al. Corilagin attenuates intestinal
+ischemia/reperfusion injury in mice by inhibiting ferritinophagy-mediated
+ferroptosis through disrupting NCOA4-ferritin interaction [J]. Life Sci, 2023,
+334(0) : 115915-115930.
+[101] LULU L, JIAOJIAO P, DANDAN Q, et al. Deubiquitinase OTUD5 as a Novel
+Protector against 4-HNE-Triggered Ferroptosis in Myocardial
+Ischemia/Reperfusion Injury [J]. Adv Sci (Weinh), 2023, 10: e2301852-
+e2301870.
+[102] LUCA S, NATASCIA G, SERENELLA A, et al. Stroke by inducing HDAC9-
+dependent deacetylation of HIF-1 and Sp1, promotes TfR1 transcription and
+GPX4 reduction, thus determining ferroptotic neuronal death [J]. Int J Biol Sci,
+2023, 19(9): 2695-2710.
+[103] EUN JI J, DAE HYUN K, BONGGI L, et al. Activation of proinflammatory
+signaling by 4-hydroxynonenal-Src adducts in aged kidneys [J]. Oncotarget,
+2016, 7(32): 50864-50874.
+[104] AYALA A, MUñOZ M, ARGüELLES S. Lipid peroxidation: production,
+metabolism, and signaling mechanisms of malondialdehyde and 4-hydroxy-2-
+nonenal [J]. Oxid Med Cell Longev, 2014, 2014: 60438-360469.
+[105] WEIZHEN Z, DECHAO F, XU S, et al. The Potential Role of Mitochondrial
+Acetaldehyde Dehydrogenase 2 in Urological Cancers From the Perspective of
+Ferroptosis and Cellular Senescence [J]. Front Cell Dev Biol, 2022, 10(0):
+850145-850158.
+[106] ROSENZWEIG R, NILLEGODA N, MAYER M, et al. The Hsp70 chaperone
+133
+--- 第152页 ---
+吉林大学博士学位论文
+network [J]. Nat Rev Mol Cell Biol, 2019, 20(11): 665-680.
+[107] AMBROSE A, CHAPMAN E. Function, Therapeutic Potential, and Inhibition
+of Hsp70 Chaperones [J]. J Med Chem, 2021, 64(11): 7060-7082.
+[108] BAŃSKI P, MAHBOUBI H, KODIHA M, et al. Nucleolar targeting of the
+chaperone hsc70 is regulated by stress, cell signaling, and a composite targeting
+signal which is controlled by autoinhibition [J]. The Journal of biological
+chemistry, 2010, 285(28): 21858-21867.
+[109] ROBERT G, JACQUEL A, AUBERGER P. Chaperone-Mediated Autophagy
+and Its Emerging Role in Hematological Malignancies [J]. Cells, 2019, 8(10):
+1260-1279.
+[110] LI Y, XUE Y, XU X, et al. A mitochondrial FUNDC1/HSC70 interaction
+organizes the proteostatic stress response at the risk of cell morbidity [J]. The
+EMBO journal, 2019, 38(3) : e98786-e98806.
+[111] SONG Y, ZHONG C, WANG X. Heat shock protein 70: A promising
+therapeutic target for myocardial ischemia-reperfusion injury [J]. J Cell Physiol,
+2019, 234(2): 1190-1207.
+[112] DU S, ZHANG X, JIA Y, et al. Hepatocyte HSPA12A inhibits macrophage
+chemotaxis and activation to attenuate liver ischemia/reperfusion injury via
+suppressing glycolysis-mediated HMGB1 lactylation and secretion of
+hepatocytes [J]. Theranostics, 2023, 13(11): 3856-3871.
+[113] CHENG C, KAO S, LEE Y. Ferulic Acid Exerts Anti-apoptotic Effects against
+Ischemic Injury by Activating HSP70/Bcl-2- and HSP70/Autophagy-Mediated
+Signaling after Permanent Focal Cerebral Ischemia in Rats [J]. The American
+journal of Chinese medicine, 2019, 47(1): 39-61.
+[114] WANG Z, HAVASI A, BEELER A, et al. Mechanisms of nucleophosmin
+(NPM)-mediated regulated cell death elucidated by Hsp70 during renal
+ischemia [J]. Apoptosis : an international journal on programmed cell death,
+2022, 27: 22-33.
+[115] KIM J, HAN Y, LEE J, et al. The 70-kDa heat shock protein (Hsp70) as a
+therapeutic target for stroke [J]. Expert Opin Ther Targets, 2018, 22(3): 191-
+199.
+[116] GUO F, SIGUA C, BALI P, et al. Mechanistic role of heat shock protein 70 in
+Bcr-Abl-mediated resistance to apoptosis in human acute leukemia cells [J].
+Blood, 2005, 105(3): 1246-1255.
+[117] SRIVASTAVA S, VISHWANATHAN V, BIRJE A, et al. Evolving paradigms on
+the interplay of mitochondrial Hsp70 chaperone system in cell survival and
+senescence [J]. Crit Rev Biochem Mol Biol, 2019, 54(6): 517-536.
+[118] TAKENAKA Y, INOUE I, NAKANO T, et al. Prolonged disturbance of
+proteostasis induces cellular senescence via temporal mitochondrial
+dysfunction and subsequent mitochondrial accumulation in human fibroblasts
+[J]. The FEBS journal, 2022, 289(6): 1650-1667.
+[119] ZHANG Y, QIAO X, LIU L, et al. Long noncoding RNA MAGI2-AS3 regulates
+the HO level and cell senescence via HSPA8 [J]. Redox biology, 2022, 54:
+102383.
+134
+--- 第153页 ---
+参考文献
+[120] WANG B, KE W, WANG K, et al. Mechanosensitive Ion Channel Piezo1
+Activated by Matrix Stiffness Regulates Oxidative Stress-Induced Senescence
+and Apoptosis in Human Intervertebral Disc Degeneration [J]. Oxid Med Cell
+Longev, 2021, 2021: 8884922-8884935.
+[121] KO H, KIM J, AHN M, et al. Ergothioneine alleviates senescence of fibroblasts
+induced by UVB damage of keratinocytes via activation of the Nrf2/HO-1
+pathway and HSP70 in keratinocytes [J]. Exp Cell Res, 2021, 400(1): 112516-
+112526.
+[122] ROTH G, MENSAH G, JOHNSON C, et al. Global Burden of Cardiovascular
+Diseases and Risk Factors, 1990-2019: Update From the GBD 2019 Study [J].
+J Am Coll Cardiol, 2020, 76(25): 2982-3021.
+[123] MACKMAN N, BERGMEIER W, STOUFFER G, et al. Therapeutic strategies
+for thrombosis: new targets and approaches [J]. Nat Rev Drug Discov, 2020,
+19(5): 333-352.
+[124] DOENST T, HAVERICH A, SERRUYS P, et al. PCI and CABG for Treating
+Stable Coronary Artery Disease: JACC Review Topic of the Week [J]. J Am
+Coll Cardiol, 2019, 73(8): 964-976.
+[125] ZHANG Q, WANG L, WANG S, et al. Signaling pathways and targeted therapy
+for myocardial infarction [J]. Signal transduction and targeted therapy, 2022,
+7(1): 78-116.
+[126] KHALIL H, KANISICAK O, VAGNOZZI R, et al. Cell-specific ablation of
+Hsp47 defines the collagen-producing cells in the injured heart [J]. JCI insight,
+2019, 4(15): e128722- e128740.
+[127] REICHARDT I, ROBESON K, REGNIER M, et al. Controlling cardiac fibrosis
+through fibroblast state space modulation [J]. Cell Signal, 2021, 79: 109888-
+109915.
+[128] PRABHU S, FRANGOGIANNIS N. The Biological Basis for Cardiac Repair
+After Myocardial Infarction: From Inflammation to Fibrosis [J]. Circ Res, 2016,
+119(1): 91-112.
+[129] FU X, KHALIL H, KANISICAK O, et al. Specialized fibroblast differentiated
+states underlie scar formation in the infarcted mouse heart [J]. The Journal of
+clinical investigation, 2018, 128(5): 2127-2143.
+[130] FARBEHI N, PATRICK R, DORISON A, et al. Single-cell expression profiling
+reveals dynamic flux of cardiac stromal, vascular and immune cells in health
+and injury [J]. eLife, 2019, 8: 882-921.
+[131] SANADA S, HAKUNO D, HIGGINS L, et al. IL-33 and ST2 comprise a critical
+biomechanically induced and cardioprotective signaling system [J]. The Journal
+of clinical investigation, 2007, 117(6): 1538-1549.
+[132] CARTLEDGE J, KANE C, DIAS P, et al. Functional crosstalk between cardiac
+fibroblasts and adult cardiomyocytes by soluble mediators [J]. Cardiovasc Res,
+2015, 105(3): 260-270.
+[133] CHEN X, LI X, WU X, et al. Integrin beta-like 1 mediates fibroblast-
+cardiomyocyte crosstalk to promote cardiac fibrosis and hypertrophy [J].
+Cardiovasc Res, 2023, 119(10): 1928-1941.
+135
+--- 第154页 ---
+吉林大学博士学位论文
+[134] HORTELLS L, VALIENTE-ALANDI I, THOMAS Z, et al. A specialized
+population of Periostin-expressing cardiac fibroblasts contributes to postnatal
+cardiomyocyte maturation and innervation [J]. Proc Natl Acad Sci U S A, 2020,
+117(35): 21469-21479.
+[135] HARRISON C, TREVELIN S, RICHARDS D, et al. Fibroblast Nox2 (NADPH
+Oxidase-2) Regulates ANG II (Angiotensin II)-Induced Vascular Remodeling
+and Hypertension via Paracrine Signaling to Vascular Smooth Muscle Cells [J].
+Arteriosclerosis, thrombosis, and vascular biology, 2021, 41(2): 698-710.
+[136] MEYER K, HODWIN B, RAMANUJAM D, et al. Essential Role for Premature
+Senescence of Myofibroblasts in Myocardial Fibrosis [J]. J Am Coll Cardiol,
+2016, 67(17): 2018-2028.
+[137] SHIBAMOTO M, HIGO T, NAITO A, et al. Activation of DNA Damage
+Response and Cellular Senescence in Cardiac Fibroblasts Limit Cardiac
+Fibrosis After Myocardial Infarction [J]. International heart journal, 2019, 60(4):
+944-957.
+[138] PORTER K, TURNER N. Cardiac fibroblasts: at the heart of myocardial
+remodeling [J]. Pharmacol Ther, 2009, 123(2): 255-278.
+[139] CHEN M, LEE R, GARBERN J. Senescence mechanisms and targets in the
+heart [J]. Cardiovasc Res, 2022, 118(5): 1173-1187.
+[140] LI H, ZHU J, XU Y, et al. Notoginsenoside R1-loaded mesoporous silica
+nanoparticles targeting the site of injury through inflammatory cells improves
+heart repair after myocardial infarction [J]. Redox biology, 2022, 54: 102384-
+102401.
+[141] QUAN S, HONGQIN M, JIAXIONG Z, et al. A Self-Sustaining Antioxidant
+Strategy for Effective Treatment of Myocardial Infarction [J]. Adv Sci (Weinh),
+2022, 10(5): e2204999- e22045007.
+[142] PAVLOS P, GEORGE T, NEFELI L, et al. The Dual Role of Oxidative-Stress-
+Induced Autophagy in Cellular Senescence: Comprehension and Therapeutic
+Approaches [J]. Antioxidants (Basel), 2023, 12(1): 169-187.
+[143] VILLALOBOS E, CRIOLLO A, SCHIATTARELLA G, et al. Fibroblast
+Primary Cilia Are Required for Cardiac Fibrosis [J]. Circulation, 2019, 139(20):
+2342-2357.
+[144] PALUVAI H, DI GIORGIO E, BRANCOLINI C. The Histone Code of
+Senescence [J]. Cells, 2020, 9(2): 466-484.
+[145] CAMPISI J, D'ADDA DI FAGAGNA F. Cellular senescence: when bad things
+happen to good cells [J]. Nat Rev Mol Cell Biol, 2007, 8(9): 729-740.
+[146] TCHKONIA T, KIRKLAND J. Aging, Cell Senescence, and Chronic Disease:
+Emerging Therapeutic Strategies [J]. JAMA, 2018, 320(13): 1319-1320.
+[147] ROOS C, ZHANG B, PALMER A, et al. Chronic senolytic treatment alleviates
+established vasomotor dysfunction in aged or atherosclerotic mice [J]. Aging
+Cell, 2016, 15(5): 973-977.
+[148] SHINDE A, FRANGOGIANNIS N. Fibroblasts in myocardial infarction: a role
+in inflammation and repair [J]. J Mol Cell Cardiol, 2014, 70: 74-82.
+[149] BAGGETT B, MURPHY K, SENGUN E, et al. Myofibroblast senescence
+136
+--- 第155页 ---
+参考文献
+promotes arrhythmogenic remodeling in the aged infarcted rabbit heart [J].
+eLife, 2023, 12: e84088- e84118.
+[150] MAYORGA M, BAHI N, BALLESTER M, et al. Bcl-2 is a key factor for
+cardiac fibroblast resistance to programmed cell death [J]. The Journal of
+biological chemistry, 2004, 279(33): 34882-34889.
+[151] VENUGOPAL H, HANNA A, HUMERES C, et al. Properties and Functions of
+Fibroblasts and Myofibroblasts in Myocardial Infarction [J]. Cells, 2022, 11(9):
+1386-1407.
+[152] BRETHERTON R, BUGG D, OLSZEWSKI E, et al. Regulators of cardiac
+fibroblast cell state [J]. Matrix biology : journal of the International Society for
+Matrix Biology, 2020: 117-135.
+[153] GEORGAKOPOULOU E, EVANGELOU K, HAVAKI S, et al. Apoptosis or
+senescence? Which exit route do epithelial cells and fibroblasts preferentially
+follow? [J]. Mech Ageing Dev, 2016, 156: 17-24.
+[154] LEWINSKA A, ADAMCZYK-GROCHALA J, KWASNIEWICZ E, et al.
+Downregulation of methyltransferase Dnmt2 results in condition-dependent
+telomere shortening and senescence or apoptosis in mouse fibroblasts [J]. J Cell
+Physiol, 2017, 232(12): 3714-3726.
+[155] LEE J, NG S, HSU J, et al. Galangin Reverses HO-Induced Dermal Fibroblast
+Senescence via SIRT1-PGC-1α/Nrf2 Signaling [J]. Int J Mol Sci, 2022, 23(3):
+1387-1402 .
+[156] ANERILLAS C, HERMAN A, ROSSI M, et al. Early SRC activation skews
+cell fate from apoptosis to senescence [J]. Science advances, 2022, 8(14):
+eabm0756.
+[157] LIAO J, LAI Z, HUANG G, et al. Setanaxib mitigates oxidative damage
+following retinal ischemia-reperfusion via NOX1 and NOX4 inhibition in
+retinal ganglion cells [J]. Biomedicine & pharmacotherapy = Biomedecine &
+pharmacotherapie, 2024, 170: 116042-116058.
+[158] HAO Z, SENLIN H, GUOQUAN W, et al. CircRNA Samd4 induces cardiac
+repair after myocardial infarction by blocking mitochondria-derived ROS
+output. PG - 3477-3498 [J]. Mol Ther, 2022, 30(11): 3477-3498.
+[159] WEN-QIANG Z, JIAN-HUI Z, ZI-HAN L, et al. Mammalian mitochondrial
+translation infidelity leads to oxidative stress-induced cell cycle arrest and
+cardiomyopathy. PG - e2309714120 [J]. Proc Natl Acad Sci U S A, 2023,
+120(37): e2309714120.
+[160] YAO T, YINGA W, JING M, et al. Comparative mechanistic study of RPE cell
+death induced by different oxidative stresses [J]. Redox Biol, 2023, 65: 102840-
+102856.
+[161] YAEL R, NURIT K, GUY C, et al. Foam cell-derived 4-hydroxynonenal
+induces endothelial cell senescence in a TXNIP-dependent manner [J]. J Cell
+Mol Med, 2015, 19(8):1887-1899.
+[162] DING W, CHEN G, DENG S, et al. Calycosin protects against oxidative stress-
+induced cardiomyocyte apoptosis by activating aldehyde dehydrogenase 2 [J].
+Phytotherapy research : PTR, 2023, 37(1): 35-49.
+137
+--- 第156页 ---
+吉林大学博士学位论文
+[163] LI J, SHI X, CHEN Z, et al. Aldehyde dehydrogenase 2 alleviates mitochondrial
+dysfunction by promoting PGC-1α-mediated biogenesis in acute kidney injury
+[J]. Cell Death Dis, 2023, 14(1): 45-59.
+[164] SIVAKUMAR P, AMMAR R, THOMPSON J, et al. Integrated plasma
+proteomics and lung transcriptomics reveal novel biomarkers in idiopathic
+pulmonary fibrosis [J]. Respir Res, 2021, 22(1): 273-286.
+[165] WANG X, SONG T, SUN Y, et al. Proteomic Analysis Reveals the Effect of
+Trichostatin A and Bone Marrow-Derived Dendritic Cells on the Fatty Acid
+Metabolism of NIH3T3 Cells under Oxygen-Glucose Deprivation Conditions
+[J]. J Proteome Res, 2021, 20(1): 960-971.
+[166] OGRODNIK M. Cellular aging beyond cellular senescence: Markers of
+senescence prior to cell cycle arrest in vitro and in vivo [J]. Aging Cell, 2021,
+20(4): e13338.
+[167] RAGHUNATHAN L, HSU L, KLISAK I, et al. Regional localization of the
+human genes for aldehyde dehydrogenase-1 and aldehyde dehydrogenase-2 [J].
+Genomics, 1988, 2(3): 267-269.
+[168] FENG D, LI D, SHI X, et al. A gene prognostic index from cellular senescence
+predicting metastasis and radioresistance for prostate cancer [J]. J Transl Med,
+2022, 20(1): 252-263.
+[169] XUE L, ZHU W, YANG F, et al. Appropriate dose of ethanol exerts anti-
+senescence and anti-atherosclerosis protective effects by activating ALDH2 [J].
+Biochem Biophys Res Commun, 2019, 512(2): 319-325.
+[170] XUE L, CUI S, CUI Z, et al. ALDH2: A new protector against age-independent
+myocardial senescence [J]. Int J Cardiol, 2016, 210: 38-40.
+[171] ZHANG Y, WANG Y, XU J, et al. Melatonin attenuates myocardial ischemia-
+reperfusion injury via improving mitochondrial fusion/mitophagy and
+activating the AMPK-OPA1 signaling pathways [J]. J Pineal Res, 2019, 66(2):
+e12542.
+[172] CHEN Y, LI S, ZHANG Y, et al. The lncRNA Malat1 regulates microvascular
+function after myocardial infarction in mice via miR-26b-5p/Mfn1 axis-
+mediated mitochondrial dynamics [J]. Redox biology, 2021, 41: 101910-
+101926.
+[173] ROVINI A, HESLOP K, HUNT E, et al. Quantitative analysis of mitochondrial
+membrane potential heterogeneity in unsynchronized and synchronized cancer
+cells [J]. FASEB journal : official publication of the Federation of American
+Societies for Experimental Biology, 2021, 35(1): e21148.
+[174] ZIEGLER D, WILEY C, VELARDE M. Mitochondrial effectors of cellular
+senescence: beyond the free radical theory of aging [J]. Aging Cell, 2015, 14(1):
+1-7.
+[175] CHAPMAN J, FIELDER E, PASSOS J. Mitochondrial dysfunction and cell
+senescence: deciphering a complex relationship [J]. FEBS Lett, 2019, 593(13):
+1566-1579.
+[176] PASSOS J, SARETZKI G, AHMED S, et al. Mitochondrial dysfunction
+accounts for the stochastic heterogeneity in telomere-dependent senescence [J].
+138
+--- 第157页 ---
+参考文献
+PLoS Biol, 2007, 5(5): e110.
+[177] SUN X, ZHU H, DONG Z, et al. Mitochondrial aldehyde dehydrogenase-2
+deficiency compromises therapeutic effect of ALDH bright cell on peripheral
+ischemia [J]. Redox biology, 2017, 13: 196-206.
+[178] GUO Q, KAWAHATA I, CHENG A, et al. Fatty acid-binding proteins 3 and 5
+are involved in the initiation of mitochondrial damage in ischemic neurons [J].
+Redox biology, 2023, 59: 102547-102563.
+[179] ZHANG Y, WEI H, WANG M, et al. Dexmedetomidine alleviates ferroptosis
+following hepatic ischemia-reperfusion injury by upregulating Nrf2/GPx4-
+dependent antioxidant responses [J]. Biomedicine & pharmacotherapy =
+Biomedecine & pharmacotherapie, 2023, 169: 115915-115930.
+[180] GOMES K, CAMPOS J, BECHARA L, et al. Aldehyde dehydrogenase 2
+activation in heart failure restores mitochondrial function and improves
+ventricular function and remodelling [J]. Cardiovasc Res, 2014, 103(4): 498-
+508.
+[181] BELTRAN L, CHAUSSADE C, VANHAESEBROECK B, et al. Calpain
+interacts with class IA phosphoinositide 3-kinases regulating their stability and
+signaling activity [J]. Proc Natl Acad Sci U S A, 2011, 108(39): 16217-16222.
+[182] LI Y, ZHANG D, JIN W, et al. Mitochondrial aldehyde dehydrogenase-2
+(ALDH2) Glu504Lys polymorphism contributes to the variation in efficacy of
+sublingual nitroglycerin [J]. The Journal of clinical investigation, 2006, 116(2):
+506-511.
+[183] MI J, YANG Y, YAO H, et al. Inhibition of heat shock protein family A member
+8 attenuates spinal cord ischemia-reperfusion injury via astrocyte NF-
+κB/NLRP3 inflammasome pathway : HSPA8 inhibition protects spinal
+ischemia-reperfusion injury [J]. J Neuroinflammation, 2021, 18(1): 170-182.
+[184] LIU Y, JIANG S, YANG P, et al. EF1A1/HSC70 Cooperatively Suppress Brain
+Endothelial Cell Apoptosis via Regulating JNK Activity [J]. CNS neuroscience
+& therapeutics, 2016, 22(10): 836-844.
+[185] PARRA L, BAUST T, SMITH A, et al. The Molecular Chaperone Hsc70
+Interacts with Tyrosine Hydroxylase to Regulate Enzyme Activity and Synaptic
+Vesicle Localization [J]. The Journal of biological chemistry, 2016, 291(34):
+17510-17522.
+[186] RODRIGUEZ-ZAVALA J, WEINER H. Structural aspects of aldehyde
+dehydrogenase that influence dimer-tetramer formation [J]. Biochemistry, 2002,
+41(26): 8229-8237.
+[187] YAO P, ZHANG Z, LIU H, et al. p53 protects against alcoholic fatty liver
+disease via ALDH2 inhibition [J]. The EMBO journal, 2023, 42(8): e112304.
+[188] SALERNO N, MARINO F, SCALISE M, et al. Pharmacological clearance of
+senescent cells improves cardiac remodeling and function after myocardial
+infarction in female aged mice [J]. Mech Ageing Dev, 2022, 208: 111740-
+111755.
+[189] WALASZCZYK A, DOOKUN E, REDGRAVE R, et al. Pharmacological
+clearance of senescent cells improves survival and recovery in aged mice
+139
+--- 第158页 ---
+吉林大学博士学位论文
+following acute myocardial infarction [J]. Aging Cell, 2019, 18(3): e12945.
+[190] MIZUNO Y, HOKIMOTO S, HARADA E, et al. Variant Aldehyde
+Dehydrogenase 2 (ALDH2*2) Is a Risk Factor for Coronary Spasm and ST-
+Segment Elevation Myocardial Infarction [J]. Journal of the American Heart
+Association, 2016, 5(5): e003247.
+[191] NENE A, CHEN C, DISATNIK M, et al. Aldehyde dehydrogenase 2 activation
+and coevolution of its εPKC-mediated phosphorylation sites [J]. J Biomed Sci,
+2017, 24(1): 3-18.
+[192] LI Q, DENG Y, LIU L, et al. viaSympathetic Denervation Ameliorates Renal
+Fibrosis Inhibition of Cellular Senescence [J]. Frontiers in immunology, 2021,
+12: 823935-823940.
+[193] FRANGOGIANNIS N. Cardiac fibrosis: Cell biological mechanisms,
+molecular pathways and therapeutic opportunities [J]. Molecular aspects of
+medicine, 2019, 65: 70-99.
+[194] BAILEY L, DAVIS J. If these myocytes could talk, they would speak the
+language of metabolites [J]. The Journal of clinical investigation, 2022, 132(2):
+e156296- e156299.
+[195] SUN L, FERREIRA J, MOCHLY-ROSEN D. ALDH2 activator inhibits
+increased myocardial infarction injury by nitroglycerin tolerance [J]. Sci Transl
+Med, 2011, 3(107): 107ra111-107ra125.
+140

@@ -24,6 +24,7 @@ from ..graph import (
     split_head_tail_nodes,
 )
 from ..models import HGTLinkPredictor, MemoryBank, RGCNLinkPredictor, SAGELinkPredictor, SimpleHGNLinkPredictor
+from ..models.losses import CPI_LOSS_WEIGHT
 from .training_components import (
     GradientMonitor,
     LRSchedulerFactory,
@@ -78,6 +79,7 @@ def train_sage(
     dropedge_cpi: float = 0.0,
     focal_gamma: float = 2.0,
     focal_alpha: float = 0.75,
+    semantic_attn_weight: float = 0.0,
     memory_bank_size: int = 8192,
     head_ratio: float = 0.2,
     lambda_hhi: float = 1.0,
@@ -98,6 +100,7 @@ def train_sage(
     hetero_adj: dict | None = None,
     n_diseases: int = 0,
     use_amp: bool = False,
+    val_freq: int = 2,
 ) -> tuple[SAGELinkPredictor, list[dict]]:
     """GraphSAGE mini-batch 训练
 
@@ -140,6 +143,7 @@ def train_sage(
     x = graphs["x"]
     homo_adj = graphs.get("homo_adj_train", graphs["homo_adj"])
     n_compounds = graphs["n_compounds"]
+    n_proteins = graphs["n_proteins"]
     all_compound_to_pos = compound_to_pos
 
     _homo_edge_index_val = graphs.get("homo_edge_index_val", graphs["homo_edge_index"])
@@ -185,6 +189,15 @@ def train_sage(
     validator = Validator(_validate_sage_fn, patience=patience)
 
     history = []
+    # v68: 损失配置自检 — 记录实际生效的损失组合，便于诊断
+    # 注: bce_weight 由 _compute_cpi_loss 内部从模块级变量 CPI_LOSS_WEIGHT 读取
+    logger.info(
+        f"[自检] SAGE loss 组合: focal_gamma={focal_gamma} focal_alpha={focal_alpha} "
+        f"bpr_weight={bpr_weight} use_infonce={use_infonce} "
+        f"aux_recon={aux_recon_weight} dropedge_ppi={dropedge_ppi}"
+    )
+    assert bpr_weight <= 0.5, f"bpr_weight={bpr_weight} 超过 0.5，发散风险高"
+    assert CPI_LOSS_WEIGHT >= bpr_weight, f"BCE={CPI_LOSS_WEIGHT} < BPR={bpr_weight}，分类目标被排序目标压制"
 
     def _train_one_epoch(
         epoch: int,
@@ -296,6 +309,7 @@ def train_sage(
                 focal_alpha=focal_alpha,
                 use_residue_decoder=stage_use_residue_decoder,
                 bpr_detach_neg=stage_bpr_detach_neg,
+                semantic_attn_weight=semantic_attn_weight,
             )
 
             # 辅助 PPI 重建损失（DHGT-DTI 风格）
@@ -388,10 +402,17 @@ def train_sage(
                 with torch.no_grad(), autocast('cuda', enabled=use_amp):
                     val_metrics = _validate_sage_fn(
                         model, x, _homo_edge_index_val,
-                        val_compounds, all_compound_to_pos, n_compounds)
+                        val_compounds, all_compound_to_pos, n_compounds, n_proteins)
                 logger.info(
                     f"  SAGE pretrain epoch {epoch:3d} | loss={avg_loss:.4f} | "
                     f"val_auc={val_metrics['auc']:.4f} | val_aupr={val_metrics['aupr']:.4f}")
+                # v68: 发散检测 — val_auc < 0.5 且 epoch >= 3 时提前中止
+                if epoch >= 3 and val_metrics.get("auc", 1.0) < 0.5:
+                    logger.error(
+                        f"[ABORT] SAGE pretrain epoch {epoch}: val_auc={val_metrics['auc']:.3f} < 0.5，"
+                        f"训练已发散，提前中止。请检查学习率、损失权重或数据质量。"
+                    )
+                    raise SystemExit(1)
                 if val_metrics["aupr"] > validator.best_val_aupr:
                     validator.best_val_aupr = val_metrics["aupr"]
                     validator.capture_best_state(model)
@@ -424,13 +445,13 @@ def train_sage(
 
         avg_loss = total_loss / n_batches
 
-        if epoch % 2 == 0 and val_compounds:
+        if epoch % val_freq == 0 and val_compounds:
             model.eval()
             # v64: 验证前清理 GPU 缓存，确保全图前向传播有足够连续显存
             torch.cuda.empty_cache()
             # v63: 请求 _validate_sage 返回全图嵌入，供表型验证复用，避免重复 GPU 前向传播
             val_result = _validate_sage_fn(model, x, _homo_edge_index_val, val_compounds, all_compound_to_pos,
-                                         n_compounds, return_embeddings=use_pheno)
+                                         n_compounds, n_proteins, return_embeddings=use_pheno)
             if use_pheno:
                 val_metrics, full_node_emb_val = val_result
             else:
@@ -467,6 +488,15 @@ def train_sage(
                 log_str += f" | pheno_auc={pheno_auc:.4f}"
             logger.info(log_str)
 
+            # v68: 发散检测 — val_auc < 0.5 且累积 epoch >= 3 时提前中止
+            effective_epoch = epoch + pretrain_epochs
+            if effective_epoch >= 3 and m.get("auc", 1.0) < 0.5:
+                logger.error(
+                    f"[ABORT] SAGE finetune epoch {epoch}: val_auc={m['auc']:.3f} < 0.5，"
+                    f"训练已发散，提前中止。请检查学习率、损失权重或数据质量。"
+                )
+                raise SystemExit(1)
+
             # 早停基于 val_aupr（化合物冷启动）
             is_new_best = validator.update_best(m["aupr"], m["auc"])
             if is_new_best:
@@ -493,7 +523,8 @@ def train_sage(
             else:
                 scheduler.step()
         else:
-            scheduler.step()
+            if not use_plateau_scheduler:
+                scheduler.step()
 
     if validator.load_best_state(model):
         best_entry = validator.get_best_entry(history)
@@ -537,6 +568,7 @@ def train_hgt(
     dropedge_cpi: float = 0.0,
     focal_gamma: float = 2.0,
     focal_alpha: float = 0.75,
+    semantic_attn_weight: float = 0.0,
     memory_bank_size: int = 8192,
     head_ratio: float = 0.2,
     lambda_hhi: float = 1.0,
@@ -559,6 +591,7 @@ def train_hgt(
     n_diseases: int = 0,
     disease_embed = None,
     use_amp: bool = False,
+    val_freq: int = 2,
 ) -> tuple[nn.Module, list[dict]]:
     """HGT/RGCN mini-batch 训练（适用于任何支持 x_dict/edge_index_dict 前向的模型）
 
@@ -622,6 +655,14 @@ def train_hgt(
     validator = Validator(_validate_hgt_fn, patience=patience)
 
     history = []
+    # v68: 损失配置自检
+    logger.info(
+        f"[自检] HGT loss 组合: focal_gamma={focal_gamma} focal_alpha={focal_alpha} "
+        f"bpr_weight={bpr_weight} use_infonce={use_infonce} "
+        f"aux_recon={aux_recon_weight} dropedge_ppi={dropedge_ppi}"
+    )
+    assert bpr_weight <= 0.5, f"bpr_weight={bpr_weight} 超过 0.5，发散风险高"
+    assert CPI_LOSS_WEIGHT >= bpr_weight, f"BCE={CPI_LOSS_WEIGHT} < BPR={bpr_weight}，分类目标被排序目标压制"
 
     use_pheno = pheno_compound_indices is not None and pheno_labels is not None
     if use_pheno:
@@ -732,6 +773,7 @@ def train_hgt(
                 prot_to_topo_hard_neighbors=prot_to_topo_hard_neighbors,
                 focal_gamma=focal_gamma,
                 focal_alpha=focal_alpha,
+                semantic_attn_weight=semantic_attn_weight,
                 use_residue_decoder=stage_use_residue_decoder,
                 bpr_detach_neg=stage_bpr_detach_neg,
             )
@@ -829,6 +871,13 @@ def train_hgt(
                 logger.info(
                     f"  HGT pretrain epoch {epoch:3d} | loss={avg_loss:.4f} | "
                     f"val_auc={val_metrics['auc']:.4f} | val_aupr={val_metrics['aupr']:.4f}")
+                # v68: 发散检测
+                if epoch >= 3 and val_metrics.get("auc", 1.0) < 0.5:
+                    logger.error(
+                        f"[ABORT] HGT pretrain epoch {epoch}: val_auc={val_metrics['auc']:.3f} < 0.5，"
+                        f"训练已发散，提前中止。"
+                    )
+                    raise SystemExit(1)
                 if val_metrics["aupr"] > validator.best_val_aupr:
                     validator.best_val_aupr = val_metrics["aupr"]
                     validator.capture_best_state(model)
@@ -857,7 +906,7 @@ def train_hgt(
 
         avg_loss = total_loss / n_batches
 
-        if epoch % 2 == 0 and val_compounds:
+        if epoch % val_freq == 0 and val_compounds:
             torch.cuda.empty_cache()
             hd = val_hetero if val_hetero is not None else hetero_data
             with autocast('cuda', enabled=use_amp):
@@ -874,6 +923,15 @@ def train_hgt(
 
             history.append({"epoch": epoch, "loss": avg_loss, "auc": val_auc, "aupr": val_aupr})
             logger.info(f"  HGT epoch {epoch:3d} | loss={avg_loss:.4f} | val_auc={val_auc:.4f} | val_aupr={val_aupr:.4f}")
+
+            # v68: 发散检测
+            effective_epoch = epoch + pretrain_epochs
+            if effective_epoch >= 3 and val_auc < 0.5:
+                logger.error(
+                    f"[ABORT] HGT finetune epoch {epoch}: val_auc={val_auc:.3f} < 0.5，"
+                    f"训练已发散，提前中止。"
+                )
+                raise SystemExit(1)
 
             if validator.should_stop_early():
                 logger.info(f"  HGT 早停 (epoch {epoch}, patience_counter={validator.patience_counter})")
@@ -898,7 +956,8 @@ def train_hgt(
             else:
                 scheduler.step()
         else:
-            scheduler.step()
+            if not use_plateau_scheduler:
+                scheduler.step()
 
     if validator.load_best_state(model):
         best_entry = validator.get_best_entry(history)
@@ -955,7 +1014,16 @@ def train_rgcn(
     plateau_factor: float = 0.5,
     _validate_rgcn_fn=None,
     _compute_cpi_loss_fn=None,
+    _compute_auxiliary_reconstruction_loss_fn=None,
+    aux_recon_weight: float = 0.1,
+    aux_recon_ppi_samples: int = 256,
+    aux_recon_ddi_samples: int = 128,
+    aux_recon_prot_disease_samples: int = 128,
+    hetero_adj: dict | None = None,
+    n_diseases: int = 0,
+    disease_embed = None,
     use_amp: bool = False,
+    val_freq: int = 2,
 ) -> tuple[RGCNLinkPredictor, list[dict]]:
     """RGCN mini-batch 训练（接口与 train_hgt 完全一致）
 
@@ -1001,7 +1069,16 @@ def train_rgcn(
         plateau_factor=plateau_factor,
         _validate_hgt_fn=_validate_rgcn_fn,
         _compute_cpi_loss_fn=_compute_cpi_loss_fn,
+        _compute_auxiliary_reconstruction_loss_fn=_compute_auxiliary_reconstruction_loss_fn,
+        aux_recon_weight=aux_recon_weight,
+        aux_recon_ppi_samples=aux_recon_ppi_samples,
+        aux_recon_ddi_samples=aux_recon_ddi_samples,
+        aux_recon_prot_disease_samples=aux_recon_prot_disease_samples,
+        hetero_adj=hetero_adj,
+        n_diseases=n_diseases,
+        disease_embed=disease_embed,
         use_amp=use_amp,
+        val_freq=val_freq,
     )
 
 
@@ -1038,6 +1115,7 @@ def train_simplehgn(
     dropedge_cpi: float = 0.0,
     focal_gamma: float = 2.0,
     focal_alpha: float = 0.75,
+    semantic_attn_weight: float = 0.0,
     memory_bank_size: int = 8192,
     head_ratio: float = 0.2,
     lambda_hhi: float = 1.0,
@@ -1060,6 +1138,7 @@ def train_simplehgn(
     n_diseases: int = 0,
     disease_embed = None,
     use_amp: bool = False,
+    val_freq: int = 2,
 ) -> tuple[SimpleHGNLinkPredictor, list[dict]]:
     """SimpleHGN mini-batch 训练（接口与 train_hgt 完全一致）
 
@@ -1092,6 +1171,7 @@ def train_simplehgn(
         dropedge_ppi=dropedge_ppi, dropedge_pathway=dropedge_pathway,
         dropedge_cpi=dropedge_cpi,
         focal_gamma=focal_gamma, focal_alpha=focal_alpha,
+        semantic_attn_weight=semantic_attn_weight,
         memory_bank_size=memory_bank_size,
         head_ratio=head_ratio, lambda_hhi=lambda_hhi,
         head_undersample_ratio=head_undersample_ratio,
@@ -1113,6 +1193,7 @@ def train_simplehgn(
         n_diseases=n_diseases,
         disease_embed=disease_embed,
         use_amp=use_amp,
+        val_freq=val_freq,
     )
 
 

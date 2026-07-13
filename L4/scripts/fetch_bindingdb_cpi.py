@@ -9,7 +9,6 @@ logger = logging.getLogger(__name__)
 import pandas as pd
 import requests
 import time
-import sys
 import os
 import json
 import xml.etree.ElementTree as ET
@@ -219,7 +218,7 @@ def parse_bindingdb_affinity(aff_data, gene_symbol, uniprot_id):
                 "pubmed_id": pubmed_id,
                 "source": "BindingDB"
             }
-    except Exception as e:
+    except Exception:
         logger.exception("捕获到异常并继续执行（原 except 'Exception as e' 静默吞掉）")
         pass
 

@@ -1,0 +1,554 @@
+
+--- 第1页 ---
+生理科学进展
+·90· ProgressinPhysiologicalSciences April25,2023,54(2)︰90~96
+铁死亡机制与脑缺血再灌注损伤及
+中医药干预进展
+*
+潘单依 , 刘旺华 ,,,
+12 123△
+湖南中医药大学中医学国内一流建设学科 湖南中医药大学中医诊断学湖南省重点实验室
+(1 ;2 ;
+湖南中医药大学中医心肺病证辨证与药膳食疗重点研究室 长沙
+3 , 410208)
+摘要 缺血性中风是一种由大脑局部血流中断引起的脑血管疾病。缺血侧脑组织的快速有效再生
+是治疗缺血性中风的关键措施,但在再生和复流过程中存在再灌注损伤的风险。脑缺血再灌注损
+伤( , )作用机制复杂,其过程涉及多种病理环节及信号通
+cerebralischemia-reperfusioninjuryCIRI
+路。铁死亡( )是近年来被广泛关注的新型非凋亡性细胞死亡形式,脂质过氧化与铁超
+ferroptosis
+载是铁死亡的重要环节,而线粒体铁蛋白可能在铁死亡过程中起到保护作用。中医药具有多靶点、
+多途径的优势,以中医药干预铁死亡可能是未来治疗 的新方向。本文简要综述了铁死亡的
+CIRI
+特点及发生机制,探讨中医药干预细胞铁死亡的研究现状,为进一步提升缺血性脑卒中的中医疗效
+提供参考。
+关键词 铁死亡;脑缺血再灌注;线粒体铁蛋白;中医药
+中图分类号
+R241
+ProgressoftheTraditionalChineseMedicineintheRegulationofFerroptosisinCerebralIschemia-
+ReperfusionInjury* 1 , 2 , 1 , 2 , 3 , △ ( 1TheDomesticFirst-classDisci-
+PAN Dan-Yi LIU Wang-Hua
+plineConstructionProjectofChineseMedicine,HunanUniversityofChineseMedicine;
+2ProvincialKeyLaboratoryofTCMDiagnostics; 3KeyLaboratoryofTCMHeartandLung
+SyndromeDifferentiation&MedicatedDietandDietotherapy,HunanUniversityofChinese
+Medicine, , )
+Changsha410208 China
+Abstract
+Ischemicstrokeisacerebrovasculardiseasecausedbyaregionaldisruptionofcerebral
+bloodflowtothebrain.Althoughrapidandeffectiveregenerationoftheischemicbraintissueis
+,
+crucialtothetreatmentofischemicstrokethereexistsariskofreperfusioninjuryduringregen-
+( ) ,
+eration.Theunderlyingmechanismofcerebralischemia-reperfusioninjury CIRI iscomplex
+involvingmultiplepathologicalprocessesandsignalingpathways.Ferroptosisisanewformof
+,
+non-apoptoticcelldeaththathasarousedextensiveconcerninrecentyears duringwhichprocess
+lipidperoxidationandironoverloadplaycrucialroleswhilemitochondrialferritinmaybeprotec-
+引用格式:潘单依 刘旺华 铁死亡机制与脑缺血再灌注损伤及中医药干预进展 生理科学进展
+, . . ,2023,54(2)︰90
+~96
+PANDan-Yi,LIUWang-Hua.ProgressoftheTraditionalChineseMedicineintheRegulationofFerroptosisinCer-
+ebralIschemia-ReperfusionInjury.ProgressinPhysiologicalSciences,2023,54(2)︰90~96.DOI:10.20059/j.cnki.
+pps.2023.01.1120
+收稿日期 修回日期 接受日期
+:2022-11-11; :2022-11-27; :2022-12-05
+国家自然科学基金 湖南省中医药科研计划课题项目 湖南省高校创新
+* (No.81473567); (No.202008、No.2021013);
+平台开放基金项目 湖南中医药大学研究生创新课题项目 资助课题
+(No.20K097); (No.2022CX52)
+通信作者
+△
+595413533@qq.com
+--- 第2页 ---
+生理科学进展
+ProgressinPhysiologicalSciences http://physiol.bjmu.edu.cn April25,2023,54(2)︰90~96 ·91·
+tive.Multi-targetandmulti-pathwayastheadvantages,traditionalChinesemedicine(TCM)may
+beanewdirectiontargetedatferroptosisforfuturetreatmentofCIRI.Thisarticlereviewsthe
+characteristicsandpathogenesisofferroptosisandinvestigatesthecurrentstatusofTCMinter-
+ventionsinferroptosis,providingareferenceforfurtherenhancingtheefficacyofTCMinthe
+treatmentofischemicstroke.
+Keywords
+ferroptosis;cerebralischemia-reperfusioninjury;FtMt;traditionalChinesemedicine
+缺血性卒中是由大脑局部供血障碍引起的常见 制涉及多重信号分子及代谢途径 主要是由于体内
+,
+的脑血管疾病 具有极高的发病率 复发率 死亡率 铁离子过量 导致循环中游离铁水平过高 超载的游
+, 、 、 , ,
+和致残率 并发症多 经济成本显著 预后不良 并且 离铁沉积在身体各个组织和器官中 不断产生羟自
+, , , , ,
+岁人群的中风发生率从 增加到 由基 加速细胞膜的脂质过氧化 同时谷胱甘肽
+20~54 12.9% 18. , ,
+呈逐步年轻化趋势[1] 及时有效地对缺血脑组 被消耗 谷胱甘肽过氧化物酶 活性
+6%, 。 (GSH) , 4(GPX4)
+织进行复流再通是缺血性卒中的关键治疗手段 目 减弱 的平衡状态遭到破坏以至于无法
+, ,GSH/GPX4
+前可用于血流再通的治疗方法是静脉注射组织型纤 正常代谢脂质过氧化物 而游离铁通过芬顿反应产
+,
+溶酶原激活剂和血管内治疗 然而在临床诊疗过程 生大量活性氧 从而导致活性氧积累而引发铁死亡
+, , ,
+中 只有极少数患者能够在有效时间窗内及时接受 形成恶性循环[8] 铁死亡自发现以来 主要围绕铁
+, 。 ,
+溶栓治疗[2] 错过治疗时间窗后 在再灌注恢复供血 代谢紊乱和脂质过氧化这两大特征探讨其调控机
+, ,
+的同时患者还会遭受脑缺血再灌注损伤的二次威 制 但研究结果尚不明确 不过可以肯定的是 不论
+, , ,
+胁[1] 比如颅内压升高 血脑屏障破坏 脑水肿以及 是铁死亡还是其他细胞死亡方式 都被细胞内各种
+, 、 、 ,
+神经功能损害等致命并发症[3] 铁死亡是近年来发 代谢途径所调节 包括氧化应激 铁代谢 脂代谢等
+。 , 、 、 ,
+现的一种区别于细胞凋亡和自噬的新型细胞死亡类 这些机制都会导致脂质过氧化物积累 扰乱机体的
+,
+型 其特点是广泛的铁依赖性脂质过氧化 氧化应激 氧化还原平衡 引起细胞铁死亡
+, , , 。
+是铁死亡发生最主要的原因[4] 近年来许多研究表 二、脑缺血再灌注损伤的铁死亡发生机制
+。
+明 铁螯合剂和铁死亡抑制剂具有减轻神经功能损 大脑是高耗能器官 对缺血缺氧表现得最为敏
+, ,
+伤的功效[5] 而许多中药成分及中药复方发挥着与 感并且耐受力差 最容易发生脑缺血后的二次再灌
+, ,
+二者相似的作用 可以通过干预铁死亡的多条通路 注损伤 再灌注损伤后的主要并发症为脑水肿和脑
+, ,
+从而调控 损伤 并且中医药具有多靶点 多途 细胞坏死等 铁是神经系统电子传递链的重要媒
+CIRI , 、 。
+径等优势 安全且副作用低 在近年来的研究中 铁 介 也是线粒体进行氧化反应以及氧运输的关键物
+, 。 , ,
+死亡已经被证明与神经退行性疾病 心血管疾病 免 质 等 缺血再灌注损伤的特征之一就
+、 、 (Qian .1998)。
+疫系统疾病以及多种肿瘤疾病相关[6,7] 铁死亡通 是导致神经元死亡的线粒体功能障碍 发生脑缺血
+, ,
+路中新的作用靶点也在不断被发现并得以利用 然 后 线粒体功能下降 产生大量活性氧 跨细胞膜的
+, , , ,
+而铁死亡在 中的相关作用研究较少 本文以 离子渗透性增加 导致大量不稳定低分子的 催化
+CIRI 。 , “
+铁死亡的作用机制为切入点 通过阐述铁死亡与 性 铁的释放 无氧糖酵解途径产生大量的还原型烟
+, ” ,
+之间的联系及对中医药干预相关研究进行综 酰胺腺嘌呤二核苷酸磷酸 将 还原成 在
+3+ 2+
+CIRI , Fe Fe ;
+述 以期为脑缺血再灌注损伤的进一步研究和临床 脑缺血和再灌注期间 铁离子的移位进一步加速了
+, ,
+治疗提供理论参考 自由基的产生 导致脂质过氧化和神经元死亡 从而
+。 , ,
+一、铁死亡 加剧脑组织的缺血性损害[9,10]
+。
+铁死亡是一种以细胞内活性氧 蓄积为 一 脂质过氧化引起铁死亡 脑出血后产生游
+(ROS) ( )
+主要特征的非凋亡性细胞死亡新形式 等 离铁 游离铁通过炎症反应诱发下游的氧化应激损
+(Dixon . ,
+铁死亡区别于细胞凋亡 自噬 坏死和其他 伤和芬顿反应 促使体内脂质活性氧
+2012)。 、 、 , (lipid-ROS,L-
+类型的细胞死亡 它在形态学上表现为线粒体萎缩 形成并持续积累 膜脂质过氧化物产生与清
+, 、 ROS) ,
+线粒体膜密度增加及线粒体嵴减少甚至消失 在生 除的不平衡 导致过量的有毒脂质自由基不断积累
+, , ,
+化水平上则表现为铁离子水平上调 铁依赖的活性 这是铁死亡的一个关键因素[11] 是一种抗
+、 。GPX4
+氧和脂质过氧化物增加 等 铁死亡机 氧化酶 通过 的作用将有毒的脂质过氧化物
+(Xie .2016)。 , GSH
+--- 第3页 ---
+生理科学进展
+·92· ProgressinPhysiologicalSciences April25,2023,54(2)︰90~96
+逆转为无毒的脂醇 促进膜脂质 均出现了不同程度的升高 说明神经细胞主动上调
+(L-OOH) (L-OH), ,
+修复 从而减轻细胞氧化损伤 而脑出血后 脂质活 了 和 的表达从而增加了对铁的摄入[19] 还
+, 。 , Tf TfR 。
+性氧的过度表达使氧化平衡系统紊乱 过量蓄积的 有研究发现 脑缺血再灌注后 发挥铁排出功能的转
+, , ,
+脂质活性氧造成过氧化 抑制或者敲除 可诱 铁蛋白受体系统被抑制 细胞内游离铁排出受
+。 GPX4 ,
+发铁死亡 促进 表达或增强其活性能够减轻 阻[20] 脑出血后机体
+2+
+含量升高 细胞内外铁
+, GPX4 。 Fe ,
+铁死亡 能辅助 发挥清除有毒脂质过氧 稳态遭到破坏 产生过量的游离铁 铁超载形成 而
+,GSH GPX4 , , ,
+化物的作用[12] 但游离的二价铁在此时作为脂氧 游离铁不仅增强芬顿反应产生 直接引起铁死
+。 ROS
+合酶 的辅助因子进一步催化 亡 也参与脂氧合酶的合成间接导致铁死亡 除此
+(lipoxygenase,LOX) , 。
+多聚不饱和脂肪酸 之外 铁沉积还可以通过脂质过氧化促进自由基的
+(polyunsaturatedfattyacids, ,
+发生膜磷脂修饰 生成脂质过氧化物[13] 形成 导致 变性和脑组织的进一步损害 在脑
+PUFAs) , ,L- , DNA ,
+被二价铁氧化成毒性更强的高活性烷氧基 卒中后再灌注损伤中形成恶性循环 所有上述研究
+OOH 。
+这些毒性氧自由基能够直接对相邻的 表明 铁超载和铁死亡在缺血再灌注损伤的病理生
+(L-O·OH), ,
+造成损伤[14] 研究发现 当 水平下 理学过程中起着重要作用 对铁死亡的干预可能是
+PUFAs 。 , GPX4 ,
+降或失活时 消耗的 减少 会导致毒性氧自 减轻 的一个新策略
+, L-OOH , CIRI 。
+由基含量上升 更容易发生细胞铁死亡 可能导致毁 线粒体铁蛋白在铁死亡中的保护作用 铁蛋
+, , 2. :
+灭性的细胞膜破坏[15] 活性的高低直接影 白是细胞内主要的储铁蛋白 它由轻链和重链组成
+。GPX4 , ,
+响了铁死亡过程 而游离铁诱导进一步的脂质过氧 重链可以与 反应生成 具有类似亚铁氧化
+2+ 3+
+, Fe Fe ,
+化 间接加剧铁死亡 可见 铁死亡的发生正是由于 酶活性 轻链主要负责储存铁[21] 因此 铁蛋白在
+, 。 , , 。 ,
+细胞内铁诱导的毒性脂质过氧化物积累的结果 维持细胞内铁稳态方面发挥着重要作用 也是维持
+。 ,
+二 铁超载引起铁死亡 细胞内铁代谢以及机体正常功能的重要环节
+( ) 。
+铁代谢调控铁死亡 铁是细胞代谢的必需金 线粒体铁蛋白 是
+1. : (mitochondrialferritin,FtMt)
+属 对维持细胞功能具有重要生理意义 广泛参与体 一种关键性的线粒体铁储存蛋白 与胞浆铁蛋白重
+, , ,
+内氧气运输以及多种酶的合成 在病理条件下 铁 链 有高度同源性 近
+。 , (ferritinheavychain,FTH) 。
+稳态可能在不同水平上被破坏 当铁离子过多时则 年来对 的功能进行了大量研究 包括亚铁氧
+, FtMt ,
+会导致氧化应激损伤 破坏蛋白质和脂质 导致细胞 化酶活性 铁储存功能以及胞质铁平衡的调节
+, , 、 。Ft-
+死亡 细胞铁超载是引起铁死亡开始的关键因 与 的同源性体现在其同样拥有亚铁氧化
+, Mt FTH
+素[16] 正常生理情况下 细胞铁摄入与排出保持动 酶活性 能够通过芬顿反应减少线粒体内的亚铁离
+。 , ,
+态平衡 即铁稳态 研究表明多种与铁调节相关的 子形成 从而减轻毒性更强的氧自由基形成 保护细
+, 。 , ,
+蛋白 包括细胞内铁蛋白 二价金属转运体 胞免受氧化应激损伤 等 同时
+, 、 1(diva- (Theil .2000)。 FtMt
+转铁蛋白受体 能够截获过量的铁 这一功能对线粒体来说是至关
+lentmetaltransporter1,DMT1)、 ,
+和膜铁转运蛋白 重要的 由于线粒体是对脑组织正常功能影响最大
+(transferrinreceptor,TfR) -1(fer- ,
+等都参与细胞内铁稳态的调控 的 能量工厂 并且也是细胞内主要利用铁的场所
+roportin-1,FPN1) 。 “ ”, ,
+其中转铁蛋白 在细胞外捕获游离 在有氧呼吸过程中 线粒体产生 还包括合成
+(transferrin,Tf) , ROS,
+的 在与细胞膜上的 结合后 形成稳定的 血红素和 蛋白复合体 并始终暴露在高铁流
+3+
+Fe , TfR , Fe/S ,
+核内体 而细胞内的 在金属还原酶的作用下 动的环境中 因此 对于保护线粒体免受氧化
+3+
+。 Fe , ,FtMt
+被还原成
+2+
+然后通过内体膜上的 被转 应激损伤有重要意义[22] 石振华等 利用具
+Fe , DMT1 。 (2009)
+运到细胞质的不稳定铁池 有神经毒性的 羟多巴胺 和鱼藤酮对人
+(labileironpool,LIP) 6- (6-OHDA)
+中[17] 不仅能够储存
+2+
+而且还能够储存铁 神经胶质母细胞瘤细胞系 细胞处理并构
+,LIP Fe , SH-SY5Y
+蛋白 是细胞内铁输送出胞外的唯一路径 当 建帕金森病 细胞模型 结果
+,FPN1 , (Parkinsondisease,PD) ,
+铁过量时可以通过 转移到细胞外[18] 脑出 证实 在神经细胞线粒体中对 和鱼
+FPN1 。 FtMt 6-OHDA
+血后 血液中释放出血红蛋白 被周围的小胶质细胞 藤酮引起的氧化损伤起着重要的保护作用 其保护
+, , 。
+和巨噬细胞吞噬 代谢成 然后由 机制可能在于调节细胞内铁代谢 抑制芬顿反应 从
+2+ 3+
+, Fe /Fe , FPN1 , ,
+运出小胶质细胞 在神经元中持续积累 有研究发 而减少 的产生 降低脂质过氧化水平 抑制细
+, 。 ROS , ,
+现 缺血性脑卒中患者大脑中的铁 和 水平 胞内 的增加和释放等多途径 等[23]也
+, 、Tf TfR LIP 。Wang
+--- 第4页 ---
+生理科学进展
+ProgressinPhysiologicalSciences http://physiol.bjmu.edu.cn April25,2023,54(2)︰90~96 ·93·
+同样发现 在维持细胞内铁分布和活性氧产生 体 减少细胞外的游离铁沉积[25] 同时研究发现
+FtMt , 。 ,
+中起着重要作用 可以预防缺血性中风的铁诱 可以抑制 所诱导的线粒体膜上的电压
+,FtMt FtMt erastin
+导的铁死亡和脑损伤 并且实验证明了 缺乏 依赖性阴离子通道
+, FtMt (voltagedependentanionchan-
+可以诱导铁超载 从而加剧脂质活性氧的产生和诱 开放 从而减少细胞铁死亡的发生[24]
+, nel,VDAC) , 。
+发铁死亡 相反地 过度表达的 则对缺血性脑 由此可以推断 线粒体内高水平的 可能会阻
+; , FtMt , FtMt
+卒中后的神经元细胞产生保护作用 等[24]研 止胞质铁的积累 不仅可以减少铁超载 同时能够减
+。Wang , ,
+究发现 在使用了 铁死亡激动剂 处理后的 少其他条件引起的 降低细胞内氧化应激水
+, erastin( ) ROS,
+细胞中 游离铁的含量明显升高 而加入了 平 保护线粒体免受氧化损伤 抑制细胞铁死亡 维
+, , FtMt , , 。
+后 游离铁的含量较对照组下降 由此证明 持机体内铁稳态是保证细胞正常生理功能的关键
+, 。 FtMt ,
+的过度表达可能通过调节铁稳态而显著抑制了 作为线粒体内主要调节铁稳态的重要组成部分
+,Ft-
+诱导的铁死亡 在 诱导的铁死 不仅可以储存铁离子 而且能够截获过量的铁
+erastin ,FtMt erastin Mt ,
+亡中起保护作用 等 观察到敲除 离子 避免由于细胞内铁离子蓄积导致的氧化应激
+。Reed (2012) FtMt ,
+可显著促进 诱导的细胞发生铁死亡 损伤以及铁死亡
+erastin 。FtMt 。
+的过度表达则会导致游离铁从细胞质中进入到线粒
+图1 脑 后 参与的涉及炎症反应及脂质过氧化过程的铁死亡信号通路图
+I/R FtMt
+为铁转运蛋白 为线粒体铁蛋白 为谷胱甘肽 为谷胱甘肽过氧化物酶
+FPN1 -1;FtMt ;GSH ;GPX4
+毫无疑问 的代谢调控及其表达与铁死亡 析脑卒中的中医病因病机 探究铁死亡机制中蕴含
+,FtMt ,
+息息相关 干预 的表达有可能成为一些与线 的中医学内涵 构建细胞铁死亡与脑卒中病因病机
+, FtMt ,
+粒体铁代谢有关的疾病 如癌症 神经退行性疾病和 的内在关联 更有利于利用中医药干预铁死亡过程
+, 、 , 。
+等治疗的潜在切入点 但通过 调节 脑卒中属中医 中风 范畴 中风的本质是脑之
+CIRI , FtMt CIRI “ ” ,
+中铁死亡的作用还需要更多的证据来证明 脉络的病变 气血运行紊乱以致脑之脉络损伤 血行
+。 , ;
+三、中医药干预铁死亡治疗CIRI的研究进展 不畅 脉络痹阻则发病为缺血性中风[26] 基于中医
+、 。
+铁死亡是多种疾病的病理环节 可被多种中药 角度分析铁死亡特征可知 过量的铁与脂质过氧化
+, ,
+复方 单味药 活性成分及其他疗法干预 调控铁死 物沉积均为聚集于脑络中的瘀浊实邪 卒中早期的
+、 、 , ,
+亡可能是中医药治疗多种疾病的重要机制 通过分 与铁沉积均为瘀浊积滞的表现 随着病情进
+。 ROS 。
+--- 第5页 ---
+生理科学进展
+·94· ProgressinPhysiologicalSciences April25,2023,54(2)︰90~96
+行到缺血再灌注时期 病理产物不断蓄积 在铁的催 后铁死亡造成的神经功能障碍 等
+, , (Yang .2016)。
+化作用下驱动了脂质过氧化反应 产生了毒性更强 等[31]发现心肌细胞用铁死亡诱导剂处理后 出
+, Liu ,
+的脂质过氧化物 则为 邪蕴成毒 的表现 铁死亡 现了细胞活力降低 脂质过氧化及 增加的反
+, “ ” 。 、 LIP
+产生的毒性病理产物 不仅参与脑神经细胞损伤链 应 而葛根素能够通过抑制心肌细胞脂质过氧化和
+, ,
+的病理过程 更是脑卒中后病情险恶 加重难愈的关 铁超载过程 抑制细胞铁死亡 槲皮素可通过增加
+, 、 , 。
+键 毒性脂质过氧化物对神经细胞的致死性作用与 降低脂质 水平减轻铁死亡导致的细胞
+。 GSH, ROS
+瘀浊实邪对脑络的损伤机理存在共通性 基于卒中 形态变化[32] 其实早在上世纪已有文献证明川芎
+, 。
+病机分析铁死亡的中医学内涵对中医药调节细胞铁 中的川芎嗪 藁本内酯 丹参和黄芩等中药活性成
+、 、
+死亡具有重要意义 分 或单味中药具有保护 的效果 但其作用
+。 CIRI ,
+在中医药调控铁死亡的研究进程中 无外乎促 的通路以及是否通过干预铁死亡来减轻 仍不
+, CIRI
+进与抑制铁死亡 而对于缺血再灌注等病理状态 当 明确
+, , 。
+以抑制铁死亡来减少氧化应激反应 维持机体的铁 现有研究中仍以单味药的有效成分居多 多数
+, 。
+稳态 减轻 其主要机制包括铁代谢途径和 研究主要着眼于 等具有氧化防御作用的调
+, CIRI, GPX4
+介导的脂质过氧化途径两大类 而在 节通路 增强细胞抗氧化能力 另一方面通过调节铁
+GSH/GPX4 。 , ,
+辨证用药方面 不论用药形式区别 其治法当以活血 代谢减少细胞铁内流 弱化铁的介导作用也是重要
+, , ,
+化瘀 益气解毒为基础 旨在清除体内毒邪物质 改 的切入点[33] 此外 线粒体作为细胞能量代谢的主
+、 , , 。 ,
+善中风患者预后 要场所 其对铁死亡调控作用的相关研究也取得了
+。 ,
+一 中药活性成分治疗 研究者积极挖 一定进展 运用中医药实现对于线粒体功能的调节
+( ) CIRI ,
+掘中药中的有效活性成分 验证其对于铁代谢 脂质 也成为干预铁死亡的关键研究策略
+, 、 。
+过氧化的调节作用 欧海亚等[27]利用网络药理学 二 中药复方治疗 中药复方通过对中
+。 ( ) CIRI
+对中药调节铁死亡的用药规律展开研究 发现槲皮 药的组合配比而发挥功效 是中医临床用药最主要
+, ,
+素 芹菜素等 种化合物可作用于多个铁死亡相关 的方式 许多经典名方都有减轻脑缺血再灌注损伤
+、 6 。
+靶点 在 个铁死亡潜在靶点中有 个靶点对中药 的作用 包括通窍活血汤 补阳还五汤等 但与中药
+, 15 7 , 、 。
+具有较强的敏感性 进而推测 种中药对铁死亡具 活性成分相比 对于中药复方治疗脑缺血再灌注后
+, 8 ,
+有较大的调节作用 有研究表明 黄芪素[28] 丹参 铁死亡的机制研究略显不足 脑泰方是目前治疗缺
+。 , 、 。
+酮 [29] 淫羊藿苷[30]等 通过核转录因子 血性脑卒中的有效中药复方 其能够明显减轻大脑
+II 、 , Nrf2(nu- ,
+血红素加氧 中动脉栓塞 模型大鼠神经元损伤 并可促
+clearfactorerythroid2-relatedfactor)/ (MCAO) ,
+酶 进大鼠神经功能的恢复[34] 葛金文团队从多角度
+-1(hemeoxygenase1,HMOX-1)、TfR1/DMT1 。
+等信号通路上调 表达和下调 对脑泰方展开了大量研究 并验证了该方对于脑出
+FTH1、TfR TfR1、 ,
+表达 降低细胞内总铁和 水平 黄芩素 血 缺血性卒中
+2+
+DMT1 , Fe 。 (intracerebralHemorrhage,ICH)、
+是一种天然的铁死亡抑制剂 不仅能够有效抑制 再灌注损伤
+, (ischemicstroke,IS)、 (reperfusionin-
+形成 减少 消耗 也能抑制 的降 后神经细胞铁死亡均有调节作用 饶政清
+2+
+Fe 、 GSH ; GPX4 jury,RI) 。
+解 抑制细胞膜脂质过氧化 避免细胞死亡 等 等[35]应用脑泰方治疗 模型大鼠发现 中药
+, , (Xie . MCAO ,
+且有研究证明黄芩素在生理条件下作用相 组大鼠的神经功能损伤程度降低 细胞损伤减轻 含
+2016)。 , ,
+当于铁螯合剂 调节铁离子平衡继而抑制芬顿反应 铁聚集颗粒细胞的数目降低 脑组织中铁 丙二醛
+, , 、
+可能是其主要的作用机制之一 等 及活性氧水平均明显降低 提示脑泰方可以
+(Perez .2009)。 (MDA) ,
+黄芩素也通过与微粒体膜结合 形成铁 黄芩素复合 通过抑制 信号通路和激活
+, - TfR1/DMT1 SCL7A11/
+物抑制脂质过氧化而发挥铁螯合剂的作用 等 信号通路而减少神经元对铁的吸收 从而改
+(Gao . GPX4 ,
+中医自古以来将黄芩用作于清热泻火药 其 善大鼠的神经功能 研究表明 铁螯合剂去铁胺能
+1996)。 , 。 ,
+中活性成分黄芩素是发挥药效的基础物质 作为铁 够有效减轻神经细胞铁超载 抑制铁死亡起到神经
+, ,
+死亡的天然抑制剂 黄芩素可以减少 调节铁 功能保护作用[36] 曾劲松等[37]实验则将去铁胺作
+, ROS, 。
+稳态 结合 保护 等 从黄芪干茎或根 为阳性对照 发现脑泰方可以显著下调铁水平和脂
+2+
+, Fe , GPX4 。 ,
+中提取出的黄芪多糖具有免疫调节 抗氧化等作用 质 含量以及环氧化酶
+、 , ROS (cyclooxygenase-2,
+能够抑制活性氧的积累 使脑组织免受出血性损伤 表达 证明脑泰方与铁螯合剂去铁胺都具有
+, COX-2) ,
+--- 第6页 ---
+生理科学进展
+ProgressinPhysiologicalSciences http://physiol.bjmu.edu.cn April25,2023,54(2)︰90~96 ·95·
+铁死亡抑制剂作用 脑泰方可能是通过调控脑出血 作用目标及途径 为治疗脑缺血再灌注损伤提供新
+, ,
+后铁的转运及神经细胞中调节蛋白的表达 减少铁 的研究思路和治疗方法 此外 临床上还未见铁死
+, 。 ,
+在脑组织中的沉积 抑制神经细胞铁死亡 从而减轻 亡的靶向药物 而 不仅可以储存铁离子 并且
+, , , FtMt ,
+脑损伤后的二次脑损伤 补阳还五汤具有扩血管 可以截获过多的铁离子 避免由于铁离子导致的氧
+。 、 ,
+增加脑组织血流量 消炎 抗氧化等作用 可以保护 化应激损伤以及铁死亡 因此线粒体铁蛋白可以作
+、 、 , ,
+神经血管单元的完整性 改善血脑屏障通透性 从而 为一个潜在的干预靶点 开发疾病诊疗的试剂和药
+, , ,
+缓解和预防缺血性脑卒中[38] 赵冯岩等[39]基于网 品 而中医药具有不可忽视的独特优势 中药复方
+。 。 ,
+络药理学推测补阳还五汤干预缺血性脑卒中的铁死 通过整合各个不同功效的中药 发挥协同作用 其多
+, ,
+亡机制可能与丝裂原活化蛋白激酶 靶点和综合性的特点 也许可以通过作用于
+(mitogen-acti- , FtMt
+磷脂酰肌醇 激酶 而干预铁死亡的发生机制从而对 产生治疗作
+vatedproteinkinase,MAPK)、 -3- CIRI
+等信号通路有关 综上 目前对于中医 用 具有良好的研究价值及前景
+(PI3K)-Akt 。 , , 。
+药干预缺血性脑卒中患者铁死亡作用的研究仍处于
+起步阶段 需要进一步研究证实 并且 中药复方在 参 考 文 献
+, 。 ,
+抑制细胞铁死亡时 是通过干预哪条途径 线粒体
+, ?
+铁蛋白是否在脑缺血再灌注后也有抑制铁死亡的作
+1 KuriakoseD,XiaoZ.Pathophysiologyandtreatmentof
+用 这些问题都值得被进一步挖掘与思考 深入研
+? 。 stroke:presentstatusandfutureperspectives.IntJMol
+究中医药对铁死亡和脑缺血性疾病的干预机理
+,
+将 Sci,2020,21︰7609~7632.
+为相关疾病的预防诊断及治疗提供新的思路 2 Orellana-UrzúaS,RojasI,LíbanoL,etal.Pathophysi-
+。
+四、总结 ologyofischemicstroke:roleofoxidativestress.Curr
+铁死亡与 密切相关 抑制铁死亡能明显 PharmDes,2020,26︰4246~4260.
+CIRI ,
+减轻脑缺血再灌注患者的神经损伤程度 提示铁死 3 ZhangQZ,FuTT,DaiJN,etal.SodiumDanshensu
+,
+亡介导了 的神经损伤 并且可以作为 的 promotesthehealingofstage2pressureinjurywounds
+CIRI , CIRI inischemia/reperfusioninjuryratmodels:possibleregu-
+潜在干预靶点 然而铁死亡涉及的机制广泛 其确切
+, ,
+lationofapoptosisandinflammatoryresponse.JTradit
+机制仍不清楚 中医药干预铁死亡具有综合性 多
+。 、 ChiMed,2021,41︰571~580.
+靶点的优势 虽已取得一定的研究成果 但由于起步
+, , 4 GalarisD,BarboutiA,PantopoulosK.Ironhomeostasis
+较晚 仍存在一些问题有待探讨 第一 药物多为中
+, 。 , andoxidativestress:Anintimaterelationship.Biochim
+药活性成分
+,
+对于单味药和复方等的研究较少
+;
+第 BiophysActaMolCellRes,2019,1866︰118535.
+朱蕊 曾庆 黄国志 铁死亡与脑卒中 中国组织工程研
+二 研究多发现中药可干预疾病中出现的铁死亡现 5 , , . .
+, 究
+象 少有中药直接干预纯铁死亡模型的研究 而铁死 ,2021,25︰3734~3739.
+, , 章喻 王利波 戴薇薇 糖皮质激素与铁死亡 生理科学
+亡可能只是疾病过程中的某一表象或环节 并非中 6 , , . .
+, 进展
+药干预的核心环节 第三 目前机制研究还多停留在 ,2022,53︰76~81.
+; , 郭仪青 陈广 铁死亡调控机制与肿瘤发生与治疗的研
+较浅显的表征上 对上游信号分子和下游效应分子 7 , .
+, 究进展 生理科学进展
+. ,2019,50︰88~93.
+的研究还不够深入 第四 铁死亡抑制剂和铁螯合剂
+; , 8 LiJ,CaoF,YinH,etal.Ferroptosis:past,present
+在脑缺血再灌注损伤中的具体作用靶点仍不明
+andfuture.CellDeathDis,2020,11︰1~13.
+确[40]
+,
+如何在缺血再灌注损伤过程中对铁死亡进行
+9 StockwellBR,AngeliJPF,BayirH,etal.Ferroptosis:
+靶点性干预也是一大问题 第五 铁死亡机制众多
+; , , aregulatedcelldeathnexuslinkingmetabolism,redox
+线粒体在铁死亡中的作用及机制尚未被完全证实
+;
+biology,anddisease.Cell,2017,171︰273~285.
+第六 在铁代谢中的确切功能仍需进一步探 10 ZhiHA,NnB,QzC,etal.Mitochondriaasathera-
+,FtMt
+讨 及其他铁死亡相关蛋白也许存在交互作 peutictargetforischemicstroke.FreeRadicBiolMed,
+;FtMt
+用 不一定是单独对铁代谢产生影响 要剔除相关蛋 2020,146︰45~58.
+, , 胡婉湘 谢露 铁死亡及其在脑缺血再灌注损伤中的作
+白对铁死亡的影响是实验中需要克服的技术问题 11 , .
+。 用 生理科学进展
+因此 有必要进一步阐明铁死亡与其他形式的 . ,2021,52︰169~175.
+,
+12 FujiiJ,HommaT,KobayashiS.Ferroptosiscausedby
+细胞死亡之间的差异 明确铁死亡的具体机制及其
+, cysteineinsufficiencyandoxidativeinsult.FreeRadic
+下游调控环节 并确定铁死亡抑制剂或铁螯合剂的
+, Res,2020,54︰969~980.
+--- 第7页 ---
+生理科学进展
+·96· ProgressinPhysiologicalSciences April25,2023,54(2)︰90~96
+用药学
+13 KaganVE,MaoG,QuF,etal.Oxidizedarachidonic ,2019,36︰2317~2324.
+andadrenicPEsnavigatecellstoferroptosis.NatChem 28 YangM,LiX,LiH,etal.BaicaleininhibitsRLS3-in-
+Biol,2017,13︰81~90. ducedferroptosisinmelanocytes.BiochemBiophysRes
+14 GaschlerMM,StockwellBR.Lipidperoxidationincell Commun,2021,561︰65~72.
+death. BiochemBiophysResCommun,2017,482︰ 29 MaoW,DingJ,LiY,etal.Inhibitionofcellsurvival
+419~425. andinvasionbyTanshinoneIIAviaFTH1:Akeyther-
+15 ZhuL,MengD,WangX,etal.Ferroptosis-drivenan- apeutictargetandbiomarkerinheadandnecksquamous
+otherapeuticstoreversedrugresistanceintumormicro- cellcarcinoma.ExpTherMed,2022,24︰521~521.
+environment.ACSApplBioMater,2022,5︰2481~ 30 LiuXJ,LvYF,CuiWZ,etal.Icariininhibitshypoxia/
+2506. reoxygenation-inducedferroptosisofcardiomyocytesvia
+16 SalnikowK.Roleofironincancer.SeminCancerBiol, regulationoftheNrf2/HO-1signalingpathway.FEBS
+2021,76︰189~194. OpenBio,2021,11︰2966~2976.
+17 GaoG,LiJ,ZhangY,etal.Cellularironmetabolism 31 LiuB,ZhaoC,LiH,etal.Puerarinprotectsagainst
+andregulation.AdvExpMedBiol,2019,1173︰21~ heartfailureinducedbypressureoverloadthroughmiti-
+32. gationofferroptosis.BiochemBiophysResCommun,
+18 ChenX,YuC,KangR,etal.Ironmetabolisminfer- 2018,497︰233~240.
+roptosis.FrontCellDevBiol,2020,8︰590226. 32 WangY,QuanF,CaoQ,etal.Quercetinalleviatesa-
+19 IngrassiaR,GaravagliaB,MemoM.DMT1expression cutekidneyinjurybyinhibitingferroptosis.JAdvRes,
+andironlevelsatthecrossroadsbetweenagingandneu- 2021,28︰231~243.
+徐寒莹 张艺缤 张冬梅 等 铁死亡机制与中医药干
+rodegeneration.FrontNeurosci,2019,13︰75~85. 33 , , , .
+预脑卒中后神经细胞铁死亡的研究进展 中国实验方
+20 Ułamek-KoziołM,CzuczwarSJ,JanuszewskiS,etal. .
+剂学杂志
+Proteomicandgenomicchangesintauprotein,which ,2022,28︰232~240.
+areassociatedwithalzheimer'sdiseaseafterischemia- 34 LanB,GeJW,ChengSW,etal.ExtractofNaotai-
+reperfusionbraininjury.IntJMolSci,2020,21︰76~ fang,acompoundChineseherbalmedicine,protects
+79. neuronferroptosisinducedbyacutecerebralischemiain
+21 ZhangN,YuX,XieJ,etal.Newinsightsintotherole rats.JIntegrMed,2020,18︰344~350.
+饶政清 梅志刚 葛金文 等 脑泰方调控细胞铁转运
+offerritininironhomeostasisandneurodegenerative 35 , , , .
+抑制铁死亡保护脑卒中缺血损伤的机制研究 中草药
+diseases.MolNeurobiol,2021,58︰2812~2823. . ,
+22 WangX,MaH,SunJ,etal.Mitochondrialferritinde- 2021,52︰6552~6560.
+ficiencypromotesosteoblasticferroptosisviamitophagy 36 YaoX,ZhangY,HaoJ,etal.Deferoxaminepromotes
+intype2diabeticosteoporosis.BiolTraceElemRes, recoveryoftraumaticspinalcordinjurybyinhibiting
+2022,200︰298~307. ferroptosis.NeuralRegenRes,2019,14︰532~541.
+曾劲松 李弘 廖君 等 脑泰方对脑出血急性期大鼠
+23 WangP,CuiY,RenQ,etal.Mitochondrialferritinat- 37 , , , .
+脑铁代谢的干预作用及神经保护机制 中医药导报
+tenuatescerebralischaemia/reperfusioninjurybyinhibi- . ,
+tingferroptosis.CellDeathDis,2021,12︰1~16. 2020,26︰27~32.
+24 WangYQ,ChangSY,WuQ,etal.Theprotectiverole 38 ZhengXY,ZhangYH,SongWT,etal.Effectsof
+ofmitochondrialferritinonerastin-inducedferroptosis. BuyangHuanwuDecoctiononneurovascularunitsafter
+FrontAgingNeurosci,2016,8︰308. cerebralischemia:areview.ZhongguoZhongyaoza
+杨陶然 王儒蓉 线粒体在细胞铁死亡中的作用 生理
+25 , . . zhi,2021,46︰5226~5232.
+科学进展 赵冯岩 杨浩澜 朱炎贞 等 基于网络药理学从铁死
+,2022,53︰224~228. 39 , , , .
+倪小佳 陈耀龙 蔡业峰 中西医结合脑卒中循证实践 亡途径研究补阳还五汤调控缺血性脑卒中的作用机制
+26 , , . .
+指南 中国循证医学杂志 湖南中医药大学学报
+(2019). ,2020,20︰901~912. ,2021,41︰1065~1072.
+欧海亚 叶小鹏 李舒 等 基于网络药理学及数据挖 易欣 刘畅 周易 等 铁死亡与缺血再灌注损伤关系
+27 , , , . 40 , , , .
+掘探讨中药调节铁死亡的用药规律研究 中国现代应 的研究进展 广西医学
+. . ,2021,43︰858~862.

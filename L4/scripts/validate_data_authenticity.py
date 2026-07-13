@@ -11,7 +11,6 @@ import logging
 import numpy as np
 import pandas as pd
 from datetime import datetime
-from collections import defaultdict
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
@@ -198,8 +197,9 @@ def validate_cpi():
             else:
                 add_result("CPI-standard_value_nM", "PASS",
                            "全部 standard_value_nM 为数值")
-        except Exception:
-            add_result("CPI-standard_value_nM", "FAIL", "standard_value_nM 转换失败")
+        except Exception as e:
+            logger.error("standard_value_nM 转换失败: %s", e, exc_info=True)
+            add_result("CPI-standard_value_nM", "FAIL", f"standard_value_nM 转换失败: {e}")
 
     # 1.6 pchembl_value 数值性
     if "pchembl_value" in df.columns:
@@ -212,8 +212,9 @@ def validate_cpi():
             else:
                 add_result("CPI-pchembl_value", "PASS",
                            "全部 pchembl_value 为数值")
-        except Exception:
-            add_result("CPI-pchembl_value", "FAIL", "pchembl_value 转换失败")
+        except Exception as e:
+            logger.error("pchembl_value 转换失败: %s", e, exc_info=True)
+            add_result("CPI-pchembl_value", "FAIL", f"pchembl_value 转换失败: {e}")
 
     # 1.7 基因符号格式校验
     if "gene" in df.columns:
@@ -277,8 +278,9 @@ def validate_ppi():
                 else:
                     add_result("PPI-combined_score", "PASS",
                                f"combined_score 范围 [{s_min:.1f}, {s_max:.1f}] 在 [0, 1000] 内")
-        except Exception:
-            add_result("PPI-combined_score", "FAIL", "无法转换 combined_score")
+        except Exception as e:
+            logger.error("combined_score 转换失败: %s", e, exc_info=True)
+            add_result("PPI-combined_score", "FAIL", f"无法转换 combined_score: {e}")
 
     # 2.3 自环检查
     if "gene_a" in df.columns and "gene_b" in df.columns:
@@ -919,7 +921,7 @@ def validate_cross_consistency(genes96, ppi_nodes, esm2_genes, cpi_df, phenotype
 # ============================================================
 def main():
     log("=" * 70)
-    log(f"    铁衰老项目 - 数据真实性全面校验", "INFO")
+    log("    铁衰老项目 - 数据真实性全面校验", "INFO")
     log(f"    执行时间: {CURRENT_TIME}", "INFO")
     log(f"    RDKit可用: {HAS_RDKIT}", "INFO")
     log("=" * 70)

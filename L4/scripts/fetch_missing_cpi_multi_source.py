@@ -15,7 +15,6 @@ PubChem API 策略:
 """
 
 import os
-import sys
 import time
 import traceback
 import requests

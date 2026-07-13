@@ -215,7 +215,7 @@ report.append(f"主CPI中有SMILES的基因: {len(main_genes_with_smiles)}")
 report.append(f"已有补充(v25)基因: {len(prev_smiles_by_gene)}")
 report.append("")
 report.append("--- 补充来源 ---")
-report.append(f"DrugBank补充文件基因: ACSL4, SOD1, IGFBP7")
+report.append("DrugBank补充文件基因: ACSL4, SOD1, IGFBP7")
 report.append(f"SMILES来源: ChEMBL交叉引用={chembl_found}, PubChem={pubchem_found}, 未找到={not_found}")
 report.append("")
 

@@ -39,7 +39,13 @@ class HGTLinkPredictor(nn.Module):
                  decoder_type: str = "mlp",
                  decoder_init_scheme: str = "xavier",
                  decoder_final_bias_init: float = -0.5,
-                 decoder_max_residue_batch: int = 2):
+                 decoder_max_residue_batch: int = 2,
+                 use_graph_transformer: bool = False,
+                 gt_num_layers: int = 2,
+                 gt_num_heads: int = 4,
+                 gt_dropout: float = 0.3,
+                 use_cross_modal_fusion: bool = False,
+                 fusion_hidden_dim: int = 64):
         """初始化 HGT 链接预测模型。
 
         Args:
@@ -95,10 +101,22 @@ class HGTLinkPredictor(nn.Module):
         self.gates = nn.ModuleList()
         if metadata:
             node_types, edge_types = metadata
+            # 子图采样会动态添加反向边，HGTConv 初始化时必须知晓这些边类型
+            dynamic_rev_edges = [
+                ("protein", "rev_interacts", "compound"),
+                ("protein", "rev_ppi", "protein"),
+            ]
+            seen = set(edge_types)
+            aug_edge_types = list(edge_types)
+            for et in dynamic_rev_edges:
+                if et not in seen:
+                    aug_edge_types.append(et)
+                    seen.add(et)
+            aug_metadata = (node_types, aug_edge_types)
             for _ in range(num_layers):
                 self.convs.append(HGTConv(
                     dict.fromkeys(node_types, hidden_dim),
-                    hidden_dim, metadata,
+                    hidden_dim, aug_metadata,
                     heads=num_heads,
                 ))
                 gate = nn.Linear(hidden_dim, 1)
@@ -106,6 +124,24 @@ class HGTLinkPredictor(nn.Module):
                 self.gates.append(gate)
 
         self.out_proj = nn.Identity() if hidden_dim == out_dim else nn.Linear(hidden_dim, out_dim, bias=False)
+
+        # v69: GraphTransformer 编码器 (DHGT-DTI 论文核心创新)
+        self.use_graph_transformer = use_graph_transformer
+        self.gt_encoder = None
+        if use_graph_transformer:
+            from .graph_transformer import GraphTransformerEncoder
+            self.gt_encoder = GraphTransformerEncoder(
+                in_dim=compound_feat_dim,
+                hidden_dim=hidden_dim,
+                output_dim=out_dim,
+                num_layers=gt_num_layers,
+                num_heads=gt_num_heads,
+                dropout=gt_dropout,
+                use_gated_residual=True,
+            )
+            logger.info(
+                f"HGT: GraphTransformer 已启用 (layers={gt_num_layers}, heads={gt_num_heads})"
+            )
 
         # 可插拔解码器
         if decoder_type == "mlp":
@@ -126,6 +162,17 @@ class HGTLinkPredictor(nn.Module):
             raise ValueError(f"不支持的 decoder_type: {decoder_type}")
 
         self.dropout = nn.Dropout(dropout)
+
+        # CrossModalGatedFusion — 蛋白条件化药物特征调制 (CFM-DTI 风格)
+        self.use_cross_modal_fusion = use_cross_modal_fusion
+        self.cross_modal_fusion = None
+        if use_cross_modal_fusion:
+            from .conditioned_modulation import CrossModalGatedFusion
+            self.cross_modal_fusion = CrossModalGatedFusion(
+                drug_dim=out_dim, prot_dim=out_dim,
+                hidden_dim=fusion_hidden_dim, dropout=dropout,
+            )
+            logger.info(f"  HGT CrossModalGatedFusion 已启用: hidden_dim={fusion_hidden_dim}")
 
         # 铁死亡表型分类头
         self.pheno_head = nn.Sequential(
@@ -148,8 +195,16 @@ class HGTLinkPredictor(nn.Module):
           - 若 prot_pathway_dim > 0，后续维度为通路 one-hot，通过 pathway_embed
             加权求和后拼接到蛋白投影（与 SAGE 一致，强化通路直接编码）
           - 蛋白投影后施加独立 Dropout（prot_dropout），防止过拟合
+
+        v69: GraphTransformer 多视角编码（DHGT-DTI 核心创新）
+          - 当 use_graph_transformer=True 且已通过 set_meta_path_edge_indices() 注册了元路径边时，
+            GT 编码器通过元路径图对化合物节点进行多视角编码
+          - GT 嵌入与 HGT 嵌入通过 get_fused_compound_emb() 门控融合
         """
         x_dict = {k: v.clone() for k, v in x_dict.items()}
+
+        # v69: 保存原始化合物特征供 GT 编码器使用
+        compound_raw_feat = x_dict.get("compound", None)
 
         if "compound" in x_dict:
             x_dict["compound"] = self.comp_proj(x_dict["compound"])
@@ -198,11 +253,46 @@ class HGTLinkPredictor(nn.Module):
             if nt in x_dict:
                 x_dict[nt] = self.out_proj(x_dict[nt])
 
+        # v69: GraphTransformer 多视角编码（DHGT-DTI 风格）
+        self._gt_compound_emb = None
+        if self.use_graph_transformer and self.gt_encoder is not None:
+            mp_ei = getattr(self, '_meta_path_edge_indices', None)
+            if compound_raw_feat is not None and mp_ei is not None:
+                mp_ei_list = [ei.to(compound_raw_feat.device) for ei in mp_ei.values()]
+                if len(mp_ei_list) > 0:
+                    gt_compound = self.gt_encoder.forward_multi_view(
+                        compound_raw_feat, mp_ei_list
+                    )
+                    self._gt_compound_emb = gt_compound
+
         return x_dict
+
+    def set_meta_path_edge_indices(self, meta_path_edge_indices: dict[str, torch.Tensor] | None) -> None:
+        """注册元路径边索引，供 GraphTransformer 多视角编码使用。
+
+        Args:
+            meta_path_edge_indices: {元路径名: edge_index (2, E)} 字典，或 None 表示禁用。
+        """
+        self._meta_path_edge_indices = meta_path_edge_indices
+
+    def get_fused_compound_emb(self, hgt_compound_emb: torch.Tensor) -> torch.Tensor:
+        """融合 HGT 和 GraphTransformer 的化合物嵌入（门控融合）。
+
+        当 GT 编码器未启用或无 GT 嵌入时，直接返回 HGT 嵌入。
+        """
+        if self._gt_compound_emb is None:
+            return hgt_compound_emb
+        if not hasattr(self, '_fusion_gate'):
+            self._fusion_gate = nn.Linear(self.out_dim * 2, 1).to(hgt_compound_emb.device)
+            nn.init.xavier_uniform_(self._fusion_gate.weight)
+            nn.init.constant_(self._fusion_gate.bias, 0.0)
+        gate_input = torch.cat([hgt_compound_emb, self._gt_compound_emb], dim=-1)
+        gate = torch.sigmoid(self._fusion_gate(gate_input))
+        return gate * hgt_compound_emb + (1 - gate) * self._gt_compound_emb
 
     def decode(self, comp_emb: torch.Tensor, prot_emb: torch.Tensor,
                prot_residue_indices: torch.Tensor | None = None) -> torch.Tensor:
-        """解码化合物-蛋白交互分数。
+        """解码化合物-蛋白交互分数，支持 CrossModalGatedFusion（CFM-DTI 风格）。
 
         Args:
             comp_emb: 化合物嵌入。
@@ -219,6 +309,9 @@ class HGTLinkPredictor(nn.Module):
             prot_emb = prot_emb.float()
             if prot_residue_indices is not None:
                 prot_residue_indices = prot_residue_indices.long()
+            # v69: CrossModalGatedFusion — 蛋白条件化药物特征调制
+            if self.cross_modal_fusion is not None:
+                comp_emb = self.cross_modal_fusion(comp_emb, prot_emb)
             if self.decoder_type == "residue_bilinear":
                 return self.decoder(comp_emb, prot_emb, prot_residue_indices)
             return self.decoder(comp_emb, prot_emb)

@@ -11,7 +11,7 @@
 
 输出：
   L4/results/model_input_repair_report.json
-  L3/results/tcm_compound_pool_tox_filtered_noleak.csv
+  L3/results/tcm_compound_pool_tox_filtered.csv（原地修复，原文件备份为 .bak）
   L4/logs/repair_model_inputs.log
 """
 
@@ -19,9 +19,10 @@ from __future__ import annotations
 
 import json
 import logging
+import shutil
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Set
+from typing import Any
 
 import pandas as pd
 from rdkit import Chem, RDLogger
@@ -54,21 +55,25 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def canonicalize_smiles(smiles: str) -> str:
-    """用 RDKit 将 SMILES 规范化为 canonical 形式；无法解析返回空字符串。"""
+def canonicalize_smiles(smiles: str) -> str | None:
+    """用 RDKit 将 SMILES 规范化为 canonical 形式；无法解析返回 None 并记录 WARNING。
+
+    禁止静默丢弃——invalid SMILES 必须被日志捕获，下游按缺失值处理。
+    """
     if pd.isna(smiles):
-        return ""
+        return None
     s = str(smiles).strip()
     if not s:
-        return ""
+        return None
     try:
         mol = Chem.MolFromSmiles(s)
         if mol is None:
-            return ""
+            logger.warning("SMILES 规范化失败 (RDKit解析为空): %r", s)
+            return None
         return Chem.MolToSmiles(mol, canonical=True, isomericSmiles=True)
-    except Exception:
-        logger.exception("捕获到异常并继续执行（原 except 'Exception' 静默吞掉）")
-        return ""
+    except Exception as e:
+        logger.error("SMILES 规范化异常: %r, 错误: %s", s, e, exc_info=True)
+        return None
 
 def load_ferroaging_genes() -> set[str]:
     """加载铁衰老基因集。"""
@@ -128,7 +133,7 @@ def check_cpi_data() -> dict[str, Any]:
     invalid = 0
     sample_invalid: list[str] = []
     for smi in df["canonical_smiles"].dropna().unique()[:5000]:
-        if canonicalize_smiles(smi) == "":
+        if canonicalize_smiles(smi) is None:
             invalid += 1
             if len(sample_invalid) < 5:
                 sample_invalid.append(str(smi))
@@ -157,7 +162,8 @@ def check_cpi_data() -> dict[str, Any]:
 def repair_tcm_pool(cpi_df: pd.DataFrame) -> dict[str, Any]:
     """检查并修复 TCM 候选池与 CPI 训练集的数据泄漏。"""
     input_path = L3_RESULTS / "tcm_compound_pool_tox_filtered.csv"
-    output_path = L3_RESULTS / "tcm_compound_pool_tox_filtered_noleak.csv"
+    output_path = input_path  # 原地修复
+    backup_path = L3_RESULTS / "tcm_compound_pool_tox_filtered.csv.bak"
 
     logger.info("=" * 60)
     logger.info("[2/5] TCM 候选池泄漏检查")
@@ -201,8 +207,8 @@ def repair_tcm_pool(cpi_df: pd.DataFrame) -> dict[str, Any]:
     tcm_smiles_raw = tcm_df[smiles_col].astype(str).str.strip()
     tcm_smiles_canonical = tcm_smiles_raw.apply(canonicalize_smiles)
 
-    # 记录原始无法解析的 TCM SMILES
-    unparseable = (tcm_smiles_canonical == "").sum()
+    # 记录原始无法解析的 TCM SMILES（canonicalize_smiles 返回 None 标记无效）
+    unparseable = tcm_smiles_canonical.isna().sum()
     if unparseable > 0:
         logger.warning("TCM 池中有 %d 条 SMILES 无法被 RDKit 解析", unparseable)
         report["unparseable_smiles"] = int(unparseable)
@@ -219,14 +225,19 @@ def repair_tcm_pool(cpi_df: pd.DataFrame) -> dict[str, Any]:
         report["remaining"] = int(original_n - overlap_mask.sum())
         report["status"] = "REPAIRED"
 
+        # 备份原始文件
+        shutil.copy2(input_path, backup_path)
+        logger.info("原始文件已备份至 %s", backup_path)
+
         cleaned_df = tcm_df.loc[~overlap_mask].copy()
         cleaned_df.to_csv(output_path, index=False)
-        logger.info("移除 %d 个与 CPI 训练集重叠的 TCM 化合物，已保存至 %s",
+        logger.info("移除 %d 个与 CPI 训练集重叠的 TCM 化合物，原地修复 %s",
                     report["removed"], output_path)
     else:
-        # 无重叠也保存一份，保持接口一致
-        tcm_df.to_csv(output_path, index=False)
-        logger.info("TCM 候选池无泄漏，已复制至 %s", output_path)
+        # 无重叠也备份一份，保持可追溯
+        shutil.copy2(input_path, backup_path)
+        logger.info("原始文件已备份至 %s", backup_path)
+        logger.info("TCM 候选池无泄漏，无需修复")
 
     logger.info("TCM 池: 原始 %d -> 剩余 %d", original_n, report["remaining"])
     return report

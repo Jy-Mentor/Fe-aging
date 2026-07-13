@@ -75,6 +75,8 @@ class ModelConfig(BaseModel):
     score_clamp: float = Field(default=10.0, ge=1.0, description="分数裁剪范围 [-score_clamp, score_clamp]")
     decoder_type: str = Field(default="mlp", description="解码器类型：mlp / dot / bilinear / residue_bilinear")
     temperature: float = Field(default=1.0, gt=0.0, description="解码温度系数 T")
+    use_cross_modal_fusion: bool = Field(default=False, description="是否启用跨模态门控融合（CFM-DTI风格）")
+    fusion_hidden_dim: int = Field(default=64, ge=16, le=256, description="融合隐藏层维度")
 
 
 class DecoderConfig(BaseModel):
@@ -150,6 +152,10 @@ class SimpleHgnConfig(BaseModel):
     two_stage: bool = Field(default=True, description="是否启用两阶段迁移学习")
     pretrain_epochs: int = Field(default=10, ge=1, description="预训练轮数")
     pretrain_lr: float = Field(default=1.5e-3, gt=0.0, description="预训练学习率")
+    finetune_lr_multiplier: float = Field(
+        default=0.5, gt=0.0, le=1.0,
+        description="微调阶段初始学习率相对于主学习率的倍数",
+    )
 
 
 class TwoStageConfig(BaseModel):
@@ -220,6 +226,17 @@ class LossConfig(BaseModel):
     infonce_weight: float = Field(default=0.1, ge=0.0, le=1.0, description="InfoNCE 对比损失权重")
     temperature: float = Field(default=5.0, gt=0.0, description="Sigmoid 温度参数 T")
     infonce_temperature: float = Field(default=0.07, gt=0.0, description="InfoNCE 对比损失温度 τ")
+    # v67: 辅助网络重建损失 (DHGT-DTI / MHGNN-DTI 风格)
+    aux_recon_weight: float = Field(default=0.15, ge=0.0, le=1.0, description="辅助重建损失权重")
+    aux_recon_ppi_samples: int = Field(default=256, ge=1, description="PPI 重建采样数")
+    aux_recon_pathway_samples: int = Field(default=128, ge=1, description="通路重建采样数")
+    aux_recon_ddi_samples: int = Field(default=128, ge=1, description="DDI 重建采样数")
+    aux_recon_drug_disease_samples: int = Field(default=128, ge=1, description="Drug-Disease 重建采样数")
+    aux_recon_protein_disease_samples: int = Field(default=128, ge=1, description="Protein-Disease 重建采样数")
+    aux_recon_drug_side_effect_samples: int = Field(default=128, ge=1, description="Drug-SideEffect 重建采样数")
+    # v67: 语义注意力 (GHCDTI 风格)
+    semantic_attn_weight: float = Field(default=0.05, ge=0.0, le=1.0, description="语义注意力损失权重")
+    semantic_attn_temperature: float = Field(default=0.5, gt=0.0, description="语义注意力温度")
 
 
 class ValidationConfig(BaseModel):
@@ -252,6 +269,11 @@ class ValidationConfig(BaseModel):
     pretrain_val_freq: int = Field(default=5, ge=1, description="预训练阶段验证频率")
     mem_refresh_freq: int = Field(default=5, ge=1, description="Memory Bank 全局刷新频率")
     default_aupr: float = Field(default=0.5, ge=0.0, le=1.0, description="默认 AUPR（无验证数据时）")
+    # v67: 冷启动评估 (GHCDTI 风格)
+    enable_cold_drug_eval: bool = Field(default=False, description="是否启用冷启动药物评估")
+    enable_cold_target_eval: bool = Field(default=False, description="是否启用冷启动靶标评估")
+    cold_drug_split_ratio: float = Field(default=0.2, ge=0.0, le=1.0, description="冷启动药物拆分比例")
+    cold_target_split_ratio: float = Field(default=0.2, ge=0.0, le=1.0, description="冷启动靶标拆分比例")
 
 
 class CompoundFeatureConfig(BaseModel):
@@ -267,6 +289,7 @@ class CompoundFeatureConfig(BaseModel):
     )
     enable_cache: bool = Field(default=True, description="是否启用特征缓存")
     cache_version: str = Field(default="v1", description="特征缓存版本")
+    use_3d_conformer: bool = Field(default=True, description="是否使用3D构象特征（MsDGCN风格）")
     cache_dir: str = Field(
         default="L4/feature_cache", description="特征缓存目录（相对于 project_root）"
     )
@@ -291,7 +314,8 @@ class ESM2Config(BaseModel):
         description="HuggingFace ESM-2 模型名称",
     )
     esm_batch_size: int = Field(default=4, ge=1, description="ESM-2 推理批次大小")
-    esm_max_len: int = Field(default=1022, ge=1, description="ESM-2 最大序列长度（含特殊 token 则为 1022 aa）")
+    esm_max_len: int = Field(default=1022, ge=1, description="ESM-2 最大序列长度（含 BOS/EOS 特殊 token）")
+    residue_device: str = Field(default="cpu", description="残基特征驻留设备")
 
 
 class TrainingConfig(BaseModel):
@@ -335,6 +359,33 @@ class NumericalConfig(BaseModel):
     eps_small: float = Field(default=1e-10, gt=0.0, description="小数 epsilon（用于 multinomial 分母保护）")
 
 
+class MetaPathConfig(BaseModel):
+    """元路径图构建配置 (DHGT-DTI / MHGNN-DTI 风格)。"""
+
+    enabled: bool = Field(default=False, description="是否启用元路径图")
+    drug_meta_paths: list[list[str]] = Field(
+        default_factory=lambda: [["drug", "protein", "drug"], ["drug", "protein", "protein", "drug"]],
+        description="药物元路径列表",
+    )
+    protein_meta_paths: list[list[str]] = Field(
+        default_factory=lambda: [["protein", "protein"], ["protein", "drug", "protein"]],
+        description="蛋白元路径列表",
+    )
+    max_path_length: int = Field(default=4, ge=1, description="最大路径长度")
+    density_threshold: float = Field(default=0.1, ge=0.0, le=1.0, description="元路径密度过滤阈值")
+
+
+class GraphTransformerConfig(BaseModel):
+    """Graph Transformer 编码器配置 (DHGT-DTI 风格)。"""
+
+    enabled: bool = Field(default=False, description="是否启用 Graph Transformer")
+    num_layers: int = Field(default=2, ge=1, description="Transformer 层数")
+    num_heads: int = Field(default=4, ge=1, description="注意力头数")
+    dropout: float = Field(default=0.3, ge=0.0, le=1.0, description="Dropout 比率")
+    use_gated_residual: bool = Field(default=True, description="是否使用门控残差连接")
+    output_dim: int = Field(default=128, ge=1, description="输出维度")
+
+
 class NegativeSamplingConfig(BaseModel):
     """难负样本配置（PPI拓扑 + ESM-2结构相似性）。"""
 
@@ -342,6 +393,14 @@ class NegativeSamplingConfig(BaseModel):
     use_esm_similarity_neg: bool = Field(default=False, description="是否启用ESM-2余弦相似度难负样本")
     topo_neighbors_top_k: int = Field(default=50, ge=1, description="拓扑负样本每个蛋白保留候选数")
     esm_similarity_top_k: int = Field(default=50, ge=1, description="ESM-2相似度负样本每个蛋白保留候选数")
+
+
+class EnsembleConfig(BaseModel):
+    """集成融合配置（KLaR 风格门控融合）。"""
+
+    gated_fusion: bool = Field(default=False, description="是否启用上下文感知门控融合")
+    fusion_hidden_dim: int = Field(default=64, ge=16, description="门控网络隐藏层维度")
+    fusion_temperature: float = Field(default=0.5, gt=0.0, description="门控温度参数")
 
 
 class Config(BaseModel):
@@ -375,7 +434,10 @@ class Config(BaseModel):
     prediction: PredictionConfig = Field(default_factory=PredictionConfig)
     numerical: NumericalConfig = Field(default_factory=NumericalConfig)
     negative_sampling: NegativeSamplingConfig = Field(default_factory=NegativeSamplingConfig)
+    meta_path: MetaPathConfig = Field(default_factory=MetaPathConfig)
+    graph_transformer: GraphTransformerConfig = Field(default_factory=GraphTransformerConfig)
     decoder: DecoderConfig = Field(default_factory=DecoderConfig)
+    ensemble: EnsembleConfig = Field(default_factory=EnsembleConfig)
     ferrogenesis_genes: list[str] = Field(
         default_factory=lambda: list(_DEFAULT_FERRORAGING_GENES),
         description="铁衰老靶标基因列表",
@@ -467,7 +529,10 @@ def _deep_merge_defaults(raw: dict) -> dict:
         "prediction": PredictionConfig,
         "numerical": NumericalConfig,
         "negative_sampling": NegativeSamplingConfig,
+        "meta_path": MetaPathConfig,
+        "graph_transformer": GraphTransformerConfig,
         "decoder": DecoderConfig,
+        "ensemble": EnsembleConfig,
     }
 
     merged = {}

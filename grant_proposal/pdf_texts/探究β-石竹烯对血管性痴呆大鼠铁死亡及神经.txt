@@ -1,0 +1,386 @@
+
+--- 第1页 ---
+锦州医科大学学报
+2025 Aug.46(4)
+JournalofJinzhouMedicalUniversity 31
+探究 β-石竹烯对血管性痴呆大鼠
+铁死亡及神经保护作用
+赵微, 武洁
+锦州医科大学附属第一医院 辽宁锦州
+( , 121000)
+摘要: 目的 验证 石竹烯对血管性痴呆 ( , ) 大鼠脑组织铁死亡的影响, 探索其神经保护作用
+β- vascular dementia VaD
+机制。 方法 在实验操作过程中, 将大鼠的肌肉、 筋膜等组织小心剥离后, 充分暴露双侧颈总动脉, 随后仅对其进行缝合
+操作, 以此作为假手术组。 另一部分大鼠, 同样暴露双侧颈总动脉, 但采用结扎的方式, 进而成功制备 大鼠 模型。
+SD VaD
+在模型制备完成后, 挑选出模型制备成功的大鼠, 将其随机分为模型组和 石竹烯给药组。 模型成功建立 后, 对
+β- 7 d β-
+石竹烯给药组大鼠通过尾静脉注射 石竹烯 ( ), 连续给药 周后, 取各组大鼠进行 水迷宫实验。 次日,
+β- 408 mg/kg 2 Morris
+从各组中随机选取部分大鼠, 取其脑组织进行苏木—素伊红 ( , ) 染色。 严格按照试剂盒说明
+hematoxylin-eosin staining HE
+书的操作步骤, 完成对脑组织中 2+、 丙二醛 ( , )、 谷胱甘肽 ( , )、 超氧化物歧化酶
+Fe malondialdehyde MDA glutataione GSH
+( , ) 含量的测定工作。 采用 法, 对各组谷胱甘肽过氧化物酶 (
+superoxide dismutase SOD Western Blot 4 glutathione peroxidase
+, ) 和酯酰辅酶 合成酶长链家族成员 ( , ) 蛋白含量进行检
+4 GPX4 A 4 acyl-coA synthetase long-chain family member4 ACSL4
+测。 结果 水迷宫实验结果表明, 经 石竹烯给药治疗后的第 天期间, 大鼠逃避潜伏期缩短, 在目标区域的
+Morris β- 2~5
+停留时间延长, 穿越平台的次数增多。 与假手术组相比, 模型组大鼠脑组织中的 2+、 水平明显升高, 含量减
+Fe MDA GSH
+少, 活性降低, 海马细胞数量减少且出现细胞核固缩现象。 与模型组相比, 石竹烯给药组大鼠脑组织中的 2+、
+SOD β- Fe
+水平有所降低, 含量增加, 活性增强, 海马细胞数量增多, 组织形态也趋于正常。 结果显示,
+MDA GSH SOD Western Blot
+模型组海马组织中 蛋白含量明显低于假手术组, 而 蛋白含量较高。 相比模型组, 石竹烯组海马组织中
+GPX4 ACSL4 β-
+表达上调, 表达下调。 结论 石竹烯可能通过抑制 大鼠脑组织神经元铁死亡, 进而改善 大鼠学习
+GPX4 ACSL4 β- VaD VaD
+和空间记忆能力。
+关键词: 大鼠; 石竹烯; 血管性痴呆; 铁死亡
+SD β-
+中图分类号: 文献标志码: 文章编号: ( )
+R749.13 A 2096-305X 2025 04-0031-05
+DOI:
+10.3969/j.issn.2096-305X.2025.04.006
+The Investigation on the Effect of β-caryophyllene on Ferroptosis and
+Neuroprotection Mechanisms in Rats with Vascular Dementia
+ZHAO Wei, WU Jie
+(The First Affiliated Hospital of Jinzhou Medical University, Jinzhou121000 China)
+Abstract Objective
+: To verify theeffectofβ-stilbeneonferroptosisinbraintissuesofratswithvasculardementia (VaD) and
+Methods
+exploreitsneuroprotectivemechanism. Duringtheexperimentaloperation, themuscles, fasciaandothertissuesoftherats
+were carefully dissected to fully expose the bilateral common carotid arteries. Subsequently, only suturing was performed on them,
+which was used as the sham operation group. In another group of rats, the bilateral common carotid arteries were also exposed, but
+ligation was used, and thus the VaD model of SD rats was successfully established. After the model preparation was completed, the
+rats with successfullypreparedmodelswereselectedandrandomlydividedintothemodelgroupandtheβ-caryophylleneadministration
+group. Seven days after the successfulestablishmentofthemodel, ratsintheβ-caryophylleneadministrationgroupwereinjectedwith
+β-caryophyllene (408 mg/kg) throughthetailvein. Aftercontinuousadministrationfortwoweeks, ratsineachgroupweretakenfor
+the Morris water maze test. The next day, some rats were randomly selected from each group, and their brain tissues were taken for
+2+
+hematoxylin-eosin (HE) staining. Strictly follow the operation steps in the kit manual to complete the determination of Fe ,
+malondialdehyde (MDA), glutataione (GSH), and superoxide dismutase (SOD) contents in brain tissue. Using the Western Blot
+第一作者: 赵微 女 辽宁锦州人 护师 学士学位 主要研究方向为血管性痴呆病理机制
+(1987—), , , , , 。
+通信作者: 武洁 女 山东烟台人 副主任医师 博士学位 主要研究方向为神经药理学相关机制
+(1980—), , , , , 。
+--- 第2页 ---
+锦州医科大学学报 年 月
+32 2025 8 , 46 (4)
+method, the protein contents of glutathione peroxidase4 (GPX4) and acyl-coA synthetase long-chain family member4 (ACSL4) in
+Results
+each group were detected. The results of the Morris water maze experiment indicated that during the period from the2nd to
+the5th day after β-caryophyllene administration treatment, the escape latency of rats was shortened, the stay time in the target area
+was prolonged, and the number of times they crossed the platform increased. Compared with the sham operation group, the levels of
+2+
+Fe andMDAinthebraintissueofratsinthemodelgroupweresignificantlyincreased, thecontentofGSHdecreased, theactivityof
+SOD decreased, the number of hippocampal cells decreased and nuclear contraction occurred. Compared with the model group, the
+2+
+levels of Fe and MDA in the brain tissue of rats in the β-caryophyllene administration group decreased, the content of GSH
+increased, the activity of SODenhanced, thenumberofhippocampalcellsincreased, andthetissuemorphologytendedtobenormal.
+The Western Blot results showed that the content of GPX4 protein in the hippocampal tissue of the model group was significantly lower
+than that of theshamoperationgroup, whilethecontentofACSL4proteinwashigher. Comparedwiththemodelgroup, theexpression
+of GPX4 was upregulated and the expression of ACSL4 was downregulated in the hippocampal tissue of the β-caryophyllene group.
+Conclusion
+β-caryophyllene may protect cerebral neurons by inhibiting ferroptosis of cerebral neurons in VaD rats, thereby
+improving learning and spatial memory abilities of VaD rats.
+Key words
+: SD rats; β-caryophyllene; vascular dementia; ferroptosis
+人口老龄化现已成为一种全球性的普遍现象 石竹烯在 模型中的应用研究较少 尤其在
+, β- VaD ,
+我国也已踏入 深度老龄化 阶段 血管性痴呆 铁死亡机制中的作用尚未充分探索 本研究通过建
+“ ” 。 。
+作为痴呆的重要类型之 立 大鼠模型 结合 水迷宫 苏木素
+(vascular dementia, VaD) VaD , Morris 、 —
+一 主要由脑血管疾病引发 高血压 高脂血症等 伊 红 染 色
+, 。 、 ( hematoxylin-eosin staining, HE) 、
+危险因素也会诱发 其临床表现涵盖语言 情 等实验技术 探讨 石竹烯对 大
+VaD, 、 Western Blot , β- VaD
+感功能障碍等方面 发病机制颇为复杂 现有研究 鼠的神经保护作用 旨在为临床治疗或缓解
+, , , VaD
+尚未完全阐明[1] 有研究表明[2] 炎症 氧化应 症状提供新的思路
+。 , 、 。
+激 神经元凋亡和铁死亡等因素 均会加剧
+、 , VaD 1 材料与方法
+病程进展 其中 铁死亡是一个因铁超载所引发的
+。 ,
+细胞氧化应激过程 在此过程中 细胞会产生活性 实验试剂
+。 , 1.1
+氧 进一步诱导脂 石竹烯 分子量 纯度
+(reactive oxygen species, ROS), β- ( : 204.35, : 80%)
+质过氧化 最终致使细胞走向死亡 在正常情况 购自于西格玛 神经元核抗原
+, 。 , (NeuN, ab104224,
+下 可被谷胱甘肽过氧化物酶 谷胱甘肽过氧化物酶
+, ROS 4 (glutathione 1 : 1000)、 4 (Anti-GPX4,
+等抗氧化酶清除 从而维持 酰基辅酶 合成酶 抗体
+peroxidase 4, GPX4) , ab125066, 1 : 1000)、 A 4
+的动态平衡 但阻断胱氨酸 谷氨酸反向转运 微管蛋白
+ROS 。 / (Anti-FACSL4, ab205199, 1 : 1000)、 β
+系统 会 抑 制 合 成 减 少 谷 胱 甘 肽 均从艾博抗 上
+GPX4 , (β-tubulin, ab7291, 1 : 10 000) (
+产生 导致机体清除自由基的 海 贸易有限公司 中国 购入 丙二醛
+(glutataione, GSH) , ) (abcam ) ,
+能力下降 引发脂质过氧化反应 破坏细胞膜和细 索 莱 宝 谷 胱 甘 肽 碧 云 天
+, , ( , BC0025 ), ( ,
+胞器 最终致使细胞死亡[3] 临床研究显示[4] 超氧化物歧化酶 碧云天 封
+, 。 , S0057S), ( , S0086),
+患者体内的促铁蛋白水平明显升高 表明患 闭山羊血清 武汉艾美捷科技有限公司 聚偏二
+VaD , ( ),
+者体内存在铁沉积和铁代谢异常的情况 铁沉积现 氟乙烯膜购买品牌为密理博
+。 。
+象可进一步诱发氧化应激和脂质代谢紊乱 基础研 实验动物
+。 1.2
+究同样表明 在 模型大鼠中 抑制铁死亡过 从锦州医科大学 级别实验动物中心购入
+, VaD , SPF
+程 可以有效延缓疾病的发展进程 改善其认知功 体重 雄性大鼠 只 动物实验整个
+, , 160 ~200 g SD 60 。
+能障碍 石竹烯是一种天然的双环倍半萜烯化 过程符合实验动物 原则 合格证号
+。 β- 3R 。 : SYXK
+合物 广泛存在于毛鹿角 胡椒 八角茴香 迷迭 辽 实验动物共分为假手术组 模
+, 、 、 、 [ ] 2019-0007。 、
+香 香料木 欧芹 香菜和香脂树等动植物中 其 型组和 石竹烯给药组
+、 、 、 , β- (408 mg/kg)。
+毒性低且生物活性明显 有研究表明[5-6] 石竹 实验方法
+。 , β- 1.3
+烯在抗炎 抑制氧化应激 保护心肌和神经系统等 造模方法
+、 、 1.3.1
+方面具有明显作用 且在心肌炎 肠炎 缺血性脑 筛选大鼠 大鼠饲养 周后进行 水
+, 、 、 : SD 2 Morris
+卒中等疾病中均发挥铁死亡调控作用 但目前关于 迷宫测试 排除 内找不到平台鼠 测试结束
+。 , 120 s 。
+--- 第3页 ---
+赵微 等 探究 石竹烯对血管性痴呆大鼠铁死亡及神经保护作用
+, : β- 33
+后进行 大鼠造模 假手术组切开皮肤分离 分析
+5 d VaD , 1.3.5 Western Blot
+组织后进行缝合 模型组分离组织后结扎双侧颈总 取新鲜大鼠脑后分离出海马组织裂解并收集上
+;
+动脉后进行缝合 给青霉素防治感染 清 通过 试剂盒对各组上清进行定量检测
+, 。 , BCA ,
+水迷宫实验 沸水煮 使蛋白变性 通过凝胶电泳和转膜
+1.3.2 Morris 10 min ,
+为评估大鼠的认知和记忆能力 进行 水 两个步骤后 冰箱孵育一抗过夜 室温孵育
+, Morris 4 ℃ , 2 h
+迷宫测试 共 包含定位航行和空间探索两部 二抗后显影
+, 5 d, 。
+分 主要检测大鼠穿越平台的次数和停留在目标区 统计学方法
+, 1.4
+域的时间[7] 应用 软件对数据进行统计学分析
+。 Prism 8.0.2 ,
+染色 定量资料以均数 标准差表示 组间比较采用单因
+1.3.3 HE ± ,
+各组大鼠取出脑组织后将组织泡在 中 素方差分析 两两比较采用
+4% PFA (One-Way ANOVA),
+固定 沉糖后完成组织冰冻切片 将切片按照 t方法 以P 为差异有统计学意义
+, 。 HE LSD- , <0.05 。
+试剂盒说明书染色
+。 2 结 果
+2+ 丙 二 醛
+1.3.4 Fe 、 GSH、 (malondialdehyde,
+超氧化物歧化酶 水迷宫实验
+MDA)、 (superoxide dismutase, 2.1 Morris
+的含量检测 模型组大鼠的逃避潜伏期与假手术组相比明显
+SOD)
+准备好足量碎冰 用于维持脑组织及海马组织 增加 与模型组相比 石竹烯给药组逃避潜伏
+, ; , β-
+的低温环境 大鼠过量麻醉后取脑并取出海马组 期较模型组在 明显降低 见表 目标区域
+。 2 ~5 d , 1。
+织 按照检测试剂盒说明书操作 酶标仪 安捷 停留时间及穿越平台次数结果显示 模型组相比于
+, , ( ,
+伦 被用来测吸光度值 假手术组目标区域停留时间以及穿越平台次数两项
+BioTek, BioTek Synergy H1)
+并根据说明书计算公式完成计算及统计分析 指标较少 而给药组则都增加 见表
+。 , , 2。
+表 各组大鼠逃避潜伏期比较 x s
+1 ( ± ) /s
+组别
+1 d 2 d 3 d 4 d 5 d
+假手术组
+83.33±11.23 71.89±12.23 58.88±7.10 39.14±7.76 22.13±5.88
+模型组 ## ## ## ## #
+102.12±8.97 92.35±7.35 78.38±10.21 55.52±12.34 31.23±9.87
+β- 石竹烯给药组 91.67±10.11 ** 75.54±5.39 ** 60.03±8.81 ** 40.03±10.34 ** 27.54±3.58 **
+注 与假手术组比较 #P ##P 与模型组比较 **P
+: , <0.05, <0.01; , <0.01。
+各组大鼠海马组织 2+
+表 各组大鼠目标区域停留时间和穿越平台次数 x s 2.3 Fe 、 MDA、 GSH、 SOD
+2 ( ± ) 水平
+组别 目标停留时间 穿越平台次数 次
+/s / 各组海马组织中和铁死亡相关 个因子结果可
+假手术组 4
+41.13±8.35 7.31±1.15 知 模型组 活性 含量低于假手术组
+模型组 ## ## , SOD 、 GSH ,
+20.34±7.62 3.22±1.10 2+和 水平高于假手术组 与模型组相比
+β- 石竹烯给药组 38.85±5.35 * 5.89±1.97 ** F 给 e 药治 M 疗 D 后 A 的 活性 含 ; 量升高 2+和 ,
+SOD 、 GSH , Fe
+注
+:
+与假手术组比较
+,
+##P
+<0.01;
+与模型组比较
+,
+*P
+<0.05, 水平减少 见图
+**P MDA , 2。
+<0.01。 各组海马组织中 和 的蛋白表达
+染色 2.4 GPX4 ACSL4
+2.2 HE 实验结果显示 模型组海马组织
+染色结果可知 假手术组细胞数量多且结 Western Blot ,
+HE , 中 蛋白表达较假手术组低 治疗组 蛋
+构正常 对比之下 模型组海马细胞数量少且肿胀 GPX4 , GPX4
+。 , 白表达较模型组则明显高 模型组酯酰辅酶 合
+并出现了核固缩 排列紊乱 而治疗组较模型组数 。 A
+, 。 成酶长链家族成员
+量增多 结构趋于正常此结果表明该治疗方案可有 4 (acyl-coA synthetase long-chain
+, 蛋白表达较假手术组明
+效改善海马组织病理损伤 为相关疾病的干预提供 family member 4, ACSL4)
+, 显增高 治疗组的 蛋白表达相比于模型组
+形态学依据 体现精准调控细胞修复在临床转化中 , ACSL4
+, 则降低 差异性均有统计学意义 P 表明
+的潜在价值 也为深入探究其分子机制奠定实验基 , ( <0.05),
+, 该治疗可调节 与 的表达失衡 为相
+础 为神经退行性疾病的精准治疗研究拓展新方 GPX4 ACSLA ,
+, 关机制研究提供分子依据 见图
+向 见图 , 3。
+, 1。
+--- 第4页 ---
+锦州医科大学学报 年 月
+34 2025 8 , 46 (4)
+图 各组海马组织 染色
+1 HE
+与假手术组相比 ##P 与模型组相比 *P **P
+, <0.05; , <0.05, <0.01。
+图 各组 2+、 、 、 表达情况
+2 Fe MDA GSH SOD
+与假手术组相比 ##P *P 与模型组相比 *P
+, <0.05, <0.05; , <0.05。
+图 各组 蛋白表达的影响和统计图
+3 GPX4/ACSL4
+化剂 可通过谷胱甘肽过氧化物酶抑制铁死亡 此
+3 讨 论 , ,
+指标合成较少会导致机体抗氧化防御失衡[10]
+。
+中国人口老龄化的加剧以及脑血管病患者数量 可以将过量的脂质过氧化物转化为脂质醇
+GPX4 ,
+的增加 可能导致未来 患者数量迅速上升 是调控铁死亡关键因子 则是决定铁死亡
+, VaD 。 ; ACSL4
+是常见的痴呆类型之一 其发病率仅次于阿 敏感性的多不饱和脂肪酸代谢的重要同工酶 它能
+VaD , ,
+尔茨海默病 且被认为是唯一可通过早期干预逆转 够通过增强脂质过氧化促进铁死亡 被证
+, , ACSL4
+的痴呆类型[8] 的发病主要由脑血管损伤和 明能够促进铁死亡引起的脑损伤和神经炎症[11]
+。 VaD 。
+多种血管危险因素引起 其病理机制包括细胞内钙 在本研究中发现 大鼠铁死亡负调节因子
+, VaD GPX4
+离子超载 兴奋性氨基酸毒性 细胞凋亡和神经炎 表达下调 正调节因子 表达上升 也进一
+、 、 , ACSL4 ,
+症等 铁死亡引起的细胞死亡在形态学上与其他细 步证明铁死亡参与 的病理过程
+。 VaD 。
+胞死亡形式 如凋亡 坏死 不同 其特征包括 铁死亡在 的病理过程中起着关键作用
+( 、 ) , VaD ,
+无凋亡小体形成 线粒体明显收缩以及线粒体膜密 因此 针对铁死亡途径开发治疗方法具有重要的临
+、 ,
+度增厚[9] 目前研究证明 铁死亡的关键机制在 床前景 中药资源丰富 毒副作用小 且在我国具
+。 , 。 、 ,
+于铁元素参与下 在生物体内的过度积累 过 有悠久的应用历史 由于神经系统疾病病理机制复
+ROS , 。
+量的铁离子通过芬顿反应使得脂质过氧化物大量沉 杂且涉及多种因素 开发具有神经保护作用的中药
+,
+积和 合成减少 而 作为细胞内重要抗氧 药物优势日益凸显[12] 研究表明 石竹烯是一
+GSH , GSH 。 , β-
+--- 第5页 ---
+赵微 等 探究 石竹烯对血管性痴呆大鼠铁死亡及神经保护作用
+, : β- 35
+种高生物活性 低毒性的天然化合物 广泛存在于 李慧 董新刚 李伟峰 调节性细胞死亡在血管性痴呆中的
+、 , [4] , , .
+食物和香料中 能够减轻缺血性脑卒中的氧化损 作用及中医药调控机制概述 [J]. 中国比较医学杂志 ,
+,
+伤 并通过抑制铁死亡发挥神经保护作用 改善脑 2024, 34 (9): 146-156.
+, , 左天睿 胡晴雯 刘京东 等 石竹烯通过激活
+损伤
+。
+此外
+,
+有研究证实[13]
+, β-
+石竹烯可通过提 [5]
+通
+,
+路减轻大
+,
+鼠脑缺血
+,
+再
+.
+灌
+β
+注
+-
+损伤 中国新
+H
+药
+SF1
+杂
+/
+HSP70 [J].
+高 和谷胱甘肽过氧化物酶水平 抑制 的 志
+GSH , MDA , 2023, 32 (5): 513-521.
+表达 从而改善柳氮磺吡啶诱导的大鼠肾毒性 本 胡晴雯 石竹烯通过 调控铁死亡改善大鼠局
+, 。 [6] . β- NRF2/HO-1
+研究实验结果证明 与模型组相比 石竹烯治 灶性脑缺血再灌注损伤研究 重庆 重庆医科大学
+[D]. : ,
+, , β-
+疗组 含量 活性增加 2+ 表达 2022.
+GSH 、 SOD , Fe 、 MDA 陈欣悦 边文超 赵晴 等 信号通路在血管性痴呆
+水平降低 表明 石竹烯在 模型中通过减轻 [7] , , , . MAPK
+, β- VaD 中研究进展 中国老年学杂志
+[J]. , 2023, 43 (5): 1267-
+脂质过氧化缓解了铁死亡 实验结果
+。 Western Blot 1270.
+显示 与模型组相比 石竹烯能够上调 陈婕 唐鑫 陈盼 等 基于改良大鼠双侧颈总动脉结扎法
+, , β- GPX4 [8] , , , .
+表达水平 下调 表达水平 表明 石竹烯 建立血管性痴呆模型探讨脑血流量变化规律及对血管新生
+, ACSL4 , β-
+相关蛋白的影响 中国实验动物学报
+能够逆转 大鼠铁死亡 本研究通过 水 [J]. , 2023, 31 (11):
+VaD 。 Morris
+迷宫实验 海马组织中 2+ 水 1423-1430.
+、 Fe 、 MDA、 SOD、 GSH 陈乔 余海燕 李俊波 等 夏天无片对血管性痴呆模型大
+[9] , , , .
+平的检测 染色 检测结果 发现
+鼠学习记忆能力及海马神经元凋亡的影响 世界科学技
+、 HE 、 Western Blot , [J].
+铁死亡在 疾病进程中发挥着关键作用以及 术 中医药现代化
+VaD β- — , 2023, 25 (5): 1828-1834.
+石竹烯在 中发挥神经保护作用 其机制可能 贺莎莎 刘进友 李书剑 等 抑制铁死亡改善血管性痴
+VaD , [10] , , , .
+呆大鼠认知功能的作用与机制研究 中国实用神经疾
+与铁死亡的调控有密切关系 为 的治疗提供 [J].
+, VaD 病杂志
+全新解决策略 , 2021, 24 (15): 1289-1298.
+。 刘紫薇 李琪 刘丽芳 中药皂苷类成分治疗神经系统疾
+[11] , , .
+病的研究进展 云南中医中药杂志
+参考文献: [J]. , 2022, 43 (11):
+79-84.
+谢紫薇 陈盼 李娜 等 运动预处理联合电针对血管性痴 陈莎 石竹烯调节 膜转运保护急性缺血性脑
+[1] , , , . [12] . β- CI-AMPARs
+呆大鼠学习记忆能力及海马神经元铁死亡的影响 中 卒中及卒中后认知功能障碍的作用及机制研究 重
+[J]. [D].
+国病理生理杂志 庆 重庆医科大学
+, 2024, 40 (10): 1934-1942. : , 2021.
+张鼎 胡芷涵 孙春英 等 基于 轴调控线粒
+[2] , , , . PGAM5-Drp1 [13] REFAATB, EL-BOSHY M. Protective antioxidative and anti-
+体稳态探讨温肺降浊方对血管性痴呆模型大鼠的神经保护
+inflammatoryactionsofβ-caryophylleneagainstsulfasalazine-in-
+作用 中国药理学通报
+[J]. , 2024, 40 (11): 2158-2164. duced nephrotoxicity in rat [J]. Exp Biol Med, 2022, 247
+周贤熙 周丽亭 马春媚 等 靶向 抑
+[3] , , , . rno-miR-161 EGLN2 (8): 691-699.
+制血管性痴呆大鼠额叶铁死亡 中国临床解剖学杂志 收稿日期:
+[J]. , 2025-01-08
+2022, 40 (6): 665-670.

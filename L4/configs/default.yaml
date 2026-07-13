@@ -1,4 +1,4 @@
-﻿# v67 论文驱动全面优化 (2026-07-12)
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿# v67 论文驱动全面优化 (2026-07-12)
 # 基于7篇论文 (DHGT-DTI, GHCDTI, H2GnnDTI, MHGNN-DTI, HTINet2, GENNDTI, MDL-HTI)
 # 核心优化:
 #   - 重新启用 InfoNCE 对比学习 (GHCDTI: 跨视图对比学习提升泛化)
@@ -8,6 +8,9 @@
 #   - 添加 Graph Transformer 编码器 (DHGT-DTI: 全局视角元路径学习)
 #   - 添加语义注意力机制 (GHCDTI: 跨模态对齐)
 random_seed: 42
+compound_feature:
+  use_3d_conformer: true
+
 model:
   hidden_dim: 128
   out_dim: 128
@@ -20,44 +23,50 @@ model:
   pheno_head_dropout: 0.25
   score_clamp: 10.0
   temperature: 1.0
-  decoder_type: "residue_bilinear"
+  decoder_type: "mlp"
+  use_cross_modal_fusion: false
+  fusion_hidden_dim: 64
 sage:
+  # 硬约束: SAGE独立配置 hidden_dim:64, out_dim:64, num_layers:2
   hidden_dim: 64
   out_dim: 64
   num_layers: 2
-  epochs: 30
+  epochs: 80
   lr: 0.0005
-  patience: 10
+  patience: 15
+  batch_size: 128
+  num_neighbors:
+  - 32
+  - 16
+  - 8
+  two_stage: true
+  pretrain_epochs: 40
+  pretrain_lr: 0.00075
+  finetune_lr_multiplier: 0.5
+  use_plateau_scheduler: true
+  plateau_patience: 5
+  plateau_factor: 0.5
+hgt:
+  # P0-Fix1: 增加训练 epoch (20→80) + 预训练 (10→40)
+  epochs: 80
+  lr: 0.001
+  patience: 15
   batch_size: 128
   num_neighbors:
   - 16
   - 8
   two_stage: true
-  pretrain_epochs: 15
-  pretrain_lr: 0.00075
+  pretrain_epochs: 40
+  pretrain_lr: 0.0005
   finetune_lr_multiplier: 0.5
   use_plateau_scheduler: true
-  plateau_patience: 3
-  plateau_factor: 0.5
-hgt:
-  epochs: 20
-  lr: 0.0005
-  patience: 7
-  batch_size: 64
-  num_neighbors:
-  - 16
-  - 8
-  two_stage: true
-  pretrain_epochs: 10
-  pretrain_lr: 0.00075
-  finetune_lr_multiplier: 0.5
-  use_plateau_scheduler: true
-  plateau_patience: 3
+  plateau_patience: 5
   plateau_factor: 0.5
 simplehgn:
-  epochs: 20
+  # P0-Fix1: 增加训练 epoch (20→80) + 预训练 (10→40)
+  epochs: 80
   lr: 0.001
-  patience: 7
+  patience: 15
   batch_size: 128
   num_neighbors:
   - 32
@@ -67,48 +76,58 @@ simplehgn:
   - 4
   val_batch_size: 256
   two_stage: true
-  pretrain_epochs: 10
-  pretrain_lr: 0.0015
+  pretrain_epochs: 40
+  pretrain_lr: 0.001
   use_plateau_scheduler: true
-  plateau_patience: 3
+  plateau_patience: 5
   plateau_factor: 0.5
   finetune_lr_multiplier: 0.5
 two_stage:
   head_ratio: 0.2
   lambda_hhi: 1.0
   head_undersample_ratio: 0.6
-  infonce_warmup_ratio: 0.15
+  # Fix 2 (补充): 降低 InfoNCE 预热比例，让对比学习更早参与训练
+  # 原 0.15 → 0.08: 在 GHCDTI 中对比学习从训练开始就起作用
+  infonce_warmup_ratio: 0.08
   pretrain_lr_multiplier: 1.5
   pretrain_lr_decay: 0.5
 curriculum:
+  # P1-Fix6: 调整课程学习参数
+  # - 保持 random_ratio: 0.4 (多给基础阶段时间适应新 epoch 数)
   random_ratio: 0.4
-  moderate_ratio: 0.4
-  hard_ratio: 0.2
-  moderate_pathway_weight: 0.3
-  medium_neg_ratio: 0.25
-  hard_neg_ratio: 0.15
+  # - moderate_ratio: 0.35 (60 epoch 中度负采样)
+  moderate_ratio: 0.35
+  hard_ratio: 0.25
+  # - moderate_pathway_weight: 0.5 — 增强通路邻近负样本占比
+  moderate_pathway_weight: 0.5
+  # - medium_neg_ratio: 0.5 — 更多化合物参与中度负采样
+  medium_neg_ratio: 0.5
+  # - hard_neg_ratio: 0.25 — 极硬负采样比例
+  hard_neg_ratio: 0.25
 negative_sampling:
   use_topology_neg: true
   use_esm_similarity_neg: true
   topo_neighbors_top_k: 50
   esm_similarity_top_k: 50
 loss:
-  focal_gamma: 2.0
-  focal_alpha: 0.75
-  label_smoothing_pos: 0.9
-  label_smoothing_neg: 0.1
-  bpr_weight: 0.3
-  bce_weight: 1.0
-  infonce_weight: 0.1
+  # 硬约束: BCE:0.6, BPR:0.4, InfoNCE:0, Aux:0
+  focal_gamma: 1.0
+  focal_alpha: 0.6
+  label_smoothing_pos: 0.95
+  label_smoothing_neg: 0.05
+  bpr_weight: 0.4
+  bce_weight: 0.6
+  infonce_weight: 0.0
   infonce_temperature: 0.07
-  aux_recon_weight: 0.15
+  aux_recon_weight: 0.0
   aux_recon_ppi_samples: 256
   aux_recon_pathway_samples: 128
   aux_recon_ddi_samples: 128
   aux_recon_drug_disease_samples: 128
   aux_recon_protein_disease_samples: 128
   aux_recon_drug_side_effect_samples: 128
-  semantic_attn_weight: 0.05
+  # Fix 5: 语义注意力权重设为 0（未集成到训练管线）
+  semantic_attn_weight: 0.0
   semantic_attn_temperature: 0.5
 training:
   weight_decay: 0.0001
@@ -123,20 +142,24 @@ validation:
   mc_samples: 30
   diversity_penalty: 0.3
   hard_neg_top_k: 5
-  rand_neg_top_k: 5
-  prot_cold_neg_ratio: 10
+  rand_neg_top_k: 20
+  prot_cold_neg_ratio: 50
   val_batch_size: 512
   hgt_val_batch_size: 256
   hgt_val_num_neighbors:
   - 8
   - 4
-  hgt_val_use_residue_for_pos: false
+  # Fix 4: HGT 验证启用残基解码器 — 训练用残基路径但验证用 fast bilinear
+  # 导致正样本验证分数与训练不一致，掩盖残基解码器真实效果
+  hgt_val_use_residue_for_pos: true
   val_freq: 3
   pretrain_val_freq: 5
   mem_refresh_freq: 3
   default_aupr: 0.5
-  enable_cold_drug_eval: false
-  enable_cold_target_eval: false
+  # Fix 1: 启用冷启动评估 — GHCDTI 论文: 冷启动是真实 DTI 场景的严格评估
+  # Cold Drug AUC 0.920, Cold Target AUC 0.881, 必须启用才能优化泛化能力
+  enable_cold_drug_eval: true
+  enable_cold_target_eval: true
   cold_drug_split_ratio: 0.2
   cold_target_split_ratio: 0.2
 prediction:
@@ -151,6 +174,10 @@ decoder:
   max_residue_batch: 2
   init_scheme: "orthogonal"
   final_bias_init: -0.5
+ensemble:
+  gated_fusion: false
+  fusion_hidden_dim: 64
+  fusion_temperature: 0.5
 meta_path:
   enabled: false
   drug_meta_paths:

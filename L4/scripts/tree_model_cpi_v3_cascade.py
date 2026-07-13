@@ -28,7 +28,7 @@ v2 保留模块：
 数据来源（全部真实，不模拟）：
   - CPI: L4/results/experimental_actives_detail_cleaned.csv
   - 蛋白嵌入: L4/results_v10_minibatch/esm2_protein_embeddings.npz
-  - TCM池: L3/results/tcm_compound_pool_tox_filtered_noleak.csv
+  - TCM池: L3/results/tcm_compound_pool_tox_filtered.csv
 
 输出：
   - L4/results/tree_v3_results.csv
@@ -39,7 +39,6 @@ v2 保留模块：
 """
 
 import logging
-import os
 import sys
 import time
 import traceback
@@ -50,9 +49,7 @@ import numpy as np
 import pandas as pd
 from rdkit import Chem, RDLogger
 from rdkit.Chem import AllChem, Descriptors, MACCSkeys, rdMolDescriptors
-from rdkit.DataStructs import TanimotoSimilarity, BulkTanimotoSimilarity
 
-from sklearn.base import clone
 from sklearn.ensemble import (
     ExtraTreesClassifier,
     RandomForestClassifier,
@@ -1021,7 +1018,7 @@ def main():
     cpi_df = pd.read_csv(L4_RESULTS / "experimental_actives_detail_cleaned.csv", low_memory=False)
     protein_embeddings = {str(k): v.astype(np.float32) for k, v in
                           np.load(L4_RESULTS_V10 / "esm2_protein_embeddings.npz", allow_pickle=True).items()}
-    tcm_df = pd.read_csv(L3_RESULTS / "tcm_compound_pool_tox_filtered_noleak.csv", low_memory=False)
+    tcm_df = pd.read_csv(L3_RESULTS / "tcm_compound_pool_tox_filtered.csv", low_memory=False)
 
     # 获取所有需要的 SMILES
     all_smiles = list(cpi_df["canonical_smiles"].dropna().astype(str).unique())
@@ -1221,7 +1218,7 @@ def main():
     top_path = L4_RESULTS / "tree_v3_top_candidates.csv"
     top50.to_csv(top_path, index=False)
 
-    logger.info(f"\nTop 20 候选化合物:")
+    logger.info("\nTop 20 候选化合物:")
     for i, row in enumerate(top50.head(20).itertuples(index=False), 1):
         logger.info(f"  {i:2d}. {row.molecule_name} | max={row.max_score:.4f} "
                     f"| mean={row.mean_score:.4f} "
@@ -1230,7 +1227,7 @@ def main():
                     f"| {row.top_3_genes}")
 
     logger.info(f"\nTop 50 候选已保存: {top_path}")
-    logger.info(f"任务完成!")
+    logger.info("任务完成!")
 
 
 if __name__ == "__main__":

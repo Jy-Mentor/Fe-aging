@@ -9,7 +9,6 @@ from __future__ import annotations
 import logging
 import random
 import time
-from typing import Iterable
 
 import numpy as np
 import torch
@@ -32,6 +31,7 @@ def _compute_ranking_metrics(score_matrix, valid_pos_list, ks=(10, 20, 50)):
 
 def validate_sage(model, x, homo_edge_index, val_compounds, all_compound_to_pos, n_compounds,
                   device, score_clamp, hard_neg_top_k, rand_neg_top_k, mask_val,
+                  neg_ratio: int = 100,
                   return_embeddings: bool = False):
     """v63: SAGE 验证 — 批量 MLP 解码器评分，避免 Python 循环反复 forward
 
@@ -104,7 +104,7 @@ def validate_sage(model, x, homo_edge_index, val_compounds, all_compound_to_pos,
             pos_src_list, pos_dst_list = [], []
             for idx, src in enumerate(val_compounds_list):
                 pos_set = all_compound_to_pos.get(src, set())
-                valid_pos = [p - n_compounds for p in pos_set if n_compounds <= p < n_compounds + n_proteins]
+                valid_pos = [p - n_compounds for p in pos_set if n_compounds <= p < n_compounds + n_prots]
                 for p in valid_pos:
                     pos_src_list.append(idx)
                     pos_dst_list.append(p)
@@ -148,36 +148,19 @@ def validate_sage(model, x, homo_edge_index, val_compounds, all_compound_to_pos,
                 else:
                     y_score.append(torch.sigmoid(scores[p]).item())
 
-            # 硬负样本（v13: 边界检查，n_prots 可能 < hard_neg_top_k）
-            n_hard = min(hard_neg_top_k, n_prots - len(valid_pos))
-            if n_hard > 0:
-                mask = torch.zeros(n_prots, device=device)
-                for p in valid_pos:
-                    mask[p] = mask_val
-                _, hard_indices = (scores + mask).topk(n_hard)
-                for hi in hard_indices:
-                    if hi.item() < n_prots:
-                        y_true.append(0)
-                        y_score.append(torch.sigmoid(scores[hi]).item())
-
-            # 随机负样本（v13: 边界检查）
-            n_rand = min(rand_neg_top_k, n_prots - len(valid_pos))
-            if n_rand > 0:
-                rand_mask = torch.ones(n_prots, device=device)
-                for p in valid_pos:
-                    rand_mask[p] = 0
-                # 排除已选中的硬负样本，避免重复采样导致 AUC/AUPR 虚高
-                if n_hard > 0:
-                    for hi in hard_indices:
-                        if hi.item() < n_prots:
-                            rand_mask[hi] = 0
-                rand_candidates = torch.where(rand_mask > 0)[0]
-                if len(rand_candidates) > 0:
-                    n_sample = min(n_rand, len(rand_candidates))
-                    rand_idx = rand_candidates[torch.randperm(len(rand_candidates), device=device)[:n_sample]]
-                    for ri in rand_idx:
-                        y_true.append(0)
-                        y_score.append(torch.sigmoid(scores[ri]).item())
+            # 固定 1:neg_ratio 随机负采样（文献标准做法，与训练时课程负采样解耦）
+            # 每个正样本对应 neg_ratio 个随机负样本，确保 AUC/AUPR 可对比
+            neg_mask = torch.ones(n_prots, device=device, dtype=torch.bool)
+            for p in valid_pos:
+                neg_mask[p] = False
+            neg_candidates = torch.where(neg_mask)[0]
+            n_neg_target = len(valid_pos) * neg_ratio
+            n_neg = min(n_neg_target, len(neg_candidates))
+            if n_neg > 0:
+                neg_idx = neg_candidates[torch.randperm(len(neg_candidates), device=device)[:n_neg]]
+                for ri in neg_idx:
+                    y_true.append(0)
+                    y_score.append(torch.sigmoid(scores[ri]).item())
 
         if len(y_true) < 2 or len(set(y_true)) < 2:
             r = {"auc": 0.5, "aupr": 0.5, "n_valid_compounds": n_valid}
@@ -219,6 +202,7 @@ def validate_hgt(
     score_clamp,
     hetero_adj: dict | None = None,
     return_embeddings: bool = False,
+    neg_ratio: int = 100,
 ) -> dict[str, float]:
     """v62: HGT 全图前向验证 — 一次全图前向传播，然后批量解码。
 
@@ -304,7 +288,7 @@ def validate_hgt(
                     if torch.cuda.is_available():
                         torch.cuda.empty_cache()
 
-        # 4) Per-compound 评分与负采样
+        # 4) Per-compound 评分与固定 1:neg_ratio 随机负采样
         y_true, y_score = [], []
         all_batch_ranking = []
         n_valid = 0
@@ -324,48 +308,17 @@ def validate_hgt(
                 else:
                     y_score.append(torch.sigmoid(scores[p]).item())
 
-            # 硬负样本 (top-5)
-            valid_pos_tensor = torch.tensor(valid_pos, device=device, dtype=torch.long)
-            mask = torch.zeros(n_proteins, device=device)
-            mask[valid_pos_tensor] = -1e9
-            n_hard = min(5, n_proteins - len(valid_pos))
-            if n_hard > 0:
-                _, hard_indices = (scores + mask).topk(n_hard)
-                for hi in hard_indices:
+            # 固定 1:neg_ratio 随机负采样（文献标准做法，与训练时课程负采样解耦）
+            neg_mask = torch.ones(n_proteins, device=device, dtype=torch.bool)
+            neg_mask[torch.tensor(valid_pos, device=device, dtype=torch.long)] = False
+            neg_candidates = torch.where(neg_mask)[0]
+            n_neg_target = len(valid_pos) * neg_ratio
+            n_neg = min(n_neg_target, len(neg_candidates))
+            if n_neg > 0:
+                neg_idx = neg_candidates[torch.randperm(len(neg_candidates), device=device)[:n_neg]]
+                for ri in neg_idx:
                     y_true.append(0)
-                    y_score.append(torch.sigmoid(scores[hi]).item())
-
-            # 随机负样本 (top-5)
-            n_rand = min(5, n_proteins - len(valid_pos))
-            if n_rand > 0:
-                rand_mask = torch.ones(n_proteins, device=device)
-                rand_mask[valid_pos_tensor] = 0
-                if n_hard > 0:
-                    for hi in hard_indices:
-                        rand_mask[hi] = 0
-                rand_candidates = torch.where(rand_mask > 0)[0]
-                if len(rand_candidates) > 0:
-                    n_sample = min(n_rand, len(rand_candidates))
-                    rand_idx = rand_candidates[torch.randperm(len(rand_candidates), device=device)[:n_sample]]
-                    for ri in rand_idx:
-                        y_true.append(0)
-                        y_score.append(torch.sigmoid(scores[ri]).item())
-
-            # 额外随机负样本 (top-20)
-            n_rand_extra = min(20, n_proteins - len(valid_pos) - n_hard)
-            if n_rand_extra > 0:
-                extra_rand_mask = torch.ones(n_proteins, device=device)
-                extra_rand_mask[valid_pos_tensor] = 0
-                if n_hard > 0:
-                    for hi in hard_indices:
-                        extra_rand_mask[hi] = 0
-                extra_candidates = torch.where(extra_rand_mask > 0)[0]
-                if len(extra_candidates) > 0:
-                    n_sample = min(n_rand_extra, len(extra_candidates))
-                    extra_idx = extra_candidates[torch.randperm(len(extra_candidates), device=device)[:n_sample]]
-                    for ri in extra_idx:
-                        y_true.append(0)
-                        y_score.append(torch.sigmoid(scores[ri]).item())
+                    y_score.append(torch.sigmoid(scores[ri]).item())
 
             # Per-compound 排名指标
             valid_pos_batch = valid_pos
@@ -629,7 +582,7 @@ def validate_hgt_minibatch(
                             all_y_true.append(0)
                             all_y_score.append(torch.sigmoid(scores[ri]).item())
                 # v45 fix: 增加更多随机负样本以平衡硬负样本偏置
-                n_rand_extra = min(20, n_batch_prots - len(valid_pos) - n_hard)
+                n_rand_extra = min(100, n_batch_prots - len(valid_pos) - n_hard)
                 if n_rand_extra > 0:
                     extra_rand_mask = torch.ones(n_batch_prots, device=device)
                     for p in valid_pos:
@@ -732,6 +685,8 @@ def validate_simplehgn(
     device,
     score_clamp,
     hetero_adj: dict | None = None,
+    meta_path_edge_indices: dict[str, torch.Tensor] | None = None,
+    neg_ratio: int = 100,
 ) -> dict[str, float]:
     """SimpleHGN 全图前向验证，委托给 validate_hgt（v62 全图版本）。
 
@@ -745,4 +700,6 @@ def validate_simplehgn(
         model, hetero_data, val_compounds,
         all_compound_to_pos, n_compounds, n_proteins,
         device, score_clamp,
-        hetero_adj=hetero_adj)
+        hetero_adj=hetero_adj,
+        meta_path_edge_indices=meta_path_edge_indices,
+        neg_ratio=neg_ratio)

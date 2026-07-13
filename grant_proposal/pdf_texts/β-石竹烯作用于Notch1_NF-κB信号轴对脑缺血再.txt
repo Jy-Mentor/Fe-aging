@@ -1,0 +1,502 @@
+
+--- 第1页 ---
+218 第三军医大学学报，2021，43(3) http: //aammt．tmmu．edu．cn
+DOI:10．16016/j．1000-5404．202009067
+β-石竹烯作用于 Notch1/NF-κB 信号轴对脑缺血再灌注损伤大鼠的改善作用
+刘京东，陈 莎，王钰淳，刘胜伟，饶江燕，王 倩，邓 玲，王 萱，董 志 400016 重庆，重庆医科大学药学
+院，重庆市生物化学与分子药理重点实验室
+［摘要］ 目的 探究 β-石竹烯( β-caryophyllene，BCP) 对脑缺血再灌注( cerebral ischemia-
+reperfusion，CIＲ) 损伤大鼠的保护作用及相关机制。方法 将 SD 大鼠按随机数字表法分为假手术组，
+缺血再灌注组，β-石竹烯低、中、高剂量组( 分别为 102、204、408 mg·kg－1) ，Jagged1+BCP 对照组，
+Jagged1( Notch1激动剂) 组。模型组、β-石竹烯低、中、高剂量组及 Jagged1+BCP 对照组、Jagged1 组使用
+线栓法构建SD大鼠CIＲ模型，缺血1．5 h，再灌注48 h后，进行脑缺血梗死体积测定以及神经行为学评
+分，用Western blot检测脑组织中Notch1、NF-κB p65、NF-κB p-p65及Hes1蛋白表达;HE 染色观察缺血
+侧海马中的细胞死亡数量;ELISA法检测大鼠缺血侧海马中 TNF-α 及 IL1-β 的含量变化。结果 与模
+型组进行比较，BCP 给药组可明显改善大鼠神经功能缺失，减少缺血侧脑梗死体积，降低海马中
+Notch1、NF-κB及Hes1的蛋白表达量( P＜0．05) ，减少 TNF-α、IL-1β 的释放( P＜0．05) ，减少海马神经元
+细胞的死亡数。与Jagged1干预组比较，BCP 给药组 Notch1 的激动剂 Jagged1 可以拮抗 BCP 的治疗效
+果。结论 BCP 能够减轻大鼠的脑缺血再灌注损伤，可能通过抑制 Notch1/NF-κB 减少炎性因子的释
+放，发挥其缺血性保护作用。
+［关键词］ 脑缺血再灌注损伤;β-石竹烯;炎症;Notch1/NF-κB
+［中图法分类号］ Ｒ743．31; Ｒ914．4; Ｒ966 ［文献标志码］ A
+β-caryophyllene improves cerebral ischemia reperfusion injury in rats via Notch1/
+NF-κB signal axis
+LIU Jingdong，CHEN Sha，WANG Yuchun，LIU Shengwei，ＲAO Jiangyan，WANG Qian，DENG Ling，WANG Xuan，
+DONG Zhi Chongqing Key Laboratory of Biochemistry and Molecular Pharmacology，School of Pharmacy，
+Chongqing Medical University，Chongqing，400016，China
+［Abstract］ Objective To explore the protective effect of β-caryophyllene ( BCP) on cerebral
+ischemia-reperfusion ( I/Ｒ) rats and related mechanism． Methods SD rats were randomized into sham
+operation group，I/Ｒ group，and low-，medium-and high-dose BCP groups ( 102，204 and 408 mg·kg－1) ，
+Jagged1 ( Notch1 agonist，50 mg·kg－1 in 3 h before I/Ｒ injury) +BCP group，and Jagged1 group． The
+treatments were given to the corresponding rats through intragastric infusion． In 7 d later，SD rat CIＲ model
+was established with suture-occlusion，with ischemia for 1．5 h followed by reperfusion for 48 h． The infarct
+volume and neurobehavioral score were measured; Western blotting was used to detect the cerebral protein
+levels of Notch1，NF-κB p65，NF-κB p-p65 and Hes1; HE staining was applied to observe the number of
+dead cells，and ELISA was employed to detect the changes of TNF-α and IL1-β contents in the ischemic
+hippocampus． Ｒesults BCP treatment could significantly improve the neurological deficit，reduce the infarct
+volume，down-regulate the protein levels of Notch1，NF-κB and Hes1 in the hippocampus ( P＜0．05) ，reduce
+the releases of TNF-α and IL-1β ( P＜0．05) ，and attenuate the death of hippocampal neuronal cells in the rats
+［基金项目］ 重庆市自然科学基金(CSTC2018jcyjAX0378)
+［通信作者］ 董 志，E-mail: 100798@cqmu．edu．cn
+1000-5404/Copyright2021，陆军军医大学(第三军医大学)。这篇开放获取文章遵循CCBY许可协议(https://creativecommons．org/licenses/by/4．0/)
+--- 第2页 ---
+http: //aammt．tmmu．edu．cn 第三军医大学学报，2021，43(3) 219
+after cerebral I/Ｒ injury． Comparing the simple Jagged1 intervention group，Notch1 agonist，Jagged1，could
+antagonize the therapeutic effects of BCP． Conclusion BCP can attenuate cerebral I/Ｒ injury in rats，and
+exerts its protective effect probably through inhibiting Notch1/NF-κB signal axis to reduce the release of
+inflammatory factors．
+［Key words］ cerebral ischemia-reperfusion injury; β-caryophyllene; inflammation; Notch1/NF-κB
+SupportedbytheNaturalScienceFoundationofChongqing(CSTC2018jcyjAX0378)． Correspondingauthor: DONGZhi，E-mail: 100798@cqmu．edu．cn
+脑缺血是一种常见的脑血管疾病，其发病的主要 生物技术有限公司) ; NF-κB p-p65( AF2006，Affinity) ;
+原因是脑部缺血，在短时间内不能恢复血液供应，如果 Hes1( A11718) 、Notch1( A16673，AB clonal) ; Western
+能较快恢复供血，则可以起到治疗的效果［1］。若错过 blot试剂( 武汉赛维尔生物科技有限公司) ; ELISA 试
+了这个较短的治疗时间窗，再恢复供血后则会加重大 剂盒( 赛默飞生物) ;其余试剂均为国产分析纯。
+脑的功能性障碍和疾病损伤，即脑缺血再灌注 1．3 仪器
+( cerebral ischemia-reperfusion，CIＲ) 损伤［2－4］。Notch 低温离心机( Thermo 公司，Heraeus Fresco 21) ; 湿
+信号通路是一条高度保守的信号通路，在细胞的自我 式转膜仪、垂直电泳槽( 六一仪器厂，DYY-7C) ;酶标仪、
+更新、个体生长发育和一系列病理生理过程中起重要 凝胶成像系统( Universal HoodⅡ，Bio-Ｒad 公司) ，Nikon
+作用［5］。GIL-GAＲCLA 等［6］研究发现，在脑缺血后 正置显微镜( Eclipse C1) ;恒温摇床( 跃进医疗器械) 。
+Notch1上调，会激活NF-κB，使促炎性细胞因子的释放 1．4 分组
+及白细胞增加，加重炎症反应，其下游基因 Hes1 也会 将大鼠按随机数字表法分为7 组，每组15 只。假
+在脑下室高表达，促进炎性因子的释放，Jagged1 能够 手术组:连续灌胃7 d 生理盐水及甘油混合溶液，在造
+使Notch1表达增加，从而加重缺血性损伤［7－9］。目前 模时只进行血管分离，不进行插栓及缺血处理;模型组:
+关于BCP 调控 Notch1 参与 CIＲ 调节的机制尚不明 连续灌胃7 d生理盐水及甘油混合溶液，使用线栓法构
+确，且缺乏Hes1作为直接参与调节的证据。 建SD大鼠CIＲ损伤模型，缺血1．5 h，再灌注48 h;β-石
+β-石竹烯( β-caryophyllene，BCP) 是存在于许多天 竹烯低、中、高剂量组分别以( 102、204、408 mg·kg－1)
+然植物中的一种倍半萜烯类化合物［10］，具有抗炎、抗 连续灌胃7 d 后使用线栓法构建 SD 大鼠 CIＲ 损伤模
+菌、抗氧化、抗抑郁及减缓阿尔兹海默症症状的药理学 型，缺血1．5 h，再灌注48 h;BCP+Jagged 组: 连续灌胃
+特性。有相关研究表明［11－12］，BCP 能通过调节大鼠的 7 d 204 mg·kg－1 BCP 用线栓法构建 SD 大鼠 CIＲ 损
+海马神经元凋亡与再生，减缓脑缺血再灌注所引起的 伤模型，缺血1．5 h，再灌注48 h，于建模前3 h 腹腔注
+神经系统中的损伤，从而起到对脑的保护作用。但是 射Jagged1溶液( 50 mg·kg－1)［13］; Jagged1 组: 续灌胃
+BCP 能否通过抑制Notch1信号的激活，发挥抗脑缺血 7 d生理盐水及甘油混合溶液，用线栓法构建 SD 大鼠
+再灌注损伤的作用仍然需要进一步探究。本实验首先 CIＲ 损伤模型，缺血1．5 h，再灌注48 h，于建模前3 h腹
+构建大鼠脑缺血再灌注模型，进行 BCP 干预，观察 腔注射Jagged1溶液( 50 mg·kg－1) 。
+CIＲ损伤后的大鼠在神经功能等方面的变化以及该变 1．5 大鼠脑缺血再灌注损伤模型制备
+化是否与Notch1/NF-κB信号通路有关，并探究其可能 参考 LONGA 等［14］的方法，制备大鼠脑缺血再灌
+的作用机制。 注模型: 用4%水合氯醛进行腹腔麻醉注射，以仰卧位
+固定，进行消毒，用棉签蘸去其口腔内多余液体，保持
+1 材料与方法
+呼吸通畅。用手术剪剪开沿颈部中线剪开 1 个 2 cm
+1．1 实验动物 左右的切口。将大鼠皮肉分离，分离出颈外动脉
+清洁级雄性 SD 大鼠120 只，体质量 250～290 g， ( external carotid artery，ECA) 、颈内动脉 ( internal
+SPF级，由重庆医科大学实验动物中心提供，许可证号 carotid artery，ICA) 及颈总动脉( common carotid artery，
+为SYXK渝2018-0003。 CCA) ，用缝合线将颈总动脉及颈外动脉结扎，用动脉
+1．2 试剂 夹暂时夹闭颈内动脉，用眼科手术剪在颈总结扎的远
+2，3，5-氯化三苯基四氮唑( 2，3，5-triphenyl- 心端处钻1个小孔，将线栓( 直径 0．36 mm) 通过小孔
+tetrazolium chloride solution，TTC) ( 17779，美国 Sigma- 插入颈总动脉，等线栓进入后再稍微固定，线栓经过颈
+Aldrich 公司) ; Jagged1( MCE 公司，HY-P1846A) ; NF- 总动脉进入到大脑中动脉( middle cerebral artery，
+κB p65( 10745-1-AP) 、β-actin( 20536-1-AP，武汉三鹰 MCA) ，缺血1．5 h后，拔出线栓，使动脉血重新流通，将
+--- 第3页 ---
+大鼠伤口进行缝合后再灌注，假手术组手术步骤与之相 出损伤侧海马组织，在低温下剪碎组织块，匀浆后按
+同( 除不插栓) ，手术后均放置于室温，自由饮水、进食。 ELISA试剂盒的操作步骤进行。
+1．6 神经行为学评分 1．11 免疫荧光检测海马中Notch1及NF-κB的表达
+大鼠脑缺血再灌注后，采用 LONGA 等［14］5 分制 将大鼠用 4%水合氯醛进行腹腔注射麻醉，然后
+( 0～4分) 对大鼠的神经功能缺失进行评分。0 分: 活 经冠状窦快速灌注0．9%氯化钠清洗与4%多聚甲醛固
+动正常，并无神经功能性障碍;1 分: 提起尾巴时，对侧 定。大脑立即取出，并依次通过磷酸缓冲盐以及含
+( 左侧) 前肢不能前伸;2 分: 向缺血对侧转圈;3 分: 无 30%蔗糖进行 12 h 的脱水。然后用冷冻切片机对样
+法承受对侧自身重量;4分:没有自主运动或有意识障 品进行切片，切片后放入 OCT-Freeze 中冷冻。冰冻切
+碍。分值越高，则说明动物的行为障碍越严重。 片在10%山羊血清中于室温下孵育 2 h，避免非特异
+1．7 脑梗死体积测定 性免疫球蛋白的结合。封闭后，加入作为主要抗体的
+大鼠脑缺血再灌注后( 以时间点为准) ，断头取脑， 兔抗Notch1及NF-κB抗体( 1 ∶ 2 000) ，4 ℃下孵育过
+迅速置于－20 ℃冰箱中冷冻30 min 左右取出，去掉嗅 夜。PBS冲洗3遍后，用荧光山羊抗兔抗体在37 ℃水
+球、小脑，在冰盒上由前向后以2．00mm厚连续5片冠状 浴加热条件下孵育1 h。采用4'，6-二氨基-2-苯基吲哚
+切片，将脑片放置于2%的TTC染色液中37 ℃避光染 ( DAPI) 对细胞核进行染色。
+色20 min，每 10 min 翻 1 次面。染色过后，正常脑组 1．12 统计学分析
+织呈现红色，而梗死区域呈现白色。将脑片放入 4% 以Graph Pad Prism5对结果进行统计分析，数据以
+多聚甲醛中固定4 ℃过夜，用滤纸吸去脑片上多余的 x珋±s表示，组间采用单因素方差分析，检验水准α=0．05。
+多聚甲醛固定液，将其放置于黑色背景下，以相机拍
+2 结果
+摄，采用Image-Pro Plus 5．0软件测定脑梗死体积。
+1．8 HE染色 2．1 不同浓度BCP 对大鼠缺血再灌注损伤的保护作用
+大鼠脑缺血再灌注后，心脏灌注，先从心尖以 PBS 2．1．1 神经功能评分 缺血再灌注48 h 后，与假手
+灌入清洗后，再以4%多聚甲醛从心尖灌入固定，然后 术组相比，缺血再灌注组的神经行为学评分升高，出现
+断头取脑，样本保存于4%多聚甲醛中，4 ℃过夜，然后 了比较严重的神经行为功能缺失; 与缺血再灌注组相
+脱水、蜡封、包埋，用切片机切成 5 μm 组织切片，4 ℃ 比，BCP( 102、204、408 mg·kg－1) 可以降低大鼠神经
+保存。做HE染色时，将切片用二甲苯脱蜡2 次( 每次 行为学评分( P＜0．01，图1) ，表明 BCP 能减轻 CIＲ 诱
+10 min) ，用无水乙醇脱水2次( 每次5 min) ，蒸馏水冲 导下的大鼠神经功能缺损。与假手术组相比，缺血再
+洗3次，于苏木精中浸泡8 min，伊红中浸泡5 min，乙 灌注48 h后，缺血再灌注组缺血侧半脑出现了大面积
+醇逐级脱水，中性树胶封片，正置显微镜下观察、拍片。 白色梗死区域，脑梗死体积显著升高;与缺血再灌注组
+1．9 Western blot检测 相比，BCP( 102、204、408 mg·kg－1) 干预后可以缩小
+大鼠脑缺血再灌注后，麻醉后断头取脑，取大鼠缺 脑梗死范围( P＜0．01，图 2) ，BCP 能减缓缺血后脑梗
+血侧海马组织，以液氮速冻，将其置于细胞裂解液中， 死，均以BCP 中剂量组( 204 mg·kg－1) 最佳。
+加入磷酸酶抑制剂，低温下超声匀浆。12 000 r/min，
+5
+4 ℃离心 15 min，分离上清液，加入上样缓冲液，
+200 ℃变性处理 10 min( 样品置于－80 ℃保存) 。上 4
+样，用10% SDS-PAGE 进行分离，切胶，湿法转膜，5% 3
+BSA封闭3 h 后加入 1 抗( p65、p-p65、Hes1、Notch1，
+2
+1∶1 000;β-actin，1∶2 000) 于4 ℃封闭过夜。用 TBST
+1
+洗3 次，每次 5 min，采用三步法，生物素标记二抗
+0
+( 1∶5 000) 结合，再结合辣根过氧化物酶标记的
+streptavidin( 1∶8 000) 。用超敏化学发光液进行曝光显
+影。以 Image Lab 图像分析软件分析条带，计算蛋白
+相对表达量，用目的条带与内参β-actin 光密度的比值
+作为蛋白相对表达量。
+1．10 ELISA检测海马组织中TNF-α和IL-1β的表达
+每组取4只大鼠脑缺血再灌注后，麻醉处死后取
+分评学为行经神
+220 第三军医大学学报，2021，43(3) http: //aammt．tmmu．edu．cn
+a abc
+abc
+ab
+1 2 3 4 5
+组别
+1:假手术组;2:缺血再灌注组;3:BCP低剂量组;4:BCP 中
+剂量组;5: BCP 高剂量组; a: P＜0．01，与假手术组比较;
+b:P＜0．01，与缺血再灌注组比较;c:P＜0．01，与BCP中剂量
+组比较
+图1 BCP对CIＲ诱导的大鼠神经功能缺损的影响
+--- 第4页 ---
+结构的影响 显微镜下可以看到假手术组大鼠，右
+假手术组 缺血再灌注组 BCP低剂量组 BCP中剂量组 BCP高剂量组
+侧大脑的海马神经细胞结构完整，排列比较密集，细胞
+呈现圆形或者椭圆形，而缺血再灌注组中右侧大脑的
+海马神经细胞大量坏死、萎缩，分布极其不均，胞核破
+碎甚至消失。与缺血再灌注组相比，BCP 干预组中海
+马神经细胞的死亡数目及萎缩数目有所减少，其中
+BCP 中剂量组减少数目最多，见图4。
+2．1．4 BCP 对 CIＲ 损伤后大鼠大脑海马组织中炎症
+因子的影响 与假手术组相比，缺血再灌注组脑缺
+血再灌注后大鼠海马组织中的IL1-β及TNF-α水平大
+幅升高。与缺血再灌注组相比，BCP 干预组中 IL1-β
+及TNF-α明显下降( P＜0．01，图 5) ，提示 BCP 能降低
+脑缺血再灌注缺血侧海马中 IL1-β 及 TNF-α 的水平，
+起到保护作用，其中BCP 中剂量组较明显。
+图2 TTC染色检测BCP对CIＲ损伤后大鼠脑梗死 600 假手术组
+体积的影响 缺血再灌注组
+BCP低剂量组
+BCP中剂量组 400
+2．1．2 BCP 对 CIＲ 损伤后大鼠大脑海马中 Notch1、 BCP高剂量组
+NF-κB p65及 Hes1 蛋白表达的影响 缺血再灌注
+200
+后，假手术组中大鼠 Notch1、Hes1 及 p-NF-κB p65 的
+表达量较低。缺血再灌注组中，Notch1、Hes1 及 p-NF-
+0
+κB p65蛋白的表达量明显上升( P＜0．01，图 3) ，大鼠 IL鄄1茁 TNF鄄琢
+Notch1及p-NF-κB p65的蛋白表达量明显上调。BCP
+干预后，这几种蛋白的表达量有所下降，其中以 BCP
+中剂量组最为明显。
+2．1．3 BCP 对CIＲ损伤后大鼠大脑海马神经元形态
+1-Lm·gp/量含琢鄄FNT和茁1鄄LI
+a
+a
+abc abc
+abc abc
+ab
+ab
+因子
+a:P＜0．01，与假手术组比较;b:P＜0．01，与缺血再灌注组比
+较;c:P＜0．01，与BCP中剂量组比较
+图5 BCP对脑缺血再灌注损伤后大鼠海马组织中
+TNF-α和IL-1β的影响
+4
+Notch1（89×103）→
+3
+p65（65×103）→
+2
+p鄄P65（65×103）→
+1
+Hes1（31×10）3→
+0
+茁鄄actin（43×103）→
+量达表白蛋对相
+http: //aammt．tmmu．edu．cn 第三军医大学学报，2021，43(3) 221
+1 2 3 4 5 假手术组
+缺血再灌注组
+a
+a abc BCP低剂量组
+BCP中剂量组
+abc abc abc BCP高剂量组
+a
+ab ab abc abc
+ab
+A Notch1 p鄄p65 Hes1 B
+蛋白
+A:Western blot检测Notch1、p-p65、Hes1的表达 1:假手术组;2:缺血再灌注组;3:BCP低剂量组;4:BCP中剂量
+组;5:BCP高剂量组;B:半定量分析 a:P＜0．01，与假手术组比较;b:P＜0．01，与缺血再灌注组比较;c:P＜0．01，与
+BCP中剂量组比较
+图3 BCP对脑缺血再灌注损伤后大鼠大脑海马的Notch1、Hes1及p-p65蛋白水平的变化
+假手术组 缺血再灌注组 BCP低剂量组 BCP中剂量组 BCP高剂量组
+50滋m 50滋m 50滋m 50滋m 50滋m
+图4 HE染色观察BCP对脑缺血再灌注损伤后大鼠大脑海马神经元形态结构的影响
+--- 第5页 ---
+2．2 BCP 对Notch1/NF-κB信号轴的影响
+2．2．1 神经功能评分 缺血再灌注48 h 后，缺血再
+灌注组的神经行为学评分升高，脑梗死体积扩大，而
+BCP 干预后有所缓解，与 BCP 组相比，BCP+Jagged1
+组及Jagged1组神经行为学评分升高( P＜0．01，图6) ;
+与BCP 组相比，BCP+Jagged1 组及 Jagged1 组脑梗死
+体积增加( P＜0．01，图 7) ，说明 BCP 可通过抑制
+Notch1/NF-κB通路对缺血性脑损伤起到保护作用。
+5
+4
+3
+2
+1
+0
+假手术组
+分评学为行经神
+假手术组中大鼠Notch1、Hes1及p-NF-κB p65的表达量
+很低。缺血再灌注组、BCP+Jagged1组及Jagged1组中，
+Notch1、Hes1及p-NF-κB p65 蛋白的表达量明显上升，
+而在BCP 组，这几种蛋白的表达量有所下降( P＜0．01，
+图8、9)，说明BCP 能抑制Notch1及其相关蛋白的表达。
+BCP+
+假手术组 BCP组 Jagged1组 Jagged1组
+Notch1（89×103）→
+p65（65×103）→
+a c
+p鄄P65（65×103）→
+c
+Hes1（31×10）3→
+ab
+茁鄄actin（43×103）→
+5
+缺血再 BCP组 BCP+ Jagged1组
+灌注组 Jagged1组 4
+组别
+3
+a:P＜0．01，与假手术组比较;b:P＜0．01，与缺血再灌注组比
+2
+较;c:P＜0．01，与BCP组比较
+1
+图6 BCP对CIＲ诱导的大鼠神经功能缺损的影响
+0
+假手术组 缺血再灌注组 BCP组 BCP+Jagged1组 Jagged1组
+图7 TTC染色检测BCP对CIＲ损伤后大鼠脑梗死
+体积的影响
+2．2．2 BCP 对 CIＲ 损伤后大鼠大脑海马中 Notch1、
+NF-κB p65及Hes1蛋白表达的影响 缺血再灌注后，
+量达表白蛋关相
+222 第三军医大学学报，2021，43(3) http: //aammt．tmmu．edu．cn
+缺血再
+灌注组
+A
+假手术组
+c 缺血再灌注组
+BCP组
+BCP+Jagged1组
+c a c Jagged1组
+c
+a c
+a c
+ab
+ab ab
+Notch1 p鄄p65 Hes1
+蛋白 B
+A:Western blot检测Notch1、p-p65、Hes1的表达;B:半定量
+分析 a:P＜0．01，与假手术组比较;b:P＜0．01，与缺血再灌
+注组比较;c:P＜0．01，与BCP组比较
+图8 BCP对CIＲ损伤后大鼠大脑海马Notch1、Hes1及
+p-p65蛋白水平的影响
+2．2．3 BCP+Jagged1对CIＲ损伤后大鼠大脑海马神经
+元形态结构的影响 BCP 干预后海马神经细胞的
+死亡数目及萎缩数目有所减少，而加入 Jagged1 后，神
+经细胞的损伤又会加重，坏死、萎缩的细胞数目大量增
+加，见图10。
+2．2．4 BCP 对 CIＲ 损伤后大鼠大脑海马组织中炎症
+因子的影响 BCP 干预组中 IL1-β 及 TNF-α 明显
+下降，增加 Jagged1 后，TNF-α 及 IL-1β 的释放又会增
+加( P＜0．01，图11) 。而在单独的Jagged1组中，其表达
+量更高，提示 BCP 能抑制 Notch1/NF-κB 通路来减少
+炎性因子的释放。
+--- 第6页 ---
+50滋m 50滋m 50滋m 50滋m 50滋m 50滋m
+50滋m 50滋m 50滋m 50滋m 50滋m 50滋m
+50滋m 50滋m 50滋m 50滋m 50滋m 50滋m
+50滋m 50滋m 50滋m 50滋m 50滋m 50滋m
+50滋m 50滋m 50滋m 50滋m 50滋m 50滋m
+组术手假
+组注灌再血缺%
+组PCB
+组1deggaJ+PCB
+组1deggaJ
+250
+假手术组
+缺血再灌注组
+200 BCP组
+BCP+Jagged1组
+150 Jagged1组
+100
+50
+0
+Notch1 NF鄄资B
+量达表光荧对相
+DAPI NF鄄资B Merged DAPI Notch1 Merged
+A
+c c
+a c a c
+ab ab
+A：Notch1、pP65免疫荧光染色；B：相对荧光表达量分
+析 a：P<0.01，与假手术组比较；b：P<0.01，与缺血再
+灌注组比较；c：P<0.01，与BCP组比较
+蛋白 B 图9 免疫荧光染色观察相关蛋白在大鼠海马的表达
+假手术组 缺血再灌注组 BCP组 BCP+Jagged1组 Jagged1组
+50滋m 50滋m 50滋m 50滋m 50滋m
+图10 HE染色观察BCP+Jagged1对脑缺血再灌注损伤后大鼠大脑海马神经元形态结构的影响
+800
+假手术组
+缺血再灌注组
+600 BCP组
+BCP+Jagged1组
+Jagged1组
+400
+200
+0
+IL鄄1茁 TNF鄄琢
+1-Lm·gp/量含琢鄄FNT和茁1鄄LI
+http: //aammt．tmmu．edu．cn 第三军医大学学报，2021，43(3) 223
+3 讨论
+c
+c a c 脑缺血再灌注损伤是一个复杂的病理生理过程。
+a c
+ab 脑缺血损伤后，缺血区域的神经细胞坏死，会释放大量
+ab 的细胞因子［15－17］。在这些因素的驱使下，缺血部分的
+脑组织中小胶质细胞被激活，白细胞浸润，释放更多的
+炎性介质，加重了脑损伤，使得神经元的死亡加重。本
+因子
+实验结果显示，β-石竹烯能有效地减少大鼠脑缺血损伤
+a:P＜0．01，与假手术组比较;b:P＜0．01，与缺血再灌注组比 所诱导的神经细胞死亡及相关炎症反应，达到保护作用。
+较;c:P＜0．01，与BCP组比较 Notch基因首次被 Morgan 在果蝇体内发现［18－21］，
+由于其缺失会导致果蝇翅边缘出现缺口，因而得名，是
+图11 BCP对脑缺血再灌注损伤后大鼠海马组织中
+TNF-α和IL-1β的影响 一种可以对细胞增殖和凋亡反复调节的信号，与细胞
+--- 第7页 ---
+224 第三军医大学学报，2021，43(3) http: //aammt．tmmu．edu．cn
+的增殖、分化、凋亡以及细胞再生都有着密切联系。在 oxygen on the permeability of the blood-brain barrier in rats
+肺纤维化，心肌缺血中，Notch1 基因都扮演着非常重 with global cerebral ischemia/reperfusion injury［J］． Biomed
+要的角色［21－22］。在脑缺血时，会瞬时激活 γ-分泌酶， Pharmacother，2018，108: 1725 － 1730． DOI: 10． 1016/j．
+biopha．2018．10．025．
+海马中的Notch1水平会升高，Notch1会引起NF-κB中
+［2］YANG M，LVY，TIANX，etal． Neuroprotectiveeffectofβ-
+p50/p65二聚体中 p65 亚基增加，从而加重白细胞的
+caryophyllene on cerebral ischemia-reperfusion injury via
+浸润，升高IL1-β、IL-6、TNF-α［23－24］等炎性因子的表达
+regulation of necroptotic neuronal death and inflammation: in
+水平，加剧神经元的炎症过程。Hes1 作为 Notch1 下
+vivo and in vitro［J］． Front Neurosci，2017，11: 583． DOI:
+游靶基因，已被证实其表达水平可以很好地反映
+10．3389/fnins．2017．00583．
+Notch1的表达［25］。NF-κB在介导细胞增殖分化、细胞
+［3］ZHAO Y J，NAI Y，LI S Y，et al． Ｒetigabine protects the
+炎症、凋亡和免疫应答中起着关键作用［26－28］，主要由 blood-brain barrier by regulating tight junctions between
+p65和p50 组成。本实验中通过检测 Notch1、NF-κB cerebral vascular endothelial cells in cerebral ischemia-
+及Hes1蛋白含量以及 TNF-α 及 IL-1β 等炎性因子的 reperfusion rats［J］． Eur Ｒev Med Pharmacol Sci，2018，12:
+含量发现，在缺血再灌注损伤的大鼠海马中，Notch1、
+8509－8518．DOI:10．26355/eurrev_201812_16552．
+［4］CHEN L，HUANG K，WANG Ｒ，et al． Neuroprotective
+NF-κB、Hes-1的蛋白含量等会大幅升高，使用 BCP 干
+effects of cerebral ischemic preconditioning in a rat middle
+预后下降明显，且随着其药物浓度的增高，呈现较明显
+cerebralarteryocclusionmodel: theroleofthenotchsignaling
+的药物依赖性，证明BCP 可以通过抑制Notch1/NF-κB
+pathway［J］． Biomed Ｒes Int，2018，2018: 8168720． DOI:
+信号的激活，从而发挥抗脑缺血再灌注损伤作用。
+10．1155/2018/8168720．
+BCP 是一种已经被证实的 CB2 受体激动剂，具有 ［5］MUKHEＲJEE M，DEＲISO J，OTTEＲPOHL K，et al．
+抗炎、抗凋亡、抗癌等药理活性，本课题组已有研究［10］
+Endogenous notch signaling in adult kidneys maintains
+证明BCP 可以抑制PI3K/AKT通路，保护小鼠的脑缺 segment-specific epithelial cell types of the distal tubules and
+血再灌注损伤，PI3K/AKT 通路［29］的抑制会抑制 collecting ducts to ensure water homeostasis［J］． J Am Soc
+Notch1 的表达，减轻脑损伤。也有相关实验证 Nephrol，2019，30 ( 1): 110 － 126． DOI: 10． 1681/asn．
+明［30－31］，Notch1信号激活后会加重心肌缺血损伤，将 2018040440．
+［6］GIL-GAＲCA B，BALADＲN V． The complex role of
+其抑制后会起到保护作用。本实验中还使用 Jagged1
+NOTCH receptors and their ligands in the development of
+作为对照，将其与 β-石竹烯组进行对比，证明 β-石竹
+hepatoblastoma， cholangiocarcinoma and hepatocellular
+烯是通过抑制Notch1信号的激活，从而起到抗脑缺血
+carcinoma［J］． Biol Cell，2016，108( 2): 29－40． DOI:10．
+再灌注损伤作用。本实验中，在脑缺血再灌注时，明显
+1111/boc．201500029．
+发现缺血再灌注组中大鼠的神经功能缺失，脑梗死体 ［7］ HE Y，ZHANG M，WU Y，et al． Aberrant activation of
+积较为严重，相关蛋白的表达量也较高。选择在连续 Notch-1 signaling inhibits podocyte restoration after islet
+给β-石竹烯( 102、204、408 mg·kg－1) 7 d 后做缺血再 transplantation in a rat model of diabetic nephropathy［J］．
+灌注48 h，发现 BCP 能显著减少大鼠的脑梗死体积， Cell Death Dis，2018，9( 10): 950． DOI:10．1038/s41419-
+恢复神经功能，降低缺血区神经细胞的死亡，降低海马 018-0985-z．
+［8］ZHAO H，CHEN Z，XIE L J，et al． Suppression of TLＲ4/
+中Notch1、NF-κB、Hes1蛋白的表达，减轻炎症反应，对
+NF-κB signaling pathway improves cerebral ischemia-
+大鼠脑缺血再灌注损伤有一定的保护作用，其中在本
+reperfusion injury in rats［J］． Mol Neurobiol，2018，55(5):
+实验中给药剂量为204 mg·kg－1时效果最佳，而 BCP+
+4311－4319． DOI:10．1007/s12035-017-0552-0．
+Jagged1及 Jagged1 组也说明了在 Jagged1 的干预下，
+［9］YU L M，LI Z，DONG X，et al． Polydatin protects diabetic
+Notch1的表达会增加，加重其损伤，而 BCP 可以拮抗
+heart against ischemia-reperfusion injury via Notch1/Hes1-
+这种效果，起到一个脑缺血的保护作用。 mediated activation of pten/Akt signaling［J］． Oxidative Med
+综上，本研究初步证实 BCP 可以下调 Notch1 蛋 Cell Longev，2018，2018: 1－ 18． DOI: 10． 1155/2018/
+白的表达，从而抑制 Notch1/NF-κB 信号通路的激活， 2750695．
+初步验证BCP 的抗炎效果与该通路具有相关性，起到 ［10］ZHANG Q，AN Ｒ D，TIAN X C，et al． Β-caryophyllene
+pretreatment alleviates focal cerebral ischemia-reperfusion
+一个缺血再灌注的保护作用，且这种作用效果与药物
+injury by activating PI3K/Akt signaling pathway［J］．
+浓度有相关性。提出了 BCP 与 Notch1 之间的直接调
+NeurochemＲes，2017，42(5): 1459－1469． DOI:10．1007/
+控关系，但该调控过程中是否有其他相关蛋白参与，需
+s11064-017-2202-3．
+要进一步的研究。
+［11］李明航，田晓翠，安瑞娣，等． 全反式维甲酸通过作用于
+JNK/P38 MAPK信号通路减轻大鼠脑缺血再灌注引起的
+参考文献:
+血脑屏障损伤［J］． 中国病理生理杂志，2019，35( 1):
+［1］LI H Z，CHEN J F，LIU M，et al． Effect of hyperbaric 112－118．
+--- 第8页 ---
+http: //aammt．tmmu．edu．cn 第三军医大学学报，2021，43(3) 225
+LI M H，TIAN X C，AN Ｒ D，et al． Trans retinoic acid ［21］ＲEN C，YAO Y，HAN Ｒ，et al． Cerebral ischemia induces
+attenuates blood-brain barrier injury caused by cerebral angiogenesis in the peri-infarct regions via Notch1 signaling
+ischemia-reperfusion in rats by acting on JNK/P38MAPK activation［J］． Exp Neurol，2018，304: 30－40． DOI: 10．
+signaling pathway［J］． Chin J Pathophysiol，35( 1): 112－ 1016/j．expneurol．2018．02．013．
+118． ［22］YU B，SONG B． Notch 1 signalling inhibits cardiomyocyte
+［12］TIAN X，PENG J，ZHONG J，et al． Β-caryophyllene apoptosis in ischaemic postconditioning［J］． Heart Lung
+protects in vitro neurovascular unit against oxygen-glucose Circ，2014，23( 2): 152－158． DOI: 10．1016/j．hlc．2013．
+deprivation and re-oxygenation-induced injury ［J］． J 07．004．
+Neurochem，2016，139( 5): 757－768． DOI:10．1111/jnc． ［23］LIN N Y，BEYEＲC，GIESSLA，etal． Autophagyregulates
+13833． TNFα-mediated joint destruction in experimental arthritis
+［13］DONG J，YANG W H，HAN J Q，et al． Effects of Notch ［J］． Ann Ｒheum Dis，2013，72( 5): 761－768． DOI:10．
+signaling components from breast cancer cells treated in 1136/annrheumdis-2012-201671．
+culture with resveratrol［J］． Ｒes Vet Sci，2020，132: 369－ ［24］BEN P，ZHANG Z，ZHU Y，et al． L-Theanine attenuates
+378． DOI:10．1016/j．rvsc．2020．07．017． cadmium-induced neurotoxicity through the inhibition of
+［14］LONGA E Z，WEINSTEIN P Ｒ，CAＲLSON S，et al． oxidative damage and tau hyperphosphorylation ［J］．
+Ｒeversible middle cerebral artery occlusion without Neurotoxicology，2016，57: 95－103． DOI:10．1016/j．neuro．
+craniectomy in rats［J］． Stroke，1989，20( 1): 84－91． 2016．09．010．
+DOI:10．1161/01．str．20．1．84． ［25］ PEKEＲ K，KESLI S，KYC A，et al． The effects of
+［15］刘亭，宋菲，陆定艳，等．辛芍组方抗脑缺血再灌注损伤的 ketamine and lidocaine on free radical production after
+抗氧化、抗凋亡机制研究［J］．中国中药杂志，2018，43 tourniquet-induced ischemia-reperfusion injury in adults［J］．
+(17):3519． Ulus Travma Acil Cerrahi Derg，2019，25( 2): 111－117．
+LIU T，SONG F，LU D Y，et al． Antioxidant and anti- DOI:10．5505/tjtes．2018．63439．
+apoptotic mechanism of Xinshao recipe against cerebral ［26］ WU W J，ZHONG W，LANG B，et al． Thrombopoietin
+ischemia-reperfusion injury［J］． Chin J Traditional Chin could protect cerebral tissue against ischemia-reperfusion
+Med，2018，43(17):3519． injury by suppressing NF-κB and MMP-9 expression in rats
+［16］刘刚，门运政，童旭辉，等． 线粒体融合与裂变在右美托 ［J］． Int J Med Sci，2018，15(12): 1341－1348． DOI:10．
+咪定减轻小鼠脑缺血再灌注损伤中的作用及其机制［J］． 7150/ijms．27543．
+南方医科大学学报，2020，40(4): 463－468． ［27］KHAN M A，KHAN M J． Nano-gold displayed anti-
+LIU G，MENYZ，TONGXH，etal． Ｒoleofmitochondrial inflammatory property via NF-κB pathways by suppressing
+fusion and fission in protective effects of dexmedetomidine COX-2activity［J］． Artif Cells Nanomed Biotechnol，2018，
+against cerebral ischemia/reperfusion injury in mice［J］． J 46( sup1): 1149－1158． DOI: 10．1080/21691401．2018．
+South Med Univ，2020，40(4): 463－468． 1446968．
+［17］黄优，陈海云，何超明，等． 丁苯酞对大鼠脑缺血再灌注 ［28］LIU L，CHAＲVILLE G W，CHEUNG T H，et al． Impaired
+损伤中氧化应激炎性通路的影响［J］． 西安交通大学学 notchsignalingleadstoadecreaseinp53activityandmitotic
+报(医学版)，2020，41(2): 201－205． catastrophe in aged muscle stem cells［J］． Cell Stem Cell，
+HUANG Y，CHEN H Y，HE C M，et al． Effects of 2018，23(4): 544－556．e4． DOI:10．1016/j．stem．2018．08．
+butylphthalide on oxidative stress inflammatory pathway of 019．
+cerebral ischemia-reperfusion injury in rats［J］． J Xi’an ［29］PENG X C，ZHOUJＲ，LIB，etal． Notch1andPI3K/Akt
+Jiaotong Univ Med Sci，2020，41(2): 201－205． signaling blockers DAPT and LY294002 coordinately inhibit
+［18］ ZHANG Y M，CHEN S X，DAI Q F，et al． Effect of metastasisofgastriccancerthroughmutualenhancement［J］．
+acupunctureonthenotchsignalingpathwayinratswithbrain Cancer Chemother Pharmacol，2020，85( 2): 309－320．
+injury［J］． Chin J Integr Med，2018，24( 7): 537－544． DOI:10．1007/s00280-019-03990-4．
+DOI:10．1007/s11655-015-1969-9． ［30］TAO C Y，HU X，LI H，et al． White matter injury after
+［19］CHEN L，ZHANG J，LYU Z，et al． Positive feedback loop intracerebral hemorrhage: pathophysiology and therapeutic
+between mitochondrial fission and Notch signaling promotes strategies［J］． Front Hum Neurosci，2017，11: 422． DOI:
+survivin-mediated survival of TNBC cells［J］． Cell Death 10．3389/fnhum．2017．00422．
+Dis，2018，9(11): 1050． DOI:10．1038/s41419-018-1083- ［31］ WEI L L，CHEN Y，YU Q Y，et al． Patchouli alcohol
+y． protects against ischemia/reperfusion-induced brain injury
+［20］ LIU W J，JIANG H F，ＲEHMAN F U，et al． Lycium via inhibiting neuroinflammation in normal and obese mice
+barbarumpolysaccharidesdecreasehyperglycemia-aggravated ［J］． Brain Ｒes，2018，1682: 61－70． DOI: 10．1016/j．
+ischemic brain injury through maintaining mitochondrial brainres．2017．12．039．
+fissionandfusionbalance［J］． IntJBiolSci，2017，13(7): (收稿:2020-09-28;修回:2020-10-27)
+901－910． DOI:10．7150/ijbs．18404． ( 编辑 张 维)

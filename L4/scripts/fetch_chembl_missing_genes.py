@@ -5,7 +5,6 @@ logger = logging.getLogger(__name__)
 通过 ChEMBL API 查询铁衰老缺失基因的化合物活性数据
 """
 import pandas as pd
-import sys
 import time
 from pathlib import Path
 from chembl_webresource_client.new_client import new_client
@@ -157,7 +156,7 @@ if results:
     df = pd.DataFrame(results)
     out_path = PROJECT_ROOT / "L4" / "data" / "github_sources" / "chembl_missing_genes.csv"
     df.to_csv(out_path, index=False)
-    print(f"\n=== 查询完成 ===")
+    print("\n=== 查询完成 ===")
     print(f"总记录数: {len(df)}")
     print(f"覆盖基因: {df['gene'].nunique()}")
     print(f"基因列表: {sorted(df['gene'].unique())}")

@@ -1,0 +1,124 @@
+# 铁衰老 GNN 项目 Docker Compose 配置
+#
+# 使用:
+#   docker-compose build                    # 构建镜像
+#   docker-compose up train                 # 训练模型
+#   docker-compose run --rm evaluate        # 评估模型
+#   docker-compose run --rm predict         # 预测推理
+#   docker-compose run --rm test            # 运行测试
+#   docker-compose run --rm bash            # 进入容器
+
+version: "3.8"
+
+services:
+  base:
+    image: iron-aging-gnn:latest
+    build:
+      context: ..
+      dockerfile: L4/Dockerfile
+    volumes:
+      # 挂载数据目录（只读）
+      - ../L1/results:/workspace/data/L1/results:ro
+      - ../L2/results:/workspace/data/L2/results:ro
+      - ../L3/results:/workspace/data/L3/results:ro
+      # 挂载输出目录（可写）
+      - ./results_v10_minibatch:/workspace/results_v10_minibatch
+      - ./logs:/workspace/logs
+      - ./mlruns:/workspace/mlruns
+      - ./mlartifacts:/workspace/mlartifacts
+      # 挂载配置文件
+      - ./configs:/workspace/configs:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+      - CUDA_VISIBLE_DEVICES=0
+      - OMP_NUM_THREADS=4
+      - TZ=Asia/Shanghai
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    shm_size: "4gb"
+    stdin_open: true
+    tty: true
+
+  # 训练服务
+  train:
+    extends:
+      service: base
+    command: >
+      python entry/train.py
+      --config configs/default.yaml
+    profiles:
+      - training
+
+  # 训练 SAGE only
+  train-sage:
+    extends:
+      service: base
+    command: >
+      python entry/train.py
+      --config configs/default.yaml
+      --model sage
+      --sage-epochs 15
+    profiles:
+      - training
+
+  # 评估服务
+  evaluate:
+    extends:
+      service: base
+    command: >
+      python entry/evaluate.py
+      --config configs/default.yaml
+    profiles:
+      - evaluation
+
+  # 预测服务
+  predict:
+    extends:
+      service: base
+    command: >
+      python entry/predict.py
+      --config configs/prediction.yaml
+    profiles:
+      - inference
+
+  # 图构建服务
+  build-graph:
+    extends:
+      service: base
+    command: >
+      python entry/build_graph.py
+      --config configs/default.yaml
+    profiles:
+      - data
+
+  # 单元测试
+  test:
+    extends:
+      service: base
+    command: >
+      python -m pytest tests/ -v
+    profiles:
+      - testing
+
+  # 超参数搜索
+  hyperparameter-search:
+    extends:
+      service: base
+    command: >
+      python -m iron_aging_gnn.training.hyperparameter_search
+      --config configs/hyperparam_search.yaml
+    profiles:
+      - optimization
+
+  # 交互式 Bash
+  bash:
+    extends:
+      service: base
+    command: /bin/bash
+    profiles:
+      - debug

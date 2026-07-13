@@ -91,7 +91,7 @@ def main() -> int:
     with open(OUTPUT_META, "w", encoding="utf-8") as f:
         json.dump(meta, f, ensure_ascii=False, indent=2)
 
-    logger.info(f"转换完成:")
+    logger.info("转换完成:")
     logger.info(f"  memmap: {OUTPUT_MEMMAP} ({OUTPUT_MEMMAP.stat().st_size / 1e9:.2f} GB)")
     logger.info(f"  offsets: {OUTPUT_OFFSETS}")
     logger.info(f"  lengths: {OUTPUT_LENGTHS}")

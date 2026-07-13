@@ -5,7 +5,6 @@ logger = logging.getLogger(__name__)
 交叉引用 CPIExtract 数据与铁衰老缺失基因
 """
 import pandas as pd
-import sys
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent
@@ -57,7 +56,7 @@ core_upper = {g.upper() for g in CORE_GENES}
 hits = core_upper & all_genes
 missing = core_upper - all_genes
 
-print(f"\n=== 铁衰老基因命中情况 ===")
+print("\n=== 铁衰老基因命中情况 ===")
 print(f"总基因数: {len(CORE_GENES)}")
 print(f"CPIExtract 命中: {len(hits)}")
 print(f"仍缺失: {len(missing)}")
@@ -65,7 +64,7 @@ print(f"命中基因: {sorted(hits)}")
 print(f"缺失基因: {sorted(missing)}")
 
 # 详细查看命中基因的数据
-print(f"\n=== 命中基因详细数据 ===")
+print("\n=== 命中基因详细数据 ===")
 for gene in sorted(hits):
     in_c2p = gene in all_genes_c2p
     in_p2c = gene in all_genes_p2c
@@ -89,7 +88,7 @@ for gene in sorted(hits):
     print(f"  {gene}: C2P={c2p_count}, P2C={p2c_count}, avg_pChEMBL={c2p_avg}")
 
 # 提取命中基因的详细CPI数据
-print(f"\n=== 提取命中基因CPI数据 ===")
+print("\n=== 提取命中基因CPI数据 ===")
 all_hits_data = []
 for gene in sorted(hits):
     if gene in all_genes_c2p:

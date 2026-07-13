@@ -1,5 +1,6 @@
 """冒烟测试: 验证训练管线能否正常启动并完成少量训练"""
-import sys, os
+import sys
+import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
@@ -14,7 +15,7 @@ try:
     import importlib.util
     spec = importlib.util.spec_from_file_location(
         "phase4",
-        os.path.join(os.path.dirname(__file__), "phase4_v10_minibatch.py")
+        os.path.join(os.path.dirname(__file__), "phase4_v10_modular.py")
     )
     p4 = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(p4)
@@ -39,7 +40,7 @@ checks = [
 ]
 all_ok = True
 for name, result in checks:
-    status = "✓" if result else "✗"
+    status = "PASS" if result else "FAIL"
     if not result:
         all_ok = False
     logger.info(f"  {status} {name}")
@@ -67,7 +68,7 @@ try:
     n_pathways = len({p for paths in gene_to_pathways.values() for p in paths})
     logger.info(f"  KEGG通路: {n_genes} 基因, {n_pathways} 通路")
     
-    logger.info("数据加载成功 ✓")
+    logger.info("数据加载成功")
 except Exception as e:
     logger.error(f"数据加载失败: {e}")
     import traceback

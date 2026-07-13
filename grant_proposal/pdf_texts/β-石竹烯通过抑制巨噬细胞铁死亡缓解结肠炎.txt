@@ -1,0 +1,3560 @@
+
+--- 第1页 ---
+暨南大学博士学位论文
+中文题名：β-石竹烯通过抑制巨噬细胞铁死亡缓解结肠炎的作用及机制
+英文题名：The effect and mechanism of β-caryophyllene alleviates colitis
+by inhibiting macrophage ferroptosis
+作者姓名： 吴燕婷
+指导教师姓名及学位、职称： 王一飞 博士 教授
+学科、专业名称： 生物医药
+学位类型： 学术学位
+论文提交日期： 2022 年 10 月 20 日
+论文答辩日期： 2022 年 11 月 26 日
+答辩委员会主席： 高昊 教授
+论文评阅人： 盲审
+学位授予单位和日期： 暨南大学
+--- 第2页 ---
+暨南大学博士学位论文
+中文摘要
+研究背景：溃疡性结肠炎（ulcerative colitis，UC）一种难治愈的慢性肠道疾病，全
+球的发病率逐年递增，给社会带来沉重的经济负担。已上市的临床药物并不能完全治愈
+UC 患者，只能维持治疗，缓解症状，且随着用药时间的延长，药物耐药性及副作用也逐
+渐在患病人群中体现出来。因此，寻找 UC 新的治疗靶点和研发安全有效的化合物仍然迫
+在眉睫。随着研究的深入，细胞死亡在肠道稳态中的重要性越来越突出。铁死亡是近年
+来提出的以铁积累和脂质过氧化为关键特征的调节性细胞死亡方式。越来越多的证据直
+接或间接地表明铁死亡和肠道疾病之间存在紧密联系，但UC 与铁死亡的研究还相对较
+少，且参与其中的功能细胞如巨噬细胞的铁死亡是否会加重 UC 还有待进一步深入研究。
+为了研究铁死亡在体内的潜在作用，已经筛选出了一系列有效的小分子化合物及植物化
+学物质，但目前仍在开展临床试验，还未获得任何临床批准。本课题组前期研究发现艾
+叶精油具有较好的抗炎作用。对艾叶精油主要成分进行筛选，我们发现β-石竹烯（β-
+caryophyllene，BCP）对巨噬细胞脂质过氧化具有良好的抑制作用。BCP 存在于多种植物
+精油中，作为一种食品添加剂，具有明显的安全性，但BCP 是否具有铁死亡抑制作用还
+有待进一步深入探究。
+研究方法及结果：本研究首先使用 3% DSS 构建了小鼠溃疡性结肠炎模型，通过
+qPCR 检测小鼠结肠组织中铁死亡相关基因，免疫印迹及免疫组化检测铁死亡相关蛋白，
+使用商品化试剂盒检测小鼠血清 Fe2+含量，小鼠结肠组织中 GPX活性、MDA及 GSH含
+量，透射电镜观察结肠组织细胞中线粒体形态，组织免疫荧光以及流式细胞术检测 UC 小
+鼠结肠巨噬细胞的脂质过氧化。结果显示，UC 小鼠结肠组织中促进铁死亡的基因及蛋白
+上调，而抑制铁死亡的基因及蛋白下调。且UC 小鼠血清Fe2+含量，结肠组织中GPX活
+性下降，MDA含量上升，GSH水平降低，脂质过氧化明显增强，线粒体缩小及膜密度增
+加，结肠组织巨噬细胞发生脂质过氧化，说明UC 与铁死亡之间存在紧密联系，UC 小鼠
+结肠巨噬细胞发生脂质过氧化，存在铁死亡。接着使用铁死亡诱导剂RSL3 诱导的巨噬细
+胞为体外模型，通过 qPCR 实验检测发生铁死亡的巨噬细胞是否引发炎症反应，通过生物
+信息学分析及筛选可能的调控通路并用生物学实验进行验证。结果表明，巨噬细胞发生
+铁死亡能够提高炎症相关基因Tnf-α及 Ptgs2 的表达，激活MAPK 及NF-κB信号通路引
+发炎症反应。
+I
+--- 第3页 ---
+暨南大学博士学位论文
+通过CCK8实验确定β-石竹烯对RAW264.7 和骨髓来源巨噬细胞 （BMDMs）的最大
+无毒浓度。免疫荧光及流式细胞术检测 BCP 对 RSL3 诱导的巨噬细胞脂质过氧化的作用。
+透射电镜观察BCP对铁死亡巨噬细胞线粒体形态的影响，通过使用商品化试剂盒检测BCP
+对铁死亡巨噬细胞的脂质过氧化物及细胞线粒体膜电位的影响，qPCR 及WB检测 BCP 对
+铁死亡相关基因及蛋白、炎症相关基因、MAPK 及NF-κB信号通路相关蛋白的作用。结果
+显示，BCP 可以显著抑制巨噬细胞脂质过氧化，改善铁死亡巨噬细胞线粒体膜电位变化及
+线粒体形态变化，逆转 RSL3 对巨噬细胞中铁死亡相关基因及蛋白的调节作用，以及显著
+抑制铁死亡巨噬细胞的炎症基因的表达及 MAPK、NF-κB 通路的激活。接着利用 qPCR、
+免疫印迹、免疫荧光、免疫组化、透射电镜等实验检测BCP 在UC 小鼠中的潜在作用。结
+果显示，BCP 可以有效的降低 UC 小鼠疾病活动指数、缓解结肠缩短及 DSS 诱导结肠组织
+中巨噬细胞浸润及炎症因子的分泌，从而缓解 UC 小鼠的炎症症状。进一步研究发现，BCP
+可以上调 UC 小鼠结肠组织中抑制铁死亡的相关基因及蛋白的表达，下调促进铁死亡的相
+关基因及蛋白的表达。免疫组化结果显示，BCP减弱UC小鼠结肠组织的脂质过氧化水平。
+进一步检测结果也表明，BCP 抑制了UC 小鼠中Fe2+及MDA含量，升高体内 GPX活性及
+GSH水平。透射电镜结果显示，BCP 改善 DSS 诱导的结肠组织巨噬细胞线粒体形态变化。
+免疫荧光结果显示，BCP 可以抑制UC 小鼠结肠组织中巨噬细胞的铁死亡。进一步通过筛
+选实验、分子对接及体内外实验研究发现，BCP 是通过激活 2 型大麻素受体（type 2
+cannabinoid receptor，CB2R）发挥抑制巨噬细胞铁死亡的作用。
+研究结论及意义：本研究通过体内外实验探讨巨噬细胞铁死亡与炎症的关系，发现
+巨噬细胞发生铁死亡能够提高炎症相关基因 Tnf-α及Ptgs2 表达，激活MAPK 及NF-κB
+信号通路引发炎症反应。体内实验证明了 UC 与铁死亡存在密切联系，UC 小鼠结肠组织
+巨噬细胞发生脂质过氧化，存在铁死亡。此外，BCP 是一种铁死亡抑制剂，且进一步的
+体内外研究发现，BCP 通过激活CB2R 发挥抑制铁死亡的作用。本课题进一步丰富和完
+善结肠炎的发病机理，更全面地理解铁死亡与炎症的关系，为缓解或者治疗铁死亡相关
+疾病提供潜在的靶点和新的理论依据。此外，通过探讨BCP 在体内外铁死亡模型中的作
+用，发现BCP 具有显著的抑制巨噬细胞铁死亡的作用，并通过抑制铁死亡发挥缓解小鼠
+结肠炎炎症的作用，提示BCP 是一种铁死亡抑制剂。因此，本课题挖掘了BCP 新的作用
+机制，为治疗铁死亡相关疾病提供潜在的安全的候选化合物。
+关键词：β-石竹烯；结肠炎；巨噬细胞；铁死亡；炎症；2型大麻素受体
+II
+--- 第4页 ---
+暨南大学博士学位论文
+ABSTRACT
+Background: Ulcerative colitis (UC) is a chronic bowel disease that is difficult to cure. The
+incidence of UC is increasing year by year in the world, which brings heavy economic burden to
+the society. The clinical drugs on the market can not completely cure UC patients.The drugs on
+the market only maintain treatment to relieve symptoms; and drug resistance and side effects are
+gradually reflected in patients with the extension of medication time. Therefore, it is still urgent to
+find new therapeutic targets and safe and effective compounds for treating UC. With the deepening
+of research, the importance of cell death in intestinal homeostasis becomes more and more
+prominent. Ferroptosis is a regulatory cell death characterized by iron accumulation and lipid
+peroxidation, which has been proposed in recent years. Direct and indirect evidence indicates a
+close relationship between ferroptosis and intestinal diseases. However, there are relatively few
+studies on UC and ferroptosis, and whether the death of functional cells involved in UC, such as
+macrophages, would aggravate UC needs to be further studied. In order to investigate the potential
+role of ferroptosis in vivo, a number of effective small molecule compounds and phytochemicals
+have been identified, but clinical trials are still under way and no clinical approval has been
+obtained. Our preliminary study found that essential oil of Artemisia argyi exerts good anti-
+inflammatory effects. By screening the main components of Artemisia argyi essential oil, we found
+that β-caryophyllene (BCP) has a good inhibitory effect on macrophage lipid peroxidation. BCP
+exists in a variety of plant essential oils, and as a food additive, it has obvious safety. However,
+whether BCP has an anti-ferroptosis effect remains to be further explored.
+Methods and Results: In this study, 3% DSS was used to construct a mouse ulcerative colitis
+model. Ferroptosis-related genes in colon tissues of UC mice were detected by qPCR, ferroptosis-
+related proteins were detected by western blot and immunohistochemistry. Then, serum Fe2+
+content, GPX activity, MDA content and GSH level in colon tissues were detected by
+corresponding commercial kits. Morphological changes of mitochondria in colon tissue cells were
+observed by transmission electron microscopy. Tissue immunofluorescence was used to detect
+ferroptosis in macrophages. Lipid peroxidation in colon macrophages of UC mice was detected by
+flow cytometry. The results showed that pro-ferroptotic factors were up-regulated, while aiti-
+ferroptotic factors were down-regulated in UC mice. The content of Fe2+ and MDA level were
+significantly increased, and GPX activity and GSH content in colon tissues were significantly
+decreased. Enhanced lipid peroxidation and shrunken mitochondria and increased membrane
+density in colon tissues was detected in UC mice. Moreover, lipid peroxidation occurred in colon
+III
+--- 第5页 ---
+暨南大学博士学位论文
+tissue macrophages, suggesting that UC was closely related to macrophage ferroptosis. Then
+macrophages induced by ferroptosis inducer RSL3 were used as the in vitro model, and qPCR
+experiments were conducted to detect whether ferroptotic macrophage to cause inflammation.
+Bioinformatics analysis of possible regulatory pathways were conducted and the pathways were
+verified by biological experiments. The results showed that ferroptotic macrophage increases the
+mRNA expression of Tnf-α and Ptgs2 and activates MAPK and NF-κB signaling pathways to
+trigger inflammatory responses.
+In addition, the maximum non-toxic concentrations of BCP to RAW264.7 macrophage and
+bone marrow derived macrophage (BMDMs) were determined by CCK8 assays.
+Immunofluorescence and flow cytometry were used to detect the effect of BCP on RSL3-induced
+lipid peroxidation in macrophages. Transmission electron microscopy was used to observe the
+effect of BCP on mitochondrial morphology in ferroptotic macrophages. Corresponding
+commercial kits were used to detect the effects of BCP on mitochondrial membrane potential in
+ferroptotic macrophages. Fluorogenic quantitative PCR and WB were used to detect the effects of
+BCP on genes and proteins related to ferroptosis and inflammation. The results showed that BCP
+could significantly inhibit lipid peroxidation, improve changes in mitochondrial membrane
+potential and mitochondrial morphology in ferroptotic macrophages. And BCP could reverse the
+regulation of RSL3 on ferroptosis related genes and proteins, and significantly inhibit the
+expression of inflammatory genes and the activation of MAPK and NF-κB pathways in ferroptotic
+macrophages.
+Additionally, the potential role of BCP in UC mice was investigated by using qPCR,
+immunoblotting, immunofluorescence, immunohistochemistry, transmission electron microscopy
+and other techniques. The results showed that BCP could effectively reduce the disease activity
+index of UC mice, alleviate colon shortening, and decrease macrophage infiltration and
+inflammatory factors secretion in colon tissue induced by DSS, and thus alleviates the
+inflammatory symptoms of UC mice. Further studies showed that BCP could decrease pro-
+ferroptotic factors and increased anti-ferroptotic factors in colon tissues of UC mice.
+Immunohistochemical results showed that BCP reduced the lipid peroxidation level of colon
+tissues in UC mice. Further test results also showed that BCP decreased the content of Fe2+ and
+MDA in UC mice, and increased the GPX activity and GSH level in vivo. Transmission electron
+microscopy results showed that BCP improved the mitochondrial morphological changes induced
+by DSS. Immunofluorescence results showed that BCP inhibited macrophages ferroptosis in colon
+tissues of UC mice. Further screening experiments, molecular docking and in vitro and in vivo
+IV
+--- 第6页 ---
+暨南大学博士学位论文
+experiments showed that BCP plays an anti-ferroptosis role by activating type 2 cannabinoid
+receptor (CB2R).
+Conclusion and significance: In this study, in vivo and in vitro experiments were performed to
+investigate the relationship between macrophage ferroptosis and inflammation. Ferroptotic
+macrophage was found to increase the mRNA expression of Tnf-α and Ptgs2, and activate the
+MAPK and NF-κB signaling pathways to trigger inflammation. In vivo experiments have proved
+that UC is closely related to macrophage ferroptosis. Moerever, BCP is a ferroptosis inhibitor, and
+further in vivo and in vitro studies revealed that BCP plays an anti-ferroptosis effect via the
+activation of CB2R. This study will further enrich and complete the pathogenesis of colitis,
+understand the relationship between ferroptosis and inflammation more comprehensively, and
+provide potential targets and new theoretical basis for alleviating or treating ferroptosis-related
+diseases. In addition, by exploring the role of BCP in ferroptosis model in vivo and in vitro, it was
+found that BCP significantly inhibits macrophage lipid peroxidation and alleviates colitis
+inflammation in UC mice by inhibiting ferroptosis. Therefore, the present study explores new
+mechanism of BCP and provides potential safe candidate compounds for the treatment of
+ferroptosis-related diseases.
+Keywords: β-Caryophyllene; Ulcerative colitis; Macrophages; Ferroptosis; Inflammation; Type
+2 cannabinoid receptor
+V
+--- 第7页 ---
+暨南大学博士学位论文
+中英文缩略表
+英文缩写 英文全称 中文全称
+4-HNE 4-Hydroxynonenal 4-羟基壬烯醛
+α-MEM Alpha-minimum essential medium α培养基
+AA Arachidonic acid 花生四稀酸
+ACSL4 Acyl-CoA synthetase long-chain family 酰基辅酶 A合成酶长链家
+member 4 族成员 4
+ALOX Lipoxygenase 脂氧合酶
+AM630 6-Iodopravadoline 6-碘-2-甲基-1-[2-(4-吗啉基)
+乙基]-1H-吲哚-3-基](4-甲氧
+基苯基)甲酮
+BCA Bicinchoninic acid 二奎琳甲酸
+BCP β-Caryophyllene β-石竹烯
+BMDM Bone marrow-derived macrophage 骨髓来源的巨噬细胞
+BSA Bovine serum albumin 牛血清白蛋白
+CCK8 Cell counting kit 8 细胞计数试剂盒
+CB2 Type 2 cannabinoid 2 型大麻素
+CB2R Type 2 cannabinoid receptor 2 型大麻素受体
+cDNA complementary Deoxyribonucleic acid 互补脱氧核糖核酸
+CO 2 Carbon dioxide 二氧化碳
+COX2 Cyclooxygenase 2 环氧合酶 2
+DAB Diaminobenzidine 二氨基联苯胺
+DAI Disease activity index 疾病活动指数
+DAMP Damage-associated molecular pattern 损伤相关分子模式
+DAPI 2-(4-Amidinophenyl)-6-indolecarbamidine 4',6-二脒基-2-苯基吲哚
+dihydrochloride
+DEPC Diethyl pyrocarbonate 焦炭酸二乙酯
+DHODH Dihydroorotate dehydrogenase 二氢乳清酸脱氢酶
+DMEM Dulbecco’s modified eagle medium Dulbecco 改良Eagle培养基
+VI
+--- 第8页 ---
+暨南大学博士学位论文
+DMSO Dimethyl sulphoxide 二甲基亚砜
+DSS Dextran sulfate sodium 葡聚糖硫酸钠
+ECL Enhanced chemiluminescene 化学发光自显影
+EDTA Ethylenediaminetetraacetic acid 乙二胺四乙酸
+ELISA Enzyme linked immunosorbent assay 酶联免疫吸附试验
+EP Eppendorf 艾本德
+Erk Extracellular signal related kinase 细胞外信号调控的激酶
+FBS Fetal bovine serum 胎牛血清
+FCM Flow cytometry 流式细胞术
+Fer-1 Ferrostatin-1 铁抑制素-1
+FTH1 Ferritin heavy chain 1  铁蛋白重链 1
+FTL Ferritin light chain  铁蛋白轻链
+GAPDH Glyceraldehyde-3-phosphatedehydrogenase 甘油醛-3-磷酸脱氢酶
+GO Gene ontology 基因本体论
+GPX4 Glutathione peroxidase 4 谷胱甘肽过氧化物酶 4
+GSH Glutathione 谷胱甘肽
+GSSG Oxidized glutathione 氧化型谷胱甘肽
+h Hour 小时
+HE Hematoxylin-eosin 苏木素伊红
+IBD Inflammatory bowel disease 炎症性肠病
+IF Immunofluorescent 免疫荧光
+IHC Immunohistochemistry 免疫组织化学
+IL Interleukin  白细胞介素
+JNK Jun N-terminal kinase Jun 氨基端激酶
+KEGG Kyoto encyclopedia of genes and genomes 京都基因与基因组百科全书
+LDH Lactate dehydrogenase 乳酸脱氢酶
+MAPK Mitogen-activated protein kinase 丝裂原活化蛋白激酶
+M-CSF Macrophage colony stimulating factor 巨噬细胞集落刺激因子
+MDA Malondialdehydes 丙二醛
+VII
+--- 第9页 ---
+暨南大学博士学位论文
+min Minute 分钟
+mRNA messenger RNA 信使 RNA
+PBS Phosphate buffered saline 磷酸盐缓冲液
+ROS Reactive oxygen species 活性氧
+PAGE Polyacrylamide gel electrohoresis 聚丙烯酰氨凝胶电泳
+PBS Phosphate buffer saline 磷酸盐缓冲液
+PMSF Phenylmethanesulfonyl fluoride 苯甲基磺酰氟
+过氧化物酶体增殖物激活受
+PPARs Peroxisome proliferator-activated receptors
+体
+PRRs Pattern recognition receptor 模式识别受体
+PTGS2 Prostaglandin-endoperoxide synthase 2 前列腺素内过氧化物合酶 2
+PVDF Polyvinylidene difluoride 聚偏二氟乙烯
+Real time quantitative polymerase chain 实时荧光定量聚合酶链式反
+qPCR
+reaction 应
+RNA Ribonucleic acid 核糖核酸
+RSL3 Ras selective lethal small molecules 3 Ras 选择性致死小分子 3
+s Second 秒
+SDS Sodium dodecyl sulfate 十二烷基磺酸钠
+SLC7A11 Solute carrier family 7 member 11 溶质载体系列 7成员
+TBS Tris buffer saline Tris 盐酸缓冲液
+TCA Trichloroacetic acid 三氯乙酸
+TEM Transmission electron microscope 透射电镜
+TEMED Tetramethylethylenediamine 四甲基乙二胺
+TNF-α Tumor necrosis factor alpha 肿瘤坏死因子 α
+Tris Trihydroxymethyl aminomethane 三羟甲基氨基甲烷
+μM μ mol/l 微摩尔/升
+UC Ulcerative colitis 溃疡性结肠炎
+WB Western blot 免疫印迹
+VIII
+--- 第10页 ---
+目 录
+第一章 前言............................................................................................... 1
+1.1 溃疡性结肠炎 ................................................................................... 1
+1.1.1 概述 ............................................................................................. 1
+1.1.2 发病机理 ..................................................................................... 1
+1.1.3 治疗现状 ..................................................................................... 3
+1.2 铁死亡 ............................................................................................... 6
+1.2.1 铁死亡的特征 ............................................................................. 6
+1.2.2 铁死亡调控因子及分子机制 ..................................................... 6
+1.2.3 铁死亡与炎症反应 ................................................................... 10
+1.3 溃疡性结肠炎与铁死亡................................................................. 11
+1.4 β-石竹烯 .......................................................................................... 12
+1.4.1 β-石竹烯的来源及分子特征 .................................................... 15
+1.4.2 β-石竹烯药理活性 .................................................................... 16
+1.5 本研究拟解决的科学问题及研究意义 ........................................ 17
+1.6 技术路线 ......................................................................................... 19
+第二章 巨噬细胞铁死亡与溃疡性结肠炎具有密切相关性 ................ 20
+2.1 引言 ................................................................................................. 20
+2.2 实验材料 ......................................................................................... 20
+2.2.1 细胞株 ....................................................................................... 20
+2.2.2 抗体 ........................................................................................... 20
+2.2.3 工具药及主要试剂盒 ............................................................... 21
+2.2.4 主要试剂 ................................................................................... 22
+2.2.5 仪器设备 ................................................................................... 24
+2.2.6 耗材 ........................................................................................... 25
+2.3 实验方法 ......................................................................................... 26
+2.3.1 RAW264.7 细胞的复苏 ............................................................ 26
+2.3.2 RAW264.7 细胞的传代培养及铺板 ....................................... 26
+2.3.3 RAW264.7 细胞冻存 ................................................................ 27
+2.3.4 BMDM 原代细胞提取及鉴定 .................................................. 27
+2.3.5 结肠巨噬细胞的分离及检测 ................................................... 28
+2.3.6 基因功能富集分析 ................................................................... 28
+2.3.7 RNA 的提取 .............................................................................. 29
+2.3.8 反转录反应 ............................................................................... 29
+2.3.9 荧光定量 PCR .......................................................................... 30
+--- 第11页 ---
+2.3.10 蛋白浓度测定 ......................................................................... 31
+2.3.11 免疫印迹 ................................................................................. 32
+2.3.12 小鼠结肠炎实验设计 ............................................................. 33
+2.3.13 疾病活动指数 ......................................................................... 33
+2.3.14 组织苏木素-伊红染色 ........................................................... 34
+2.3.15 组织学评分 ............................................................................. 34
+2.3.16 丙二醛含量测定 ..................................................................... 35
+2.3.17 谷胱甘肽含量测定 ................................................................. 35
+2.3.18 谷胱甘肽过氧化物酶活性测定 ............................................. 36
+2.3.19 铁含量测定 ............................................................................. 37
+2.3.20 透射电镜 ................................................................................. 38
+2.3.21 免疫组化 ................................................................................. 38
+2.3.22 免疫荧光 ................................................................................. 39
+2.3.23 统计分析 ................................................................................. 40
+2.4 实验结果 ......................................................................................... 40
+2.4.1 结肠炎小鼠结肠组织发生铁死亡........................................... 40
+2.4.2 结肠炎小鼠结肠组织巨噬细胞发生铁死亡 .......................... 43
+2.4.3 巨噬细胞发生铁死亡激活 MAPK 和 NF-κB 信号通路 .... 46
+2.5 讨论 ................................................................................................. 47
+第三章 β-石竹烯有效抑制巨噬细胞发生铁死亡及其诱导的炎症反应
+................................................................................................................. 49
+3.1 引言 ................................................................................................. 49
+3.2 实验材料 ......................................................................................... 49
+3.2.1 细胞株 ....................................................................................... 49
+3.2.2 抗体 ........................................................................................... 49
+3.2.3 工具药及主要试剂盒 ............................................................... 50
+3.2.4 主要试剂 ................................................................................... 51
+3.2.5 仪器设备 ................................................................................... 51
+3.2.6 耗材 ........................................................................................... 51
+3.3 实验方法 ......................................................................................... 51
+3.3.1 细胞活性测定 ........................................................................... 51
+3.3.2 脂质过氧化实验 ....................................................................... 52
+3.3.3 乳酸脱氢酶释放实验 ............................................................... 52
+3.3.4 线粒体膜电位变化 ................................................................... 52
+3.3.5 统计分析 ................................................................................... 53
+3.4 实验结果 ......................................................................................... 53
+3.4.1 BCP 抑制 RSL3 诱导的巨噬细胞脂质过氧化 ..................... 53
+3.4.2 BCP 抑制巨噬细胞铁死亡 ....................................................... 56
+--- 第12页 ---
+3.4.3 BCP 改善铁死亡巨噬细胞的线粒体形态变化及膜电位下降
+........................................................................................................... 57
+3.4.4 BCP 调节铁死亡相关基因及蛋白的表达 ............................... 59
+3.4.5 BCP 抑制铁死亡诱导的炎症反应 ........................................... 61
+3.5 讨论 ................................................................................................. 62
+第四章 β-石竹烯通过抑制铁死亡缓解小鼠结肠炎 ............................. 64
+4.1 引言 ................................................................................................. 64
+4.2 实验材料 ......................................................................................... 64
+4.2.1 抗体 ........................................................................................... 64
+4.2.2 工具药及主要试剂盒 ............................................................... 65
+4.2.3 主要试剂 ................................................................................... 66
+4.2.4 仪器设备 ................................................................................... 66
+4.2.5 耗材 ........................................................................................... 66
+4.3 实验方法 ......................................................................................... 66
+4.3.1 小鼠结肠炎实验设计 ............................................................... 66
+4.3.2 脾脏指数计算 ........................................................................... 66
+4.3.3 酶联免疫吸附试验 ................................................................... 67
+4.3.4 统计分析 ................................................................................... 67
+4.4 实验结果 ......................................................................................... 67
+4.4.1 BCP 缓解 DSS 诱导的小鼠结肠炎炎症 ............................... 67
+4.4.2 BCP 在体内抑制 DSS 诱导铁死亡 ....................................... 72
+4.5 讨论 ................................................................................................. 76
+第五章 β-石竹烯在体外通过激活 CB2R 发挥抑制巨噬细胞铁死亡的
+作用 ......................................................................................................... 78
+5.1 引言 ................................................................................................. 78
+5.2 实验材料 ......................................................................................... 78
+5.2.1 细胞株 ....................................................................................... 78
+5.2.2 抗体 ........................................................................................... 78
+5.2.3 工具药及主要试剂盒 ............................................................... 79
+5.2.4 主要试剂 ................................................................................... 80
+5.2.5 仪器设备 ................................................................................... 80
+5.2.6 耗材 ........................................................................................... 80
+5.3 实验方法 ......................................................................................... 80
+5.3.1 分子对接 ................................................................................... 80
+5.3.2 统计分析 ................................................................................... 81
+5.4 实验结果 ......................................................................................... 81
+5.4.1 BCP 通过激活 CB2R 抑制巨噬细胞脂质过氧化 ................ 81
+5.4.2 BCP 通过激活 CB2R 抑制巨噬细胞铁死亡 ........................ 83
+--- 第13页 ---
+5.4.3 BCP 通过激活 CB2R 改善铁死亡巨噬细胞的线粒体形态变
+化及膜电位下降 ............................................................................... 84
+5.4.4 BCP 通过激活 CB2R 调节铁死亡相关基因及蛋白的表达 86
+5.4.5 BCP 通过激活 CB2R 抑制铁死亡诱导的炎症 .................... 88
+5.5 讨论 ................................................................................................. 89
+第六章 β-石竹烯在体内通过激活 CB2R 发挥抑制铁死亡的作用 ..... 91
+6.1 引言 ................................................................................................. 91
+6.2 实验材料 ......................................................................................... 91
+6.2.1 抗体 ........................................................................................... 91
+6.2.2 工具药及主要试剂盒 ............................................................... 92
+6.2.3 主要试剂 ................................................................................... 92
+6.2.4 仪器设备 ................................................................................... 93
+6.2.5 耗材 ........................................................................................... 93
+6.3 实验方法 ......................................................................................... 93
+6.3.1 小鼠结肠炎实验设计 ............................................................... 93
+6.3.2 统计分析 ................................................................................... 93
+6.4 实验结果 ......................................................................................... 93
+6.4.1 BCP 通过激活 CB2R 缓解 DSS 诱导的小鼠结肠炎 ......... 93
+6.4.2 BCP 通过激活 CB2R 缓解 DSS 诱导的铁死亡 ................. 96
+6.5 讨论 ................................................................................................. 99
+第七章 结论........................................................................................... 101
+7.1 研究结论 ....................................................................................... 101
+7.2 创新之处 ....................................................................................... 102
+7.3 展望 ............................................................................................... 103
+参考文献 ................................................................................................. 104
+附表 ......................................................................................................... 123
+附图 ......................................................................................................... 124
+--- 第14页 ---
+暨南大学博士学位论文
+第一章 前言
+1.1 溃疡性结肠炎
+1.1.1 概述
+溃疡性结肠炎（ulcerative colitis，UC），是主要的炎症性肠病（inflammatory bowel disease，
+IBD）之一，最早于 1859 年被提出[1]。以复发性或持续性粘液便或血便为临床特征的溃疡
+性结肠炎，主要症状包括腹痛，腹泻，体重下降，甚至出现发热和贫血等，该疾病的发生
+源于直肠的粘膜炎症，并在结肠近端持续发展[2,3]。内窥镜观察及组织病理学检查发现，UC
+患者的肠黏膜发生弥漫性病变，表现为粗大或呈颗粒状，伴有炎症细胞浸润，隐窝脓肿和
+大量的杯状细胞耗竭，血管生成消失，更为严重者出现肠多发性糜烂、溃疡或假息肉以及
+肠的狭窄和缩短等[3]。研究表明，急性严重结肠炎患者手术的延迟会增加术后并发症的风
+险[4]，如果 UC 患者长期得不到治疗或者症状长期处于较为严重的状态，其患结肠癌的风
+险更高[5,6]，且与之相关的结直肠癌每年约占结直肠癌总死亡率的 2%[7]。虽然从整体发病
+率看，炎症性肠病在亚洲并不常见，但随着社会的进步和人民生活水平的显著提高，炎症
+性肠病的发病率和流行率在亚太地区许多地方都呈急剧上升的趋势[8]，中国和印度这两个
+人口大国尤为明显，且患癌风险更高[9,10]。世界卫生组织（world health organization，WHO）
+统计结果显示，14 亿中国人中有4500 万慢性肠炎患者，而且人数还在逐年增加。UC 的难
+治愈性也使得患者承受着沉重的经济负担和精神压力，不仅影响着患者及家人的生活质量，
+也给社会带来不稳定的安全因素。因此，明确 UC 的病因从而实现疾病的治疗一直是科研
+工作者及医务工作者的目标。
+1.1.2 发病机理
+诱发 UC 发病的因素诸多，环境因素被认为是其中的一个重要因素，也有证据表明，
+遗传因素与UC 发病密切相关[11,12]，除此之外，饮食的改变[13]、抗生素的使用[14]、肠道菌
+群[15,16,17]、情绪异常[18]等也会导致 UC 的发生。影响因素的多样性导致 UC 的病理生理学
+及发病机理也是多方面的。UC 是一种肠屏障疾病，最初由上皮细胞或结构性肠上皮功能
+障碍引发。在健康状态下，黏液层紧密连接上皮细胞以维持屏障功能。先天免疫细胞和适
+应性免疫细胞的协同作用在稳定状态下维持肠黏膜内的稳态。而这种稳态一旦在多种因素
+的影响下被打破，就会使得肠内肠道菌群多样性下降及代谢谱发生变化，从而导致短链脂
+1
+--- 第15页 ---
+暨南大学博士学位论文
+肪酸（short chain fatty acid，SCFA）及肠黏连蛋白的合成减少[19]，使得完整黏液膜遭到破
+坏，导致肠上皮通透性显著增加，使得肠腔过度摄取抗原。巨噬细胞和抗原提呈细胞
+（antigen-presenting cells，APCs）则会在这种状态下通过分子模式识别受体（pattern
+recognition receptors，PRRs）识别抗原，从而被激活并诱导趋化因子的表达，最终招募中性
+粒细胞。免疫细胞通过与血管内皮表达的粘附分子结合，浸润肠道屏障及肠腔。浸润性单
+核细胞成熟为巨噬细胞，会分泌大量的促炎细胞因子如肿瘤坏死因子（tumour necrosis factor，
+TNF）、白介素6（interleukin，IL-6）、IL-12 和 IL-23等，从而导致炎症的发生。另一方
+面，炎症细胞中T 9细胞维持肠上皮细胞死亡，抑制粘膜愈合，有助于屏障功能障碍。由
+H
+自然杀伤（natural killer，NK）T细胞产生的 IL-13也会导致上皮损伤[20]。此外，固有淋巴
+样细胞处于稳态，有助于细胞因子的产生，使炎症持续存在。炎症介质又会不断的破坏肠
+道屏障，如此反复循环，导致了结肠炎的长期性和难治愈性（如图 1-1所示）[2]。
+图 1-1溃疡性结肠炎的病理生理学[2]
+Figure 1-1. Pathophysiology of ulcerative colitis[2]
+存在于肠壁深层的巨噬细胞通过骨形态发生蛋白2（bone morphogenetic protein，BMP2）
+与神经元交流，调节平滑肌收缩，从而控制肠的蠕动。而从 UC 的发病机制可以看出，巨
+噬细胞在UC中起着非常关键的作用，其特异性的分子和细胞机制参与了UC的发生发展。
+失调的巨噬细胞丧失对共生细菌和其他抗原的耐受性，导致肠道慢性炎症持续发生。肠道
+巨噬细胞在维持组织稳态、炎症反应及发生炎症后的反馈调节中发挥着不可忽视的作用，
+被认为是治疗 UC 的一个新靶点。因此，深入了解巨噬细胞在肠道炎症反应中的作用，将
+为 UC 的充分治疗提供新的见解和思路。在肠道炎症发生过程中，中性粒细胞和炎症单核
+2
+--- 第16页 ---
+暨南大学博士学位论文
+细胞被招募至肠腔，对免疫原产生免疫应答。而肠道微环境提供的多种信号，在一定条件
+下可以诱导单核细胞发生极化，表现为促炎型或抑炎型巨噬细胞表型[21]。在肠道屏障遭到
+破坏的初始阶段，外来细菌脂多糖（lipopolysaccharide，LPS）或细胞因子（IFNγ 或 TNF）
+通过PPRs 识别Toll 样受体 4（toll-like receptor 4，TLR4），激活核因子-κB（nuclear factor-
+κB，NF-κB），促使巨噬细胞从静息状态转变为激活状态。激活的巨噬细胞产生大量的促
+炎细胞因子和趋化因子，如 TNF、IL-1β、IL-6、IL-12、IL-23、CXCL10 和环氧合酶 2
+（cyclooxygenase-2，COX2）[22]，促进 1型T辅助性细胞（type 1 T helper，T 1）和 T 17
+H H
+细胞对外来入侵微生物的免疫应答。另一方面，凋亡中性粒细胞和上皮细胞的胞外作用诱
+导巨噬细胞从促炎状态向抗炎状态的表型转换，并通过分泌膜联蛋白 A1（annexin-A1,
+ANXA1）、IL-10、TGF-β 等抗炎介质来阻止 T 1和T 17细胞带来的损害，从而修复受损
+H H
+的肠道上皮屏障（如图 1-2所示）[23]。
+图 1-2 巨噬细胞在肠道炎症中的作用[23]
+Figure 1-2. Macrophages in intestinal inflammation[23]
+1.1.3 治疗现状
+对 UC 患者及时和准确的诊断不仅能够给患者提供适时治疗，还可以避免发生更为严
+重的并发症。目前 UC 的诊断标准是在临床症状、内窥镜下观察或钡灌肠、组织学分析的
+基础上，进行鉴别诊断和分类[3]。UC 根据病变程度可分为轻度，中度和重度结肠炎（如图
+1-3所示[2]）[3,24]。
+3
+--- 第17页 ---
+暨南大学博士学位论文
+图 1-3溃疡性结肠炎的内镜和组织学特征[2]
+Figure 1-3. Endoscopic and histological features of ulcerative colitis[2]
+不同病程的 UC 治疗的策略不尽相同。虽然 UC 的病理生理学是多方面的，并不能被
+完全了解清楚，但就目前已有数据可以明确的是，治疗 UC 的首要目标是维持肠道屏障功
+能的完整性，从而达到缓解 UC 患者临床症状的目的。随着医疗技术的发展以及生活水平
+的逐步提高，人们对 UC 的治疗目标已经从仅仅缓解症状到预防住院、避免手术及残疾，
+促进粘膜完全愈合，从而改善生活质量转变[25]。
+如表 1-1 所示，目前临床上治疗 UC 的药物细分为七大类，包括 5-氨基水杨酸（5-
+aminosalicyclic acid，5-ASA）、糖皮质激素、免疫调节剂、抗 TNF 单克隆抗体、抗粘附单
+克隆抗体、抗 IL-12/IL-23p40 单克隆抗体、Janus 激酶（janus kinase，JAK）抑制剂[3]。对
+于轻度到中度UC，指南推荐使用口服和直肠 5-ASA作为一线治疗，对于 5-ASA缓解失败
+的患者，推荐使用皮质类固醇治疗。中度至重度 UC 患者应接受一个疗程的口服皮质类固
+醇治疗，然后使用 5-ASA、硫代嘌呤、抗 TNF治疗，或成功实现症状缓解的维多珠单抗维
+持治疗。对于皮质类固醇耐药/依赖性 UC 患者，推荐使用抗 TNF 或维多珠单抗治疗[26]。
+研究显示，抗TNF单克隆抗体，包括英夫利昔单抗，阿达木单抗和戈利木单抗，在中重度
+UC患者中显示出较好疗效[27,28,29]。托法替尼是一种靶向JAK1和JAK3的口服小分子药物，
+对中重度UC 患者显示出良好疗效[30]。但指南推荐往往只是作为参考，确保最佳治疗结果
+的关键还是要及时评估患者反应和症状缓解情况，从而对症用药。
+除了对症用药外，科学家还提出了食物疗法和细胞净化疗法治疗 UC。目前的数据仍
+旧不清楚营养治疗（如单纯肠内营养和中心静脉营养）是否能有效缓解 UC。因此，药物治
+疗和血细胞去除治疗应是 UC 治疗的主要手段。研究发现，细胞净化疗法对中度至重度的
+4
+--- 第18页 ---
+暨南大学博士学位论文
+UC 具有一定的疗效[31,32,33]，因此，专家提出血细胞去除治疗应被考虑为一种治疗中度至重
+度的UC 的选择。
+随着结肠炎患者的增多，对 UC 有效药物的需求将比以往任何时候都大。因此，UC 已
+成为全球性的健康挑战，给社会造成越来越大的负担[34,35]。虽然临床上对不同病程的 UC
+患者都有药物可用，并且这些药物体现出较为良好的治疗效果，但“是药三分毒”，在长期
+使用这些药物进行治疗中，或多或少的都会有不良反应的发生（如表 1-1 所示），而且用
+药时间越长，可能导致药物耐受或者无效，从而需要进行手术切除等。因此，对于低毒有
+效不良反应更小化合物的研发或者寻找新型的 UC 治疗方式仍然是科研工作者和医务工作
+者的目标。
+表 1-1 治疗 UC的药物及分类
+Table 1-1 Drugs of UC treatment
+药物类别 代表药物 适用范围 不良反应
+5-氨基水杨酸  美沙拉嗪[36]、 轻度到中度 头痛、恶心、腹泻、间
+柳氮磺吡啶[37] 质性肾炎等
+糖皮质激素 布地奈德[38]、 轻度到中度 骨质疏松症、股骨头坏
+氢化可的松[39] 死、失眠、抑郁、体重
+增加、感染、白内障等
+免疫调节剂  硫唑嘌呤、6-巯 轻度到中度、严重 恶心和其他胃肠道症
+基嘌呤[40]、环 UC 状、骨髓抑制、脱发和
+孢霉素[41,42]、他 胰腺炎等
+克莫司[43,44]
+抗TNF-α单克隆 英夫利昔单抗  中度到重度 输液反应、感染、药物
+抗体 [27,42]、阿达木单 引起的红斑狼疮、牛皮
+抗[28]、戈利木 癣、湿疹、肝脾T 细胞
+单抗[29] 淋巴瘤等
+抗粘附单克隆抗 维多珠单抗[45] 中度到重度 输液反应、肠道感染
+体
+抗 IL-12/IL-23p40 优斯它单抗[46] 中度到重度 输液反应、肠道感染
+单克隆抗体
+JAK抑制剂 托法替尼[30] 中度到重度 骨髓抑制、感染、淋巴
+细胞减少、贫血、肝
+炎、高脂血症、淋巴
+瘤、胃肠道穿孔等
+5
+--- 第19页 ---
+暨南大学博士学位论文
+1.2 铁死亡
+在哺乳动物生长发育过程中，细胞死亡在正常发育、维持内稳态、抵御外界刺激及预
+防疾病等生物过程中发挥着至关重要的作用。在过去的几十年中，科学家们发现了十几种
+细胞死亡的形式，其中研究比较多的死亡方式包括细胞坏死、凋亡、焦亡、铁死亡、自噬
+等。不同方式死亡的细胞不仅在形态学上表现出不同的特征，其内在的分子执行机制也不
+尽相同。
+1.2.1 铁死亡的特征
+铁是维持人体生命健康必不可少的微量元素，但过多的铁积累会导致细胞产生大量的
+脂质过氧化物，造成细胞死亡，2012年，Stockwell 教授正式将这种细胞死亡方式命名为铁
+死亡[47]。与凋亡和焦亡方式不同，铁死亡是一种不依赖半胱天冬酶（caspase）家族成员，
+而是一种铁依赖性的，以细胞内活性氧堆积为特征的细胞死亡。发生铁死亡的细胞不像凋
+亡的细胞那样形成凋亡小体，细胞内 DNA 片段化，细胞色素 C 释放，染色质碎裂[48]；也
+不像焦亡的细胞发生渗透性肿胀，质膜破裂，渗漏大量的胞质炎性物质[49,50]；亦不像自噬
+的细胞形成自噬小体，自噬空泡化，最终在自噬相关基因调控下，利用溶酶体降解自身受
+损的细胞器或大分子物质[51]；更不像坏死的细胞的无序变化的死亡过程[52]。发生铁死亡的
+细胞的形态特征是线粒体形态异常皱缩变小，线粒体嵴减少或消失伴随着线粒体膜密度增
+加及膜破裂增加。此外，铁死亡过程不受凋亡、焦亡、自噬、坏死抑制剂抑制，亦不能被
+caspase抑制剂所逆转，却可以被多种铁鳌合剂、抗氧化剂等抑制[53,54,55]。
+1.2.2 铁死亡调控因子及分子机制
+铁死亡是一种铁依赖的调节性细胞死亡，与铁积累和脂质过氧化这两个主要的生化特
+征密切相关[47]。自铁死亡被发现以来，细胞对铁死亡敏感的机制越来越受到科学界的关注。
+铁可以通过增加非血红素含铁脂氧合酶（lipoxygenase，ALOX）和烟酰胺腺嘌呤二核苷酸
+磷酸（nicotinamide adenine dinucleotide phosphate，NADPH）氧化酶（reduced nicotinamide
+adenine dinucleotide phosphate oxidase，NOXs）的活性或者通过芬顿反应产生过高的活性氧
+（reactive oxygen，ROS）来促进脂质过氧化[56]。因此，任何对铁的摄取、储存、利用和排
+出的干扰，以及细胞内的铁螯合剂，都可能影响细胞铁死亡[57][58]。机体从外界摄取的铁（Fe3+）
+与转铁蛋白（transferrin，TF）结合，通过转铁蛋白受体（transferrin receptor，TFRC）介导
+的内吞作用进入细胞。内化后，Fe3+从TF中释放出来，并被核内体的 STEAP3 金属还原酶
+6
+--- 第20页 ---
+暨南大学博士学位论文
+还原为亚铁（Fe2+）。一方面，Fe2+在金属离子转运体的帮助下进入细胞质发挥多种功能。
+另一方面，游离的 Fe2+可以通过铁流出泵转到细胞外，由 Fe2+氧化成 Fe3+，或者被铁蛋白
+轻链（ferritin light chain，FTL）和铁蛋白重链 1（ferritin heavy chain 1，FTH1）组成的铁
+蛋白（ferritin）储存。铁蛋白主要由核受体共激活因子降解 4（nuclear receptor coactivator
+4，NCOA4）介导的选择性自噬降解，导致铁蛋白释放游离的 Fe2+，引起细胞脂质过氧化，
+导致细胞铁死亡的发生[59,60]。此外，核因子 E2相关因子2（nuclear factor erythroid 2 related
+factor 2，Nrf2）增强 FTL/FTH1 的表达，并上调血红素加氧酶 1（heme oxygenase 1，HO-
+1），从而影响细胞内蛋白血红素产生 Fe2+ [61]。
+谷胱甘肽过氧化物酶 4（glutathioneperoxidase4，GPX4）是首个被发现调控铁死亡的效
+应因子，通过依赖谷胱甘肽（glutathione，GSH）抑制脂质过氧化，从而避免细胞发生铁死
+亡[62,63,64]。多不饱和脂肪酸（polyunsaturated fatty acid，PUFAs）是细胞膜脂过氧化的主要
+目标，最初由酰基辅酶 a 合成酶长链家族成员 4（acyl-CoA synthetase long-chain family
+member 4，ACSL4）和溶血磷脂酰胆碱酰基转移酶 3（lysophosphatidylcholine acyltransferase
+3，LPCAT3）两种酶进行生物合成和重构[65]，插入膜磷脂（PL-PUFA）并形成含 PL-PUFA
+的磷脂酰乙醇胺（PEs）。一方面，由 NOXs 诱导的或芬顿反应产生的 ROS 直接攻击 PL-
+PUFAs 生成多不饱和脂肪酸的磷脂氢过氧化物衍生物（PUFA-OOHs）诱导细胞发生铁死
+亡。另一方面，PL-PUFAs 可被 ALOXs 和前列腺素内的过氧化物合酶氧化，产生 PUFA-
+OOHs 并触发铁死亡[62]。GSH和GSSG 之间的平衡是细胞内重要的抗氧化系统，对细胞生
+存至关重要，破坏这两者之间的平衡往往导致 ROS 积累和细胞死亡。值得注意的是，GPX4
+利用GSH作为一种辅助因子，将潜在有毒的PUFA-OOHs转化为无毒的脂醇（PUFA-OHs）。
+因此，通过直接的药物抑制剂如(1S,3R)-RSL3（RSL3）或 FIN56 抑制 GPX4，或通过 Erastin
+耗竭GSH，都会导致脂质过氧化，触发铁死亡[47,62]。GSH是由甘氨酸、谷氨酸和半胱氨酸
+合成，半胱氨酸由半胱氨酸/谷氨酸逆向转运系统 Xc−导入胞内。系统 Xc−是由氨基酸逆向
+转运溶质载体家族 7成员11（solute carrier family 7 member 11，SLC7A11，也称 xCT）通
+过二硫桥连接到单通道跨膜调控蛋白（solutecarrier family 3 member 2，SLC3A2，也称 4F2hc
+或 CD98hc）组成的异二聚体细胞表面氨基酸逆向转运蛋白。此外，其他信号分子，如
+Nrf2[66,67]，热休克反应[68]，激活转录因子 4（activating transcription factor, ATF4）[69,70]，也
+在调节氧化损伤介导的铁死亡中发挥重要作用。ATF4 通过促进 SCL7A11 表达[69]或调节热
+休克蛋白70家族蛋白 5（heat shock 70 kDa protein 5，HSPA5）来阻止GPX4蛋白降解和
+随后的脂质过氧化，从而抑制铁死亡[68]。Nrf2是一种转录激活因子，它易位到细胞核中与
+7
+--- 第21页 ---
+暨南大学博士学位论文
+抗氧化反应元件（antioxidant-response element，ARE）或亲电反应元件（electrophile-response
+element，EpRE）转录激活各种抗氧化酶基因编码，如血红素及 GSH合成相关酶，如 GPX4、
+SLC7A11[61]。因此，GSH-GPX4轴是铁死亡的主要负调控因子。
+经过进一步研究发现，硫取代 GPX4 中的硒导致GPX4 无法抑制细胞铁死亡，药理性
+增加硒含量可以增强 GPX4 的活性[71,72]。随着研究的深入，科学家们发现，酰基辅酶 a 合
+成酶长链家族成员 4（acyl-CoA synthetase long chain family member 4，ACSL4）是一个重
+要的铁死亡基因，其表达情况决定着细胞对铁死亡的敏感性，参与了 GPX4抑制细胞脂质
+过氧化的过程[73,74]。然而，不同的细胞株对 GPX4抑制剂的敏感性差异很大[75]以及在某些
+细胞株中，无论 ACSL4 的表达如何变化，抑制 GPX4 都不能造成细胞发生铁死亡，这表
+明细胞内还存在独立于 GPX4的铁死亡效应因子。经过多年的探索和研究，德国研究组及
+美国研究组科学家同时鉴定出了铁死亡抑制蛋白 1（ferroptosis suppressor protein 1，FSP1，
+也被称为AIFM2）。进一步研究发现，位于细胞膜上的 FSP1 在发生豆蔻酰化修饰后，催
+化辅酶Q （CoQ ）还原为二氢泛醌（CoQ H ），CoQ H 作为一种抗氧化剂，可以阻
+10 10 10 2 10 2
+止细胞脂质过氧化，进而抑制细胞发生铁死亡[76,77]。除了促进 CoQ H 的产生，FSP1还
+10 2
+被证明通过将转运所需的核内体分选复合体招募入质膜，从而拮抗铁死亡，这激活了一种
+膜修复机制，以调节膜出芽和裂变[78]。因此，FSP1-CoQ -NAD(P)H 通路能够作为一个独
+10
+立于 GSH-GPX4 轴的并行系统存在，抑制磷脂过氧化和铁死亡。此外，研究者还发现
+CRISPR 介导的全基因组激活筛选允许识别鸟苷三磷酸环水解酶 1（guanosine triphosphate
+cyclohydrolase 1，GCH1，一种合成四氢蝶呤的限速酶），以不依赖于 GPX4的方式对抗铁
+死亡[79,80]（图 1-4）。
+8
+--- 第22页 ---
+暨南大学博士学位论文
+图 1-4 控制铁死亡的三大系统
+Figure 1-4. The three mainstays of ferroptosis control[81]
+发生铁死亡的细胞的线粒体表现为畸形小线粒体、嵴减少，说明线粒体功能受到破坏。
+甘波谊教授团队通过研究发现在低丰度 GPX4的癌细胞中，定位于线粒体内膜的黄素依赖
+酶-二氢乳清酸脱氢酶（dihydroorotate dehydrogenase，DHODH）的失活可以促进线粒体脂
+质过氧化的发生，并触发细胞铁死亡。同时，在 GPX4 高丰度的癌细胞中，DHODH 可以
+与铁死亡诱导剂协同诱导细胞发生铁死亡。其具体机制为，DHODH 在线粒体内膜中通过
+将 CoQ 还原成为 CoQ H ，与线粒体中的 GPX4 协同在线粒体中抑制脂质过氧化，并进
+10 10 2
+一步抑制细胞铁死亡[82]。
+除此之外，醛固酮还原酶家族 1C（aldosterone reductase family 1 C，AKR1C）[83]、过
+氧化物酶（peroxiredoxins，PRDXs）[84]、硫氧还蛋白 1（thioredoxin 1，TXNRD1）[85]、
+SLC7A11[86]、由磷酸戊糖途径（pentose phosphate pathway，PPP）产生 NADPH[87,88]、p53[89]
+等都被发现在调控铁死亡中发挥重要作用。综上所述，铁死亡的发生主要通过转运蛋白（外
+源性，如半胱氨酸或谷氨酰胺摄取减少和铁摄取增加）依赖的途径和酶调控（内源性，如
+GPX4、DHOODH 的活性抑制）的途径这两种方式诱导（如图 1-5）[55]。然而，是否存在
+更多的铁死亡调控机制，还需要进一步的实验研究。
+9
+--- 第23页 ---
+暨南大学博士学位论文
+图 1-5 铁死亡的分子机制及信号调控[55]
+Figure 1-5. Core molecular machinery and signaling regulation of ferroptosis[55]
+1.2.3 铁死亡与炎症反应
+炎症反应是机体抵御体内外病原微生物刺激产生的一系列复杂的生理或病理性反应，
+参与了许多疾病的发生发展。损伤相关分子模式（damage-associated molecular patterns，
+DAMPs）的释放和活性在形成细胞死亡和应激的炎症反应中起着重要作用。初步研究表明，
+铁死亡细胞破裂后会产生促炎 DAMPs，DAMPs 的积累可触发组织炎症反应，形成一个自
+我放大的细胞死亡-炎症环回路，造成炎症反应的放大，最终导致组织损伤和器官功能障碍
+[90,91]。炎症与氧化应激密切相关，氧化应激可触发一系列细胞中的转录因子和促炎细胞因
+子，导致趋化因子、促炎细胞因子和抗炎分子的差异表达。另一方面，铁死亡细胞会产生
+大量的ROS，ROS 的大量积累可以诱导氧化应激，消耗细胞内抗氧化剂，进一步加剧脂质
+过氧化和炎症反应。
+高迁移率族蛋白（high mobility group box 1，HMGB1）是一种被广泛研究的核 DAMP，
+HMGB1一旦从细胞中释放出来，获得免疫刺激原性，就可以通过识别并结合 PRRs，激活
+炎症反应，从而促进先天免疫系统和适应性免疫系统的激活，促使炎症细胞因子释放[92]。
+10
+--- 第24页 ---
+暨南大学博士学位论文
+有研究报道抑制自噬介导的组蛋白去乙酰化酶（histone deacetylase，HDAC）促进 HMGB1
+乙酰化，导致HMGB1 发生核异位并释放，从而放大炎症，促使炎症细胞因子释放，以响
+应各种铁死亡相关因子[93]。丝裂原活化蛋白激酶（mitogen-activated protein kinase，MAPKs）
+信号通路和NF-κB信号通路能被多种应激源激活，参与了多种炎症性疾病和肿瘤的发生发
+展。药理性抑制应激活化蛋白激酶（stress-activated MAP kinases，SAPK）/Jun 氨基端激酶
+（jun N-terminal kinase，JNK）和p38可降低HL-60/NRASQ61L细胞中转铁蛋白受体蛋白 1
+（transferrin receptor protein 1，TFR1）水平，进而抑制细胞发生铁死亡[94]。细胞外信号调
+控的激酶（extracellular signal-related kinases，ERK）是MAPK 家族中的一员，研究发现，
+ERK 依赖的信号通路参与了依赖 RAS 的实体癌细胞铁死亡[95]。4-羟基壬烯醛（4-
+hydroxynonenal，4-HNE）是铁死亡细胞产生的脂质过氧化物。有研究者通过给小鼠腹腔注
+射4-HNE，发现4-HNE通过激活TLR4 信号通路，增强小鼠体内的炎症反应[96]。
+作为最丰富的抗氧化剂，GSH 能清除过量的 ROS 和防止炎症相关的细胞损伤[97]。而
+耗竭GPX4可以上调引发炎症反应的 ALOX12 和COX1 的表达[98]。相反，GPX4的激活可
+抑制脂质过氧化介导的炎症反应中花生四稀酸（arachidonic acid，AA）和NF-κB通路的激
+活，从而减少细胞内 ROS 的生成，抑制细胞发生铁死亡[99]。在细胞应激过程中，细胞膜磷
+脂通过磷脂酶 A （phospholipase A ，PLA ）或 PLC 释放 AA。AA 通过 COX、ALOX 和
+2 2 2
+细胞色素P450（cytochrome 450，CYP450）途径代谢成具有生物活性的促炎介质，诱导炎
+症的发生[100]。细胞发生铁死亡会释放高水平的 COX2，COX2 是一种由前列腺素内过氧化
+物合酶（prostaglandin-endoperoxide synthase，PTGS）编码的诱导酶，其功能是激活巨噬细
+胞或其他炎症细胞，促进炎症反应的发生[101,102]。因此靶向脂质代谢相关 DAMP 信号可能
+是一种有效的治疗与铁死亡损伤相关的炎症性疾病的策略。
+1.3 溃疡性结肠炎与铁死亡
+随着研究的深入，细胞死亡在肠道上皮稳态中的重要性越来越突出，直接和间接的证
+据证明了铁死亡和肠道疾病之间的紧密联系。铁死亡的基本特征包括铁过载、GSH 耗竭、
+GPX4 失活和脂质过氧化。早期研究认为 UC 的部分临床症状出现出血和吸收不良引起的
+缺铁性贫血，为改善其临床症状，也将口服铁应用于 UC 缺铁性贫血患者。补充适量的铁
+能够引起肠道微生物群落的变化和代谢途径，对 UC 患者是有利的。然而，过量的铁摄入
+会导致肠道内铁含量过高，产生大量的 ROS，扰乱肠道菌群，可能会加重 UC 患者的病情
+[103,104,105]。遗传性血色素沉着症（hereditary haemochromatosis，HH）是一种铁过载疾病，
+11
+--- 第25页 ---
+暨南大学博士学位论文
+由血色素沉着症基因（Hfe）隐性突变诱发，其中的一个主要特征是患者肠道内铁吸收增加。
+实验研究显示让Hfe-/-小鼠摄入过多的铁，会增加小鼠结肠组织中 MDA含量进而促进肠道
+氧化损伤[106,107]。有研究报道，胃肠道炎症在 HH患者中是普遍现象，通过内镜观察检查发
+现 HH 患者肠道上皮内中性粒细胞浸润和固有层淋巴细胞浸润增加，表明铁超载会导致胃
+肠道炎症[108]。Hfe-/-小鼠更容易导致UC 发生，表现为细菌菌群失调，直肠出血和腹泻更严
+重，结肠黏膜损伤更高，经常出现溃疡，绒毛完整性丧失明显增加[109]。以上研究表明铁过
+载在UC发生发展中起着重要的推动作用，可能是铁沉积加剧了芬顿反应，产生大量的ROS，
+引起的氧化应激，促进了肠腔中细胞的死亡，造成粘膜损伤，从而引发炎症反应[110]。
+研究者对 UC 患者中与铁死亡相关的基因表达谱和脂质过氧化产物进行分析发现，铁
+死亡参与了 UC 中肠上皮细胞的死亡，提出了靶向铁死亡的 UC 治疗策略。铁死亡抑制剂
+如铁抑素-1（ferrostatin-1，Fer-1）可以抑制内质网应激或氧化应激介导的铁死亡发挥缓解
+结肠炎的作用[111,112]。另有研究发现口服去铁螯合剂去铁酮（deferiprone，DFP），可以抑
+制UC 大鼠的结肠组织髓过氧化物酶（myeloperoxidase，MPO）和一氧化氮合成酶（nitric
+oxide synthase，NOS）活性，减少前列腺素 E（prostaglandin，PGE ）生成，有效缓解大鼠
+2 2
+UC 和胃溃疡的症状[113]。与所知的铁死亡机制一致，GPX4 在 UC 中负向调节细胞铁死亡
+中也起重要作用，仙茅中的活性成分仙茅苷最近被证实通过上调 GPX4表达来缓解右旋糖
+苷硫酸钠（dextran sodium sulfate，DSS）诱导的 UC 小鼠症状[114]。铁死亡相关因子 ACSL4
+在 AA 酯化反应中发挥重要作用[74]，抑制 ACSL4 的表达可以有效保护细胞免受脂质过氧
+化和铁死亡[65,73]。研究发现，UC 患者[115]和 UC 小鼠[112]中的结肠中 ACSL4 表达上调。口
+服罗格列酮可抑制 ACSL4，抑制脂质过氧化，从而减轻缺血/再灌注（ischemia/reperfusion，
+I/R）相关的肠粘膜损伤，此外，用 siRNA 沉默 ACSL4 也可以保护 Caco-2 细胞免受缺氧/
+再氧诱导的脂质过氧化和细胞死亡[116]。因此，治疗性阻断铁死亡信号转导可能是缓解 UC
+慢性炎症的有效途径[117,118,119]。
+1.4 β-石竹烯
+随着铁死亡新调控机制的发现，越来越多通过高通量筛选或基于结构优化的人工设计
+手段得到的铁死亡调节剂被报道。许多具有多种生物活性的天然化合物已被用作人类疾病
+健康管理的膳食干预。特别是，一些来自不同植物的生物活性成分已被鉴定为铁死亡的有
+效调节剂（如表1-2）。从表1-2可以得出，天然化合物可以通过调节Fe2+代谢，激活Nrf2/HO-
+1 信号通路拮抗铁死亡，发挥神经保护、抗糖尿病、抗炎及心肌保护等作用，而通过触发
+12
+--- 第26页 ---
+暨南大学博士学位论文
+ROS 的产生并激活铁蛋白吞噬作用诱导铁死亡，可抑制肿瘤及肝纤维化。总的来说，目前
+的研究证明了这些天然生物活性化合物的临床潜力，这将促进饮食疗法的发展。
+表 1-2调节铁死亡的植物化学物质
+Table 1-2 Representative phytochemicals regulating ferroptosis
+化合物 功效 调节铁死亡机制
+诱导铁死亡
+青蒿素及  抗肿瘤、缓解肝纤维化 调节p38和ERK 信号通路、通过
+衍生物 [120,121,122,123] AMPK/mTOR 激活铁自噬、调节铁稳态
+姜黄素  抗肿瘤[124,125] 升高MCF-7 细胞ROS 水平，MDA积
+累及细胞内Fe2+水平；激活自噬
+丹参酮 IIA 抗胃癌[126] 升高胃癌细胞脂质过氧化物水平和降低
+GSH水平
+鲁斯可皂 抗胰腺肿瘤[127]  增加ROS 含量及调节铁死亡相关蛋白
+苷元 表达
+冬凌草乙 抗胰腺癌[128] 抑制γ-谷氨酰基循环和调节多不饱和脂
+素 肪酸代谢
+蟾毒灵 抗非小细胞肺癌[129] 促进GPX4的泛素化和降解
+麦冬皂苷B 抗胃癌[130] 阻断GPX4-xCT 轴
+槲皮素 抗肿瘤[131] 激活溶酶体，增加 ROS 含量
+毛兰素 抗肺癌[132] 激活Ca2+/钙调素
+抑制铁死亡
+姜黄素  抗横纹肌溶解，缓解肾损伤 TLR4/NF-κB轴和激活 HO-1
+[133]
+白藜芦醇 抑制胰岛素分泌功能障碍 减轻内质网应激，上调 PPARγ 的表
+[134]、预防心肌缺血-再灌注损 达；降低氧化应激水平和 Fe2+含量
+伤[135]
+虎杖苷 缓解急性肾损伤[136] 维持系统Xc−-GSH-GPx4 轴与铁代谢
+仙茅苷 缓解溃疡性结肠炎[114] 诱导GPX4
+萝卜硫素 治疗不孕不育[137] 激活Nrf2和 GPX4
+千金藤碱 减轻脑损伤[138] 增加ALOX15 水平
+地黄苷A 改善认知功能障碍[139] 激活PI3K/AKT/Nrf2 和SLC7A11/GPX4
+信号通路
+山豆根碱 减轻脑出血后继发性脑损伤 上调GPX4的表达
+13
+--- 第27页 ---
+暨南大学博士学位论文
+[140]
+旋复花素 缓解心肌缺血/再灌注损伤[141] 激活AMPK/GSK3β/Nrf2 信号通路及上
+调GPX4
+大麻素 神经保护[142] 激活AMPK 通路
+鸢尾苷元 保护单侧输尿管梗阻[143] 抑制Smad3激活
+叶酸 改善自闭证[144] 上调GPX4的表达
+圣草酚 改善认知功能障碍[145] 激活Nrf2
+黄芩素 神经保护[146]、改善糖尿病[147] 抑制ALOX12、ALOX15 表达；诱导
+HO-1
+槲皮素 缓解急性肾损伤[148] 降低ATF3 的表达，进而影响铁死亡的
+下游信号通路
+山柰酚 神经保护[149] 激活Nrf2/HO-1信号通路
+EGCG 心肌保护[150] 上调AMPKα2 和激活自噬
+葛根素 神经保护[151]、抗败血症[152] 激活Nrf2/HO-1信号通路
+Sterubin 神经保护[153] 激活Nrf2/ATF4 信号通路
+14
+--- 第28页 ---
+暨南大学博士学位论文
+我们课题组长期从事艾草的相关研究工作，在前期研究工作中，发现艾叶精油具有良
+好的抗炎作用，进一步的 GC-MS 分析发现，艾叶精油中含有多种化合物单体，如 L-香芹
+醇、桉油精、α-松油醇、α-侧柏酮、4-萜品醇、天然冰片、左旋樟脑、β-石竹烯等（图 S1&S2）。
+通过筛选艾叶精油中单体化合物的抗脂质过氧化作用，发现 β-石竹烯表现出良好的抑制巨
+噬细胞脂质过氧化的作用（图 1-6），因此，猜测 β-石竹烯是一种潜在的铁死亡抑制剂。
+图 1-6艾叶精油主要单体成分抗脂质过氧化筛选
+Figure 1-6. Screening of main components of essential oil from Artemisia argyi leaf against
+lipid peroxidation.
+1.4.1 β-石竹烯的来源及分子特征
+β-石竹烯（β-caryophyllene，BCP）是一种具有挥发性的双环倍半萜，广泛存在于各种
+香料、水果、药用和观赏植物的精油中，包括艾叶（Artemisia argyi L.），牛至（Origanum
+vulgare L.）、肉桂（Cinnamomum cassia Presl）、胡椒（Piper nigrum L.）和丁香（Eugenia
+15
+--- 第29页 ---
+暨南大学博士学位论文
+caryophyllata Thunb.），大麻（Cannabis sativa L.），迷迭香（(Rosmarinus officinalis L.），
+啤酒花（Humulus lupulus L.）等[154]。从图 1-7可以看出，BCP 具有独特的骨架结构，是由
+张力较大的四元环和一个九元环（含有 2个双键，其中一个为跨内环双键）构成的稠环类
+化合物，具有构象迁移性。BCP 来源广泛，除了从多种天然植物中提取获得外，还可以通
+过杂多酸催化的化学法合成[155]和在 BCP 合酶的作用下利用生物工程技术在体外进行大规
+模生产[156]。在BCP 的临床前实验研究中，未发现动物出现不良临床症状和死亡[157,158]，且
+无遗传毒性[159]和致突变性[160]等安全隐患。因其具有明显的安全性，中国国家标准化管理
+委员会（GB 2760-2014）和美国FDA规定 BCP 可作为食品天然调味料使用。此外，研究
+证明BCP 可以通过血脑屏障发挥多重药理活性，有利于多种疾病的预防和治疗[161,162]。
+图 1-7 β-石竹烯的化学结构
+Figure 1-7. The chemical structure of β-caryophyllene
+1.4.2 β-石竹烯药理活性
+BCP 已被证明是一种全功能的选择性 2 型大麻素受体（type 2 cannabinoid receptor，
+CB2R）激动剂，因其可食用且具有与大麻素分子类似的结构和特性，因此被称为“膳食大
+麻素”[163,164]。越来越多的实验研究表明，CB2R 激活介导的 BCP 在减轻炎症、氧化应激、
+凋亡、纤维化和免疫调节方面发挥着重要的作用。BCP 依赖 CB2R 的抗炎机制已在自身免
+疫性脑脊髓炎[165,166]、牙周炎[167]、神经疼痛[168]、神经认知障碍[169]、阿尔兹海默症[170]、肠
+炎[171]、关节炎[172]、膀胱炎[173]、肝纤维化[174]、血管炎症[175]、脑缺血再灌注[176,177]、恶性胶
+质瘤[178]等多种疾病中得到证实。除激活 CB2R 外，BCP 还能激活过氧化物酶体增殖物激
+活受体（peroxisome proliferator-activated receptors，PPARs），通过增加激素核受体 PPARα
+和雌激素相关受体 α（estrogen related receptor α，ERRα）的活性，提高过氧化物酶体水平
+来驱动脂肪酸氧化酶的转录，从而促进脂质代谢[179]。BCP 通过激活 PPARγ 发挥免疫调节
+作用[172,175]。
+此外，研究发现含有BCP 的精油能够通过增加了内源性抗氧化剂的水平，发挥铁的还
+16
+--- 第30页 ---
+暨南大学博士学位论文
+原特性和自由基清除的活性来减轻氧化应激[180]。BCP 处理可调节氧化应激、外源性解毒
+和寿命相关的几个基因的表达，进而延长秀丽隐杆线虫的寿命[181]。与临床上常用的抗氧化
+剂如 α-生育酚（维生素 E 的水解产物）相比，BCP 被证明具有更好的抗氧化活性[182]。大
+量研究表明，BCP 在肝脏、肾脏、大脑、心脏、胰腺和血液等全身器官中发挥强大的抗炎
+特性，并通过抑制巨噬细胞中的促炎因子（如 TNF-α、IL-1β、IL-6、COX2 等）和趋化因
+子（如CXCL10、CCL2 等）以及信号通路（如 MAPKs、NF-κB、HMGB1/TLR4、NLRP3
+和 Akt 通路等）的激活抑制全身炎症[163,183,184]。综上所述，BCP 显著缓解了器官功能障碍
+和代谢紊乱中的氧化应激和随后的炎症反应，良好地调节了氧化还原信号通路，提示 BCP
+具有较好的临床应用潜力。
+1.5 本研究拟解决的科学问题及研究意义
+UC 的持久性和难治愈性及其全球发病率的逐年递增，给社会带来极大的经济负担及
+不稳定的安全因素。已上市的临床药物并不能完全治愈 UC 患者，只能进行维持治疗，且
+随着用药时间的延长，药物耐药性及副作用也逐渐在患者中体现出来。因此，寻找 UC 新
+的治疗靶点和研发安全且有效治疗的化合物仍然迫在眉睫。随着研究的深入，细胞死亡在
+肠道上皮稳态中的重要性越来越突出，越来越多的证据证明了铁死亡和肠道疾病之间的紧
+密联系。研究者对 UC 患者中与铁死亡相关的基因表达谱和脂质过氧化产物分析表明，铁
+死亡参与了 UC 中肠上皮细胞的死亡，而在 UC 发生发展中起重要作用的巨噬细胞是否发
+生铁死亡还未知。
+脂质过氧化和铁积累是铁死亡的驱动力，维持铁稳态、恢复 GSH、GPX4水平和调节
+脂质过氧化被认为是铁死亡相关疾病的治疗方法。为了研究铁死亡在体内的潜在作用，已
+经筛选出了有效和特异的小分子抑制剂，并人为将其分为铁螯合剂、抗氧化剂和系统 Xc-
+抑制剂。由于铁抑制素 Fer-1 在血清中的不稳定性，要在体内开展靶向治疗铁死亡的实验
+研究比较困难，因此，第二代和第三代铁抑素药物目前正在加紧开发中。而且在考虑进行
+人体临床试验之前，它们的结构和药理特性还需要进行进一步优化。在神经退行性疾病中，
+如去铁沙明（用于调节铁离子稳态）、维生素 E（抗氧化）的临床试验已经在开展。迄今
+为止，调控铁死亡的几种天然化合物，包括青蒿素及其衍生物、黄芩素、山奈酚、槲皮素、
+姜黄素和 EGCG 等，已进行了广泛的临床试验研究中，且大多数是抗肿瘤应用研究[185]。
+但特异性的铁死亡生物标记物的缺乏，阻碍了针对天然产物介导的铁死亡级联的新疗法顺
+利临床转化。由于生物利用度较差及一些系统评分较低的原因，在 I、II期临床试验中，姜
+17
+--- 第31页 ---
+暨南大学博士学位论文
+黄素只能作为制剂或与其他化疗药物联合使用，以达到协同治疗，减少不良反应的效果[186]，
+但都还未获得任何临床批准。
+BCP 作为一种食品添加剂，具有明显的安全性，前期研究结果提示 BCP 有可能作为
+一种铁死亡抑制剂。还有研究报道 BCP 与姜黄素[187]、黄芩素[188]和儿茶素[188]等多种天然
+化合物具有协同作用，从表1-2可以知道，姜黄素、黄芩素及 EGCG 等天然化合物已被证
+实具有抑制铁死亡的作用，但BCP 是否具有铁死亡抑制作用还有待进一步探究。基于以上
+讨论，我们拟利用 DSS 诱导的UC 小鼠体内模型及 RSL3 诱导的巨噬细胞为体外模型探讨
+UC 中巨噬细胞是否发生铁死亡并探讨 BCP 是否作为铁死亡抑制剂在其中发挥重要作用。
+本课题将进一步丰富和完善结肠炎的发病机理，更全面地理解铁死亡与 UC 炎症的关
+系，为缓解或者治疗铁死亡相关疾病提供潜在的靶点和新的理论依据。BCP 是一种具有多
+种生物活性的化合物，但是在铁死亡的研究中还没有被报道，本课题在研究 BCP 对铁死亡
+作用的同时也进一步深入探讨 BCP 缓解结肠炎的机制，挖掘 BCP 新的作用机制，为治疗
+铁死亡相关疾病提供潜在的候选化合物。
+18
+--- 第32页 ---
+暨南大学博士学位论文
+1.6 技术路线
+图 1-8 研究技术路线图
+Figure 1-8. Research technology roadmap
+19
+--- 第33页 ---
+暨南大学博士学位论文
+第二章 巨噬细胞铁死亡与溃疡性结肠炎具有密切相关性
+2.1 引言
+众所周知，触发铁死亡的主要因素包括铁的积累和过量 ROS 诱发的脂质过氧化[47]。
+有趣的是，在不同课题组的实验研究中发现，给实验性溃疡性结肠炎动物补充铁会加重其
+肠道炎症和氧化应激[189,190,191]。此外，临床研究发现，膳食中过量摄入铁也会加重 UC 患
+者的临床症状[107,192]。而给予铁螯合剂（如 DFO）或者抗氧剂（如维生素 E）可显著减少
+UC 患者结肠组织中的 ROS 含量，改善患者临床症状[193,194]。这些证据将铁、ROS 与 UC
+的发病联系起来，而最近也有铁死亡与 UC 小鼠肠上皮细胞的死亡相关性的研究报道[111]，
+更是证明了铁死亡参与了 UC 的发生发展。肠道巨噬细胞在维持组织稳态及炎症反应中发
+挥着不可忽视的作用。然而，UC 中巨噬细胞是否发生铁死亡还未有研究报道，发生铁死亡
+的巨噬细胞是否会进一步加剧 UC 的发展也需要进一步探讨。本章就以上内容进行实验研
+究，以期进一步挖掘 UC 的发病机理，为 UC 治疗寻找新的治疗靶点。
+2.2 实验材料
+2.2.1 细胞株
+小鼠单核巨噬细胞（RAW264.7）购自上海中国科学院细胞库，用含 10% FBS 加1%双
+抗（青霉素和链霉素）的 DMEM培养基，培养于 37℃，5% CO 恒温培养箱中。小鼠骨髓
+2
+来源的巨噬细胞由本课题组自行分离提取及鉴定（详见方法部分），用含10% FBS+1%双
+抗（青霉素和链霉素）+1%谷氨酰胺的 α-MEM 培养基，培养于 37℃，5% CO 的恒温培养
+2
+箱中。
+2.2.2 抗体
+本章实验所涉及到的抗体信息详见表 2-1。
+表 2-1 用于免疫印迹、免疫荧光和免疫组化抗体信息
+Table 2-1 List of primary antibodies for immunoblot, immunofluorescence or
+immunohistochemistry
+抗体名称 生产厂家 货号（Item number）
+（Name） （Manufacturer）
+4-HNE Abcam Cat # ab46545
+20
+--- 第34页 ---
+暨南大学博士学位论文
+APC anti-mouse F4/80 Biolegend Cat # 123115
+APC/Fire™ 750 anti-mouse/human Biolegend Cat # 101262
+CD11b
+β-Actin CST Cat # 4970
+Brilliant Violet 421 anti-mouse F4/80 Biolegend Cat # 123131
+COX2 CST Cat # 12282
+Erk1/2 MAPK (137F5) CST Cat # 4695
+F4/80 Servicebio Cat # GB113373
+FTH1 (D1D4) CST Cat # 4393
+GPX4 Abcam Cat # ab125066
+IKKβ (D30C6) CST Cat # 8943
+IκBα (L35A5) CST Cat # 4814
+JNK CST Cat # 9252
+MPO Servicebio Cat # GB11224
+NF-κB p65 (D14E12) CST Cat # 8242
+p38 MAPK CST Cat # 9212
+PerCP/Cy5.5 anti-mouse/human CD11b Biolegend Cat # 101227
+Phospho-Erk1/2 MAPK CST Cat # 4370
+(Thr202/Tyr204)
+Phospho-IKKα (Ser176)/IKKβ (Ser177) CST Cat # 2078
+Phospho-IκBα (Ser32/36) CST Cat # 9246
+Phospho-NF-κB p65 (Ser536) CST Cat # 3033
+Phospho-p38 MAPK (Thr180/Tyr182) CST Cat # 4511
+Phospho-SAPK/JNK (Thr183/Tyr185) CST Cat # 4668
+(81E11)
+2.2.3 工具药及主要试剂盒
+本章实验所涉及的工具药及试剂盒信息详见表 2-2。
+表 2-2 工具药及主要试剂盒信息
+Table 2-2 Information of Drug and main kits
+名称 生产厂家 货号
+（Name） （Manufacturer） （Item number）
+BCA蛋白浓度测定试剂盒 上海碧云天 Cat # P0011
+21
+--- 第35页 ---
+暨南大学博士学位论文
+Cell-counting-kit-8 日本同仁化学 Cat # CK04
+DSS 安培生物 Cat # 160110
+Evo M-MLV反转录试剂预混液 广州瑞真生物 Cat # AG11706
+Fer-1 上海陶术生物 Cat # T6500
+GSH/GSSG Ratio Detection Assay
+Abcam Cat # ab138881
+Kit
+Iron Assay试剂盒 Abcam Cat # ab83366
+M-CSF Peprotech Cat # 315-02
+RNAfollow 新赛美 Cat # M6100
+RSL3 MedChemExpress Cat # HY-100218A
+SDS-PAGE凝胶配制试剂盒 上海碧云天 Cat # P0012A
+SYBR® Green Pro Taq HS 预混型
+广州瑞真生物 Cat # AG11702
+qPCR 试剂盒 II
+TBARS assay kit Cayman Cat # 10009055
+谷胱甘肽过氧化酶（GPX）活性
+北京盒子生工 Cat # AKPR014M
+检测试剂盒
+2.2.4 主要试剂
+本章实验所使用的试剂详见表 2-3。
+表 2-3 主要试剂相关信息
+Table 2-3 Information about major reagents
+名称（Name） 厂家（Manufacturer)
+4%多聚甲醛 BIOSHAR
+5 × loading buffer 上海碧云天生物技术有限公司
+α-MEM 培养基 GIBCO
+BSA粉末 SIGMA-ALARICH
+Collagenase SIGMA-ALARICH
+DAPI染液 上海碧云天生物技术有限公司
+Deoxyribonuclease 美国Worthlngton
+DEPC 水 BIOSHARP
+D-Hanks 平衡盐溶液（不含 Ca2+ Mg2+） 武汉普诺赛生命科技有限公司
+22
+--- 第36页 ---
+暨南大学博士学位论文
+DMEM培养基 GIBCO
+DMSO SIGMA-ALARICH
+EDTA 美国AMRESCO
+HEPEs 粉末 美国AMRESCO
+KCl 广州化学试剂厂
+KH
+2
+PO
+4
+广州化学试剂厂
+MgCl
+2
+广州化学试剂厂
+NaCl 广州化学试剂厂
+Na
+2
+HPO
+4
+广州化学试剂厂
+PMSF 上海碧云天生物技术有限公司
+RIPA裂解液 广州捷倍斯生物科技有限公司
+RPMI 1640 培养基 GIBCO
+Triton-X 100 SIGMA-ALARICH
+Tris-Base BIOSHARP
+TRNzol Universal 总RNA提取试剂 天根生化科技（北京）有限公司
+澳洲胎牛血清 上海吉泰依科赛生物科技有限公司
+电镜固定液 武汉赛维尔生物科技有限公司
+甘氨酸 BIOSHARP
+甲醇 广州化学试剂厂
+化学发光液 上海碧云天生物技术有限公司
+氯仿 广州化学试剂厂
+磷酸酶抑制剂 上海碧云天生物技术有限公司
+双抗 GIBCO
+台盼蓝 Biosharp
+脱脂奶粉 BIOFROXX
+吐温 20 广州斯佳生物科技有限公司
+无水乙醇 广州化学试剂厂
+无血清细胞冻存液 上海吉泰依科赛生物科技有限公司
+异丙醇 广州化学试剂厂
+胰酶粉末 美国AMERSCO
+23
+--- 第37页 ---
+暨南大学博士学位论文
+荧光二抗 Thermo Fisher Scientific
+玉米油 上海阿拉丁
+预染蛋白Marker Thermo Fisher Scientific
+2.2.5 仪器设备
+本章实验所涉及的仪器设备信息详见表 2-4。
+表 2-4 主要实验仪器及设备相关信息
+Table 2-4 Information regarding main instruments
+仪器设备（Instruments） 生产厂家（Manufacturers）
+4℃冷冻离心机 德国EPPENDORF
+CO 恒温细胞培养箱 三洋贸易株式合社
+2
+SDS-PAGE垂直电泳仪 美国BIO-RAD
+TGrinder 电动组织研磨器套装 天根生化科技（北京）有限公司
+超净工作台 苏州安泰净化设备有限公司
+小型恒温水浴锅 上海博讯医疗生物仪器股份有限公司
+恒温水浴锅 郑州长城科工贸有限公司
+倒置显微镜 德国 LEICA
+电子分析天平 瑞士SARTORIUS
+凝胶成像仪 上海天能科技有限公司
+普通PCR 扩增仪 美国BIO-RAD
+荧光定量PCR 仪 美国BIO-RAD
+蛋白转膜仪 美国BIO-RAD
+移液器 德国Eppendorf
+激光共聚焦显微镜 德国ZEISS
+荧光显微镜 日本Nikon
+流式细胞仪 美国BD
+酶标仪 美国BIO-RAD
+掌上离心机 其林贝尔仪器制造公司
+摇床 其林贝尔仪器制造公司
+超微量核酸蛋白检测仪 德国 IMPLEN
+24
+--- 第38页 ---
+暨南大学博士学位论文
+电热鼓风干燥箱 上海精宏实验设备有限公司
+立式低温冰箱 青岛海尔电器集团有限公司
+立式超低温冰箱 青岛海尔特种电器有限公司
+高压蒸汽灭菌锅 日本 SANYO
+恒温金属浴加热器 杭州奥盛仪器有限公司
+涡旋混匀仪 天根生化科技（北京）有限公司
+制冰机 德国SCOTSMRA
+超纯水仪 成都浩康科技有限公司
+2.2.6 耗材
+本章实验使用的耗材信息详见表 2-5。
+表 2-5 主要实验耗材相关信息
+Table 2-5 Information of main consumable materials
+名称（Name） 厂家（Manufacturer）
+0.22 μm 滤器 MERCK MILLPORE
+1 ml 注射器 江西洪达医疗器械有限公司
+1.5 ml EP 管 CORNING 公司
+2 ml EP 管 广州佰汇生物科技有限公司
+5 ml 离心管 广州佰汇生物科技有限公司
+15 ml 离心管 上海吉泰依科赛生物科技有限公司
+50 ml 离心管 上海吉泰依科赛生物科技有限公司
+15 mm 共聚焦皿 NEST
+10 μl 进口枪头 CORNING 公司
+200 μl 进口枪头 CORNING 公司
+1000 μl 进口枪头 CORNING 公司
+10 μl 国产枪头 海门市三和鸿锦实验仪器经营部
+200 μl 国产枪头 海门市三和鸿锦实验仪器经营部
+1000 μl 国产枪头 海门市三和鸿锦实验仪器经营部
+100 mm 细胞培养皿 上海吉泰依科赛生物科技有限公司
+60 mm 细胞培养皿 上海吉泰依科赛生物科技有限公司
+25
+--- 第39页 ---
+暨南大学博士学位论文
+35 mm 细胞培养皿 上海吉泰依科赛生物科技有限公司
+25 cm2细胞培养瓶 上海吉泰依科赛生物科技有限公司
+6孔板 上海吉泰依科赛生物科技有限公司
+12孔板 上海吉泰依科赛生物科技有限公司
+96孔板 上海吉泰依科赛生物科技有限公司
+PCR 管 CORNING 公司
+PVDF 膜 MERCK MILLPORE
+脱脂棉球 广州佰汇生物科技有限公司
+荧光定量PCR 用 96孔板 美国BIO-RAD
+滤纸 GE
+封口膜 BEMIS
+冻存管 CORNING 公司
+2.3 实验方法
+2.3.1 RAW264.7 细胞的复苏
+（1）把配好的含 10% FBS 及1%双抗的 DMEM 培养基（完全培养基）置于37℃水浴
+锅中温热15 min，培养基恢复室温后放置于紫外照过的超净工作台中；（2）遵循“慢冻速
+溶”的原则，取出液氮中冻存的 RAW264.7 细胞，快速在 37℃水浴锅中将细胞溶解，然后
+将细胞置于1000 rpm 离心机中离心5 min，用酒精棉球擦拭管口后，用 1 ml 移液器吸弃冻
+存管中的细胞培养液，用提前预热好的完全培养基重悬离心下来的 RAW264.7 细胞；（3）
+将细胞液转移至T25 培养瓶中，轻轻摇匀，将培养瓶置于含 5% CO 的37℃培养箱中培养
+2
+过夜，第二天观察细胞状态及密度，并换上新鲜的培养基继续培养。
+2.3.2 RAW264.7 细胞的传代培养及铺板
+（1）从培养箱中取出 RAW264.7 细胞，在显微镜下观察 RAW264.7 细胞形态及密度，
+细胞生长至85~90%的融合度为宜；（2）把分装好的胰酶及配制好的DMEM完全培养基，
+置于37℃水浴锅中温热 15 min，培养基恢复室温后放置于紫外照过的超净工作台中；（3）
+从培养箱中取出RAW264.7 细胞，用酒精棉球擦拭管口后，用 1 ml 移液器吸弃需要传代的
+细胞的培养液，用 PBS 洗2遍后加入适量胰酶（以没过细胞为宜），室温或37℃静置消化
+30 s~1 min；（4）肉眼观察培养瓶出现雾状及有细胞开始脱落下来时，用1 ml 移液器吸净
+26
+--- 第40页 ---
+暨南大学博士学位论文
+胰酶，加入适量DMEM 完全培养基终止消化，轻轻吹打细胞（避免出现气泡），使细胞分
+散悬浮于完全培养基中；（5）细胞用细胞计数板计数后，用完全培养基稀释到实验所需的
+密度，铺至无菌的 6孔板或12孔板中，或分装到 T25培养瓶中，并将培养瓶置于 5% CO
+2
+的37℃细胞培养箱中继续培养。
+2.3.3 RAW264.7 细胞冻存
+（1）从培养箱中取出 RAW264.7 细胞，在显微镜下观察 RAW264.7 细胞形态及密度，
+细胞生长至90%的融合度为宜；（2）把分装好的胰酶及配制好的DMEM完全培养基，置
+于 37℃水浴锅中温热 15 min，培养基恢复室温后放置于紫外照过的超净工作台中；（3）
+取出待冻存的细胞，用酒精棉球擦拭管口后，用 1 ml 移液器吸弃细胞培养液，用 PBS 洗2
+遍后加入适量胰酶（以没过细胞为宜），室温或 37℃静置消化 30 s~1 min；（4）吸弃胰酶，
+然后加入无血清细胞冻存液（依科赛，#VUC00-N011），用 1 ml 移液器轻轻将细胞吹打下
+来，转移至冻存管中，每支冻存管不超过 1.5 ml，并将冻存管用封口膜封好口后直接放置
+于-80℃冰箱中过夜，第二天转移细胞至液氮中长期保存。
+2.3.4 BMDM原代细胞提取及鉴定
+BMDM原代细胞的提取参照本实验室金富军师兄的提取方法[195]，步骤如下。
+（1）提取：取 8~10周龄的C57BL/6J 雄性小鼠，脱颈处死后，在 75%酒精中浸泡 5~10
+min，在超净工作台内使用灭好菌的手术器械，将小鼠两侧后腿骨取出，置于 α-MEM 无血
+清培养基中，并将肌肉组织剔除干净。然后使用剪刀将骨的两端剪开，用 1 ml 注射器取无
+血清的α-MEM 培养基将全部骨髓冲出，用移液器将骨髓细胞吹打混匀。300 g室温离心 5
+min后，用α-MEM 完全培养基（含 10% FBS+1% L-谷氨酰胺+1%双抗）重悬细胞，按照1
+只小鼠 5 ml 培养基重悬细胞，吹打均匀后将细胞铺至 60 mm 皿中，将细胞置于 37℃ 5%
+CO 培养箱中过夜。（2）诱导：培养过夜的骨髓细胞取出后，在显微镜中观察形态和密度。
+2
+轻微摇动培养皿，用 1 ml 移液器将细胞悬液吸到15 ml 无菌离心管中 300 g离心5 min。离
+心完毕后，吸弃上清，往离心管中加入约 5 ml 的α-MEM 完全培养基，重悬细胞。使用实
+验细胞计数仪计算细胞数量，将细胞稀释至3×106 cells/ml，并加入50 ng/μl M-CSF（Peprotech，
+# 315-02）诱导细胞 48 h，在培养皿中铺匀。（3）鉴定：将诱导了 48 h 的原代细胞从培养
+箱中取出，在显微镜中观察形态并拍照记录，轻轻摇动培养皿，吸弃上清，加入 PBS 洗涤
+一次，吸弃 PBS 后加入预热好的胰酶消化液，消化 3 min，使用 α-MEM 完全培养基终止
+27
+--- 第41页 ---
+暨南大学博士学位论文
+消化后，将细胞吹打下来，移至 15ml 无菌离心管中，1000 rpm 离心5 min。离心完毕后，
+吸弃上清，PBS 洗涤一次，最终往离心管中加入约 0.6 ml 的 PBS 重悬细胞，将细胞均匀分
+配至2个无菌1.5 ml EP 管中，其中一管细胞不做染色处理，另一管细胞分别加入 APC anti-
+mouse F4/80（1:100）和PerCP/Cy5.5 anti-mouse/human CD11b（1:100），4℃避光孵育 30
+min。染色完毕后，1000 rpm离心5 min，用PBS重悬后过300目滤网，上流式（BD FACSCanto）
+检测，其中F4/80+ CD11b+细胞为BMDMs。
+2.3.5 结肠巨噬细胞的分离及检测
+将 C57 小鼠脱颈处死后，放置于 75%酒精中浸泡 5 min，在超净台中用灭好菌的剪刀
+镊子取出结肠，使用无菌注射器轻轻冲出内容物，然后使用 15 ml D-Hanks 平衡盐溶液（含
+3 mM EDTA，不含钙镁离子，#PB180321）润湿并使用剪刀剪碎结肠（约 1 mm×1 mm）。
+将剪碎的结肠溶液吸至无菌 50 ml 离心管中，置于摇床中 37℃，230 rpm，摇30 min，然后
+斡旋15 s，1500 rpm，4℃离心5 min 后弃上清，用 D-Hanks 平衡盐溶液洗涤 2次（以去除
+EDTA）。洗涤完毕后，往离心管中加入 5 ml配好的细胞解离液（RPMI 1640 培养基+ 10%
+FBS + 1% 双抗+200 U/ml Collagenase + 5 U/ml DNase 1），并将离心管置于摇床中 37℃，
+230 rpm，摇2 h，然后将混悬液过 70 μm 原代细胞滤网得到结肠组织细胞悬液。将细胞悬
+液吸至 15 ml 离心管中，1500 rpm，4℃离心 5 min 后弃上清，并用 HBSS 或 PBS 洗涤 2
+次，洗涤完毕后加入 1 ml RPMI 1640 培养基重悬细胞。用台盼蓝（#BL707A）染色后计数，
+按照 2×106 cells/ml 分装至无菌 1.5 ml EP 管中，染上巨噬细胞 marker F4/80（1:100）及
+CD11b（1:100），及脂质过氧化染料 BODIPY C11（1:1000），4℃避光孵育 30 min。染色
+完毕后，1000 rpm 离心5 min，用PBS 重悬后过 300目滤网，上流式（BD FACSCanto）检
+测。
+2.3.6 基因功能富集分析
+为探索炎症、溃疡性结肠炎和铁死亡之间可能的主要信号通路，对三者进行了生物信
+息学分析。炎症、溃疡性结肠炎和铁死亡的基因靶信息来自一个名为 GeneCards 的基因综
+合整合数据库（https://www.genecards.org/）。基因本体论（Gene Onotology，GO）分析和
+京都基因与基因组百科全书（Kyoto Encyclopedia of Genes and Genomes，KEGG）功能
+富集分析在一个名为 Metascape 的基因注释和分析资源（https://metascape.org/gp/index.htm
+l#/main/）中进行[196]，图片的绘制在微生信网站（http://www.bioinformatics.com.cn/和 http:
+28
+--- 第42页 ---
+暨南大学博士学位论文
+//bioinformatics.psb.ugent.be/webtools/Venn/）进行。
+2.3.7 RNA的提取
+本论文中细胞及小鼠组织中 RNA 的提取方法一致，均采用 TRIzol Universal 总 RNA
+提取试剂（天根，#DP405）提取，所使用的枪头和EP 管均不含 RNA酶，步骤如下。
+细胞 RNA 的提取：（1）将加药后需要提取 RNA 的细胞从培养箱中取出，显微镜下
+判断是否污染，若无异常，观察细胞形态后用 PBS 洗涤细胞 2次后，按照6孔板每孔加入
+1 ml 或12孔板每孔加入 0.5 ml TRIzol Universal 总RNA提取试剂，冰上裂解 5 min 后用移
+液器将样品转移至 1.5 ml 无RNA酶 EP 管中；（2）按照每毫升 TRIzol 加入200 μl 三氯甲
+烷的比例加入三氯甲烷，盖好 EP 管盖，将 EP 管置于涡旋仪中涡旋混匀 30 s 后室温静置
+3~5 min；（3）静置后的样品置于离心机中，12000 g离心15 min；（4）将上清（约 200-
+500 μl）转移至另一干净的 EP 管中，按照 1:1 比例加入异丙醇，并将 EP 管中液体上下颠
+倒混匀，室温静置 10 min；（5）静置后的样品置于离心机中，12000 g离心10 min；（6）
+轻轻倒掉 EP 管中的上清液，可以观察到 EP 管底部有白色沉淀（即为 RNA），然后每管
+加入 1 ml 用 DEPC 水稀释的 75%乙醇，用于洗涤 RNA 沉淀除去残余溶剂及杂质；（7）
+样品置于离心机中，12000 g离心5 min；（8）轻轻吸弃上清液，并将 EP 管倒扣在干净的
+滤纸上，确保EP 管中的液体全部吸净；（9）根据管底白色沉淀的大小加入适量 DEPC水
+溶解RNA；（10）溶解后的 RNA样品使用超微量测定仪测定浓度并保存于-80℃冰箱中备
+用。
+组织RNA的提取：（1）将称好的组织样品用无菌剪刀剪碎后，先加入 300 μl TRIzol
+Universal 总 RNA 提取试剂，然后用研磨器研磨裂解，研磨好后补加 TRIzol Universal 总
+RNA 提取试剂至 1 ml，将样品使用涡旋仪涡旋混匀后存放于-80℃过夜，后续的提取步骤
+与细胞RNA提取步骤一致。
+2.3.8 反转录反应
+使用Evo M-MLV 反转录试剂预混液（用于 qPCR）（艾科瑞，#AG11706）试剂盒进
+行反转录实验，按照说明书中推荐的反应体系（如表2-6）和条件进行逆转录反应，所用枪
+头及 PCR 管均不含 RNA 酶。该反应得到的溶液可直接用于下一步的荧光定量 PCR 实验，
+或保存在-80℃冰箱中备用。
+29
+--- 第43页 ---
+暨南大学博士学位论文
+表 2-6 反转录反应体系
+Table 2-6 Reverse transcription reaction system
+试剂/样品 体积/质量
+总RNA 1 μg
+5 × PrimeScript™ RT Master Mix 2 μl
+RNase Free dH 2 O 补足至10 μl
+反转录的反应条件为：37℃ 15 min，85℃ 5 s，4℃ ∞
+2.3.9 荧光定量 PCR
+本论文中用于 q-PCR 实验的引物均为鼠源引物，引物序列（如表 2-7）均在上海捷瑞
+生物工程有限公司合成，将引物粉末12000 g 离心1 min 后，用DEPC 水溶解为终溶度 10
+μM 的溶液，保存于-20℃备用。使用SYBR® Green Pro Taq HS 预混型 qPCR 试剂盒 II（艾
+科瑞，#AG11702）进行 q-PCR 实验。具体操作步骤如下：（1）取出保存于-80℃冰箱中的
+cDNA，加入RNase Free dH O或者DEPC 水稀释8倍后作为 q-PCR 模板；（2）按照试剂
+2
+盒说明书推荐的反应体系（如表2-8）计算并配制酶系（同个基因的酶系可以合并配制以减
+少误差）；（3）根据实验前设计好的加板顺序将酶系和模板分别加入 96 孔 q-PCR 板中；
+（4）加板完毕后，使用 96孔板专用离心机将样品溶液离心至底部，离心过程中开启 q-PCR
+仪（Bio-Rad）并打开 CFX软件，根据加板顺序设置加样顺序及反应程序（步骤1：95℃ 30
+s；步骤2：95℃ 5 s；步骤 3：60℃ 30 s；步骤 4：go to 步骤2（40 个循环）；步骤 5：Melt
+Curve 65℃ to 95℃ Increment 0.5℃ 5s + 读板；步骤 6：结束。）（5）离心完毕后，取出 96
+孔q-PCR 板放置于检测仪器中进行qPCR 反应；（8）反应结束后，首先查看qPCR 的扩增
+曲线、溶解曲线及溶解温度等数据，若无异常则进行数据计算。
+表 2-7 qPCR序列信息
+Table 2-7 qPCR sequences used in the study
+基因名称 序列 (5’→3’) 产物长度（bp）
+F: CTCACCATTATATTGCTGCCTGT
+Acsl4 114
+R: TCTCTTTGCCATAGCGTTTTTCT
+F: TGCCTCCTACGTCTATCTGTC
+Fth1 190
+R: GTCATCACGGTCTGGTTTCTTT
+F: GCCTGGATAAGTACAGGGGTT
+Gpx4 99
+R: CATGCAGATCGACTAGCTGAG
+30
+--- 第44页 ---
+暨南大学博士学位论文
+F: TGTGTCCGTCGTGGATCTGA
+Gapdh 77
+R: CCTGCTTCACCACCTTCTTGA
+F: TGCCTGTCTCCTGCTTCT
+Hamp 116
+R: TGTCTGCCCTGCTTTCTT
+F: CTGGTGTGTGACGTTCCCATTA
+Il-1β 76
+R: CCGACAGCACGAGGCTTT
+F: CCAGTTGCCTTCTTGGGACT
+Il-6 101
+R: GGTCTGTTGGGAGTGGTATCC
+F: GGCCATGGAGTGGACTTAAA
+Ptgs2 110
+R: ACCTCTCCACCAATGACCTG
+F: CTTTGTTGCCCTCTCCTGCTTC
+Slc7a11 136
+R: CAGAGGAGTGTGCTTGTGGACA
+F: CAAAATTCGAGTGACAAGCCTG
+Tnf-α 114
+R: GAGATCCATGCCGTTGGC
+表 2-8 q-PCR反应体系
+Table 2-8 q-PCR reaction system
+试剂 体积
+2 × TB Green Premix Ex Taq II 5 μl
+10 μM Forward primer 0.5 μl
+10 μM Reverse primer 0.5 μl
+cDNA模板 4 μl （~50 ng）
+总体积 10 μl
+2.3.10 蛋白浓度测定
+细胞及动物组织蛋白均使用RIPA 裂解液（强）（捷倍斯，#G3424）裂解制备，并使
+用BCA蛋白浓度测定试剂盒（增强型）（碧云天，#P0009）进行蛋白浓度的测定。操作步
+骤如下：（1）配制含蛋白酶抑制剂（碧云天，#ST506，1:100）和磷酸酶抑制剂（碧云天，
+#P1082，1:50）的 RIPA 裂解液，放置于冰上备用；（2）将加药后需要提取蛋白的细胞从
+培养箱中取出，显微镜下判断是否污染，若无异常，观察细胞形态后用 PBS 洗涤细胞 2次，
+加入 RIPA 裂解液后，放置于冰上裂解 5 min；（3）用洗净的细胞刮刮下裂解好的蛋白样
+品，并转移至EP 管中；（4）12000 g离心 10 min，并将上清转移至另一干净的EP 管中，
+31
+--- 第45页 ---
+暨南大学博士学位论文
+放置于-20℃冰箱中备用；（5）取2 μl 蛋白样品加入含有 38 μl PBS 溶液的EP 管中（稀释
+20倍），振荡混匀；（6）样品及标准品按 10 μl/孔加入无菌96 孔板中（设置 3个复孔），
+然后100 μl/孔加入按A液：B液=49:1 配制的 BCA测试液；（7）加好样后，将96 孔板放
+置于 37℃恒温箱中，避光孵育 30 min，并打开酶标仪预热；（8）在预热好的酶标仪 570
+nm 波长下测量样品的 OD值，根据标准品浓度及 OD值绘制蛋白标准曲线，以此计算待测
+样品的浓度；（9）计算出浓度后，根据最小浓度值调整同一批次蛋白的浓度，用 RIPA 或
+PBS 补足体积，然后加入5× SDS 蛋白上样缓冲液（碧云天，#P0015L，1:4），振荡混匀，
+放在预热好的金属浴中100℃加热10 min，变性后用掌上离心机将样品离心 1 min，在管壁
+上记录浓度及日期，并将样品保存于-20℃冰箱中备用或-80℃冰箱中长久保存。
+2.3.11 免疫印迹
+蛋白免疫印迹采用 SDS-PAGE 试剂盒（碧云天，#P0012A）配制 SDS-PAGE 胶，用
+BeyoECL Moon（极超敏 ECL化学发光试剂盒）（碧云天，#P0018FM）进行化学发光。具
+体实验步骤如下：（1）制胶：①分别将玻璃薄板和厚板用自来水冲洗干净再用纯水冲洗 1
+遍，按要求将制胶装置安装好，注入纯水进行检漏；②根据实验目的配制下层分离胶（8%-
+12%），将配制好的分离胶缓缓注入至离薄板顶端约1.5 cm 的位置，然后加入适量 75%乙
+醇将分离胶压平整；③分离胶在室温下凝固后，倒掉 75%乙醇，确保残存液体用滤纸吸净，
+按照配胶试剂盒说明书配制上层浓缩胶，注胶后迅速插入润洗干净的 10 孔或 15 孔梳子
+（严格避免气泡产生），放置于室温下凝固；（2）跑胶：①从冰箱中取出调整成均一浓度
+的蛋白样品，在金属浴中加热 1 min，溶解混匀后用掌上离心机将管壁的样品离心下来；②
+检查并确保电泳装置线路无异常后，按要求将电泳装置安装好，放入装有新配制的 1×电泳
+液的电泳槽中，轻轻拔出梳子并确保上样孔无异常；③两边泳道分别加入 5 μl 和 10 μl 的
+蛋白maker，并用 1× SDS 蛋白上样缓冲液补足体积与样品上样量一致，其余泳道按顺序加
+入样品；④上完全部样品，并确保电源正负极无错误后，调整电压至 45 V跑电泳，待蛋白
+maker 分离，调整电压至 90 V 继续进行电泳，直至样品跑至凝胶底部。（3）转膜：①剪
+取12层滤纸（长×宽约为11 cm × 8 cm），纯水润湿后备用；②根据目的凝胶的大小，剪
+取 0.22 μm PVDF 膜并剪角指示上样顺序，用甲醇活化 PVDF 膜后，用配制好的转膜液浸
+泡PVDF膜备用；③小心拆卸跑完电泳的 SDS-PAGE凝胶玻璃板，取出转膜夹，按以下顺
+序依次组装转膜装置：海绵-滤纸（6层）-蛋白凝胶-PVDF膜-滤纸（6层）-海绵，并用试
+管将每层间的气泡排出；④完成组装后，将转膜夹转移至装有转膜液的转膜槽中（在冰水
+32
+--- 第46页 ---
+暨南大学博士学位论文
+浴中转膜），检查电源正负极无异常后，连接电源，将电压调整至 70 V 进行恒压转膜 90
+min；（4）抗体孵育：①用镊子取出转好的 PVDF膜，并用TBST 缓冲液洗膜 2 min，然后
+加入5%的脱脂奶粉溶液在室温下封闭 1~2 h；②完成封闭后，PVDF膜用TBST缓冲液摇
+洗（3次，5 min/次），然后根据实验目的，按照蛋白 marker指示条带进行剪膜，标记好目
+的蛋白及顺序后，加入稀释好的一抗，放置于 4℃层析柜摇床中孵育过夜；③第二天冰上
+回收一抗，在水平摇床上将PVDF膜用 TBST 缓冲液摇洗（3 次，8 min/次），然后用与一
+抗相应种属的二抗将 PVDF 膜在室温下孵育 1 h；④孵育完成后，用 TBST 缓冲溶液洗去
+PVDF膜上残留的二抗（3次，10 min/次）；（5）化学发光：①按1:1 体积混合BeyoECL
+Moon（极超敏 ECL 化学发光试剂盒）中的 A、B 试剂，将配好的发光液滴加到 PVDF 膜
+上，在凝胶成像系统中进行发光检测并保存图片。
+2.3.12 小鼠结肠炎实验设计
+本章中动物实验中的雄性 C57BL/6 小鼠（SPF 级，7~9周龄，19~21 g）购自北京维通
+利华实验动物科技有限公司（北京，合格证编号为 20201118Abzz0619000207）。将购买的
+C57BL/6 小鼠按照 5 只/笼饲养于暨南大学实验动物中心南楼，适应 10 天后，随机将小鼠
+分成正常组和 3% DSS 组，每组 5 只小鼠。正常组小鼠正常喂养，DSS 组小鼠饮用含 3%
+DSS 的饮用水，小鼠自由饮水，直至第 8天结束实验。根据实验目的取血及结肠，按要求
+保存并送检。
+2.3.13 疾病活动指数
+给药期间每天固定时间给小鼠称重并记录原始数据，观察小鼠粪便性状及隐血情况，
+并根据以上症状及体重下降程度进行疾病活动指数（disease activity index，DAI），详细评
+分标准见表2-9。
+表 2-9疾病活动指数评分标准
+Table 2-9 Scoring criteria of disease activity index
+评分 体重下降 粪便性状 便血情况
+0 0 正常 无
+1 1-5% 轻微松散 轻微（粪便含少量鲜红色血液）
+2 5-10% 粘稠 轻微（粪便含褐色血液）
+3 10-15% 稀便 严重（粪便含褐色血液+肛门少许血迹）
+33
+--- 第47页 ---
+暨南大学博士学位论文
+4 > 15% 水样便 严重（粪便含褐色血液+肛门大量血迹）
+2.3.14 组织苏木素-伊红染色
+组织苏木素-伊红染色（hematoxylin-eosin，HE）染色实验的取材固定和图片采集在本
+实验室完成，HE 染色切片是委托武汉赛维尔生物科技有限公司进行制备。整个实验具体
+步骤如下：（1）取材及固定：解剖小鼠后，选取无内容物的结肠组织段（约 0.5 cm）快速
+剪下，置于4%的多聚甲醛中室温固定 8 h；（2）脱水透明：用水洗 30 min 以去除组织中
+的固定液，然后用酒精梯度（低到高）脱水，再用二甲苯透明；（3）浸蜡：组织透明后，
+放置于已溶化的石蜡溶液中；（4）包埋：待石蜡完全浸入组织块后进行包埋，冷却凝固成
+块即可；（5）切片：然后将组织蜡块切成 3 μm 的薄片，放在加热的水中展平于载玻片上，
+将载玻片放在恒温箱（45℃）中烘干；（6）脱蜡至水：将切片依次放入以下梯度有机溶剂
+中（二甲苯Ⅰ：15 min、二甲苯Ⅱ：15min、无水乙醇Ⅰ：5min、无水乙醇Ⅱ：5min、85%酒精：
+5min、75%酒精：5min）进行脱蜡处理，最后用蒸馏水冲洗；（7）苏木精染色：切片放入
+苏木精水溶液中染色 5 min，在酸水及氨水中各分色 5 s，然后用流水冲洗 1 h；（8）伊红
+染色：切片依次放入 70%酒精（5 min）、90%的酒精（5 min）中脱水，然后用伊红染液染
+色3-5 min；（9）脱水和封片：将切片依次放入梯度酒精中（低到高）脱水，再用二甲苯
+使切片透明。将已透明的切片滴上中性树胶封片，盖上盖玻片（避免气泡），晾干后贴上
+标签；（10）制备好的切片使用显微镜（NIS-Elements Viewer）观察并采集图片。
+2.3.15 组织学评分
+本论文中的结肠组织病理学评分主要参照本实验室前期的实验[197]，HE染色评分标准
+如表2-10。
+表 2-10 结肠组织学评分标准
+Table 2-10 Colonic histological scoring criteria
+评分 上皮 炎症细胞浸润
+0 正常形态 无浸润
+1 杯状细胞丢失 在隐窝基础周围浸润
+2 大面积杯状细胞丢失 浸润至粘膜层
+3 隐窝丢失 广泛浸润，且粘膜层增厚水肿
+4 大面积隐窝丢失 粘膜下浸润
+34
+--- 第48页 ---
+暨南大学博士学位论文
+2.3.16 丙二醛含量测定
+小鼠结肠组织中丙二醛（malonaldehyde，MDA）含量测定采用 TBARS assay ki（t Cayman，
+#10009055）按照说明书操作进行实验。具体实验步骤如下：（1）从-80℃冰箱中取出结肠
+组织，称取约25 mg，用灭菌后的剪刀剪碎组织后，加入 250 μl 含蛋白酶抑制剂（碧云天，
+#ST506，1:100）的 RIPA 裂解液（强）（捷倍斯，#G3424）进行裂解，裂解后，在预冷的
+4℃离心机中12000 g离心15 min，轻轻将上清液转移至干净的 1.5 ml EP 管中保存于-80℃
+冰箱备用。样品准备完毕后可以用 BCA 蛋白浓度测定试剂盒（增强型）（碧云天，#P0009）
+测定蛋白浓度，以便于后续计算单位蛋白重量组织的 MDA含量。（2）按照说明书配方配
+制以下检测试剂：硫代巴比妥酸（thiobarbituric acid TBA）、乙酸、10×氢氧化钠溶液、MDA
+标准品、SDS 溶液、显色试剂；（3）标准品的稀释：用超纯水将标准品倍比稀释至 0~50
+µM（8 个浓度），用于后续制作标准曲线；（4）样品的测定：在 5 ml 离心管中加入 100
+μl 待测样品、SDS 溶液或者上述稀释好的标准品，然后每管加入 4 ml 显色溶液，混匀后，
+在沸水浴中加热1 h。1 h 后，迅速将离心管取出放置于冰水中冷却 10 min 以停止反应。在
+预冷的4℃离心机中 1600 g离心10 min，离心完毕后将离心管置于室温稳定 30 min。轻轻
+取 150 μl 上清到 96 孔板中，随后用预热好的酶标仪在 532 nm 波长处测定吸光度。（5）
+MDA含量的计算：根据标准曲线计算 MDA含量，计算出样品溶液中的 MDA含量后，可
+以通过单位重量的蛋白含量或组织重量等来表示最初样品中的 MDA含量。
+2.3.17 谷胱甘肽含量测定
+组织中的谷胱甘肽（glutathione，GSH）含量采用 GSH/GSSG Ratio Detection Assay Kit
+（Abcam，# ab138881）进行测定，使用 Deproteinizing Sample Kit-TCA（Abcam，#ab204708）
+从样品中去除酶，使用 BCA蛋白浓度测定试剂盒（增强型）（碧云天，#P0009）测定蛋白
+浓度，以便于后续计算单位蛋白重量组织的 GSH含量。按照说明书进行操作，具体步骤如
+下：（1）样品收集：将裂解好的各组小鼠结肠组织溶液，在预冷的离心机中用 1000-2000
+g 离心 10 min，上清液转移至干净的 EP 管中。然后按照 1:5 比例加入三氯乙酸
+（Trichloroacetic acid，TCA），冰上孵育 10 min，预冷的离心机中 12000 g离心5 min，上
+清液转移至干净的 EP 管中。在上清液中滴加 NaHCO ，并短暂涡旋，测量样品 pH，直到
+3
+pH = 4~6。样品放置于预冷的离心机中，12000 g离心5 min，上清液转移至干净的 EP 管
+中，置于冰上备用。（2）试剂准备：按照说明书配制 50× Thiol Green 诱导剂、1 mM GSH
+标准品、1 mM GSSG标准品、25× GSSG 探针；（3）按照说明书所示方法使用试剂盒中的
+35
+--- 第49页 ---
+暨南大学博士学位论文
+分析缓冲液配制GSH 标准品系列浓度（0~10 μM）及谷胱甘肽测定混合物（GAM：用分析
+缓冲液将 50× Thiol Green 诱导剂按照 1:50 的稀释比例稀释，避光涡旋混合均匀，现配现
+用，2 h有效）；（4）加样：分别将样品（50 μl）和不同浓度 GSH标准品（50 μl）加入黑
+色96孔板相应孔中，在每个样品孔和标准品中加入 50 µl GAM，使总检测量为 100 µl/孔；
+（5）在室温下避光孵育 30 min，在预热荧光酶标仪波长 490 nm 处测定OD值；（6）根据
+标准曲线计算GSH 浓度。
+2.3.18 谷胱甘肽过氧化物酶活性测定
+动物组织及细胞样本中谷胱甘肽过氧化物酶（glutathion peroxidase，GPX）活性测定使
+用GPX活性检测试剂盒进行测定（#AKPR014M）。具体步骤如下：（1）样品的制备：a.
+组织样品：称取约 0.05 g组织，用解剖剪剪碎后加入 500 μl 试剂盒中的提取液，使用电动
+匀浆器冰浴匀浆，然后在预冷的离心机中 4℃ 5000 rpm离心 10 min，收集上清置于冰上待
+测。b. 细胞样品：取出加药后待进行测定的细胞，显微镜下观察，如无异常则按照细胞数
+量：提取液体积= 5×106:1 ml 的比例加入试剂盒中的提取液，用干净的细胞刮轻轻刮下细
+胞，收集细胞裂解液于 1.5 ml EP 管中，然后在预冷的离心机中 4℃ 5000 rpm离心 10 min，
+收集上清置于冰上待测；（2）每个样品均设置一个对照管，并设置一个标准管和一个空白
+管，按照表2-11中的步骤依次加入试剂盒中的试剂；
+表 2-11 GPX活性测定步骤
+Table 2-11 GPX activity determination procedure
+试剂 测定管（µl） 对照管（µl） 标准管（µl） 空白管
+（µl）
+样品 20 — — —
+试剂一 20 20 — —
+充分混匀，37℃反应5 min
+试剂二 10 10 — —
+充分混匀，37℃反应5 min
+试剂三 200 200 — —
+样品 — 20 — —
+4000 rpm 常温离心 5 min，取上清于96 孔板中
+上清液 100 100 — —
+36
+--- 第50页 ---
+暨南大学博士学位论文
+标准应用液 — — 100 —
+试剂六 — — — 100
+试剂四 100 100 100 100
+试剂五 25 25 25 25
+充分混匀，室温静置 15 min
+（3）吸光度测定：在预热的酶标仪中，波长 412 nm 处测定吸光值，记为 A测定、A对照、
+A标准和A空白，ΔA 测定=A对照-A测定，ΔA标准= A标准-A空白；GPX (U/ml)=200×ΔA
+测定/ΔA标准。
+2.3.19 铁含量测定
+动物血清铁含量测定采用 Iron Assay 试剂盒（Abcam，#ab83366）进行实验。具体实
+验步骤如下：（1）样品收集：将收集的各组小鼠血液在室温下静置 15~30 min，预冷的离
+心机中用1000~2000 g 离心10 min，轻轻将上清液转移至干净的 1.5 ml EP 管中至于冰上备
+用；（2）试剂准备：将 Iron Assay kit 中的标准品，还原剂，buffer 和探针从-20冰箱中拿
+出，恢复至室温；（3）标准品的配制：将 100 mM 的标准品用灭菌后的 3d H O 稀释成 1
+2
+mM，然后按表2-12中的配比进行标准品配制；（4）样品检测：a.将标准品按顺序加入 96
+孔板中，每孔100 µl；b.取50 µl 血清，用 buffer补足体积至 200 µl，加入96孔板中，每孔
+100 µl，其中一孔测定Fe2+，另一孔测总铁含量；c.每个标准品孔和测总铁含量孔中加入 5
+µl 还原剂，每个测定 Fe2+孔中加入5 µl buffer，混匀后将板至于 37℃中避光孵育 30 min；
+d. 每孔中加入100 µl探针，混匀后，将板至于 37℃中避光孵育 60 min；e. 酶标仪 593 nm
+检测 OD 值；（5）Fe2+，Fe3+和总铁的含量计算：根据标曲做出的曲线计算 Fe2+和总铁的
+含量计算，Fe3+含量=总铁的含量−Fe2+的含量。
+表 2-12 铁标准品配制
+Table 2-12 Preparation of iron standard
+序号 1 mM 标样 Buffer体积 每孔体积 每孔铁的终浓度（nmol）
+体积（µl） （µl） （µl）
+1 0 300 100 0
+2 6 294 100 2
+3 12 288 100 4
+4 18 282 100 6
+37
+--- 第51页 ---
+暨南大学博士学位论文
+5 24 276 100 8
+6 30 270 100 10
+2.3.20 透射电镜
+细胞和组织透射电镜均委托武汉赛维尔生物科技有限公司进行实验。主要步骤如下：
+（1）样品收集：取出加药后待进行透射电镜拍摄的细胞，显微镜下观察，如无异常则加入
+电镜固定液（Servicebio，#G1102）固定 10 min，然后用干净的细胞刮沿着一个方向轻轻将
+细胞刮下，并将细胞收集到 1.5 ml EP 管中，1000 rpm 离心5 min，弃去上清，加入新的电
+镜固定液，并轻轻吹散细胞，使细胞固定于固定液中，放置 4℃冰箱中备用（避免结冰）；
+（2）再次固定：使用 0.1 M PH 7.4 的磷酸缓冲液配制的 1%的锇酸，将细胞在避光条件下
+室温固定2 h，然后使用 0.1 M PH7.4 的磷酸缓冲液漂洗细胞 3次，每次15 min；（3）细
+胞脱水：在室温条件下，依次使用 30%、50%、70%、80%、95%、100%、100%乙醇将细
+胞脱水，每次20 min，然后使用 100%丙酮脱水两次，每次 15 min；（4）渗透包埋：按照
+1:1 的比例使用丙酮：812包埋剂在37℃中包埋细胞 4 h，然后按照 1:2 的比例使用丙酮：
+812 包埋剂在 37℃中渗透过夜。第二天用 812 包埋剂再次在 37℃中包埋 8 h，最后将样品
+放入包埋板中，倒入 812 包埋剂，并将包埋板放置于 37℃烤箱中过夜；（5）聚合：将包
+埋板从 37℃烤箱中取出，放入 60℃烤箱中聚合 48 h，然后取出树脂块备用；（6）切片：
+使用超薄切片机将树脂块切成 60~80 nm 的超薄切片，然后使用 150 目方华膜铜网捞片；
+（7）染色：使用 2%醋酸铀饱和酒精溶液将铜网在避光条件下染色 8 min，并分别用 70%
+酒精和超纯水清洗 3次。然后使用2.6%枸橼酸铅溶液在避CO 条件下染色 8 min，用超纯
+2
+水清洗3次，使用滤纸稍微吸干铜网切片表面水分。最后将铜网切片放入铜网盒内，室温
+干燥过夜；（8）图像采集：在透射电子显微镜下（HT7800/HT7700）观察并采集图像。
+组织透射电镜取材要求解剖小鼠后迅速取样，取样组织尽量薄，约 2 mm × 2 mm 大小
+（注意避免镊子挤压、刀片挫伤组织等机械损伤），组织取下立即用电镜固定液（Servicebio，
+#G1102）室温固定 2 h，再转移至4℃保存（避免冷冻结冰）备用，后续步骤与细胞一致。
+2.3.21 免疫组化
+组织免疫组化实验的取材固定和图片采集在本实验室完成，免疫组化切片是委托武汉
+赛维尔生物科技有限公司进行制备。整个实验具体步骤如下：（1）前期的取材固定、脱水
+透明、浸蜡包埋、切片、脱蜡至水与组织 HE染色步骤一致；（2）抗原修复：将冲洗干净
+的组织切片放置于盛满抗原修复缓冲液（PH=8.0）的修复盒中，于微波炉内进行抗原修复。
+38
+--- 第52页 ---
+暨南大学博士学位论文
+修复条件为中火煮沸后停火 8 min，再用中低火 7 min（此过程避免干片）。将切片取出，
+自然冷却后，将玻片放在脱色摇床上，用 PBS 将玻片洗涤3 次，每次5 min；（3）阻断内
+源性过氧化物酶：使用 3% H₂O₂溶液浸泡切片，室温下避光孵育 25 min，将玻片放在脱色
+摇床上，用PBS 将玻片洗涤 3次，每次 5 min；（4）封闭：洗涤完毕稍甩干切片，在组织
+周围用组化笔画圈，轻轻甩干 PBS，并滴加 3% BSA覆盖到组织上，封闭 30 min；（5）孵
+育一抗：轻轻甩掉封闭液，在切片上滴加配好的一抗，切片平放于湿盒内 4°C 孵育过夜（湿
+盒内加少量水防止抗体蒸发）；（6）孵育二抗：将玻片取出，用滤纸吸弃一抗，使用 PBS
+将组织切片洗涤3 次，每次5 min。稍甩干切片后在圈内滴加与一抗对应种属 HRP 标记的
+二抗覆盖组织，室温中避光孵育 1 h；（7）DAB显色：用PBS 洗涤玻片3次，每次 5 min。
+稍甩干切片后在圈内滴加新鲜配制的 DAB 显色液，边滴边在显微镜下观察，以控制显色
+时间，待染色合适时终止染色；（8）细胞核染色：使用苏木素复染细胞核，染色 3 min后
+用自来水轻洗，用苏木素分化液分化数秒，再用自来水冲洗至苏木素返蓝液返蓝，再用流
+水冲洗；（9）脱水封片：将切片依次放入梯度有机溶剂（75%酒精：5min、85%酒精：5min、
+无水乙醇Ⅰ：5min、无水乙醇Ⅱ：5min、正丁醇：5min、二甲苯Ⅰ：5min）中脱水透明，切片
+晾干后滴加中性树胶封片，盖上盖玻片（避免气泡），晾干后贴上标签；（10）制备好的
+切片使用显微镜（NIS-Elements Viewer）观察并采集图片。
+2.3.22 免疫荧光
+用于组织免疫荧光实验的样本是包埋好的石蜡组织块（前期用于 HE 染色），荧光实
+验也是委托武汉赛维尔生物科技有限公司进行。主要步骤如下：（1）石蜡切片脱蜡：将切
+片依次放入以下梯度有机溶剂中（二甲苯Ⅰ：15 min、二甲苯Ⅱ：15min、无水乙醇Ⅰ：5min、
+无水乙醇Ⅱ：5min、85%酒精：5min、75%酒精：5min）进行脱蜡处理，最后用蒸馏水冲洗；
+（2）抗原修复：将冲洗干净的组织切片放置于盛满抗原修复缓冲液（PH=8.0）的修复盒中，
+于微波炉内进行抗原修复。修复条件为中火煮沸后停火 8 min，再用中低火 7 min（此过程
+避免干片）。将切片取出，自然冷却后，将玻片放在脱色摇床上，用 PBS 将玻片洗涤 3次，
+每次5 min；（3）封闭：洗涤完毕稍甩干切片，在组织周围用组化笔画圈以防止抗体流走，
+轻轻甩干PBS，并滴加 3% BSA覆盖到组织上，封闭30 min；（4）孵育一抗：轻轻把封闭
+液吸弃，在切片上滴加配好的一抗，将切片平放于湿盒内（湿盒内加少量水防止抗体蒸发），
+4℃孵育过夜；（5）孵育二抗：将玻片取出，用滤纸吸弃一抗，使用 PBS 将组织切片洗涤
+3次，每次5 min。稍甩干切片后在圈内滴加与一抗对应种属的二抗覆盖组织，室温中避光
+39
+--- 第53页 ---
+暨南大学博士学位论文
+孵育1 h；（6）细胞核染色：将孵育完二抗的玻片取出，用滤纸吸净二抗，使用 PBS 将组
+织切片洗涤3次，每次 10 min。稍甩干切片后，把 DAPI染液滴加到圈内，室温中避光孵
+育 20 min；（7）淬灭组织自发荧光：将玻片取出，用滤纸吸弃 DAPI 染液，使用 PBS 将
+组织切片洗涤3次，每次 5 min。把自发荧光淬灭剂加入圈内，5 min 后用流水冲洗玻片 10
+min；（8）封片：稍甩干切片后，用抗荧光淬灭的封片剂将玻片进行封片；（9）图像采集：
+使用荧光显微镜（NIKON Eclipse ci）下观察切片并采集图像。
+2.3.23 统计分析
+本论文的实验结果采用 Graphpad prism 6.02软件进行two-tailed unpaired Student’s t-test
+和one-way ANOVA（Dunnett's multiple comparisons test）等统计学方法进行分析，P＜0.05，
+记为*或#；P＜0.01 记为**或##；P＜0.001 记为***或###，均视为具有统计学差异。
+2.4 实验结果
+2.4.1 结肠炎小鼠结肠组织发生铁死亡
+为了探索 UC 与铁死亡的相关性，我们首先使用含 3% DSS 的饮用水喂养小鼠构建小
+鼠 UC 模型。从图 2-1 可以看出，在喂养 3% DSS 的饮用水第 5 天，小鼠体重明显下降，
+DAI 呈急剧上升的趋势，后期的解剖学实验发现 DSS 组小鼠结肠明显比正常组小鼠结肠
+短，HE染色显示DSS 组小鼠结肠组织炎症细胞明显浸润，表明 UC 小鼠模型的成功建立。
+铁死亡是一种不依赖 caspase 的细胞死亡，由细胞内磷脂过氧化反应引起。为了验证
+UC 与铁死亡的相关性，本研究分析了一些重要的铁死亡的标志物。有趣的是，DSS 诱导
+的 UC 小鼠结肠组织细胞表现出典型的铁死亡特征。荧光定量 PCR 实验结果显示，UC 小
+鼠结肠组织中 Ptgs2、Acsl4、slc7a11、Hamp 等基因表达显著升高，Gpx4、Fth1 基因表达
+显著降低（图 2-2A）。从图 2-2B-D 可以看出，与正常组小鼠比较，UC 小鼠结肠组织中
+GSH 含量和 GPX 活性显著下调，脂质过氧化产物 MDA 浓度显著升高。检测 UC 小鼠血
+清铁水平发现，UC 小鼠血清铁水平明显升高（图 2-2E）。免疫印迹结果显示，DSS 抑制
+Gpx4、Fth1 蛋白水平，增加 Acsl4 及 Cox2 蛋白水平（图 2-2F）。此外，UC 小鼠结肠组
+织免疫组化结果显示 UC 小鼠结肠组织 COX2、MPO和4-HNE 高表达，GPX4低表达，反
+映UC 小鼠结肠组织确实发生脂质过氧化（图 2-2G）。研究表明，发生铁死亡的细胞线粒
+体出现异常缩小，线粒体嵴减少，膜密度增加的现象。值得注意的是，DSS 处理组小鼠结
+肠组织细胞的线粒体明显小于正常组，且线粒体嵴明显减少（图 2-2H）。上述结果表明，
+40
+--- 第54页 ---
+暨南大学博士学位论文
+UC 小鼠结肠组织确实发生了铁死亡，说明 UC 与铁死亡具有明显的相关性。
+图 2-1 UC小鼠模型的建立
+Figure 2-1. Establishment of UC mouse model (n=5). (A) Body weight and (B) body weight
+changes of mice receiving DSS treatment. (C) DAI was determined according to scoring standards.
+(D) Colon length on the last day was measured and (E) a histogram of colon length is shown. (F)
+HE staining of colon tissue. Scale bar, 50 μm. Data are presented as mean ±S.E.M. Statistical
+analyses were performed with two-tailed unpaired Student's t-test. *p < 0.05, **p < 0.01, ***p <
+0.001 versus mice from DSS group.
+41
+--- 第55页 ---
+暨南大学博士学位论文
+图 2-2 UC小鼠结肠组织发生铁死亡
+Figure 2-2. Ferroptosis is present in colon tissue of UC mice (n=5). (A) Relative mRNA
+expressions of Ptgs2, Acsl4, Slc7a11, Hamp, GPX4 and Fth1 were analyzed using RT-qPCR.
+Levels of GSH (B), GPX activity (C) and MDA (D) in colonic tissues and serum iron (E) of mice
+were examined using corresponding kits. (F) Protein expression levels of Acsl4, Fth1, Cox2 and
+Gpx4 were detected by western blotting. (G) Representative images of GPX4, MPO, COX2 and
+4-HNE levels in colonic tissues of mice determined by immunohistochemistry staining. Scale bar,
+50 μm. (H) Transmission electron microscopy of colon tissue mitochondria. White arrowheads
+indicate shrunken mitochondria; black arrows indicate increased mitochondrial membrane density.
+42
+--- 第56页 ---
+暨南大学博士学位论文
+Scale bar, 1 μm. Data are presented as mean ±S.E.M. Statistical analyses were performed with
+two-tailed unpaired Student's t-test. *p < 0.05, **p < 0.01, ***p < 0.001 versus mice from DSS
+group.
+2.4.2 结肠炎小鼠结肠组织巨噬细胞发生铁死亡
+在结肠炎发展期间，肠黏膜屏障被破坏，导致吸收更多的腔内抗原，这有助于巨噬细
+胞和其他固有免疫细胞的激活。活跃的巨噬细胞释放大量的炎症趋化因子，使炎症级联反
+应持续下去或进一步诱发细胞死亡。分离结肠组织中的巨噬细胞，使用流式细胞术检测发
+现UC 小鼠结肠组织巨噬细胞发生脂质过氧化（图 2-3A）。免疫双荧光染色分析小鼠结肠
+组织巨噬细胞，结果显示 DSS 诱导的小鼠结肠组织中巨噬细胞 4-HNE 表达明显增加，证
+明结肠组织中巨噬细胞发生了脂质过氧化，存在铁死亡（图 2-3B）。因此，本课题选用小
+鼠单核巨噬细胞 RAW264.7 细胞及小鼠骨髓来源的巨噬细胞 BMDM 进行体外实验研究。
+本课题中所使用的 BMDM 细胞均是本课题组自行提取，具体步骤详见实验方法。为了提
+高数据的可信度，采用流式细胞术对所提取的 BMDMs 进行纯度鉴定，验证所提取的细胞
+是否为BMDMs。从图2-4可以看出，提取的BMDMs在显微镜下可以观察到提取的BMDMs
+呈梭形，与文献报道的细胞形态一致[195]，流式结果也显示所提取的细胞 F4/80 和 CD11b
+均呈阳性，且细胞纯度高于 90%，可用于后续的实验研究。
+43
+--- 第57页 ---
+暨南大学博士学位论文
+图 2-3 UC小鼠结肠组织巨噬细胞发生铁死亡
+Figure 2-3. Ferroptosis occurs in colon tissue macrophages. (A) Representative flow cytometry
+images showing lipid peroxidation of colon macrophages of mice. (B) Representative images of
+F4/80 and 4-HNE levels in colonic tissues of mice determined by double immunofluorescence
+staining, scale bar, 50 μm.
+44
+--- 第58页 ---
+暨南大学博士学位论文
+图 2-4 BMDM细胞的鉴定
+Figure 2-4. The identification of BMDMs (n=3). (A) Representative morphology of BMDMs
+was visualized with inverted microscope. (B) Representative flow cytometry images showing
+F4/80+CD11b+ cells. (C) Histogram of F4/80+CD11b+ cells. Data are representative of three
+independent experiments.
+为了进一步探索铁死亡与炎症的关系，本课题选用铁死亡诱导剂 RSL3 分别诱导
+RAW264.7 细胞和 BMDM 细胞铁死亡，结果发现，使用发生铁死亡的 RAW264.7 细胞和
+BMDM 细胞均能促进炎症相关基因 Tnf-α 和 Ptgs2 的表达，而使用铁死亡抑制剂 Fer-1 处
+理后，Tnf-α 和 Ptgs2 的表达受到 Fer-1 抑制，提示巨噬细胞发生铁死亡上调炎症相关基因
+的表达（图 2-5）。
+图 2-5巨噬细胞发生铁死亡上调炎症基因的表达
+Figure 2-5. Ferroptotic macrophage up-regulates the expression of inflammatory genes.
+RAW264.7 macrophages and BMDMs were treated with RSL3 (500 nM), or RSL3 (500 nM)
+combined with Fer-1 (400 nM) for 6 h. Relative mRNA expressions of Tnf-α and Ptgs2 in
+45
+--- 第59页 ---
+暨南大学博士学位论文
+RAW264.7 macrophages (A) and BMDMs (B) were measured using RT-qPCR. Data are presented
+as mean ±S.E.M. using Gapdh as a reference. Statistical analyses were performed with one way
+ANOVA. *p < 0.05, **p < 0.01 versus RSL3 treatment group. All data are representative of or
+combined from at least three independent experiments.
+2.4.3 巨噬细胞发生铁死亡激活 MAPK和 NF-κB 信号通路
+目前已报道的实验证据还无法完全解释结肠炎的发病机理，且巨噬细胞铁死亡与结肠
+炎炎症的联系还不是特别清楚。本课题利用 GeneCards，Bioinformatics & Evolutionary
+Genomics，Metascape，STRING等生物信息学网站对炎症、铁死亡及溃疡性结肠炎进行基
+因差异分析和基因富集分析，寻找三者共性基因及信号通路。如图2-6所示，根据GeneCards
+数据库，共检索到肠炎相关基因 4798 个，炎症相关基因 10868 个，铁死亡相关基因 282
+个，交叉筛选得到 121 个三者共同的靶基因。对其进行 KEGG 通路富集分析，发现与 UC
+相关的通路排名靠前的有 Ferroptosis，NOD-like receptor signaling pathway，TNF signaling
+pathway，MAPK signaling pathway，NF-kappa B signaling pathway等。通过 GO生物进程分
+析发现，与 UC 最密切的是 response to oxidative stress，其次是 reactive oxygen species
+metabolic process，regulation of cytokine production 及inflammatory response。以上结果说明，
+Ferroptosis，NOD-like receptor signaling pathway，TNF signaling pathway，MAPK signaling
+pathway，NF-kappa B signaling pathway在UC 发病过程中发挥重要作用，且在其发生过程
+中与氧化应激，ROS 的产生和积累，细胞因子的产生，炎症反应等有密切联系。经查阅相
+关文献及联系到所选用的 RAW264.7 细胞不含 ASC，可以排除激活 NOD-like receptor
+signaling pathway诱导的细胞焦亡，故接下来的研究主要集中在 Ferroptosis，MAPK 及NF-
+κB信号通路的探索。
+在上述分析的基础上，采用 WB 检测 MAPK 和 NF-κB 信号通路中涉及的蛋白水平。
+结果显示，发生铁死亡的巨噬细胞中MAPK和NF-κB信号通路相关蛋白发生明显磷酸化，
+提示信号通路被激活。铁死亡抑制剂 Fer-1 处理显著降低了 RAW264.7 细胞和 BMDM 细
+胞p-Jnk、p-Erk1/2、p-P38、p-Ikkα/β、p-IκBα 和p-P65 水平（图 2-7）。这些数据说明，在
+一定条件下，发生铁死亡的巨噬细胞可能促进炎症性细胞因子的释放，从而激活炎症相关
+信号通路，引发炎症反应。
+46
+--- 第60页 ---
+暨南大学博士学位论文
+图 2-6 炎症、溃疡性结肠炎和铁死亡的功能富集分析
+Figure 2-6. Functional enrichment analysis of inflammation, UC and ferroptosis. (A) Total
+of 10,868 inflammation-related genes, 282 ferroptosis-related genes and 4,798 UC-related genes
+were identified using the GeneCards database. (B) GO and (C) KEGG functional enrichment
+analysis of common genes among inflammation, UC and ferroptosis.
+图 2-7 巨噬细胞发生激活 MAPK和 NF-κB 信号通路
+Figure 2-7. Ferroptotic macrophage activates MAPK and NF-κB signaling pathways.
+Relevant protein levels of the MAPK signaling pathway and NF-κB pathway in RAW264.7
+macrophages (C) and BMDMs (D) were analyzed by immunoblotting. β-Actin was acted as an
+internal reference.
+2.5 讨论
+结肠炎是一种难治愈的慢性炎症性疾病。随着社会的发展及人们生活水平的不断提高，
+结肠炎的发病率也呈逐年上升的趋势。对于人口基数较大的中国而言，结肠炎人数的激增
+47
+--- 第61页 ---
+暨南大学博士学位论文
+不仅增加了医疗负担，也为社会带来不稳定因素。铁死亡是近年来提出的一种调节性细胞
+死亡方式，它的提出为很多炎症性疾病的治疗提供了新的靶点。对于难治愈又影响生活质
+量的疾病，比如结肠炎，新的治疗靶点的发现也为科研工作者和医务工作者提供了新的研
+究方向。
+早期研究指出，死亡的细胞释放的促炎介质，能进一步诱导邻近细胞的死亡。PRRs激
+活的浸润性免疫细胞如巨噬细胞、中性粒细胞和淋巴细胞也会释放类似的细胞因子，从而
+触发细胞的死亡，提示多种促炎信号可引发调节性细胞死亡（regulatory cell death，RCD）。
+鉴于 RCD 会引发炎症，而炎症会引发 RCD，形成互相促进的炎症放大回路。而药物通过
+理想地针对最初的细胞死亡（可能是铁死亡）抑制炎症回路，理论上可以阻止炎症的进一
+步发展。因此，本研究首先探讨了 UC 的发生发展中是否有巨噬细胞铁死亡的发生及发生
+巨噬细胞铁死亡是否引起炎症反应。结果发现，在 DSS 诱导的小鼠结肠炎模型中检测到巨
+噬细胞发生了脂质过氧化，且脂质过氧化产物 4-HNE水平显著升高。此外，结肠组织中促
+进铁死亡的基因如 Ptgs2、Acsl4、Hamp 等的表达显著升高，抑制铁死亡的基因如 Gpx4、
+Fth 基因及蛋白水平显著降低。进一步的实验发现，UC 小鼠血清中铁含量明显升高，UC
+小鼠结肠组织中发生了脂质过氧化且脂质过氧化产物 MDA、4-HNE 水平显著升高，而结
+肠组织中GSH含量及GPX活性显著下降，提示UC小鼠结肠组织细胞确实发生了铁死亡。
+脂质氧化产物 4-HNE 曾被报道通过激活 TLR4 信号通路在体外或体内触发炎症[96]，因此，
+UC 小鼠中4-HNE 水平的升高也有利于促进了结肠炎炎症的发展。此外，铁死亡与 PTGS2
+表达和PGE2 释放增加有关[62]，我们的研究结果也证实，发生铁死亡的巨噬细胞确实可以
+升高Ptgs2（编码 COX2 的基因）及Tnf-α等基因的表达。使用铁死亡诱导剂 RSL3 刺激巨
+噬细胞发现，与炎症密切相关的 MAPK 和NF-κB信号通路被激活，而铁死亡抑制剂 Fer-1
+可以阻断这两条通路的激活，说明发生铁死亡的细胞确实能够诱发炎症反应。
+综上所述，铁死亡在 UC 小鼠中发生，结肠组织巨噬细胞发生脂质过氧化，存在铁死
+亡，因此结肠炎的发生发展与巨噬细胞铁死亡相关，且铁死亡的存在可能促进炎症反应的
+发生。
+48
+--- 第62页 ---
+暨南大学博士学位论文
+第三章 β-石竹烯有效抑制巨噬细胞发生铁死亡及其诱导的炎症反应
+3.1 引言
+随着铁死亡调控机制的逐步明朗化，越来越多通过高通量筛选或基于结构优化的人工
+设计手段得到的铁死亡调节剂被报道。许多具有多种生物活性的植物化学物质，已被用作
+人类疾病健康管理的膳食干预物质。特别是，一些来自不同植物的生物活性成分已被成功
+鉴定为铁死亡的有效调节剂。本实验室前期研究工作中发现艾叶精油具有显著的抗炎作用。
+进一步的 GC-MS 分析发现，艾叶精油中含有多种化合物单体，如 L-香芹醇、桉油精、α-
+松油醇、α-侧柏酮、4-萜品醇、天然冰片、左旋樟脑、β-石竹烯等（图 S1&S2）。通过筛选
+实验发现 BCP 抗脂质过氧化作用最佳。而 BCP 作为一种食品添加剂，已知具有明显的安
+全性。前期也有研究证明，含有BCP 的混合物质具有铁螯合能力[180,198,199]，在体内外均能
+有效拮抗氧化应激，提示 BCP 有可能作为一种铁死亡抑制剂。还有研究报道 BCP 与姜黄
+素[187]、黄芩素[188]和儿茶素[188]等多种天然化合物具有协同的功效，而既往研究表明，姜黄
+素、黄芩素及EGCG 等天然化合物已被证实具有抑制铁死亡的作用，BCP 是否具有铁死亡
+抑制作用还有待进一步探究。本章就以上内容进行实验研究，以期探索 BCP 是否能作为铁
+死亡抑制剂在体外发挥功能。
+3.2 实验材料
+3.2.1 细胞株
+小鼠单核巨噬细胞（RAW264.7）购自上海中国科学院细胞库，用含 10% FBS 加1%双
+抗（青霉素和链霉素）的 DMEM 培养基，培养于含 5% CO 的 37℃恒温培养箱中。小鼠
+2
+骨髓来源的巨噬细胞由本课题组自行分离提取及鉴定（详见第二章方法部分），用含 10%
+FBS+1%双抗（青霉素和链霉素）+1%谷氨酰胺的 α-MEM 培养基，培养于含5% CO 的37℃
+2
+恒温培养箱中。
+3.2.2 抗体
+本章实验所涉及到的抗体信息详见表 3-1。
+表 3-1 用于免疫印迹的抗体信息
+Table 3-1 List of primary antibodies for immunoblot
+49
+--- 第63页 ---
+暨南大学博士学位论文
+抗体名称 生产厂家 货号（Item number）
+（Name） （Manufacturer）
+ACSL4 Santa Cruz Cat # sc-271800
+ALOX5 CST Cat # 3289S
+β-Actin CST Cat # 4970
+COX2 CST Cat # 12282
+Erk1/2 MAPK (137F5) CST Cat # 4695
+FTH1 (D1D4) CST Cat # 4393
+GPX4 Abcam Cat # ab125066
+IKKβ (D30C6) CST Cat # 8943
+IκBα (L35A5) CST Cat # 4814
+JNK CST Cat # 9252
+NF-κB p65 (D14E12) CST Cat # 8242
+p38 MAPK CST Cat # 9212
+Phospho-Erk1/2 MAPK CST Cat # 4370
+(Thr202/Tyr204)
+Phospho-IKKα (Ser176)/IKKβ (Ser177) CST Cat # 2078
+Phospho-IκBα (Ser32/36) CST Cat # 9246
+Phospho-NF-κB p65 (Ser536) CST Cat # 3033
+Phospho-p38 MAPK (Thr180/Tyr182) CST Cat # 4511
+Phospho-SAPK/JNK (Thr183/Tyr185) CST Cat # 4668
+(81E11)
+xCT/SLC7A11 (D2M7A) CST Cat # 12691
+3.2.3 工具药及主要试剂盒
+本章实验所涉及的工具药及试剂盒信息详见表 3-2。
+表 3-2 工具药及主要试剂盒信息
+Table 3-2 Information of Drug and main kits
+名称 生产厂家 货号
+（Name） （Manufacturer） （Item number）
+Stanford Analytical
+BCP Cat # CYH-207225
+Chemicals Inc
+BODIPY™ 581/591 C11 Invitrogen Cat # D3861
+50
+--- 第64页 ---
+暨南大学博士学位论文
+BCA蛋白浓度测定试剂盒 上海碧云天 Cat # P0011
+Cell-counting-kit-8 日本同仁化学 Cat # CK04
+Evo M-MLV反转录试剂预混液 广州瑞真 Cat # AG11706
+Fer-1 上海陶素 Cat # T6500
+M-CSF Peprotech Cat # 315-02
+ROS 检测使用活性氧检测试剂盒 上海碧云天 Cat # S0033
+RSL3 MedChemExpress Cat # HY-100218A
+SDS-PAGE凝胶配制试剂盒 上海碧云天 Cat # P0012A
+SYBR® Green Pro Taq HS 预混型
+广州瑞真 Cat # AG11702
+qPCR 试剂盒 II
+TBARS assay kit Cayman Cat # 10009055
+谷胱甘肽过氧化酶（GPX）活性
+北京盒子生工 Cat # AKPR014M
+检测试剂盒
+乳酸脱氢酶细胞毒性检测试剂盒 上海碧云天 Cat # C0017
+增强型线粒体膜电位检测试剂盒
+上海碧云天 Cat # C2003S
+(JC-1)
+3.2.4 主要试剂
+本章实验所使用的试剂同第二章2.2.4，详见表2-3。
+3.2.5 仪器设备
+本章实验所涉及的仪器设备信息同第二章2.2.5，详见表 2-4。
+3.2.6 耗材
+本章实验使用的耗材信息同第二章 2.2.6，详见表2-5。
+3.3 实验方法
+本章实验方法涉及的细胞提取、复苏、培养及冻存、RNA提取、反转录反应、荧光定
+量PCR、WB相关实验、GPX活性测定、MDA含量测定、透射电镜等实验步骤同第二章，
+详见2.3。
+3.3.1 细胞活性测定
+51
+--- 第65页 ---
+暨南大学博士学位论文
+细胞活性测定按照 Cell-counting-kit-8 试剂盒（同仁化学，#CK04）说明书进行实验。
+具体步骤如下：取出待加药后检测细胞活性的细胞，显微镜下观察，如无异常，每孔加入
+10 μl CCK8溶液，避光 37℃孵育，1 h 后在预热的酶标仪 450 nm 波长测定吸光度。根据以
+下方式计算细胞活性：细胞活性（%）=（实验组OD值-空白组 OD 值）/（对照组 OD值-
+空白组OD值）×100%。
+3.3.2 脂质过氧化实验
+细胞脂质过氧化使用 BODIPY™ 581/591 C11 荧光探针（Invitrogen，#D3861）进行实
+验。具体检测步骤如下：（1）按照试剂盒说明书，用无血清培养液 1:1000 稀释BODIPY™
+581/591 C11 荧光探针，使其终浓度为 10 μM，避光放置于 4℃冰箱备用；（2）取出加药后
+待进行脂质过氧化检测实验的细胞，显微镜下观察，如无异常则用 1 ml 移液器吸弃细胞培
+养液，使用PBS 将细胞洗涤 2次，加入适当体积稀释好的 BODIPY™ 581/591 C11 荧光探
+针（加入的体积以能充分盖住细胞为宜）；（3）将装载好探针的细胞放置于 37℃ CO 细
+2
+胞培养箱内避光孵育 30 min；（4）孵育完成后，用 PBS 洗涤细胞 3次，每次5 min，以充
+分去除未进入细胞内的 BODIPY™ 581/591 C11 探针；（5）加入 1 ml PBS 覆盖细胞，用荧
+光显微镜（NIS-Elements Viewer）进行图片采集或者用胰酶将细胞消化下来，1000 rpm 离
+心5 min，用PBS 重悬后过滤网，上流式（BD FACSCanto）检测细胞脂质过氧化水平。
+3.3.3 乳酸脱氢酶释放实验
+细胞乳酸脱氢酶（lactic dehydrogenase，LDH）释放实验采用乳酸脱氢酶细胞毒性检测
+试剂盒（碧云天，#C0017）进行实验。具体实验操作步骤如下：（1）在检测 LDH释放前
+1 h，在设置的阳性对照孔加入在阳性孔中加入 15 μl LDH释放试剂，继续孵育 1h；（2）
+取出加药后待进行 LDH检测实验的细胞，显微镜下观察，如无异常则将 96孔板至多孔板
+离心机中400 g离心 5 min，期间按照试剂盒说明书配制 LDH 检测工作液，避光备用；（3）
+分别取各孔的上清液 120 μl，加入到一新的 96孔板相应孔中；（4）每孔分别加入 60 μl 新
+配制的 LDH检测工作液。混匀，室温（约 25℃）避光孵育 30 min；（5）孵育完成后，在
+预热的酶标仪中490 nm（630 nm 为参考波长）进行双波长测定吸光度。（6）计算各组 LDH
+释放率（测得的各组吸光度均应减去背景空白对照孔吸光度。
+3.3.4 线粒体膜电位变化
+细胞中线粒体膜电位变化测定采用增强型线粒体膜电位检测试剂盒（JC-1）（碧云天，
+52
+--- 第66页 ---
+暨南大学博士学位论文
+# C2003S）按照试剂盒说明书进行实验。具体实验步骤如下：（1）按照试剂盒说明书，将
+200×JC-1用JC-1 染色缓冲液配制成 JC-1染色工作液，避光保存备用；（2）取出加药后待
+进行线粒体膜电位变化测定实验的细胞，显微镜下观察，如无异常则吸弃细胞培养液，使
+用 PBS 将细胞洗涤一次，再加入适当体积稀释好的 JC-1 染色工作液（加入的体积以能充
+分盖住细胞为宜），放置于37℃培养箱内避光孵育 30 min；（4）孵育完成后，用 JC-1染
+色缓冲液洗涤细胞 3次，每次5 min；（5）加入 2 ml PBS 或者细胞培养液覆盖细胞，用荧
+光显微镜（NIS-Elements Viewer）进行图片采集。
+3.3.5 统计分析
+本章实验结果采用 Graphpad prism 6.02 软件进行one-way ANOVA（Dunnett's multiple
+comparisons test）进行分析，P＜0.05，记为*或#；P＜0.01 记为**或##；P＜0.001 记为***或
+###，均认为具有统计学差异。
+3.4 实验结果
+3.4.1 BCP抑制 RSL3 诱导的巨噬细胞脂质过氧化
+为了确定BCP 是否具有铁死亡抑制作用，我们通过构建 RSL3 诱导的巨噬细胞铁死亡
+体外模型，研究了 BCP 对巨噬细胞铁死亡的作用。首先，通过 CCK8 实验确定 BCP 在
+RAW264.7 细胞和 BMDMs 上的适当浓度。图 3-1 实验结果表明，BCP 对 50 μM 以下的
+RAW264.7 细胞和 BMDMs 均无细胞毒性（抑制率< 5%）。因此，本研究选择 0~40 μM 浓
+度作为接下来实验的作用浓度。
+53
+--- 第67页 ---
+暨南大学博士学位论文
+图 3-1 BCP对 RAW264.7 细胞及 BMDM细胞活性的影响
+Figure 3-1. Effects of BCP on cell viability of RAW 264.7 macrophages and BMDMs. Effects
+of BCP on cell viability of RAW 264.7 macrophages (A) and BMDMs (B). Data are representative
+of five independent experiments.
+脂质过氧化是细胞发生铁死亡的重要特征之一。荧光探针 C11-BODIPY 具有脂溶性，
+能与过氧自由基反应，结合这种荧光团的探针更有可能模拟天然脂质的性质，因此被广泛
+用于指示脂质过氧化。免疫荧光实验结果显示，RSL3 作为 GPX4 的抑制剂，显著诱导
+RAW264.7 细胞和 BMDMs 发生脂质过氧化（绿色荧光），且巨噬细胞发生死亡（细胞量
+明显减少）。不同浓度的 BCP 和铁死亡抑制剂 Fer-1 可逆转 RSL3 的作用，抑制巨噬细胞
+发生脂质过氧化（图 3-2A&B）。采用流式细胞术进行定量分析发现，RSL3 显著增加
+RAW264.7 细胞和 BMDMs 中脂质 ROS 的累积，BCP 处理能够呈浓度依赖性的降低脂质
+ROS 的含量（图 3-2C-H）。
+54
+--- 第68页 ---
+暨南大学博士学位论文
+55
+--- 第69页 ---
+暨南大学博士学位论文
+图 3-2 BCP抑制 RSL3诱导的巨噬细胞脂质过氧化
+Figure 3-2. BCP inhibits RSL3-induced lipid peroxidation in macrophages. RAW264.7
+macrophages or BMDMs were treated with 500 nM RSL3 in the presence of different
+concentrations of BCP or 400 nM Fer-1 for 6 h. Representative C11-BODIPY staining images
+showing lipid peroxidation of RAW264 .7 macrophages (A) and BMDMs (B). Scale bar, 200 μm.
+Representative flow cytometry images, percentage of lipid ROS and fluorescence intensity
+showing lipid peroxidation of RAW264.7 macrophages (C-E) and BMDMs (F-H) after different
+treatments. Data are presented as the mean ± S.E.M. Statistics were analyzed using one-way
+ANOVA. ###p < 0.001 versus control group; *p < 0.05, **p < 0.01, ***p < 0.001 versus RSL3
+treatment group. All data are representative of or combined from at least three independent
+experiments.
+3.4.2 BCP抑制巨噬细胞铁死亡
+从图 3-3A 可以看出，RSL3 显著降低 RAW264.7 及 BMDM 细胞的存活率，不同浓度
+BCP 处理后可以提高铁死亡巨噬细胞的存活率。LDH 仅在细胞膜完整性被破坏时才被释
+放到细胞培养上清中[200]，因此，上清中LDH的浓度可以反映不同处理后细胞死亡的程度。
+本研究使用乳酸脱氢酶释放法测定 LDH 释放率，对照组细胞的 LDH 释放率低于 8%，而
+RSL3 刺激后的 LDH 释放率显著升高，说明 RSL3 显著诱导了 RAW264.7 细胞和 BMDMs
+死亡，不同浓度的 BCP 和铁死亡抑制剂 Fer-1 分别处理后，细胞 LDH 释放率明显降低，
+说明BCP能够有效抑制RSL3诱导的RAW264.7细胞和BMDMs的LDH释放（图3-3B）。
+GPX4 活性下降是导致细胞发生脂质过氧化，也是引起细胞发生铁死亡的主要原因，通过
+检测发现 RSL3 显著降低了 GPX 的活性，不同浓度的 BCP 和铁死亡抑制剂 Fer-1 分别处
+理后，细胞中 GPX 活性显著上调（图 3-3C）。MDA 是细胞脂质过氧化的重要产物之一，
+MDA 含量的升高直接或间接地诱导胞质或细胞器膜的孔隙形成，最终导致细胞死亡[201]。
+本研究通过检测细胞中的 MDA 含量发现，RSL3 明显升高了 RAW264.7 细胞和 BMDMs
+中 MDA 水平，不同浓度的 BCP 及 Fer-1 处理能够显著降低细胞 MDA 含量（图 3-3D）。
+56
+--- 第70页 ---
+暨南大学博士学位论文
+图 3-3 BCP抑制巨噬细胞铁死亡
+Figure 3-3. BCP inhibits macrophage ferroptosis. RAW264.7 macrophages or BMDMs were
+treated with 500 nM RSL3 in the presence of different concentrations of BCP or 400 nM Fer-1 for
+6 h. (A) The cell viability of RAW264.7 cells and BMDMs was measured using a CCK-8 assay.
+(B) Release of LDH in cell supernatants was measured using a LDH assay. (C) GPX activity was
+determined using a GPX activity kit and (D) the concentrations of MDA was determined using
+TBARS assay kit. Data are presented as the mean ± S.E.M. Statistics were analyzed using one-
+way ANOVA. n.s., not significant, #p < 0.05, ###p < 0.001 versus control group; *p < 0.05, **p <
+0.01, ***p < 0.001 versus RSL3 treatment group. All data are combined from at least three
+independent experiments.
+3.4.3 BCP改善铁死亡巨噬细胞的线粒体形态变化及膜电位下降
+比起正常细胞，发生铁死亡的细胞线粒体表现为异常缩小，嵴减少，膜密度增加和膜
+破裂增加的形态特征[47]，说明线粒体功能紊乱。通过透射电镜观察发现，RSL3 刺激后的
+细胞线粒体显著缩小，线粒体嵴减少，膜密度增加，而不同浓度的 BCP 及 Fer-1 处理后，
+线粒体形态明显改善，说明 BCP 改善了铁死亡巨噬细胞的线粒体形态变化（图 3-4）。
+57
+--- 第71页 ---
+暨南大学博士学位论文
+图 3-4 BCP改善铁死亡巨噬细胞的线粒体形态变化
+Figure 3-4. BCP ameliorates mitochondrial morphological changes in ferroptotic
+macrophages. Transmission electron microscopy of RAW264.7 macrophage (A) and BMDM (B)
+mitochondria after different treatments. White arrowheads indicate shrunken mitochondria. Scale
+bar, 500 nm.
+研究表明，细胞死亡早期，其线粒体膜电位会降低，使用 JC-1荧光探针可以较为容易
+检测出来。一般来说，细胞线粒体具有较高的膜电位时，JC-1探针会在线粒体基质中发生
+聚集形成JC-1聚合物，可以在荧光显微镜下观察到红色荧光，反之，细胞线粒体膜电位下
+降时，JC-1 探针无法在线粒体基质中发生聚集，可以在荧光显微镜下观察到绿色荧光。从
+图 3-5 可以得出，RSL3 显著降低了 RAW264.7 细胞和 BMDMs 中线粒体膜电位，BCP 及
+Fer-1处理可以改善 RSL3 诱导的RAW264.7 细胞和BMDMs 中线粒体膜电位下降。
+58
+--- 第72页 ---
+暨南大学博士学位论文
+图 3-5 BCP改善铁死亡巨噬细胞的线粒体膜电位下降
+Figure 3-5. BCP ameliorates the mitochondrial membrane potential decline in ferroptotic
+macrophages. RAW264.7 macrophages or BMDMs were treated with 500 nM RSL3 in the
+presence of different concentrations of BCP or 400 nM Fer-1 for 6 h. Representative JC-1 staining
+images showing mitochondrial membrane potential changes of RAW264.7 macrophages (A) and
+BMDMs (B). Scale bar, 200 μm. Data are representative of at three independent experiments.
+3.4.4 BCP调节铁死亡相关基因及蛋白的表达
+此外，荧光定量 PCR结果显示，RSL3 显著降低了 RAW264.7 细胞和 BMDMs 细胞中
+Gpx4的mRNA水平，上调了 Hamp的 mRNA水平，不同浓度 BCP 处理，上调了 Gpx4的
+表达，抑制了Hamp 的表达（图 3-6）。WB 结果显示，RSL3 显著降低了 RAW264.7 细胞
+和 BMDMs 细胞中 Gpx4、Fth1 的表达，上调了 Cox2、Alox5 的表达，对 Slc7a11、Acsl4
+59
+--- 第73页 ---
+暨南大学博士学位论文
+表达无影响，不同浓度 BCP 处理，促进了 Gpx4、Fth1的表达，抑制了 Cox2、Alox5的表
+达，逆转了RSL3 的作用（图 3-7）。以上结果表明，BCP 能够调节铁死亡相关基因及蛋白
+的表达。
+图 3-6 BCP调节铁死亡相关基因的表达
+Figure 3-6. BCP regulates the mRNA expression of ferroptosis-related genes. RAW264.7
+macrophages or BMDMs were treated with 500 nM RSL3 in the presence of different
+concentrations of BCP or 400 nM Fer-1 for 6 h. Relative mRNA levels of Gpx4 and Hamp in
+RAW264.7 macrophages (A) and BMDMs (B) were detected by RT-qPCR. Data are presented as
+mean ±S.E.M. using Gapdh as a reference. Statistics were analyzed using one-way ANOVA. #p <
+0.05, ###p < 0.001 versus control group; *p < 0.05, **p < 0.01, ***p < 0.001 versus RSL3 treatment
+group.
+图 3-7 BCP调节铁死亡通路相关蛋白的表达
+Figure 3-7. BCP regulates the expression of ferroptosis-related proteins. RAW264.7
+macrophages or BMDMs were treated with 500 nM RSL3 in the presence of different
+concentrations of BCP or 400 nM Fer-1 for 6 h. Relevant protein levels of ferroptosis in
+RAW264.7 macrophages (C) and BMDMs (D) were analyzed by immunoblotting. β-Actin was
+used as an internal reference. All data are representative of at least three independent experiments.
+60
+--- 第74页 ---
+暨南大学博士学位论文
+3.4.5 BCP抑制铁死亡诱导的炎症反应
+上一章研究结果已经证明 RSL3 诱导的细胞发生铁死亡，促进炎症相关基因 Tnf-α 和
+Ptgs2 的表达，诱发炎症反应。进一步研究发现，RSL3 与不同浓度的 BCP 共处理RAW264.7
+细胞和BMDMs 后，能够明显抑制 Tnf-α和Ptgs2 的mRNA含量，提示 BCP 能够抑制 RSL3
+诱导的炎症反应（图 3-8）。细胞死亡引发炎症，而炎症的持续发生会诱导细胞调节性死
+亡，形成炎症放大回路。在上一章通路富集分析的基础上，通过WB检测BCP处理对MAPK
+和NF-κB信号通路中参与的蛋白表达情况。结果显示，BCP 能够呈一定浓度依赖性的阻断
+RSL3 激活的MAPK 及NF-κB信号通路，从而阻止炎症的发生（图 3-9）。以上结果说明，
+BCP 有效抑制了巨噬细胞铁死亡诱导的炎症反应。
+图 3-8 BCP抑制铁死亡巨噬细胞炎症基因表达
+Figure 3-8. BCP inhibits the expression of inflammatory genes in ferroptotic macrophages.
+RAW264.7 macrophages or BMDMs were treated with 500 nM RSL3 in the presence of different
+concentrations of BCP or 400 nM Fer-1 for 6 h. Relative mRNA levels of Tnf-α and ptgs2 in
+RAW264.7 macrophages (A) and BMDMs (B) were detected by RT-qPCR. Data are presented as
+mean ±S.E.M. using Gapdh as a reference. Statistics were analyzed using one-way ANOVA. #p <
+0.05, ##p < 0.01, ###p < 0.001 versus control group; *p < 0.05, **p < 0.01, ***p < 0.001 versus RSL3
+treatment group.
+61
+--- 第75页 ---
+暨南大学博士学位论文
+图 3-9 BCP阻断铁死亡巨噬细胞中 MAPK和 NF-κB 通路的激活
+Figure 3-9. BCP blocks the activation of MAPK and NF-κB pathways in ferroptotic
+macrophages. Relevant protein levels of the MAPK signaling pathway (A) and NF-κB pathway
+(B) in RSL3-induced RAW264.7 macrophages and BMDMs were analyzed by immunoblotting.
+β-Actin was used as an internal reference. All data are representative of at least three independent
+experiments.
+3.5 讨论
+ROS 和抗氧化平衡的紊乱是导致氧化损伤的主要原因，而氧化损伤存在于许多病理生
+理现象（如炎症，衰老）中。事实上，早在“铁死亡”这个概念被正式提出和GPX4 被确
+立为铁死亡的核心调节因子之前，GPX4 就已经被证明可以通过调节 ALOX和PTGS 的活
+性来影响炎症。ROS 可以通过抑制ALOX或通过抗氧化剂和一些抗氧化酶（如超氧化物歧
+62
+--- 第76页 ---
+暨南大学博士学位论文
+化酶 SOD、过氧化氢酶和谷胱甘肽过氧化物酶 GPX）截取自由基来实现自身的还原[202]。
+以“红肿热痛”为主要特征的炎症是许多疾病的重要病理过程，也是科研工作者和医务工
+作者一直以来想要克服的挑战。有研究发现，脂质过氧化产物 4-HNE可以通过激活 TLR4
+信号通路加剧结肠炎症[96]。当然，除此之外，TLR4还能通过结合NAPDH氧化酶4（NOX4）
+或其同工酶，直接促进细胞死亡[203]。因此，细胞死亡与炎症是相互依赖相关促进的反应环，
+彼此相互影响，将细胞死亡作为克服炎症的一种手段或许会有意想不到的收获。铁死亡与
+AA的代谢和合成之间存在紧密联系。一方面，铁死亡细胞可以直接增加 PTGS2 表达促进
+AA 的代谢，促进炎症信号分子的分泌。另一方面，铁死亡细胞又可以作为细胞中 AA 合
+成的供体发挥促炎作用[204]。
+铁死亡的发生离不开铁及 ROS 的积累，而 BCP 作为一种食品添加剂，已知具有明显
+的安全性及生物活性。前期研究证明，比较艾叶精油中其他单体化合物，BCP 具有较好的
+抑制脂质过氧化的作用，提示 BCP 可能作为一种铁死亡抑制剂。基于此，我们使用铁死亡
+诱导剂RSL3 诱导巨噬细胞作为体外铁死亡细胞模型，探讨 BCP 在体外是否有抑制铁死亡
+的作用。结果发现不同浓度的 BCP 处理能够有效地抑制 RSL3 诱导的 LDH 的释放、脂质
+过氧化及降低其过氧化产物 MDA的含量，增加细胞存活率及 GPX活性。且进一步的实验
+结果显示，BCP 改善了 RSL3 诱导的巨噬细胞线粒体形态变化及线粒体膜电位下降的情况，
+证明BCP 能够发挥与铁死亡抑制剂Fer-1一致的抑制效果。考虑到铁死亡与炎症的密切相
+关性，我们还探讨了发生铁死亡的巨噬细胞是否能够引发炎症反应，结果显示，铁死亡巨
+噬细胞能够显著提高炎症相关基因（如 Tnf-α 和 Ptgs2）的表达，且激活 MAPK 和 NF-κB
+信号通路（与炎症密切相关的通路），而 BCP 处理能够明显抑制炎症基因的表达及阻断
+MAPK 和NF-κB信号通路的激活。由以上分析可以得出，BCP 是一种潜在铁死亡抑制剂，
+能够在体外发挥抑制巨噬细胞铁死亡及其诱导的炎症的作用。
+63
+--- 第77页 ---
+暨南大学博士学位论文
+第四章 β-石竹烯通过抑制铁死亡缓解小鼠结肠炎
+4.1 引言
+上一章的实验结果显示 BCP 在体外具有抑制铁死亡的作用，是一种潜在的铁死亡抑制
+剂，但其在体内是否能发挥同样的抑制作用还有待进一步探讨。DSS诱导的实验性结肠炎
+是最常用的体内动物模型之一。当 DSS 诱导结肠炎发生时，在免疫应答（如白细胞浸润）
+中，许多与炎症细胞因子表达相关的基因的激活发挥着重要的作用。本章通过使用 DSS 构
+建小鼠结肠炎模型，以铁死亡抑制剂 Fer-1作为阳性对照，探索 BCP 是否能作为铁死亡抑
+制剂在体内发挥功能。
+4.2 实验材料
+4.2.1 抗体
+本章实验所涉及到的抗体信息详见表 4-1。
+表 4-1 用于免疫印迹、免疫荧光和免疫组化抗体信息
+Table 4-1 List of primary antibodies for immunoblot, immunofluorescence or
+immunohistochemistry
+抗体名称 生产厂家 货号（Item number）
+（Name） （Manufacturer）
+4-HNE Abcam Cat # ab46545
+β-Actin CST Cat # 4970
+Claudin-1 GeneTex Cat # GTX134842
+COX2 CST Cat # 12282
+Erk1/2 MAPK (137F5) CST Cat # 4695
+FTH1 (D1D4) CST Cat # 4393
+GPX4 Abcam Cat # ab125066
+IKKβ (D30C6) CST Cat # 8943
+IκBα (L35A5) CST Cat # 4814
+JNK CST Cat # 9252
+MPO Servicebio Cat # GB11224
+NF-κB p65 (D14E12) CST Cat # 8242
+Occludin Servicebio Cat # GB111401
+64
+--- 第78页 ---
+暨南大学博士学位论文
+p38 MAPK CST Cat # 9212
+Phospho-Erk1/2 MAPK CST Cat # 4370
+(Thr202/Tyr204)
+Phospho-IKKα (Ser176)/IKKβ (Ser177) CST Cat # 2078
+Phospho-IκBα (Ser32/36) CST Cat # 9246
+Phospho-NF-κB p65 (Ser536) CST Cat # 3033
+Phospho-p38 MAPK (Thr180/Tyr182) CST Cat # 4511
+Phospho-SAPK/JNK (Thr183/Tyr185) CST Cat # 4668
+(81E11)
+4.2.2 工具药及主要试剂盒
+本章实验所涉及的工具药及试剂盒信息详见表 4-2。
+表 4-2 工具药及主要试剂盒信息
+Table 4-2 Information of Drug and main kits
+名称 生产厂家 货号
+（Name） （Manufacturer） （Item number）
+BCA蛋白浓度测定试剂盒 上海碧云天 Cat # P0011
+BCP 斯坦福分析化学公司 Cat # CYH-207225
+Deproteinizing Sample Kit-TCA Abcam Cat # ab204708
+DSS 安培生物 Cat # 160110
+Evo M-MLV反转录试剂预混液 广州瑞真生物 Cat # AG11706
+Fer-1 上海陶术生物 Cat # T6500
+GSH/GSSG Ratio Detection Assay
+Abcam Cat # ab138881
+Kit
+Iron Assay试剂盒 Abcam Cat # ab83366
+Mouse IL-1β ELISA 试剂盒 北京四正柏 Cat # CME0015
+Mouse IL-6 ELISA 试剂盒 北京四正柏 Cat # CME0006
+Mouse TNF-α ELISA 试剂盒 北京四正柏 Cat # CME0004
+RNAfollow 新赛美 Cat # M6100
+SDS-PAGE凝胶配制试剂盒 上海碧云天 Cat # P0012A
+SYBR® Green Pro Taq HS 预混型 广州瑞真生物 Cat # AG11702
+65
+--- 第79页 ---
+暨南大学博士学位论文
+qPCR 试剂盒 II
+TBARS assay kit Cayman Cat # 10009055
+谷胱甘肽过氧化酶（GPX）活性
+北京盒子生工 Cat # AKPR014M
+检测试剂盒
+4.2.3 主要试剂
+本章实验所使用的试剂同 2.2.3，详见表 2-3。
+4.2.4 仪器设备
+本章实验所涉及的仪器设备信息同 2.2.5，详见表2-4。
+4.2.5 耗材
+本章实验使用的耗材信息同 2.2.6，详见表 2-5。
+4.3 实验方法
+本章实验涉及的实验方法如动物组织 RNA提取、反转录反应、荧光定量 PCR、WB相
+关实验、疾病活动指数、GSH 含量测定、GPX 活性测定、MDA 含量测定、铁含量测定、
+组织 HE 染色及其评分、免疫组化、免疫荧光、透视电镜等实验步骤同第二章实验方法，
+详见2.3。
+4.3.1 小鼠结肠炎实验设计
+本章中动物实验中的雄性 C57BL/6 小鼠（SPF 级，7~9周龄，19~21 g）购自北京维通
+利华实验动物科技有限公司（北京，合格证编号为 20201118Abzz0619000207）。将购买的
+C57BL/6 小鼠按照 5 只/笼饲养于暨南大学实验动物中心南楼，适应 10 天后，随机将小鼠
+分成6组，即正常组、3% DSS 组、3% DSS + 25 mg/kg BCP 组、3% DSS + 50 mg/kg BCP
+组、3% DSS + 100 mg/kg BCP 组、3% DSS + 1 mg/kg Fer-1 组，每组8只小鼠。除正常组
+外，其余组小鼠均饮用含 3% DSS 的饮用水，小鼠自由饮水。给药组分别按 25，50，100
+mg/kg体重灌胃给药，每天给药 2次，阳性对照组腹腔注射 1 mg/kg Fer-1，每天一次；正
+常组和模型组分别灌胃 100 μl 的生理盐水和玉米油。给药第 8天结束实验（如图 4-1A）。
+根据实验目的取血及脏器（脾脏及结肠），按要求保存并送检。
+4.3.2 脾脏指数计算
+66
+--- 第80页 ---
+暨南大学博士学位论文
+小鼠称重后处死，用解剖剪进行解剖，取出小鼠脾脏后，用滤纸吸净残留血液，立即
+放置于干净的玻璃皿中用分析天平称重并记录，脾脏指数=脾脏重量（mg）/小鼠体重（g）。
+4.3.3 酶联免疫吸附试验
+细胞和动物血清中炎症因子的含量均采用ELISA试剂盒进行测定（四正柏，#CME0004、
+#CME0006、#CME0015），每个试剂盒的操作步骤大致相同，具体操作步骤如下：（1）样
+品收集：将收集的各组小鼠血液在室温下静置 15~30 min，然后用预冷的离心机1000~2000
+g离心10 min，轻轻将上清液转移至干净的 1.5 ml EP 管中至于冰上备用；（2）洗涤液的
+配制：试剂盒从冰箱中取出，恢复至室温后，将浓缩洗涤液按 1:20 比例用超纯水稀释成工
+作液；（3）标准品的配制：取 1 ml 标准品/样本稀释液将冻干的标准品配成 500 pg/ml，混
+匀后静置15 min，用标准品/样本稀释液 2倍梯度进行稀释成 8个浓度，用于标准曲线的制
+作；（4）生物素化抗体工作液的配制：用生物素化抗体稀释液按 1:100 稀释比例稀释浓缩
+的生物素化抗体（现配现用）；（5）酶结合物工作液的配制：用酶结合物稀释液按 1:100
+稀释比例稀释浓缩酶结合物（现配现用）；（6）标准品和样品孵育：根据待测样本和标准
+品的数量决定所需的板条数，并增加 1 孔作为空白对照孔。分别将标本和不同浓度标准品
+加入相应孔中，用封板胶封住反应孔，37℃孵育90 min；用洗涤液洗板四次，最后一次在
+滤纸中拍干；（7）生物素化抗体孵育：每孔中加入 100 μl 生物素化抗体工作液，37℃孵
+育60 min；用洗涤液洗板四次，最后一次在滤纸中拍干；（8）酶结合物工作液的孵育：每
+孔中加入100 μl 酶结合物工作液，37℃孵育30 min；用洗涤液洗板四次，最后一次在滤纸
+中拍干；（9）每孔加入 100 μl 显色液，37℃避光孵育10~20 min；（10）每孔加入 100 μl
+终止液，混匀后即可在 450 nm 波长的酶标仪中检测并保存读取的 OD 值；（11）数据处
+理：根据标准曲线得到的公式计算血清中的炎症因子含量。
+4.3.4 统计分析
+本论文的实验结果采用 Graphpad prism 6.02 软件进行 one-way ANOVA（Dunnett's
+multiple comparisons test）进行分析，P＜0.05，记为*或#；P＜0.01记为**或##；P＜0.001记
+为***或###，均表示具有统计学差异。
+4.4 实验结果
+4.4.1 BCP缓解 DSS 诱导的小鼠结肠炎炎症
+67
+--- 第81页 ---
+暨南大学博士学位论文
+为了进一步确定BCP是否是一种有效的铁死亡抑制剂，我们通过体内实验研究了BCP
+是否通过抑制铁死亡发挥缓解实验性结肠炎炎症的作用。DAI 评分是评估 UC 严重程度的
+重要指标，根据体重变化、大便稠度和出血情况等参数计算。因此，在实验正式开始的前
+一天，每天记录体重、大便特征和出血等参数，以此计算 DAI。如图 4-1B-D所示，与对照
+组相比，单独饮用含 3% DSS 饮用水的小鼠在给药第5天后，体重开始显著下降，DAI显
+著增加。当饮用含 3% DSS 饮用水的同时，给小鼠灌胃不同剂量的 BCP 或腹腔注射 Fer-1
+后，DSS 诱导小鼠的体重变化显著减缓，DAI评分均低于单独饮用含 3% DSS 饮用水的小
+鼠。溃疡性结肠炎的另外两个典型症状是结肠缩短和脾脏指数升高，因此，在研究结束时，
+观察并解剖小鼠后，我们测量了每只小鼠的结肠长度和脾脏重量。图 4-1E-G 显示，与正
+常对照组相比，DSS 组小鼠结肠长度明显缩短，脾脏指数明显升高。值得注意的是，与单
+独饮用含3% DSS 饮用水的小鼠比较，给小鼠灌胃不同剂量的 BCP 或腹腔注射Fer-1后，
+各给药组小鼠的结肠长度明显变长，且各组脾脏指数下降，表明结肠和脾脏恢复较好。通
+过 HE 染色对小鼠结肠组织进行组织学检查，进一步确定 BCP 对 UC 小鼠的影响。HE 染
+色结果显示，正常对照组小鼠结肠切片上皮细胞表面完整，无组织学异常，而 DSS 组小鼠
+结肠上皮缺损，粘膜受损，隐窝变形，炎症细胞明显浸润。给予 BCP 灌胃或Fer-1腹腔注
+射改善了DSS 损伤的小鼠结肠组织（图 4-1H&I）。
+紧密连接蛋白（Claudin-1）和闭合蛋白（Occludin）是评价肠黏膜屏障完整性的两个重
+要蛋白。通过对小鼠结肠组织进行免疫荧光检测发现，BCP 灌胃或 Fer-1 腹腔注射后，
+Claudin-1 和 Occludin 免疫荧光染色出现明显上调，提示 BCP 可以保护肠黏膜屏障免受
+DSS 损害（图 4-2）。以上这些结果表明，BCP 能有效减轻 DSS 诱导的 C57BL/6J 小鼠溃
+疡性结肠炎。
+68
+--- 第82页 ---
+暨南大学博士学位论文
+图 4-1 BCP减轻 DSS诱导的小鼠溃疡性结肠炎
+Figure 4-1. BCP mitigates DSS-induced ulcerative colitis in mice (n=8). Diagram of the in vivo
+study design (A). Body weight (B) and body weight changes (C) of mice receiving BCP (25,
+50,100 mg/kg b.w.) or Fer-1 (1 mg/kg b.w.) or NS treatment. DAI was determined according to
+scoring standards (D). Comparison of colon length among colitis mice receiving BCP (25, 50,100
+mg/kg b.w.) or Fer-1 (1 mg/kg b.w.) or NS treatment (E) and graphs of colon length (F). Spleen
+index calculated on the last day (G). HE staining of colonic tissues (H) and colonic histology score
+(I) were analyzed after the last injection of BCP or Fer-1. Scale bar, 50 μm. Data are presented as
+the mean ± S.E.M. of 8 colonic tissues samples. Statistical analyses were performed with one-way
+ANOVA. ##p < 0.01, ###p < 0.001 versus mice from control group; *p < 0.05, **p < 0.01, ***p <
+0.001 versus mice from 3% DSS group.
+69
+--- 第83页 ---
+暨南大学博士学位论文
+图 4-2 BCP保护肠粘膜屏障免受 DSS 损害
+Figure 4-2. BCP protects the intestinal mucosal barrier from DSS damage (n=8).
+Histoimmunofluorescence analysis of Claudin-1 (A) and Occludin (B) in intestinal tissues after
+different treatments. Scale bar, 100 μm. The immunofluorescence quantization graph of Claudin-
+1 (C) and Occludin (D). Data are presented as the mean ± S.E.M. of 8 colonic tissues samples.
+Statistical analyses were performed with one-way ANOVA. ###p < 0.001 versus mice from control
+group; **p < 0.01, ***p < 0.001 versus mice from 3% DSS group.
+70
+--- 第84页 ---
+暨南大学博士学位论文
+从结肠组织的组织病理学检查可知，UC 小鼠结肠组织中出现大量炎症细胞浸润，炎
+症细胞分泌促炎细胞因子促进UC 的进展。通过qPCR 检测结肠组织中促炎基因 Tnf-α、
+Il-1β、Il-6的mRNA表达，结果发现，DSS 组结肠组织Tnf-α、Il-1β、Il-6 mRNA水平明
+显高于正常对照组。给予 25、50、100 mg/kg BCP 或1 mg/kg Fer-1 干预均能显著降低
+DSS 诱导的Tnf-α、Il-1β 和Il-6 mRNA水平的升高（图 4-3A）。此外，使用ELISA 检测
+小鼠血清中促炎细胞因子 TNF-α、IL-1β 和 IL-6含量，发现 BCP 和Fer-1给药组小鼠血清
+中TNF-α、IL-1β 和 IL-6含量均低于模型组，进一步验证BCP 和Fer-1的抗炎作用，表明
+BCP 可减轻严重肠道损伤（图 4-3B）。进一步通过WB实验研究发现，BCP 处理可显著
+降低小鼠结肠组织中 Jnk磷酸化、Erk1/2 磷酸化、P38 磷酸化、IKKα/β 磷酸化、IκBα磷
+酸化和P65 磷酸化水平（图 4-3C）。这些数据证明 BCP 在体内有效地抑制了肠炎炎症反
+应。
+图 4-3 BCP抑制 DSS诱导的炎症反应
+Figure 4-3. BCP suppresses the DSS-induced inflammatory response. (A) Relative mRNA
+expression levels of Tnf-α, Il-1β and Il-6 in colonic tissues were determined by RT-qPCR. Data
+are presented as the mean ± S.E.M. of 8 colonic tissues samples using Gapdh as a reference. (B)
+ELISA of TNF-α, IL-1β and IL-6 in the serum of mice. Data are presented as the mean ± S.E.M.
+of 6 serum samples. (C) Levels of p-Jnk, Jnk, p-Erk1/2, Erk1/2, p-P38, P38, p-Ikkα/β, Ikkβ, p-
+IκBα, IκBα, p-P65 and P65 in mice with DSS-induced colitis treated with or without BCP were
+determined by western blot analysis. β-Actin was used as an internal reference. Statistical analyses
+were performed with one-way ANOVA. ###p < 0.001 versus mice from control group; *p < 0.05,
+**p < 0.01, ***p < 0.001 versus mice from 3% DSS group.
+71
+--- 第85页 ---
+暨南大学博士学位论文
+4.4.2 BCP在体内抑制 DSS 诱导铁死亡
+GPX4是铁死亡的核心调节因子，在铁死亡细胞中表达下调。ACSL4 也被证明参与了
+GPX4抑制细胞脂质过氧化的过程，过表达 ASCL4 可提高细胞对铁死亡的敏感性[65,73]，有
+利于细胞发生铁死亡。此外，Ptgs2、铁调素（Hepcidin/Hamp）基因 mRNA水平升高、Fth1
+表达下降也是铁死亡细胞的特征。在此基础上，采用qPCR检测UC小鼠结肠组织中Ptgs2、
+Acsl4、Hamp、Gpx4 和Fth1 mRNA水平，如图 4-4A所示，与对照组相比，DSS 组小鼠结
+肠Ptgs2、Acsl4 和 Hamp mRNA表达显著上调，提示细胞可能发生铁死亡。值得注意的是，
+与对照组相比，DSS 显著抑制结肠组织中 Gpx4 和 Fth1 mRNA 的表达。不同剂量 BCP 或
+1 mg/kg Fer-1处理后，各组小鼠结肠组织中 Ptgs2、Acsl4、Hamp、Gpx4 和Fth1 mRNA的
+表达与DSS 组小鼠明显相反。WB分析也显示，BCP 明显降低了 Acsl4 和Cox2蛋白水平，
+显著提高了结肠组织 Fth1和Gpx4蛋白水平（图 4-4B）。免疫组化结果表明，UC 小鼠结
+肠组织中 COX2、MPO 和 4-HNE 表达比正常组小鼠高，而 GPX4 表达低，不同剂量 BCP
+及 Fer-1 治疗均可降低 COX2、MPO 和 4-HNE 表达和上调 GPX4 表达（图 4-5）。此外，
+BCP 处理可显著升高 UC 小鼠结肠组织中 GSH 含量及 GPX 活性，降低 UC 小鼠结肠组织
+MDA含量和血清中的铁含量（图 4-6）。通过透射电镜观察 UC 小鼠结肠组织细胞，与正
+常组小鼠比较，DSS 组小鼠结肠组织细胞线粒体表现为缩小，线粒体嵴减少及膜密度增加
+等特征，而不同剂量 BCP 及Fer-1干预后，UC 小鼠结肠组织线粒体形态得到明显改善（图
+4-7）。进一步的免疫荧光结果显示，DSS 组小鼠中巨噬细胞的标记蛋白 F4/80 与铁死亡特
+征蛋白4-HNE共定位表达，说明结肠组织中巨噬细胞发生脂质过氧化，存在铁死亡。不同
+剂量的 BCP 及 Fer-1 干预后，可以在体内抑制结肠巨噬细胞脂质过氧化（图 4-8）。以上
+结果说明，BCP 在体内能够抑制结肠组织及结肠组织巨噬细胞铁死亡，缓解实验性结肠炎
+炎症。
+72
+--- 第86页 ---
+暨南大学博士学位论文
+图 4-4 BCP在体内调节铁死亡相关基因及蛋白的表达
+Figure 4-4. BCP regulates the expression of ferroptosis-related genes and proteins in vivo.
+(A) Relative mRNA levels of Ptgs2, Acsl4, Hamp, Gpx4 and Fth1 in colonic tissues of C57BL/6J
+mice were detected. Data are presented as the mean ± S.E.M. of 8 colonic tissues samples using
+Gapdh as a reference. (B) Acsl4, Fth1, Cox2 and Gpx4 protein expression in mice with DSS-
+induced colitis treated with or without BCP was determined by western blot analysis. β-Actin was
+used as an internal reference. Statistical analyses were performed with one-way ANOVA. #p <
+0.05, ##p < 0.01, ###p < 0.001 compared with mice from control group; *p < 0.05, **p < 0.01, ***p
+< 0.001 compared with mice from 3% DSS group.
+73
+--- 第87页 ---
+暨南大学博士学位论文
+图 4-5 BCP在体内调节铁死亡相关蛋白的表达
+Figure 4-5. BCP regulates the expression of ferroptosis-related proteins in vivo.
+Representative images of immunohistochemical staining of colonic tissues for COX2, 4-HNE,
+GPX4 and MPO of colonic tissues. Scale bar, 100 μm.
+图 4-6 BCP在体内增加 GSH 含量、GPX活性，降低 Fe2+和 MDA的含量
+Figure 4-6. BCP increases GSH content, GPX activity and decreases iron and MDA content
+in vivo. Content of GSH (A), GPX activity (B) and MDA (C) in colonic tissues (n=8) and the
+levels of serum iron (D) (n=6) was measured were examined using corresponding kits. Statistical
+analyses were performed with one-way ANOVA. ##p < 0.01, ###p < 0.001 compared with mice
+from control group; *p < 0.05, **p < 0.01, ***p < 0.001 compared with mice from 3% DSS group.
+74
+--- 第88页 ---
+暨南大学博士学位论文
+图 4-7 BCP改善 DSS诱导的结肠组织细胞线粒体形态变化
+Figure 4-7. BCP ameliorates DSS-induced mitochondrial morphological changes in colon
+tissue cells. Representative images of transmission electron microscopy of colonic tissues after
+different treatments. White arrowheads indicate shrunken mitochondria; black arrows indicate
+increased mitochondrial membrane density. Scale bar, 1 μm.
+75
+--- 第89页 ---
+暨南大学博士学位论文
+图 4-8 BCP抑制 UC小鼠结肠巨噬细胞脂质过氧化
+Figure 4-8. BCP inhibits lipid peroxidation in colonic macrophage of UC mice. Representative
+images of double immunofluorescence staining of colonic tissues for F4/80 and 4-HNE. Scale bar,
+50 μm.
+4.5 讨论
+氧化还原应激是肠道疾病如结肠炎的常见特征。当肠道受到过度的外来刺激时，氧化
+还原应激的增加，特别是髓过氧化物酶表达的增加，能够促进结肠组织中 ROS 的生成，过
+量的ROS会攻击含有碳碳双键的脂质（如PUFAs），导致脂质过氧化衍生化合物如4-HNE、
+76
+--- 第90页 ---
+暨南大学博士学位论文
+epoxyketooctadecenoic 酸（EKODE）、反式癸二烯醛（trans,trans-2,4-decadienal，tt-DDE）、
+丙醛、MDA等的含量增加。有研究发现，脂质过氧化来源的化合物 EKODE可直接靶向巨
+噬细胞，通过激活 MAPK-JNK 和 NF-κB 信号通路诱导炎症反应，破坏小鼠的肠道屏障功
+能[205]。在小鼠动物实验中发现，注射 4-HNE 能够激活 TLR4 信号通路，加重小鼠结肠炎
+炎症[96]。蛋白质组学研究发现，tt-DDE能够直接与Hsp90-和14-3-3ζ结合促进炎症反应[206]，
+说明脂质过氧化物在结肠炎发展中的关键作用。
+部分炎症性肠病患者会出现缺铁性贫血症状，因此，科学家们提出了口服或者注射补
+铁治疗肠胃炎的策略，补充适量的铁有利于肠炎的缓解，但过量的铁却会造成肠炎患者的
+再次损伤，加剧炎症程度，恶化病情。铁是生命中不可缺少的元素，人们往往通过膳食途
+径摄入铁。有研究显示，血红素铁可与膳食中的亚油酸相互作用，导致 4-HNE水平的增加，
+从而引发脂质过氧化[207]。在临床实验和大鼠实验中都显示，饮食中摄入亚铁血红素会增加
+体内脂质过氧化，主要原因是机体摄入富含亚铁血红素的食物后，会增加尿中 4-HNE 的主
+要尿代谢物1,4-二羟基壬烷巯基酸的含量[208]。脂质过氧化是近年来研究热点铁死亡的关键
+特征之一。本文的前期研究结果显示 UC 小鼠结肠组织巨噬细胞发生脂质过氧化，结肠组
+织中确实发生铁死亡，而铁死亡的发生与铁过载及脂质过氧化密切相关。上一章的实验结
+果显示，BCP 是一种潜在的铁死亡抑制剂，能够在体外发挥抑制巨噬细胞铁死亡的作用。
+基于以上研究，我们通过使用 3% DSS 构建小鼠结肠炎模型，并通过灌胃不同剂量 BCP及
+腹腔注射铁死亡抑制剂 Fer-1进行干预，检测铁死亡相关基因及蛋白的表达，发现与Fer-1
+一样，BCP 可以抑制 DSS 诱导升高的 Ptgs2、Acsl4 和 Hamp mRNA 表达，增加小鼠结肠
+组织中 Gpx4 和 Fth1 mRNA 及蛋白水平。免疫组化结果也显示，BCP 有效逆转了 DSS 升
+高的小鼠结肠组织中的 COX2、4-HNE 及氧化应激标志物 MPO 的表达，提高了 GPX4 的
+表达。此外，BCP 还有效改善了DSS 导致的 GSH的氧化，增加结肠组织中 GPX活性，降
+低了小鼠结肠组织中脂质过氧化物 MDA 的含量及血清中的 Fe2+含量。透射电镜结果也显
+示，BCP 有效改善了 DSS 诱导的UC 小鼠结肠组织巨噬细胞线粒体形态变化。进一步的免
+疫荧光结果说明，UC 小鼠巨噬细胞存在铁死亡，BCP 干预可以抑制结肠组织巨噬细胞的
+铁死亡。以上结果说明，BCP 在体内能够通过抑制铁死亡缓解实验性结肠炎。
+77
+--- 第91页 ---
+暨南大学博士学位论文
+第五章 β-石竹烯在体外通过激活 CB2R 发挥抑制巨噬细胞铁死亡的
+作用
+5.1 引言
+前面几章的实验结果显示 BCP 是一种铁死亡抑制剂，在体内外均能发挥抑制巨噬细
+胞铁死亡的作用，但BCP 是如何发挥抑制铁死亡的作用的还未探究清楚。本章就解决该
+疑问进行实验研究。
+5.2 实验材料
+5.2.1 细胞株
+小鼠单核巨噬细胞（RAW264.7）购自上海中国科学院细胞库，用含 10% FBS 加1%双
+抗（青霉素和链霉素）的 DMEM 培养基，培养于含 5% CO 的 37℃恒温培养箱中。小鼠
+2
+骨髓来源的巨噬细胞由本课题组自行分离提取及鉴定（详见第二章方法部分），用含 10%
+FBS + 1%双抗（青霉素和链霉素）+1%谷氨酰胺的 α-MEM 培养基，培养于含 5% CO 的
+2
+37℃恒温培养箱中。
+5.2.2 抗体
+本章实验所涉及到的抗体信息详见表 5-1。
+表 5-1 用于免疫印迹的抗体信息
+Table 5-1 List of primary antibodies for immunoblot
+抗体名称 生产厂家 货号（Item number）
+（Name） （Manufacturer）
+ACSL4 Santa Cruz Cat # sc-271800
+ALOX5 CST Cat # 3289S
+β-Actin CST Cat # 4970
+COX2 CST Cat # 12282
+Erk1/2 MAPK (137F5) CST Cat # 4695
+FTH1 (D1D4) CST Cat # 4393
+GPX4 Abcam Cat # ab125066
+IKKβ (D30C6) CST Cat # 8943
+78
+--- 第92页 ---
+暨南大学博士学位论文
+IκBα (L35A5) CST Cat # 4814
+JNK CST Cat # 9252
+NF-κB p65 (D14E12) CST Cat # 8242
+p38 MAPK CST Cat # 9212
+Phospho-Erk1/2 MAPK CST Cat # 4370
+(Thr202/Tyr204)
+Phospho-IKKα (Ser176)/IKKβ (Ser177) CST Cat # 2078
+Phospho-IκBα (Ser32/36) CST Cat # 9246
+Phospho-NF-κB p65 (Ser536) CST Cat # 3033
+Phospho-p38 MAPK (Thr180/Tyr182) CST Cat # 4511
+Phospho-SAPK/JNK (Thr183/Tyr185) CST Cat # 4668
+(81E11)
+5.2.3 工具药及主要试剂盒
+本章实验所涉及的工具药及试剂盒信息详见表 5-2。
+表 5-2 工具药及主要试剂盒信息
+Table 5-2 Information of Drug and main kits
+名称 生产厂家 货号
+（Name） （Manufacturer） （Item number）
+AM630 Selleck Cat # S8033
+BCA蛋白浓度测定试剂盒 上海碧云天 Cat # P0011
+BCP 斯坦福分析化学公司 Cat # CYH-207225
+BODIPY™ 581/591 C11 Invitrogen Cat # D3861
+Cell-counting-kit-8 日本同仁化学 Cat # CK04
+Evo M-MLV反转录试剂预混液 广州瑞真生物 Cat # AG11706
+Fer-1 上海陶术生物 Cat # T6500
+M-CSF Peprotech Cat # 315-02
+RSL3 MedChemExpress Cat # HY-100218A
+SDS-PAGE凝胶配制试剂盒 上海碧云天 Cat # P0012A
+SYBR® Green Pro Taq HS 预混型
+广州瑞真生物 Cat # AG11702
+qPCR 试剂盒 II
+TBARS assay kit Cayman Cat # 10009055
+79
+--- 第93页 ---
+暨南大学博士学位论文
+谷胱甘肽过氧化酶（GPX）活性
+北京盒子生工 Cat # AKPR014M
+检测试剂盒
+乳酸脱氢酶细胞毒性检测试剂盒 上海碧云天 Cat # C0017
+增强型线粒体膜电位检测试剂盒
+上海碧云天 Cat # C2003S
+(JC-1)
+5.2.4 主要试剂
+本章实验所使用的试剂同第二章2.2.4，详见表2-3。
+5.2.5 仪器设备
+本章实验所涉及的仪器设备信息同第二章2.2.5，详见表 2-4。
+5.2.6 耗材
+本章实验使用的耗材信息同第二章 2.2.6，详见表2-5。
+5.3 实验方法
+本章实验方法涉及的细胞提取、复苏、培养及冻存、RNA提取、反转录反应、荧光定
+量 PCR、WB 相关实验、免疫荧光、流式、细胞活性、LDH 释放、MDA 含量测定、GPX
+活性测定、线粒体膜电位测定、透射电镜等实验步骤同第三章，详见3.3。
+5.3.1 分子对接
+（1）BCP 的二维结构以.sdf格式从 PubChem 数据库
+（https://pubchem.ncbi.nlm.nih.gov）检索并上传到工作区。然后使用 LigPrep 模块生成 3D
+结构，并使用OPLS4 力场生成BCP 的不同构象。进一步处理得到具有最小能量的 BCP
+的稳定构象用以进行分子对接。
+（2）对从蛋白质数据库（https://www.rcsb.org）检索到的 CB2R（PDB ID: 5ZTY）进
+行了对接模拟研究。使用 Schrodinger Maestro（Schrodinger, LLC, New York, NY,
+2021）的protein preparation wizard，通过添加氢、删除水分子和使用 OPLS4 力场分配
+部分电荷来制备结构，然后 assigning protonation 并确定限制，进一步以 0.3 Å RMSD 最
+小化。去除BCP 后定义结合位点，并使用 10×10×10 Å 的网格盒体积生成网格。
+（3）Schrodinger 的 glide模块用于将 BCP 对接到网格的已识别结合位点，使用 glide
+80
+--- 第94页 ---
+暨南大学博士学位论文
+XP 并选择每次对接运行的最低结合位姿来可视化 BCP-CB2R 相互作用，并与评分函数一
+起分析重要的活性位点相互作用。
+5.3.2 统计分析
+本论文的实验结果采用 Graphpad prism 6.02 软件进行 one-way ANOVA（Dunnett's
+multiple comparisons test）进行分析，P＜0.05，记为*或#；P＜0.01记为**或##；P＜0.001记
+为***或###，均表示具有统计学差异。
+5.4 实验结果
+5.4.1 BCP通过激活 CB2R抑制巨噬细胞脂质过氧化
+多项研究表明，BCP 通过激活CB2R[154,209,210]发挥多种功能。为了进一步探索 BCP 抑
+制铁死亡的作用，我们使用Schrodinger 2021-2进行分子对接。从图 5-1可以观察到该 BCP
+与 CB2R 氨基酸残基 PHE87、ILE110、THR114、VAL113、ILE198、MET265 和 SER285
+存在Varder Waals 相互作用。BCP 通过九元环与 CB2R 残基 PHE183 之间的π-烷基键与蛋
+白质连接。此外，BCP 与CB2R 氨基酸残基 PHE117、CYS288、TRP194、PHE281、VAL261、
+LEU262、TRP258 存在一定的π-烷基作用。
+图 5-1 BCP与 CB2R结合的分子对接图
+Figure 5-1 Molecular docking diagram of BCP binding to the CB2R. (A) 2D interaction plot
+and (B) 3D interaction plot.
+81
+--- 第95页 ---
+暨南大学博士学位论文
+82
+--- 第96页 ---
+暨南大学博士学位论文
+图 5-2 BCP通过激活 CB2R抑制巨噬细胞脂质过氧化
+Figure 5-2 BCP inhibits lipid peroxidation in macrophages by activating CB2R. RAW264.7
+macrophages or BMDMs were treated with 500 nM RSL3 in the presence of BCP (20 μM), CB2R
+antagonist AM630 (5 μM) or both of AM630 and BCP for 6 h. Representative C11-BODIPY
+staining images showing lipid peroxidation of RAW264.7 macrophages (A) and BMDMs (B).
+Scale bar, 200 μm. Representative flow cytometry images, percentage of lipid ROS and
+fluorescence intensity showing lipid peroxidation of RAW264.7 macrophages (C-E) and BMDMs
+(F-H) after different treatments. Data are presented as the means ± S.E.M. Statistics were analyzed
+using one-way ANOVA. n.s., not significant, #p < 0.05, ##p < 0.01 versus control group; *p < 0.05,
+**p < 0.01, ***p < 0.001 versus RSL3 treatment group. All data are representative of or combined
+from at least three independent experiments.
+为了探讨 β-石竹烯是否通过激活 CB2R 发挥抑制巨噬细胞铁死亡的作用，我们使用
+CB2R拮抗剂拮抗CB2R的激活，观察β-石竹烯对RSL3诱导的巨噬细胞脂质过氧化作用。
+荧光实验结果显示，RSL3 显著诱导 RAW264.7 细胞和 BMDMs 发生脂质过氧化。β-石竹
+烯处理可逆转RSL3 的作用，抑制巨噬细胞发生脂质过氧化，而CB2R 拮抗剂AM630 单独
+作用或 AM630 与 BCP 联用均不能抑制巨噬细胞脂质过氧化（图 5-2A&B）。采用流式细
+胞术进行定量分析发现，RSL3 显著增加 RAW264.7 细胞和 BMDMs 中脂质 ROS 的累积，
+BCP 处理能够显著降低脂质 ROS 的含量，而 CB2R 拮抗剂 AM630 单独作用或 AM630 与
+BCP 联用均不能降低脂质 ROS 的含量，说明BCP 通过激活 CB2R 发挥抑制巨噬细胞脂质
+过氧化作用（图 5-2C-H）。
+5.4.2 BCP通过激活 CB2R抑制巨噬细胞铁死亡
+从图 5-3A可以看出，RSL3 显著降低 RAW264.7 及BMDM 细胞的存活率，BCP 处理
+后可以显著增加细胞存活率，而 CB2R 拮抗剂 AM630 单独作用或 AM630 与 BCP 联用均
+无法抑制RSL3 诱导的细胞死亡。通过测定细胞上清中 LDH 的释放率，结果显示，与正常
+细胞对照比较，RSL3 刺激后的巨噬细胞 LDH释放率显著提高，BCP 作用后可以显著抑制
+LDH的释放，而CB2R 拮抗剂AM630单独作用或AM630与 BCP 联用均无法降低 LDH的
+释放率（图 5-3B）。同时检测细胞中的 GPX活性发现，RSL3 显著抑制了巨噬细胞中 GPX
+的活性，BCP 处理后增加巨噬细胞中 GPX 的活性，而 CB2R 拮抗剂 AM630 单独作用或
+AM630与BCP 联用均无法升高GPX活性（图 5-3C）。MDA是细胞脂质过氧化的重要产
+物之一，MDA 含量的升高直接或间接地诱导胞质或细胞器膜的孔隙形成，最终导致细胞
+83
+--- 第97页 ---
+暨南大学博士学位论文
+死亡，因此也被认为是细胞发生铁死亡的重要因素之一[201]。本研究通过检测细胞中的MDA
+含量发现，RSL3 显著提高了 RAW264.7 细胞和 BMDMs 中 MDA 含量，BCP 处理能够显
+著降低巨噬细胞 MDA 含量，而 CB2R 拮抗剂 AM630 单独作用或 AM630 与 BCP 联用均
+无法降低巨噬细胞 MDA含量（图 5-3D）。以上这些结果表明，BCP 通过激活CB2R 发挥
+抑制巨噬细胞铁死亡的作用。
+图 5-3 BCP通过激活 CB2R抑制巨噬细胞铁死亡
+Figure 5-3 BCP inhibits macrophage ferroptosis by activating CB2R. RAW264.7
+macrophages or BMDMs were treated with 500 nM RSL3 in the presence of BCP (20 μM), CB2R
+antagonist AM630 (5 μM) or both of AM630 and BCP for 6 h. (A) Cell viability of RAW264.7
+cells and BMDMs was measured using a CCK-8 assay. (B) Release of LDH in cell supernatants
+was measured using a LDH assay kit. (C) GPX activity was determined using a GPX activity kit.
+(D) The concentrations of MDA was determined using a TBARS assay kit. Data are presented as
+the mean ± S.E.M. Statistics were analyzed using one-way ANOVA. n.s., not significant, #p < 0.05,
+##p < 0.01, ###p < 0.001 versus control group; *p < 0.05, **p < 0.01, ***p < 0.001 versus RSL3
+treatment group. All data are combined from at least three independent experiments.
+5.4.3 BCP通过激活 CB2R改善铁死亡巨噬细胞的线粒体形态变化及膜电位下降
+本研究通过透射电镜观察发现，RSL3 刺激后的巨噬细胞线粒体显著缩小，线粒体嵴
+减少，膜密度增加，BCP处理后可以显著改善巨噬细胞线粒体形态，而CB2R拮抗剂AM630
+单独作用或AM630 与BCP 联用均无法改善细胞线粒体形态，说明 BCP 通过激活 CB2R 发
+84
+--- 第98页 ---
+暨南大学博士学位论文
+挥改善了铁死亡巨噬细胞线粒体形态变化的作用（图 5-4）。此外，通过测定巨噬细胞线粒
+体膜电位，如图 5-5 结果显示 RSL3 显著降低了 RAW264.7 细胞和 BMDMs 中线粒体膜电
+位，BCP 处理可以改善 RSL3 诱导的RAW264.7 细胞和BMDMs 中线粒体膜电位下降，而
+CB2R 拮抗剂 AM630 单独作用或 AM630 与 BCP 联用均无法改善巨噬细胞线粒体膜电位
+下降的情况，说明 BCP 通过激活 CB2R 发挥改善铁死亡巨噬细胞线粒体膜电位下降的作
+用。
+图 5-4 BCP通过激活 CB2R改善铁死亡巨噬细胞的线粒体形态
+Figure 5-4. BCP ameliorates mitochondrial morphological changes in ferroptotic
+macrophages via activation of the CB2R. Transmission electron microscopy of RAW264.7
+macrophages (A) and BMDMs (B) mitochondria after different treatments. White arrowheads
+indicate shrunken mitochondria; black arrows indicate increased mitochondrial membrane density.
+Scale bar, 500 nm.
+85
+--- 第99页 ---
+暨南大学博士学位论文
+图 5-5 BCP通过激活 CB2R改善铁死亡巨噬细胞线粒体膜电位变化
+Figure 5-5. BCP ameliorates the mitochondrial membrane potential changes in ferroptotic
+macrophages by activating the CB2R. RAW264.7 macrophages or BMDMs were treated with
+500 nM RSL3 in the presence of BCP (20 μM), CB2R antagonist AM630 (5 μM) or both of
+AM630 and BCP for 6 h. Representative JC-1 staining images showing mitochondrial membrane
+potential changes of RAW264.7 macrophages (A) and BMDMs (B). Scale bar, 200 μm.
+5.4.4 BCP通过激活 CB2R调节铁死亡相关基因及蛋白的表达
+此外，荧光定量 PCR结果显示，RSL3 显著降低了 RAW264.7 细胞和 BMDMs 细胞中
+Gpx4 的mRNA水平，上调了 Hamp的 mRNA水平，BCP 处理显著上调了Gpx4 的表达，
+抑制了 Hamp 的表达，而 CB2R 拮抗剂 AM630 单独作用或 AM630 与 BCP 联用均不能逆
+转 RSL3 的作用（图 5-6）。此外，WB 结果显示，RSL3 显著降低了 RAW264.7 细胞和
+BMDMs 细胞中 Gpx4、Fth1 的表达，上调了 Cox2、Alox5 的表达，对 Acsl4 表达无影响，
+86
+--- 第100页 ---
+暨南大学博士学位论文
+BCP 处理后促进了 Gpx4、Fth1 的表达，抑制了 Cox2、Alox5 的表达，而 CB2R 拮抗剂
+AM630 单独作用或 AM630 与 BCP 联用均不能逆转 RSL3 的作用（图 5-7）。以上结果表
+明，BCP 能够通过激活 CB2R 调节铁死亡相关基因及蛋白的表达。
+图 5-6 BCP通过激活 CB2R调节铁死亡相关基因的表达
+Figure 5-6. BCP regulates the expression of ferroptosis related genes by activating CB2R.
+RAW264.7 macrophages or BMDMs were treated with 500 nM RSL3 in the presence of BCP (20
+μM), CB2R antagonist AM630 (5 μM) or both of AM630 and BCP for 6 h. Relative mRNA levels
+of Gpx4 and Hamp in RAW264.7 macrophages (A) and BMDMs (B) were detected by RT-qPCR.
+Data are presented as mean ±S.E.M. using Gapdh as a reference. Statistics were analyzed using
+one-way ANOVA. n.s., not significant, #p < 0.05, control group; *p < 0.05, versus RSL3 treatment
+group.
+图 5-7 BCP通过激活 CB2R调节铁死亡相关蛋白的表达
+Figure 5-7. BCP regulates the expression of ferroptosis related proteins by activating CB2R.
+RAW264.7 macrophages or BMDMs were treated with 500 nM RSL3 in the presence of BCP (20
+μM), CB2R antagonist AM630 (5 μM) or both of AM630 and BCP for 6 h. Relevant protein levels
+of ferroptosis in RAW264.7 macrophages (A) and BMDMs (B) were analyzed by immunoblotting.
+β-Actin was used as an internal reference.
+87
+--- 第101页 ---
+暨南大学博士学位论文
+5.4.5 BCP通过激活 CB2R抑制铁死亡诱导的炎症
+进一步检测发现，BCP 处理能够抑制 RSL3 诱导的 RAW264.7 细胞和 BMDMs 中Tnf-
+α 和 Ptgs2 的 mRNA 表达，而 CB2R 拮抗剂 AM630 单独作用或 AM630 与 BCP 联用均不
+能逆转 RSL3 的作用（图 5-8）。通过 WB 检测 BCP 处理对 MAPK 和 NF-κB 信号通路中
+参与的蛋白表达情况。结果显示，BCP 能够抑制p-Jnk、p-Erk1/2、p-P38、p-Ikkα/β、p-IκBα、
+p-P65 的表达，而 CB2R 拮抗剂AM630 单独作用或AM630与 BCP 联用均无此作用（图 5-
+9）。以上结果说明，BCP 通过激活CB2R 发挥抑制铁死亡诱导的炎症反应。
+图 5-8 BCP通过激活 CB2R抑制铁死亡诱导的炎症基因表达
+Figure 5-8. BCP inhibits RSL3-induced the expression of inflammatory genes via activation
+of the CB2R. RAW264.7 macrophages or BMDMs were treated with 500 nM RSL3 in the
+presence of BCP (20 μM), CB2R antagonist AM630 (5 μM) or both of AM630 and BCP for 6 h.
+Relative mRNA levels of Tnf-α and Ptgs2 in RAW264.7 macrophages (A) and BMDMs (B) were
+detected by RT-qPCR. Data are presented as mean ±S.E.M. using Gapdh as a reference. Statistics
+were analyzed using one-way ANOVA. n.s., not significant, #p < 0.05, control group; *p < 0.05,
+versus RSL3 treatment group.
+88
+--- 第102页 ---
+暨南大学博士学位论文
+图 5-9 BCP通过激活 CB2R阻断铁死亡激活的 MAPK和 NF-κB 信号通路
+Figure 5-9. BCP blocks ferroptosis-activated MAPK and NF-κB signaling pathways by
+activating CB2R. RAW264.7 macrophages or BMDMs were treated with 500 nM RSL3 in the
+presence of BCP (20 μM), CB2R antagonist AM630 (5 μM) or both of AM630 and BCP for 6 h.
+Relevant protein levels of the MAPK signaling pathway (A) and NF-κB pathway (B) in
+RAW264.7 macrophages and BMDMs were analyzed by immunoblotting. β-Actin was used as an
+internal reference.
+5.5 讨论
+在正常条件下，CB2R 在免疫细胞和淋巴器官中高表达，在各种外周组织中低表达。
+CB2R 是一种G蛋白偶联受体，调节许多细胞内信号通路从而介导各种免疫反应，与多种
+病理条件有关。研究显示，CB2R 激动剂和拮抗剂揭示了新的生理和致病机制，适用于药
+物开发[210]。BCP 存在于多种植物中，是一种独特的天然分子，具有多种特性，其药理特
+89
+--- 第103页 ---
+暨南大学博士学位论文
+性和治疗潜力越来越受到人们的关注。多项研究表明，BCP 能够通过激活CB2R、PPARα
+和PPARγ[154,209,210,211]等发挥多种功能。为了进一步探索BCP 抑制铁死亡的作用，我们首
+先使用分子对接技术将BCP 与CB2R、PPARα、PPARγ、TLR4 等已报道的BCP 可能结
+合或相互作用的受体进行分子对接，从表S2得出，BCP 与CB2R 的对接分数最高，这也
+与文献报道的一致，BCP 是一种全功能选择性 CB2R 激动剂，因此BCP 与CB2R 可以直
+接结合并发挥作用。参考对接结果，我们通过使用CB2R 拮抗剂 AM630、PPARα拮抗剂
+GW6471 和PPARγ 拮抗剂 GW9662 进行 GPX活性测定，发现 BCP 并不是通过激活
+PPARα或PPARγ 发挥抑制GPX活性的作用（图 S3），而是通过激活 CB2R 发挥抑制
+GPX活性的作用（图 5-3）。进一步实验发现，BCP 还可以通过激活 CB2R 发挥抑制
+RSL3 诱导的巨噬细胞死亡、LDH的释放、MDA含量的上升、脂质过氧化、巨噬细胞线
+粒体膜电位变化及形态变化、调节铁死亡相关基因及蛋白的表达等，说明 BCP 通过激活
+CB2R 发挥抑制铁死亡的作用。
+第二章的实验结果也提示了铁死亡与炎症的密切相关性，铁死亡的发生在一定条件
+下会促进炎症因子如 TNF-α的释放，从而激活 MAPK和NF-κB信号通路。而第三章的结
+果显示，BCP 可以抑制由巨噬细胞发生铁死亡导致的炎症反应。在前面实验结果的基础
+上，我们通过使用 CB2R 拮抗剂AM630 进行实验研究，发现 BCP 也可以通过激活 CB2R
+发挥抑制RSL3 诱导的炎症基因上调，阻断MAPK和NF-κB信号通路的激活。因此，具
+有CB2R 选择性特性的 BCP 是一种独特的天然分子，对药物开发和临床应用具有重要意
+义，具有治疗学的药理学基础。
+90
+--- 第104页 ---
+暨南大学博士学位论文
+第六章 β-石竹烯在体内通过激活 CB2R 发挥抑制铁死亡的作用
+6.1 引言
+从上一章的实验结果可知，BCP 在体外通过激活 CB2R 发挥抑制铁死亡及其诱导的
+炎症的作用。有研究报道，肠炎患者及肠炎动物的结肠中会检测到高水平的内源性大麻
+素和CB2R 以控制自身的炎症[212,213]，这种 CB2R 表达水平的升高与巨噬细胞、辅助细胞
+和细胞毒性T细胞、单核细胞和中性粒细胞的数量直接相关。而作为选择性 CB2R 激动
+剂的BCP 是否能在 UC 小鼠中激活CB2R 发挥抑制铁死亡的作用呢？为了进一步探索
+BCP 在体内的作用机制，本章进行了相关的体内实验。
+6.2 实验材料
+6.2.1 抗体
+本章实验所涉及到的抗体信息详见表 6-1。
+表 6-1 用于免疫印迹、免疫荧光和免疫组化抗体信息
+Table 6-1 List of primary antibodies for immunoblot, immunofluorescence or
+immunohistochemistry
+抗体名称 生产厂家 货号（Item number）
+（Name） （Manufacturer）
+4-HNE Abcam Cat # ab46545
+β-Actin CST Cat # 4970
+COX2 CST Cat # 12282
+Erk1/2 MAPK (137F5) CST Cat # 4695
+FTH1 (D1D4) CST Cat # 4393
+GPX4 Abcam Cat # ab125066
+IKKβ (D30C6) CST Cat # 8943
+IκBα (L35A5) CST Cat # 4814
+JNK CST Cat # 9252
+NF-κB p65 (D14E12) CST Cat # 8242
+p38 MAPK CST Cat # 9212
+Phospho-Erk1/2 MAPK CST Cat # 4370
+(Thr202/Tyr204)
+91
+--- 第105页 ---
+暨南大学博士学位论文
+Phospho-IKKα (Ser176)/IKKβ (Ser177) CST Cat # 2078
+Phospho-IκBα (Ser32/36) CST Cat # 9246
+Phospho-NF-κB p65 (Ser536) CST Cat # 3033
+Phospho-p38 MAPK (Thr180/Tyr182) CST Cat # 4511
+Phospho-SAPK/JNK (Thr183/Tyr185) CST Cat # 4668
+(81E11)
+6.2.2 工具药及主要试剂盒
+本章实验所涉及的工具药及试剂盒信息详见表 6-2。
+表 6-2 工具药及主要试剂盒信息
+Table 6-2 Information of Drug and main kits
+名称 生产厂家 货号
+（Name） （Manufacturer） （Item number）
+AM630 Selleck Cat # S8033
+BCA蛋白浓度测定试剂盒 上海碧云天 Cat # P0011
+BCP 斯坦福分析化学公司 Cat # CYH-207225
+Deproteinizing Sample Kit-TCA Abcam Cat # ab204708
+DSS 安培生物 Cat # 160110
+Evo M-MLV反转录试剂预混液 广州瑞真生物 Cat # AG11706
+GSH/GSSG Ratio Detection Assay
+Abcam Cat # ab138881
+Kit
+Iron Assay试剂盒 Abcam Cat # ab83366
+SDS-PAGE凝胶配制试剂盒 上海碧云天 Cat # P0012A
+SYBR® Green Pro Taq HS 预混型
+广州瑞真生物 Cat # AG11702
+qPCR 试剂盒 II
+TBARS assay kit Cayman Cat # 10009055
+谷胱甘肽过氧化酶（GPX）活性
+北京盒子生工 Cat # AKPR014M
+检测试剂盒
+6.2.3 主要试剂
+本章实验所使用的试剂同 2.2.3，详见表 2-3。
+92
+--- 第106页 ---
+暨南大学博士学位论文
+6.2.4 仪器设备
+本章实验所涉及的仪器设备信息同 2.2.5，详见表2-4。
+6.2.5 耗材
+本章实验使用的耗材信息同 2.2.6，详见表 2-5。
+6.3 实验方法
+本章实验涉及的实验方法如动物组织 RNA提取、反转录反应、荧光定量 PCR、WB相
+关实验、疾病活动指数、GSH 含量测定、GPX 活性测定、MDA 含量测定、铁含量测定、
+组织 HE 染色及其评分、免疫组化、免疫荧光、透视电镜等实验步骤同第二章实验方法，
+详见2.3。
+6.3.1 小鼠结肠炎实验设计
+本章中动物实验中的雄性 C57BL/6 小鼠（SPF 级，7~8周龄，19~21 g）购自北京维通
+利华实验动物科技有限公司（北京，合格证编号为 20201118Abzz0619000207）。将购买的
+C57BL/6 小鼠按照 10 只/笼饲养于暨南大学实验动物中心南楼，适应 7 天后，随机将小鼠
+分成5组，即正常组、DSS 组、DSS + BCP 组、DSS + AM630 组、DSS + AM630+ BCP 组，
+每组 6-7 只小鼠。除正常组外，其余组小鼠均饮用含 3% DSS 的饮用水，小鼠自由饮水。
+DSS + BCP 组小鼠按50 mg/kg体重灌胃 BCP，AM630组小鼠腹腔注射 10 mg/kg AM630，
+DSS + AM630+ BCP 组小鼠腹腔注射 10 mg/kg AM630，30min 后再按50 mg/kg体重灌胃
+BCP，每天一次；正常组和模型组分别灌胃 100 μl 的生理盐水。给药第 8天结束实验（如
+图 6-1A）。根据实验目的取血及结肠，结肠测量长度及拍照后，按要求保存并送检。
+6.3.2 统计分析
+本论文的实验结果采用 Graphpad prism 6.02 软件进行 one-way ANOVA（Dunnett's
+multiple comparisons test）进行分析，P＜0.05，记为*或#；P＜0.01记为**或##；P＜0.001记
+为***或###，均表示具有统计学差异。
+6.4 实验结果
+6.4.1 BCP通过激活 CB2R缓解 DSS诱导的小鼠结肠炎
+93
+--- 第107页 ---
+暨南大学博士学位论文
+为了进一步确定 BCP 是否在体内通过激活 CB2R 发挥抑制铁死亡的作用，我们通过
+构建UC 小鼠模型，使用CB2R 拮抗剂 AM630 进行了相关实验研究。从图 6-1B&C所示，
+与对照组相比，3% DSS 组小鼠在给药第 5天后，体重开始显著下降。当饮用含 3% DSS 饮
+用水的同时，给小鼠灌胃 BCP 后，DSS 诱导小鼠的体重变化显著减缓，而单独注射 AM630
+和同时给药 AM630 和 BCP 的小鼠则没有得到缓解。此外，通过测量小鼠结肠长度发现，
+与正常对照组相比，DSS 组小鼠结肠长度明显缩短，与 DSS 组小鼠比较，BCP 组小鼠的
+结肠长度明显变长，而单独注射 AM630 和同时给药 AM630 和 BCP 的小鼠则没有得到缓
+解（图 6-1D&E）。计算各组小鼠 DAI，结果显示与对照组相比，单独饮用含 3% DSS 饮
+用水的小鼠在给药第 5 天后 DAI 明显升高，给药 BCP 的小鼠 DAI 明显低于 DSS 组小鼠，
+而 AM630 组小鼠和 AM630 + BCP 组小鼠 DAI与 DSS 组小鼠相当（图 6-1F）。通过 HE
+染色对小鼠结肠组织进行组织学检查，结果显示，正常对照组小鼠结肠切片上皮细胞表面
+完整，无组织学异常，而 DSS 组小鼠结肠上皮缺损，粘膜受损，隐窝变形，炎症细胞明显
+浸润。给予BCP 灌胃改善了 DSS 损伤的小鼠结肠组织，而AM630 组小鼠和AM630 + BCP
+组小鼠结肠组织受损情况没有得到明显改善（图 4-1G&H）。以上这些结果表明，BCP通
+过激活CB2R 有效改善DSS 诱导的C57BL/6J 小鼠溃疡性结肠炎。
+图 6-1 BCP通过激活 CB2R缓解小鼠结肠炎
+94
+--- 第108页 ---
+暨南大学博士学位论文
+Figure 6-1. BCP mitigates colitis in mice via activation of the CB2R (n=6). Mice were given
+3% DSS for 7 days and were treated with BCP (50 mg/kg, p.o.) alone, with the CB2R selective
+antagonist AM630 alone, or with AM630 (30 minutes before) plus BCP. Diagram of the in vivo
+study design (A). Body weight (B) and body weight changes (C) of mice in different treatments.
+Comparison of colon length (D) and graphs of colon length (E). DAI was determined according to
+scoring standards (F). H&E staining of colonic tissues (G) and colonic histology score were
+analyzed after the last administration (H). Scale bar, 50 μm. Data are presented as the mean ±
+S.E.M. of 6 colonic tissues samples. Statistical analyses were performed with one-way ANOVA.
+n.s., not significant, #p < 0.05, ##p < 0.01, ###p < 0.001 versus mice from control group; *p < 0.05,
+**p < 0.01, ***p < 0.001 versus mice from 3% DSS group.
+进一步地，通过 qPCR 检测结肠组织中促炎基因 Tnf-α、Il-1β、Il-6的 mRNA表达，结
+果发现，DSS 组结肠组织 Tnf-α、Il-1β 和 Il-6 mRNA水平明显高于正常对照组。给予 BCP
+干预能显著降低结肠组织中的Tnf-α、Il-1β 和Il-6 mRNA水平，而给予AM630 或同时给予
+AM630 和 BCP 干预则不能有效降低 Tnf-α、Il-1β 和 Il-6 mRNA 水平（图 6-2A-C）。WB
+实验研究也发现，BCP 处理可显著降低小鼠结肠组织中 Erk1/2 磷酸化、Jnk 磷酸化、P38
+磷酸化、Ikkα/β 磷酸化、IκBα磷酸化和 P65 磷酸化水平，而 AM630 单独给药或者与 BCP
+同时给药则不能降低以上蛋白的磷酸化水平（图 6-2D-F）。这些数据说明 BCP 在体内通
+过激活CB2R 有效地抑制了肠炎炎症反应。
+图 6-2 BCP通过激活 CB2R抑制 UC小鼠炎症反应
+95
+--- 第109页 ---
+暨南大学博士学位论文
+Figure 6-2. BCP suppresses the inflammatory response in UC mice by activating CB2R. (A-
+C) Relative mRNA expression levels of Tnf-α, Il-1β and Il-6 in colonic tissues were determined
+by RT-qPCR. Data are presented as the mean ± S.E.M. of 6 colonic tissues samples using Gapdh
+as a reference. (D-F) Levels of p-Erk1/2, Erk1/2, p-Jnk, Jnk, p-P38, P38, p-Ikkα/β, Ikkβ, p-IκBα
+and p-P65 in mice with DSS-induced colitis treated with BCP or AM630 were determined by
+western blot analysis. β-Actin was used as an internal reference. Statistical analyses were
+performed with one-way ANOVA. n.s., not significant, ##p < 0.01 versus mice from control group;
+*p < 0.05, **p < 0.01 versus mice from 3% DSS group.
+6.4.2 BCP通过激活 CB2R缓解 DSS诱导的铁死亡
+同样采用 qPCR 检测 UC 小鼠结肠组织中 Ptgs2、Acsl4、Hamp、Gpx4 和 Fth1 mRNA
+水平，如图 6-3A-E 所示，与对照组相比，DSS 组小鼠结肠 Ptgs2、Acsl4 和 Hamp mRNA
+表达显著上调，而 Gpx4 和Fth1 mRNA的表达下调。BCP 灌胃给药后，各组小鼠结肠组织
+中Ptgs2、Acsl4、Hamp、Gpx4 和Fth1 mRNA的表达与DSS 组小鼠相反，而AM630 组和
+AM630 + BCP 组小鼠结肠组织中各基因的表达与 DSS 组没有统计学差异。WB 分析也显
+示，BCP 组小鼠结肠组织的Acsl4、Cox2 蛋白水平明显比DSS 组低，Fth1 和Gpx4 蛋白水
+平比 DSS 组高，而 AM630 组和 AM630 + BCP 组中 Acsl4、Cox2、Fth1、Gpx4 等铁死亡
+相关蛋白的表达与 DSS 组无明显差异（图 6-3F）。免疫组化结果表明，DSS 组小鼠结肠
+组织中4-HNE高表达，BCP 组小鼠结肠组织中 4-HNE表达明显比 DSS 组小鼠低，而注射
+AM630或注射AM630及同期灌胃BCP则没有体现出于DSS组小鼠之间的差异（图6-4）。
+此外，与DSS 组小鼠比较，BCP 组小鼠结肠组织中GSH含量及GPX活性明显升高，MDA
+含量和血清中的铁含量显著降低，而 AM630 组和 AM630 + BCP 组小鼠则没有体现出与
+DSS 组小鼠之间的差异（图 6-5）。通过透射电镜观察 UC 小鼠结肠组织巨噬细胞，与正常
+组小鼠比较，DSS 组小鼠结肠组织细胞线粒体表现为缩小，线粒体嵴减少及膜密度增加等
+特征，灌胃BCP 后，UC 小鼠结肠组织细胞线粒体形态得到明显改善，AM630 组和 AM630
++ BCP 组小鼠结肠组织细胞线粒体形态没有得到明显改善（图 6-6）。进一步的免疫荧光结
+果显示，DSS 组小鼠中标记F4/80 的巨噬细胞与4-HNE共定位表达，说明结肠组织中巨噬
+细胞发生脂质过氧化，存在铁死亡。灌胃 BCP 后，可以抑制 DSS 诱导的巨噬细胞脂质过
+氧化，而注射AM630 或注射AM630 及同期灌胃 BCP 则没有体现出于 DSS 组小鼠之间的
+差异（图 6-7），以上结果说明，BCP 在体内能够通过激活 CB2R 抑制结肠巨噬细胞铁死
+亡，缓解实验性结肠炎炎症。
+96
+--- 第110页 ---
+暨南大学博士学位论文
+图 6-3 BCP在体内通过激活 CB2R调节铁死亡相关基因及蛋白的表达
+Figure 6-3. BCP regulates the expression of ferroptosis-related genes and proteins by
+activating CB2R in vivo. Relative mRNA levels of Ptgs2 (A), Acsl4 (B), Hamp (C), Gpx4 (D)
+and Fth1 (E) in colonic tissues of C57BL/6J mice were detected. Data are presented as the mean
+± S.E.M. of 6 colonic tissues samples using Gapdh as a reference. (F) Acsl4, Cox2, Fth1 and Gpx4
+protein expressions in mice with DSS-induced colitis treated with BCP or AM630 were
+determined by western blot analysis. β-Actin was used as an internal reference. Statistical analyses
+were performed with one-way ANOVA. n.s., not significant, ##p < 0.01, ###p < 0.001 compared
+with mice from control group; *p < 0.05, **p < 0.01, ***p < 0.001 compared with mice from 3%
+DSS group.
+图 6-4 BCP通过激活 CB2R抑制结肠组织细胞脂质过氧化
+Figure 6-4. BCP inhibits lipid peroxidation in colonic tissue cells via activation of the CB2R
+(n=6). Representative images of immunohistochemical staining of colonic tissues for 4-HNE of
+colonic tissues. Scale bar, 100 μm.
+97
+--- 第111页 ---
+暨南大学博士学位论文
+图 6-5 BCP在体内通过激活 CB2R增加 GSH含量、GPX活性，降低 Fe2+和 MDA的含
+量
+Figure 6-5. BCP increases GSH content, GPX activity and decreases iron and MDA content
+via activation of the CB2R in vivo. (A-D) Content of GSH, GPX activity and MDA in colonic
+tissues and the levels of serum iron (n=6) was measured were examined using corresponding kits.
+Statistical analyses were performed with one-way ANOVA. n.s., not significant, ##p < 0.01, ###p <
+0.001 compared with mice from control group; *p < 0.05, **p < 0.01, ***p < 0.001 compared with
+mice from 3% DSS group.
+图 6-6 BCP通过激活 CB2R改善结肠组织细胞线粒体形态变化
+Figure 6-6. BCP ameliorates mitochondrial morphological changes in colonic tissue cells via
+activation of the CB2R (n=6). Representative images of transmission electron microscopy of
+colonic tissues after different treatments. White arrowheads indicate shrunken mitochondria; black
+arrow indicates increased mitochondrial membrane density. Scale bar, 500 nm.
+98
+--- 第112页 ---
+暨南大学博士学位论文
+图 6-7 BCP通过激活 CB2R抑制 UC小鼠结肠巨噬细胞脂质过氧化
+Figure 6-7. BCP inhibits lipid peroxidation in colonic macrophage of UC mice via activation
+of the CB2R (n=6). Representative images of double immunofluorescence staining of colonic
+tissues for F4/80 and 4-HNE. Scale bar, 50 μm.
+6.5 讨论
+CB2R 是一种 G蛋白偶联受体，而 AM630是CB2R 的配体，能够选择性的作用于
+CB2R 从而拮抗CB2R 激活引起的作用。上一章的实验结果证明 BCP 在体外通过激活
+CB2R 发挥抑制巨噬细胞铁死亡的作用。在本章实验中，我们通过构建 UC 小鼠模型，在
+实验过程中发现给予 BCP 灌胃的小鼠表现出良好的饮食，饮水及排尿排便，体重变化较
+小，而模型组小鼠、单独注射AM630 的小鼠和同时给药AM630 和BCP 的小鼠则表现出
+99
+--- 第113页 ---
+暨南大学博士学位论文
+食欲下降，体重减轻、便血等典型的结肠炎症状。从解剖学、病理学、生物学实验中也
+观察到，灌胃了BCP 的小鼠结肠炎得到缓解，单独注射AM630 的小鼠或同期给药
+AM630 和BCP 的小鼠结肠炎并未得到缓解，说明BCP 通过激活 CB2R 缓解了小鼠结肠
+炎。进一步检测铁死亡相关指标，与模型组小鼠比较，BCP 组小鼠结肠组织中的 GSH含
+量及GPX活性明显提高，铁及MDA含量下降，而单独注射 AM630 的小鼠或同期给药
+AM630 和BCP 的小鼠结肠组织中的GSH含量，GPX活性，铁及MDA含量均与模型组
+小鼠无显著性差异。qPCR 结果也显示单独灌胃 BCP 的小鼠结肠组织中 Gpx4、Fth1 上
+调，Ptgs2、Acsl4 及Hamp表达下调，而单独注射AM630 的小鼠或同期给药AM630 和
+BCP 的小鼠结肠组织中铁死亡相关基因与模型组没有显著性差异。透视电镜也观察到模
+型组小鼠结肠组织线粒体表现为缩小、线粒体嵴减少等，BCP 组小鼠结肠巨噬细胞线粒
+体形态与正常组的接近，而单独注射AM630 的小鼠或同时给药 AM630 和BCP 的小鼠结
+肠巨噬细胞线粒体形态也表现出异常缩小，嵴减少等典型的铁死亡细胞的线粒体形态，
+以上结果说明BCP 在体内通过激活CB2R 发挥抑制铁死亡的作用。
+100
+--- 第114页 ---
+暨南大学博士学位论文
+第七章 结论
+7.1 研究结论
+溃疡性结肠炎是一种影响结肠和直肠的使人衰弱的慢性炎症性疾病，发病机制非常
+复杂，涉及宿主免疫应答、遗传易感性、肠道菌群、环境条件、饮食等因素。现在实行
+的治疗策略通常都是通过缓解患者临床症状，来控制疾病进展，但治疗效果仍旧不理想，
+仍旧需要手术切除受损的小肠部分，却又有患并发症的风险。而且与结肠炎相关的结直
+肠癌的发生并没有得到很好的控制，因此，很有必要继续探索有效控制 UC 发病和进展
+的新化合物或者治疗靶点。铁死亡是近年来提出的以铁过载和脂质过氧化为特征的调节
+性细胞死亡方式，有研究显示，炎症部位细胞死亡也可能导致结肠上皮的完整性遭到破
+坏，进一步加剧炎症。本研究通过使用 DSS 构建UC 小鼠模型探讨 UC 与铁死亡之间的
+联系，使用RSL3 诱导的巨噬细胞为体外模型探讨炎症与铁死亡之间的联系，并筛选出
+候选化合物 BCP，通过生物信息学网站预测、常规生物学实验（如 qPCR、WB、IF、
+FCM、TEM、HE、IHC 等）等手段验证 BCP 对铁死亡的调节作用，得出以下结论：
+（1）溃疡性结肠炎小鼠结肠组织巨噬细胞发生脂质过氧化，结肠组织中存在铁死
+亡，巨噬细胞铁死亡与肠炎具有密切相关性；
+（2）巨噬细胞发生铁死亡会增加 Tnf-α、Ptgs2 的mRNA表达及激活MAPK 及 NF-
+κB 信号通路，BCP 在体外通过抑制 MAPK 及 NF-κB 信号通路抑制铁死亡诱导的炎症
+反应；
+（3）BCP 是一种铁死亡抑制剂，通过激活 CB2R 抑制 RSL3 诱导巨噬细胞脂质过
+氧化、降低 LDH的释放和MDA含量，增加铁死亡巨噬细胞存活率及 GPX活性，改善
+线粒体形态及膜电位变化及调节铁死亡相关分子的表达发挥抑制巨噬细胞铁死亡的作
+用；
+（4）BCP 通过激活 CB2R 抑制肠炎小鼠结肠组织巨噬细胞铁死亡。BCP 能够通过
+激活 CB2R 下调促进铁死亡的基因及蛋白如 Ptgs2、Acsl4、Hamp 的表达，上调抑制铁
+死亡的基因及蛋白如 Gpx4、Fth1 的表达。BCP 降低肠炎小鼠中铁及 4-HNE、MDA 含
+量、升高GSH 含量及GPX活性抑制UC 小鼠结肠组织中发生的细胞铁死亡及其炎症反
+应，进而缓解肠炎小鼠肠炎症状。
+具体的机制图如图 7-1所示。
+101
+--- 第115页 ---
+暨南大学博士学位论文
+图 7-1 全文总结图
+Figure 7-1. Graphical abstract
+7.2 创新之处
+（1）UC小鼠结肠组织巨噬细胞发生铁死亡：本研究发现肠炎小鼠中发生了铁死亡，
+肠炎小鼠结肠组织巨噬细胞发生脂质过氧化，存在铁死亡，诱导巨噬细胞铁死亡促进炎
+症反应，抑制巨噬细胞铁死亡有助于缓解 UC 小鼠炎症，这为以巨噬细胞为靶点开发治
+疗UC 药物提供了理论依据；
+（2）β-石竹烯是一种铁死亡抑制剂：BCP 在体内外均能通过激活CB2R 上调 GPX
+活性，升高抑制铁死亡相关分子的表达，降低促进铁死亡相关分子的表达，从而发挥抑
+制巨噬细胞铁死亡及其诱导的炎症反应的作用。这些证据证明 BCP 缓解 UC 的作用与
+调控铁死亡有关，也为治疗铁死亡相关疾病提供了新的候选化合物。
+102
+--- 第116页 ---
+暨南大学博士学位论文
+7.3 展望
+尽管本论文阐明 BCP 是一种铁死亡抑制剂，通过激活 CB2R 发挥抑制巨噬细胞铁
+死亡及其诱导炎症的作用，仍旧存在一些尚未解决的问题。
+（1）具有CB2R 选择性特性的BCP 是一种独特的天然分子，具有治疗学的药理学
+基础，对药物开发和临床应用具有重要意义。那么 BCP 在结肠炎临床患者中是否也有
+相同的作用，其参与调控的机制是否与 UC 小鼠相同？
+（2）在上游机制探讨中，本文选用了 CB2R 拮抗剂AM630 进行体内外实验，那么
+在CB2R 敲除的细胞或小鼠中进行研究是否得到一致的结论？
+（3）BCP 在激活 CB2R 后检测到 GPX4 及 FTH1 上调，这中间具体的是如何发生
+的？这也是接下来需要研究清楚的问题。
+（4）通过使用分子对接技术对 BCP 及铁死亡相关靶蛋白进行分子对接。对接结果
+表明 BCP 与 GPX4、FTH1、ACSL4、COX2 活性位点均能结合，且结合能力接近（表
+S2和图S4）。BCP 是否也能通过直接靶向这些蛋白发挥抑制铁死亡作用？
+103
+--- 第117页 ---
+暨南大学博士学位论文
+参考文献
+[1] Wilks S. Morbid appearances in the intestine of miss bankes[J]. Med Times Gazette, 1859,
+2(2): 264-265.
+[2] Kobayashi T, Siegmund B, Le Berre C, et al. Ulcerative colitis[J]. Nat Rev Dis Primers,
+2020, 6(1): 74.
+[3] Nakase H, Uchino M, Shinzaki S, et al. Evidence-based clinical practice guidelines for
+inflammatory bowel disease 2020[J]. J Gastroenterol, 2021, 56(6): 489-526.
+[4] Randall J, Singh B, Warren B F, et al. Delayed surgery for acute severe colitis is associated
+with increased risk of postoperative complications[J]. Br J Surg, 2010, 97(3): 404-409.
+[5] Wanderas M H, Moum B A, Hoivik M L, et al. Predictive factors for a severe clinical course
+in ulcerative colitis: Results from population-based studies[J]. World J Gastrointest
+Pharmacol Ther, 2016, 7(2): 235-241.
+[6] Olén O, Erichsen R, Sachs M C, et al. Colorectal cancer in ulcerative colitis: a scandinavian
+population-based cohort study[J]. Lancet, 2020, 395(10218): 123-131.
+[7] Keller D S, Windsor A, Cohen R, et al. Colorectal cancer in inflammatory bowel disease:
+Review of the evidence[J]. Tech Coloproctol, 2019, 23(1): 3-13.
+[8] Ng S C, Tang W, Ching J Y, et al. Incidence and phenotype of inflammatory bowel disease
+based on results from the Asia-Pacific Crohn's and colitis epidemiology study[J].
+Gastroenterology, 2013, 145(1): 158-165.
+[9] Desai D, Shah S, Deshmukh A, et al. Colorectal cancers in ulcerative colitis from a low-
+prevalence area for colon cancer[J]. World J Gastroenterol, 2015, 21(12): 3644-3649.
+[10] Wang Y N, Li J, Zheng W Y, et al. Clinical characteristics of ulcerative colitis-related
+colorectal cancer in chinese patients[J]. J Dig Dis, 2017, 18(12): 684-690.
+[11] Mirkov M U, Verstockt B, Cleynen I. Genetics of inflammatory bowel disease: beyond
+NOD2[J]. Lancet Gastroenterol Hepatol, 2017, 2(3): 224-234.
+[12] Liu T C, Stappenbeck T S. Genetics and pathogenesis of inflammatory bowel disease[J].
+Annu Rev Pathol, 2016, 11: 127-148.
+[13] Khan S, Waliullah S, Godfrey V, et al. Dietary simple sugars alter microbial ecology in the
+gut and promote colitis in mice[J]. Sci Transl Med, 2020, 12(567): eaay6218.
+104
+--- 第118页 ---
+暨南大学博士学位论文
+[14] Nguyen L H, Örtqvist A K, Cao Y, et al. Antibiotic use and the development of
+inflammatory bowel disease: a national case-control study in Sweden[J]. Lancet
+Gastroenterol Hepatol, 2020, 5(11): 986-995.
+[15] Gracie D J, Hamlin P J, Ford A C. The influence of the brain–gut axis in inflammatory
+bowel disease and possible implications for treatment[J]. Lancet Gastroenterol Hepatol,
+2019, 4(8): 632-642.
+[16] Wu Z, Huang S, Li T, et al. Gut microbiota from green tea polyphenol-dosed mice improves
+intestinal epithelial homeostasis and ameliorates experimental colitis[J]. Microbiome, 2021,
+9(1): 184.
+[17] Wu J, Wei Z, Cheng P, et al. Rhein modulates host purine metabolism in intestine through
+gut microbiota and ameliorates experimental colitis[J]. Theranostics, 2020, 10(23): 10665-
+10679.
+[18] Gracie D J, Guthrie E A, Hamlin P J, et al. Bi-directionality of brain-gut interactions in
+patients with inflammatory bowel disease[J]. Gastroenterology, 2018, 154(6): 1635-1646
+e1633.
+[19] Yao D, Dai W, Dong M, et al. MUC2 and related bacterial factors: Therapeutic targets for
+ulcerative colitis[J]. EBioMedicine, 2021, 74: 103751.
+[20] Ungaro R, Mehandru S, Allen P B, et al. Ulcerative colitis[J]. Lancet, 2017, 389(10080):
+1756-1770.
+[21] Murray P J, Allen J E, Biswas S K, et al. Macrophage activation and polarization:
+Nomenclature and experimental guidelines[J]. Immunity, 2014, 41(1): 14-20.
+[22] Shapouri-Moghaddam A, Mohammadian S, Vazini H, et al. Macrophage plasticity,
+polarization, and function in health and disease[J]. J Cell Physiol, 2018, 233(9): 6425-6440.
+[23] Na Y R, Stakenborg M, Seok S H, et al. Macrophages in intestinal inflammation and
+resolution: a potential therapeutic target in IBD[J]. Nat Rev Gastroenterol Hepatol, 2019,
+16(9): 531-543.
+[24] Truelove S C, Witts L J. Cortisone in ulcerative colitis; final report on a therapeutic trial[J].
+Br Med J, 1955, 2(4947): 1041-1048.
+105
+--- 第119页 ---
+暨南大学博士学位论文
+[25] Peyrin-Biroulet L, Cieza A, Sandborn W J, et al. Development of the first disability index
+for inflammatory bowel disease based on the international classification of functioning,
+disability and health[J]. Gut, 2012, 61(2): 241-247.
+[26] Bressler B, Marshall J K, Bernstein C N, et al. Clinical practice guidelines for the medical
+management of nonhospitalized ulcerative colitis: the Toronto consensus[J].
+Gastroenterology, 2015, 148(5): 1035-1058.
+[27] Rutgeerts P, Sandborn W J, Feagan B G, et al. Infliximab for induction and maintenance
+therapy for ulcerative colitis[J]. N Engl J Med, 2005, 353(23): 2462-2476.
+[28] Reinisch W, Sandborn W J, Hommes D W, et al. Adalimumab for induction of clinical
+remission in moderately to severely active ulcerative colitis: results of a randomised
+controlled trial[J]. Gut, 2011, 60(6): 780-787.
+[29] Sandborn W J, Feagan B G, Marano C, et al. Subcutaneous golimumab induces clinical
+response and remission in patients with moderate-to-severe ulcerative colitis[J].
+Gastroenterology, 2014, 146(1): 85-95.
+[30] Hanauer S, Panaccione R, Danese S, et al. Tofacitinib induction therapy reduces symptoms
+within 3 days for patients with ulcerative colitis[J]. Clin Gastroenterol Hepatol, 2019, 17(1):
+139-147.
+[31] Sands B E, Sandborn W J, Feagan B, et al. A randomized, double-blind, sham-controlled
+study of granulocyte/monocyte apheresis for active ulcerative colitis[J]. Gastroenterology,
+2008, 135(2): 400-409.
+[32] Zhu M, Xu X, Nie F, et al. The efficacy and safety of selective leukocytapheresis in the
+treatment of ulcerative colitis: a meta-analysis[J]. Int J Colorectal Dis, 2011, 26(8): 999-
+1007.
+[33] Yokoyama Y, Matsuoka K, Kobayashi T, et al. A large-scale, prospective, observational
+study of leukocytapheresis for ulcerative colitis: treatment outcomes of 847 patients in
+clinical practice[J]. J Crohns Colitis, 2014, 8(9): 981-991.
+[34] Ng S C, Shi H Y, Hamidi N, et al. Worldwide incidence and prevalence of inflammatory
+bowel disease in the 21st century: a systematic review of population-based studies[J].
+Lancet, 2017, 390(10114): 2769-2778.
+106
+--- 第120页 ---
+暨南大学博士学位论文
+[35] Kaplan G G. The global burden of IBD: From 2015 to 2025[J]. Nat Rev Gastroenterol
+Hepatol, 2015, 12(12): 720-727.
+[36] Sehgal P, Colombel J F, Aboubakr A, et al. Systematic review: safety of mesalazine in
+ulcerative colitis[J]. Aliment Pharmacol Ther, 2018, 47(12): 1597-1609.
+[37] Singh S, Feuerstein J D, Binion D G, et al. AGA technical review on the management of
+mild-to-moderate ulcerative colitis[J]. Gastroenterology, 2019, 156(3): 769-808.
+[38] Naganuma M, Aoyama N, Tada T, et al. Complete mucosal healing of distal lesions induced
+by twice-daily budesonide 2-mg foam promoted clinical remission of mild-to-moderate
+ulcerative colitis with distal active inflammation: Double-blind, randomized study[J]. J
+Gastroenterol, 2018, 53(4): 494-506.
+[39] Schauer C, Avery V, Seleq S, et al. A comparison of intravenous methylprednisolone and
+hydrocortisone for the treatment of acute inflammatory bowel disease[J]. J Gastroenterol
+Hepatol, 2021, 36(10): 2762-2768.
+[40] Timmer A, Patton P H, Chande N, et al. Azathioprine and 6-mercaptopurine for
+maintenance of remission in ulcerative colitis[J]. Cochrane Database Syst Rev, 2016, (5):
+CD000478.
+[41] Laharie D, Bourreille A, Branche J, et al. Ciclosporin versus infliximab in patients with
+severe ulcerative colitis refractory to intravenous steroids: A parallel, open-label
+randomised controlled trial[J]. Lancet, 2012, 380(9857): 1909-1915.
+[42] Duijvis N W, Ten Hove A S, Ponsioen C I J, et al. Similar short- and long-term colectomy
+rates with ciclosporin and infliximab treatment in hospitalised ulcerative colitis patients[J].
+J Crohns Colitis, 2016, 10(7): 821-827.
+[43] Gordon M, Sinopoulou V, Akobeng, A K, et al. Tacrolimus (FK506) for induction of
+remission in corticosteroid-refractory ulcerative colitis [J]. Cochrane Database Syst Rev,
+2022,4(4): CD007216.
+[44] Ogata H, Matsui T, Nakamura M, et al. A randomised dose finding study of oral tacrolimus
+(FK506) therapy in refractory ulcerative colitis[J]. Gut, 2006, 55(9): 1255-1262.
+[45] Feagan B G, Rubin D T, Danese S, et al. Efficacy of vedolizumab induction and
+maintenance therapy in patients with ulcerative colitis, regardless of prior exposure to tumor
+necrosis factor antagonists[J]. Clin Gastroenterol Hepatol, 2017, 15(2): 229-239.
+107
+--- 第121页 ---
+暨南大学博士学位论文
+[46] Sands B E, Sandborn W J, Panaccione R, et al. Ustekinumab as induction and maintenance
+therapy for ulcerative colitis[J]. N Engl J Med, 2019, 381(13): 1201-1214.
+[47] Dixon S J, Lemberg K M, Lamprecht M R, et al. Ferroptosis: an iron-dependent form of
+nonapoptotic cell death[J]. Cell, 2012, 149(5): 1060-1072.
+[48] Bertheloot D, Latz E, Franklin B S. Necroptosis, pyroptosis and apoptosis: An intricate
+game of cell death[J]. Cell Mol Immunol, 2021, 18(5): 1106-1121.
+[49] Bergsbaken T, Fink S L, Cookson B T. Pyroptosis: host cell death and inflammation[J]. Nat
+Rev Microbiol, 2009, 7(2): 99-109.
+[50] Chen X, He W-T, Hu L, et al. Pyroptosis is driven by non-selective gasdermin-d pore and
+its morphology is different from mlkl channel-mediated necroptosis[J]. Cell Res, 2016,
+26(9): 1007-1020.
+[51] Dikic I, Elazar Z. Mechanism and medical implications of mammalian autophagy[J]. Nat
+Rev Mol Cell Biol, 2018, 19(6): 349-364.
+[52] Pasparakis M, Vandenabeele P. Necroptosis and its role in inflammation[J]. Nature, 2015,
+517(7534): 311-320.
+[53] Xie Y, Hou W, Song X, et al. Ferroptosis: Process and function[J]. Cell Death Differ, 2016,
+23(3): 369-379.
+[54] Neitemeier S, Jelinek A, Laino V, et al. BID links ferroptosis to mitochondrial cell death
+pathways[J]. Redox Biol, 2017, 12: 558-570.
+[55] Tang D, Chen X, Kang R, et al. Ferroptosis: Molecular mechanisms and health
+implications[J]. Cell Res, 2021, 31(2): 107-125.
+[56] Shah R, Shchepinov M S, Pratt D A. Resolving the role of lipoxygenases in the initiation
+and execution of ferroptosis[J]. ACS Cent Sci, 2018, 4(3): 387-396.
+[57] Du J, Wang T, Li Y, et al. Dha inhibits proliferation and induces ferroptosis of leukemia
+cells through autophagy dependent degradation of ferritin[J]. Free Radic Biol Med, 2019,
+131: 356-369.
+[58] Liu J, Kuang F, Kroemer G, et al. Autophagy-dependent ferroptosis: Machinery and
+regulation[J]. Cell Chem Biol, 2020, 27(4): 420-435.
+[59] Mancias J D, Wang X, Gygi S P, et al. Quantitative proteomics identifies NCOA4 as the
+cargo receptor mediating ferritinophagy[J]. Nature, 2014, 509(7498): 105-109.
+108
+--- 第122页 ---
+暨南大学博士学位论文
+[60] Hou W, Xie Y, Song X, et al. Autophagy promotes ferroptosis by degradation of ferritin[J].
+Autophagy, 2016, 12(8): 1425-1428.
+[61] Dodson M, Castro-Portuguez R, Zhang D D. Nrf2 plays a critical role in mitigating lipid
+peroxidation and ferroptosis[J]. Redox Biol, 2019, 23: 101107.
+[62] Yang W S, SriRamaratnam R, Welsch M E, et al. Regulation of ferroptotic cancer cell death
+by GPX4[J]. Cell, 2014, 156(1-2): 317-331.
+[63] Friedmann Angeli J P, Schneider M, Proneth B, et al. Inactivation of the ferroptosis
+regulator GPX4 triggers acute renal failure in mice[J]. Nat Cell Biol, 2014, 16(12): 1180-
+1191.
+[64] Ingold I, Berndt C, Schmitt S, et al. Selenium utilization by GPX4 is required to prevent
+hydroperoxide-induced ferroptosis[J]. Cell, 2018, 172(3): 409-422.
+[65] Yuan H, Li X, Zhang X, et al. Identification of ACSL4 as a biomarker and contributor of
+ferroptosis[J]. Biochem Biophys Res Commun, 2016, 478(3): 1338-1343.
+[66] Sun X, Ou Z, Chen R, et al. Activation of the p62-Keap1-NRF2 pathway protects against
+ferroptosis in hepatocellular carcinoma cells[J]. Hepatology, 2016, 63(1): 173-184.
+[67] Shin D, Kim E H, Lee J, et al. Nrf2 inhibition reverses resistance to GPX4 inhibitor-induced
+ferroptosis in head and neck cancer[J]. Free Radic Biol Med, 2018, 129: 454-462.
+[68] Zhu S, Zhang Q, Sun X, et al. HSPA5 regulates ferroptotic cell death in cancer cells[J].
+Cancer Res, 2017, 77(8): 2064-2077.
+[69] Chen D, Fan Z, Rauh M, et al. ATF4 promotes angiogenesis and neuronal cell death and
+confers ferroptosis in a xCT-dependent manner[J]. Oncogene, 2017 36(40): 5593-5608.
+[70] Gao R, Kalathur R K R, Coto-Llerena M, et al. YAP/TAZ and ATF4 drive resistance to
+sorafenib in hepatocellular carcinoma by preventing ferroptosis[J]. EMBO Mol Med, 2021,
+13(12): e14351.
+[71] Alim I, Caulfield J T, Chen Y, et al. Selenium drives a transcriptional adaptive program to
+block ferroptosis and treat stroke[J]. Cell, 2019, 177(5): 1262-1279.
+[72] Ingold I, Berndt C, Schmitt S, et al. Selenium utilization by GPX4 is required to prevent
+hydroperoxide-induced ferroptosis[J]. Cell, 2018, 172(3): 409-422.
+[73] Doll S, Proneth B, Tyurina Y Y, et al. ACSL4 dictates ferroptosis sensitivity by shaping
+cellular lipid composition[J]. Nat Chem Biol, 2017, 13(1): 91-98.
+109
+--- 第123页 ---
+暨南大学博士学位论文
+[74] Kagan V E, Mao G, Qu F, et al. Oxidized arachidonic and adrenic PEs navigate cells to
+ferroptosis[J]. Nat Chem Biol, 2017, 13(1): 81-90.
+[75] Zou Y, Palte M J, Deik A A, et al. A GPX4-dependent cancer cell state underlies the clear-
+cell morphology and confers sensitivity to ferroptosis[J]. Nat Commun, 2019, 10(1): 1617.
+[76] Doll S, Freitas F P, Shah R, et al. FSP1 is a glutathione-independent ferroptosis
+suppressor[J]. Nature, 2019, 575(7784): 693-698.
+[77] Bersuker K, Hendricks J M, Li Z, et al. The CoQ oxidoreductase FSP1 acts parallel to
+GPX4 to inhibit ferroptosis[J]. Nature, 2019, 575(7784): 688-692.
+[78] Dai E, Zhang W, Cong D, et al. AIFM2 blocks ferroptosis independent of ubiquinol
+metabolism[J]. Biochem Biophys Res Commun, 2020, 523(4): 966-971.
+[79] Kraft V A N, Bezjian C T, Pfeiffer S, et al. GTP cyclohydrolase 1/tetrahydrobiopterin
+counteract ferroptosis through lipid remodeling[J]. ACS Cent Sci, 2020, 6(1): 41-53.
+[80] Soula M, Weber R A, Zilka O, et al. Metabolic determinants of cancer cell sensitivity to
+canonical ferroptosis inducers[J]. Nat Chem Biol, 2020, 16(12): 1351-1360.
+[81] Zheng J, Conrad M. The metabolic underpinnings of ferroptosis[J]. Cell Metab, 2020, 32(6):
+920-937.
+[82] Mao C, Liu X, Zhang Y, et al. DHODH-mediated ferroptosis defence is a targetable
+vulnerability in cancer[J]. Nature, 2021, 593(7860): 586-590.
+[83] Dixon S J, Patel D N, Welsch M, et al. Pharmacological inhibition of cystine-glutamate
+exchange induces endoplasmic reticulum stress and ferroptosis[J]. Elife, 2014, 3: e02523.
+[84] Lovatt M, Adnan K, Kocaba V, et al. Peroxiredoxin-1 regulates lipid peroxidation in
+corneal endothelial cells[J]. Redox Biol, 2020, 30: 101417.
+[85] Eaton J K, Furst L, Ruberto R A, et al. Selective covalent targeting of GPX4 using masked
+nitrile-oxide electrophiles[J]. Nat Chem Biol, 2020, 16(5): 497-506.
+[86] Koppula P, Zhuang L, Gan B. Cystine transporter SLC7A11/xCT in cancer: ferroptosis,
+nutrient dependency, and cancer therapy[J]. Protein Cell, 2021, 12(8): 599-620.
+[87] Shimada K, Hayano M, Pagano N C, et al. Cell-line selectivity improves the predictive
+power of pharmacogenomic analyses and helps identify NADPH as biomarker for
+ferroptosis sensitivity[J]. Cell Chem Biol, 2016, 23(2): 225-235.
+110
+--- 第124页 ---
+暨南大学博士学位论文
+[88] Ding C-K C, Rose J, Sun T, et al. MESH1 is a cytosolic nadph phosphatase that regulates
+ferroptosis[J]. Nat Metab, 2020, 2(3): 270-277.
+[89] Liu Y, Gu W. P53 in ferroptosis regulation: the new weapon for the old guardian[J]. Cell
+Death Differ, 2022, 29(5):895-910.
+[90] Linkermann A, Stockwell B R, Krautwald S, et al. Regulated cell death and inflammation:
+an auto-amplification loop causes organ failure[J]. Nat Rev Immunol, 2014, 14(11): 759-
+767.
+[91] Shi L, Liu Y, Li M, et al. Emerging roles of ferroptosis in the tumor immune landscape:
+From danger signals to anti-tumor immunity[J]. FEBS J, 2021, 289(13): 3655-3665.
+[92] Yang H, Wang H, Andersson U. Targeting inflammation driven by HMGB1[J]. Front
+Immunol, 2020, 11: 484.
+[93] Wen Q, Liu J, Kang R, et al. The release and activity of HMGB1 in ferroptosis[J]. Biochem
+Biophys Res Commun, 2019, 510(2): 278-283.
+[94] Ye F, Chai W, Xie M, et al. HMGB1 regulates erastin-induced ferroptosis via RAS-
+JNK/p38 signaling in HL-60/NRASQ61L cells[J]. Am J Cancer Res, 2019, 9(4): 730-739.
+[95] Yagoda N, von Rechenberg M, Zaganjor E, et al. RAS-RAF-MEK -dependent oxidative cell
+death involving voltage-dependent anion channels[J]. Nature, 2007, 447(7146): 864-868.
+[96] Wang Y, Wang W, Yang H, et al. Intraperitoneal injection of 4-hydroxynonenal (4-HNE), a
+lipid peroxidation product, exacerbates colonic inflammation through activation of Toll-like
+receptor 4 signaling[J]. Free Radic Biol Med, 2019, 131: 237-242.
+[97] Mak T W, Grusdat M, Duncan G S, et al. Glutathione primes t cell metabolism for
+inflammation[J]. Immunity, 2017, 46(6): 675-689.
+[98] Chen C-J, Huang H-S, Chang W-C. Depletion of phospholipid hydroperoxide glutathione
+peroxidase up-regulates arachidonate metabolism by 12S-lipoxygenase and cyclooxygenase
+1 in human epidermoid carcinoma A431 cells[J]. FASEB J, 2003, 17(12): 1694-1696.
+[99] Li C, Deng X, Xie X, et al. Activation of glutathione peroxidase 4 as a novel anti-
+inflammatory strategy[J]. Front Pharmacol, 2018, 9: 1120.
+[100] Wang T, Fu X, Chen Q, et al. Arachidonic acid metabolism and kidney inflammation[J].
+Int J Mol Sci, 2019 AA, 20(15): 3683.
+111
+--- 第125页 ---
+暨南大学博士学位论文
+[101] Proneth B, Conrad M. Ferroptosis and necroinflammation, a yet poorly explored link[J].
+Cell Death Differ, 2019, 26(1): 14-24.
+[102] Sun Y, Chen P, Zhai B, et al. The emerging role of ferroptosis in inflammation[J]. Biomed
+Pharmacother, 2020, 127: 110108.
+[103] Constante M, Fragoso G, Lupien-Meilleur J, et al. Iron supplements modulate colon
+microbiota composition and potentiate the protective effects of probiotics in dextran sodium
+sulfate-induced colitis[J]. Inflamm Bowel Dis, 2017, 23(5): 753-766.
+[104] Lee T, Clavel T, Smirnov K, et al. Oral versus intravenous iron replacement therapy
+distinctly alters the gut microbiota and metabolome in patients with IBD[J]. Gut, 2017,
+66(5): 863-871.
+[105] Lee T W, Kolber M R, Fedorak R N, et al. Iron replacement therapy in inflammatory
+bowel disease patients with iron deficiency anemia: A systematic review and meta-
+analysis[J]. J Crohns Colitis, 2012, 6(3): 267-275.
+[106] Stevens R G, Morris J E, Cordis G A, et al. Oxidative damage in colon and mammary
+tissue of the HFE-knockout mouse[J]. Free Radic Biol Med, 2003, 34(9): 1212-1216.
+[107] Kobayashi Y, Ohfuji S, Kondo K, et al. Association between dietary iron and zinc intake
+and development of ulcerative colitis: A case-control study in Japan[J]. J Gastroenterol
+Hepatol, 2019, 34(10): 1703-1710.
+[108] Zhou W-X, Wu X-R, Bennett A E, et al. Endoscopic and histologic abnormalities of
+gastrointestinal tract in patients with hereditary hemochromatosis[J]. J Clin Gastroenterol,
+2014, 48(4): 336-342.
+[109] Sivaprakasam S, Ristic B, Mudaliar N, et al. Hereditary hemochromatosis promotes colitis
+and colon cancer and causes bacterial dysbiosis in mice[J]. Biochem J, 2020, 477(19):
+3867-3883.
+[110] Millar A D, Rampton D S, Blake D R. Effects of iron and iron chelation in vitro on
+mucosal oxidant activity in ulcerative colitis[J]. Aliment Pharmacol Ther, 2000, 14(9):
+1163-1168.
+[111] Xu M, Tao J, Yang Y, et al. Ferroptosis involves in intestinal epithelial cell death in
+ulcerative colitis[J]. Cell Death Dis, 2020, 11(2): 86.
+112
+--- 第126页 ---
+暨南大学博士学位论文
+[112] Chen Y, Zhang P, Chen W, et al. Ferroptosis mediated dss-induced ulcerative colitis
+associated with Nrf2/HO-1 signaling pathway[J]. Immunol Lett, 2020, 225: 9-15.
+[113] Ablin J, Shalev O, Okon E, et al. Deferiprone, an oral iron chelator, ameliorates
+experimental colitis and gastric ulceration in rats[J]. Inflamm Bowel Dis, 1999, 5(4): 253-
+261.
+[114] Wang S, Liu W, Wang J, et al. Curculigoside inhibits ferroptosis in ulcerative colitis
+through the induction of GPX4[J]. Life Sci, 2020, 259: 118356.
+[115] Heimerl S, Moehle C, Zahn A, et al. Alterations in intestinal fatty acid metabolism in
+inflammatory bowel disease[J]. Biochim Biophys Acta, 2006, 1762(3): 341-350.
+[116] Li Y, Feng D, Wang Z, et al. Ischemia-induced ACSL4 activation contributes to
+ferroptosis-mediated tissue injury in intestinal ischemia/reperfusion[J]. Cell Death Differ,
+2019, 26(11): 2284-2299.
+[117] Gao W, Zhang T, Wu H. Emerging pathological engagement of ferroptosis in gut
+diseases[J]. Oxid Med Cell Longev, 2021, 2021: 4246255.
+[118] Xu S, He Y, Lin L, et al. The emerging role of ferroptosis in intestinal disease[J]. Cell
+Death Dis, 2021, 12(4): 289.
+[119] Xu C, Liu Z, Xiao J. Ferroptosis: A double-edged sword in gastrointestinal disease[J]. Int J
+Mol Sci, 2021, 22(22): 12403.
+[120] Song Q, Peng S, Che F, et al. Artesunate induces ferroptosis via modulation of p38 and
+ERK signaling pathway in glioblastoma cells[J]. J Pharmacol Sci, 2022, 148(3): 300-306.
+[121] Chen G-Q, Benthani F A, Wu J, et al. Artemisinin compounds sensitize cancer cells to
+ferroptosis by regulating iron homeostasis[J]. Cell Death Differ, 2020, 27(1): 242-254.
+[122] Sarma B, Willmes C, Angerer L, et al. Artesunate affects t antigen expression and survival
+of virus-positive merkel cell carcinoma[J]. Cancers (Basel), 2020, 12(4): 919.
+[123] Hu Y, Guo N, Yang T, et al. The potential mechanisms by which artemisinin and its
+derivatives induce ferroptosis in the treatment of cancer[J]. Oxid Med Cell Longev, 2022,
+2022: 1458143.
+[124] Cao X, Li Y, Wang Y, et al. Curcumin suppresses tumorigenesis by ferroptosis in breast
+cancer[J]. PloS One, 2022, 17(1): e0261370.
+113
+--- 第127页 ---
+暨南大学博士学位论文
+[125] Tang X, Ding H, Liang M, et al. Curcumin induces ferroptosis in non-small-cell lung
+cancer via activating autophagy[J]. Thoracic cancer, 2021, 12(8): 1219-1230.
+[126] Ni H, Ruan G, Sun C, et al. Tanshinone IIA inhibits gastric cancer cell stemness through
+inducing ferroptosis[J]. Environ Toxicol, 2022, 37(2): 192-200.
+[127] Song Z, Xiang X, Li J, et al. Ruscogenin induces ferroptosis in pancreatic cancer cells[J].
+Oncol Rep, 2020, 43(2): 516-524.
+[128] Cui W, Zhang J, Wu D, et al. Ponicidin suppresses pancreatic cancer growth by inducing
+ferroptosis: Insight gained by mass spectrometry-based metabolomics[J]. Phytomedicine,
+2022, 98: 153943.
+[129] Zhang W, Jiang B, Liu Y, et al. Bufotalin induces ferroptosis in non-small cell lung cancer
+cells by facilitating the ubiquitination and degradation of GPX4[J]. Free Radic Biol Med,
+2022, 180: 75-84.
+[130] Zhang L, Li C, Zhang Y, et al. Ophiopogonin B induces gastric cancer cell death by
+blocking the GPX4/xCT -dependent ferroptosis pathway[J]. Oncol Lett, 2022, 23(3): 104.
+[131] Wang Z X, Ma J, Li X Y, et al. Quercetin induces p53-independent cancer cell death
+through lysosome activation by the transcription factor EB and reactive oxygen species-
+dependent ferroptosis[J]. Br J Pharmacol, 2021, 178(5): 1133-1148.
+[132] Chen P, Wu Q, Feng J, et al. Erianin, a novel dibenzyl compound in dendrobium extract,
+inhibits lung cancer cell growth and migration via calcium/calmodulin-dependent
+ferroptosis[J]. Signal Transduct Target Ther, 2020, 5(1): 51.
+[133] Guerrero-Hue M, Garcia-Caballero C, Palomino-Antolin A, et al. Curcumin reduces renal
+damage associated with rhabdomyolysis by decreasing ferroptosis-mediated cell death[J].
+FASEB J, 2019, 33(8): 8961-8975.
+[134] Zhang X, Jiang L, Chen H, et al. Resveratrol protected acrolein-induced ferroptosis and
+insulin secretion dysfunction via ER-stress- related perk pathway in MIN6 cells[J].
+Toxicology, 2022, 465: 153048.
+[135] Li T, Tan Y, Ouyang S, et al. Resveratrol protects against myocardial ischemia-reperfusion
+injury via attenuating ferroptosis[J]. Gene, 2022, 808: 145968.
+[136] Zhou L, Yu P, Wang T-T, et al. Polydatin attenuates cisplatin-induced acute kidney injury
+by inhibiting ferroptosis[J]. Oxid Med Cell Longev, 2022, 2022: 9947191.
+114
+--- 第128页 ---
+暨南大学博士学位论文
+[137] Zhao X, Liu Z, Gao J, et al. Inhibition of ferroptosis attenuates busulfan-induced
+oligospermia in mice[J]. Toxicology, 2020, 440: 152489.
+[138] Gao S, Zhou L, Lu J, et al. Cepharanthine attenuates early brain injury after subarachnoid
+hemorrhage in mice via inhibiting 15-lipoxygenase-1-mediated microglia and endothelial
+cell ferroptosis[J]. Oxid Med Cell Longev, 2022, 2022: 4295208.
+[139] Fu C, Wu Y, Liu S, et al. Rehmannioside a improves cognitive impairment and alleviates
+ferroptosis via activating PI3K/AKT/Nrf2 and SLC7A11/GPX4 signaling pathway after
+ischemia[J]. J Ethnopharmacol, 2022, 289: 115021.
+[140] Peng C, Fu X, Wang K, et al. Dauricine alleviated secondary brain injury after
+intracerebral hemorrhage by upregulating GPX4 expression and inhibiting ferroptosis of
+nerve cells[J]. Eur J Pharmacol, 2022, 914: 174461.
+[141] Lu H, Xiao H, Dai M, et al. Britanin relieves ferroptosis-mediated myocardial
+ischaemia/reperfusion damage by upregulating GPX4 through activation of
+AMPK/GSK3β/Nrf2 signalling[J]. Pharm Biol, 2022, 60(1): 38-45.
+[142] Liang Z, Soriano-Castell D, Kepchia D, et al. Cannabinol inhibits oxytosis/ferroptosis by
+directly targeting mitochondria independently of cannabinoid receptors[J]. Free Radic Biol
+Med, 2022, 180: 33-51.
+[143] Li J, Yang J, Zhu B, et al. Tectorigenin protects against unilateral ureteral obstruction by
+inhibiting Smad3-mediated ferroptosis and fibrosis[J]. Phytother Res, 2022, 36(1): 475-487.
+[144] Zhang Q, Wu H, Zou M, et al. Folic acid improves abnormal behavior via mitigation of
+oxidative stress, inflammation, and ferroptosis in the btbr T+ tf/J mouse model of autism[J].
+J Nutr Biochem, 2019, 71: 98-109.
+[145] Li L, Li W-J, Zheng X-R, et al. Eriodictyol ameliorates cognitive dysfunction in APP/PS1
+mice by inhibiting ferroptosis via vitamin d receptor-mediated Nrf2 activation[J]. Mol Med,
+2022, 28(1): 11.
+[146] Li Q, Li Q-Q, Jia J-N, et al. Baicalein exerts neuroprotective effects in FeCl-induced
+posttraumatic epileptic seizures suppressing ferroptosis[J]. Front Pharmacol, 2019, 10: 638.
+[147] Kwak H J, Yang D, Hwang Y, et al. Baicalein protects rat insulinoma INS-1 cells from
+palmitate-induced lipotoxicity by inducing HO-1[J]. PloS One, 2017, 12(4): e0176432.
+115
+--- 第129页 ---
+暨南大学博士学位论文
+[148] Wang Y, Quan F, Cao Q, et al. Quercetin alleviates acute kidney injury by inhibiting
+ferroptosis[J]. J Adv Res, 2021, 28: 231-243.
+[149] Takashima M, Ichihara K, Hirata Y. Neuroprotective effects of brazilian green propolis on
+oxytosis/ferroptosis in mouse hippocampal HT22 cells[J]. Food Chem Toxicol, 2019, 132:
+110669.
+[150] He H, Wang L, Qiao Y, et al. Epigallocatechin-3-gallate pretreatment alleviates
+doxorubicin-induced ferroptosis and cardiotoxicity by upregulating AMPKα2 and activating
+adaptive autophagy[J]. Redox Biol, 2021, 48: 102185.
+[151] Song Q, Zhao Y, Li Q, et al. Puerarin protects against iron overload-induced retinal injury
+through regulation of iron-handling proteins[J]. Biomed Pharmacother, 2020, 122: 109690.
+[152] Xu B, Wang H, Chen Z. Puerarin inhibits ferroptosis and inflammation of lung injury
+caused by sepsis in lps induced lung epithelial cells[J]. Front Pediatr, 2021, 9: 706327.
+[153] Fischer W, Currais A, Liang Z, et al. Old age-associated phenotypic screening for
+alzheimer's disease drug candidates identifies sterubin as a potent neuroprotective
+compound from yerba santa[J]. Redox Biol, 2019, 21: 101089.
+[154] Jha N K, Sharma C, Hashiesh H M, et al. β-Caryophyllene, a natural dietary CB2 receptor
+selective cannabinoid can be a candidate to target the trinity of infection, immunity, and
+inflammation in COVID-19[J]. Front Pharmacol, 2021, 12: 590201.
+[155] Rocha K A d S, Rodrigues N V S, Kozhevnikov I V, et al. Heteropoly acid catalysts in the
+valorization of the essential oils: Acetoxylation of β-caryophyllene[J]. Applied Catalysis A:
+General, 2010, 374(1-2): 87-94.
+[156] Muthusamy S, Vetukuri R R, Lundgren A, et al. Transient expression and purification of
+β-caryophyllene synthase in to produce β-caryophyllene in vitro[J]. PeerJ, 2020, 8: e8904.
+[157] Oliveira G, Machado K C, Machado K C, et al. Non-clinical toxicity of β-caryophyllene, a
+dietary cannabinoid: Absence of adverse effects in female Swiss mice[J]. Regul Toxicol
+Pharmacol, 2018, 92: 338-346.
+[158] Bastaki M, Api A M, Aubanel M, et al. Dietary administration of β-caryophyllene and its
+epoxide to sprague-dawley rats for 90 days[J]. Food Chem Toxicol, 2020, 135: 110876.
+116
+--- 第130页 ---
+暨南大学博士学位论文
+[159] Alvarez-González I, Madrigal-Bujaidar E, Castro-García S. Antigenotoxic capacity of
+beta-caryophyllene in mouse, and evaluation of its antioxidant and gst induction
+activities[J]. J Toxicol Sci, 2014, 39(6): 849-859.
+[160] Di Giacomo S, Mazzanti G, Di Sotto A. Mutagenicity of cigarette butt waste in the
+bacterial reverse mutation assay: The protective effects of β-caryophyllene and β-
+caryophyllene oxide[J]. Environ Toxicol, 2016, 31(11): 1319-1328.
+[161] Murata K, Matsumura S, Yoshioka Y, et al. Screening of β-secretase and
+acetylcholinesterase inhibitors from plant resources[J]. J Nat Med, 2015, 69(1): 123-129.
+[162] Tian X, Peng J, Zhong J, et al. β-Caryophyllene protects in vitro neurovascular unit against
+oxygen-glucose deprivation and re-oxygenation-induced injury[J]. J Neurochem, 2016,
+139(5): 757-768.
+[163] Gertsch J, Leonti M, Raduner S, et al. Beta-caryophyllene is a dietary cannabinoid[J]. Proc
+Natl Acad Sci U S A, 2008, 105(26): 9099-9104.
+[164] Irrera N, D'Ascola A, Pallio G, et al. β-Caryophyllene inhibits cell proliferation through a
+direct modulation of CB2 receptors in glioblastoma cells[J]. Cancers (Basel), 2020, 12(4):
+1038.
+[165] Alberti T B, Barbosa W L R, Vieira J L F, et al. (-)-β-Caryophyllene, a CB2 receptor-
+selective phytocannabinoid, suppresses motor paralysis and neuroinflammation in a murine
+model of multiple sclerosis[J]. Int J Mol Sci, 2017, 18(4): 691.
+[166] Askari V R, Baradaran Rahimi V, Tabatabaee S A, et al. Combination of imipramine, a
+sphingomyelinase inhibitor, and β-caryophyllene improve their therapeutic effects on
+experimental autoimmune encephalomyelitis (EAE)[J]. Int Immunopharmacol, 2019, 77:
+105923.
+[167] Picciolo G, Pallio G, Altavilla D, et al. β-caryophyllene reduces the inflammatory
+phenotype of periodontal cells by targeting CB2 receptors[J]. Biomedicines, 2020, 8(6):
+164.
+[168] Aly E, Khajah M A, Masocha W. β-caryophyllene, a CB2-receptor-selective
+phytocannabinoid, suppresses mechanical allodynia in a mouse model of antiretroviral-
+induced neuropathic pain[J]. Molecules, 2019, 25(1): 16.
+117
+--- 第131页 ---
+暨南大学博士学位论文
+[169] Lindsey L P, Daphney C M, Oppong-Damoah A, et al. The cannabinoid receptor 2 agonist,
+β-caryophyllene, improves working memory and reduces circulating levels of specific
+proinflammatory cytokines in aged male mice[J]. Behavioural Brain Research, 2019, 372:
+112012.
+[170] Cheng Y, Dong Z, Liu S. β-Caryophyllene ameliorates the alzheimer-like phenotype in
+APP/PS1 mice through CB2 receptor activation and the PPARγ pathway[J]. Pharmacology,
+2014, 94(1-2): 1-12.
+[171] Bento A F, Marcon R, Dutra R C, et al. β-Caryophyllene inhibits dextran sulfate sodium-
+induced colitis in mice through CB2 receptor activation and PPARγ pathway[J]. Am J
+Pathol, 2011, 178(3): 1153-1166.
+[172] Irrera N, D'Ascola A, Pallio G, et al. β-Caryophyllene mitigates collagen antibody induced
+arthritis (CAIA) in mice through a cross-talk between CB2 and PPAR-gamma receptors[J].
+Biomolecules, 2019, 9(8): 326.
+[173] Berger G, Arora N, Burkovskiy I, et al. Experimental cannabinoid 2 receptor activation by
+phyto-derived and synthetic cannabinoid ligands in lps-induced interstitial cystitis in
+mice[J]. Molecules, 2019, 24(23): 4239.
+[174] Mahmoud M F, Swefy S E, Hasan R A, et al. Role of cannabinoid receptors in hepatic
+fibrosis and apoptosis associated with bile duct ligation in rats[J]. Eur J Pharmacol, 2014,
+742: 118-124.
+[175] Youssef D A, El-Fayoumi H M, Mahmoud M F. Beta-caryophyllene protects against diet-
+induced dyslipidemia and vascular inflammation in rats: Involvement of CB2 and PPAR-γ
+receptors[J]. Chem Biol Interact, 2019, 297: 16-24.
+[176] Poddighe L, Carta G, Serra M P, et al. Acute administration of beta-caryophyllene
+prevents endocannabinoid system activation during transient common carotid artery
+occlusion and reperfusion[J]. Lipids Health Dis, 2018, 17(1): 23.
+[177] Liu S, Liu J, Wang Y, et al. Differentially expressed genes induced by β-caryophyllene in
+a rat model of cerebral ischemia-reperfusion injury[J]. Life Sci, 2021, 273: 119293.
+[178] Irrera N, D'Ascola A, Pallio G, et al. β-Caryophyllene inhibits cell proliferation through a
+direct modulation of cb2 receptors in glioblastoma cells[J]. Cancers (Basel), 2020, 12(4):
+1038.
+118
+--- 第132页 ---
+暨南大学博士学位论文
+[179] Wu C, Jia Y, Lee J H, et al. trans-Caryophyllene is a natural agonistic ligand for
+peroxisome proliferator-activated receptor-α[J]. Bioorg Med Chem Lett, 2014, 24(14):
+3168-3174.
+[180] Oboh G, Olasehinde T A, Ademosun A O. Essential oil from lemon peels inhibit key
+enzymes linked to neurodegenerative conditions and pro-oxidant induced lipid
+peroxidation[J]. J Oleo Sci, 2014, 63(4): 373-381.
+[181] Pant A, Mishra V, Saikia S K, et al. Beta-caryophyllene modulates expression of stress
+response genes and mediates longevity in caenorhabditis elegans[J]. Exp Gerontol, 2014,
+57: 81-95.
+[182] Calleja M A, Vieites J M, Montero-Meléndez T, et al. The antioxidant effect of β-
+caryophyllene protects rat liver from carbon tetrachloride-induced fibrosis by inhibiting
+hepatic stellate cell activation[J]. Br J Nutr, 2013, 109(3): 394-401.
+[183] Scandiffio R, Geddo F, Cottone E, et al. Protective effects of (E)-β-caryophyllene (BCP) in
+chronic inflammation[J]. Nutrients, 2020, 12(11):3273.
+[184] Li W Y, Yang F, Chen J H, et al. β-caryophyllene ameliorates MSU-induced gouty
+arthritis and inflammation through inhibiting NLRP3 and NF-κB signal pathway: In silico
+and in vivo[J]. Front Pharmacol, 2021, 12: 651305.
+[185] Luo H, Vong C T, Chen H, et al. Naturally occurring anti-cancer compounds: Shining
+from chinese herbal medicine[J]. Chin Med, 2019, 14: 48.
+[186] Pagano E, Romano B, Izzo A A, et al. The clinical efficacy of curcumin-containing
+nutraceuticals: An overview of systematic reviews[J]. Pharmacol Res, 2018, 134: 79-91.
+[187] Srivastava S, Pant A, Trivedi S, et al. Curcumin and β-caryophellene attenuate cadmium
+quantum dots induced oxidative stress and lethality in caenorhabditis elegans model
+system[J]. Environ Toxicol Pharmacol, 2016, 42: 55-62.
+[188] Yamaguchi M, Levy R M. The combination of β-caryophyllene, baicalin and catechin
+synergistically suppresses the proliferation and promotes the death of RAW267.4
+macrophages in vitro[J]. Int J Mol Med, 2016, 38(6): 1940-1946.
+[189] Carrier J, Aghdassi E, Cullen J, et al. Iron supplementation increases disease activity and
+vitamin E ameliorates the effect in rats with dextran sulfate sodium-induced colitis[J]. J
+Nutr, 2002, 132(10): 3146-3150.
+119
+--- 第133页 ---
+暨南大学博士学位论文
+[190] Erichsen K, Milde A M, Arslan G, et al. Low-dose oral ferrous fumarate aggravated
+intestinal inflammation in rats with DSS-induced colitis[J]. Inflamm Bowel Dis, 2005,
+11(8): 744-748.
+[191] Chua A C G, Klopcic B R S, Ho D S, et al. Dietary iron enhances colonic inflammation
+and IL-6/IL-11-Stat3 signaling promoting colonic tumor development in mice[J]. PloS One,
+2013, 8(11): e78850.
+[192] Triantafillidis J, Vagianos C, Agrogiannis G, et al. Effect of infliximab and adalimumab on
+experimental colitis following orally supplemented iron[J]. J Invest Surg, 2017, 30(1):6-12.
+[193] Millar A D, Rampton D S, Blake D R. Effects of iron and iron chelation in vitro on
+mucosal oxidant activity in ulcerative colitis[J]. Aliment Pharmacol Ther, 2000, 14(9):
+1163-1168.
+[194] Minaiyan M, Mostaghel E, Mahzouni P. Preventive therapy of experimental colitis with
+selected iron chelators and anti-oxidants[J]. Int J Prev Med, 2012, 3(Suppl 1): S162-S169.
+[195] Jin F, Li J, Zhang Y B, et al. A functional motif of long noncoding RNA Nron against
+osteoporosis[J]. Nat Commun, 2021, 12(1): 3319.
+[196] Zhou Y, Zhou B, Pache L, et al. Metascape provides a biologist-oriented resource for the
+analysis of systems-level datasets[J]. Nat Commun, 2019, 10(1): 1523.
+[197] Deng J, Wu Z, Zhao Z, et al. Berberine-loaded nanostructured lipid carriers enhance the
+treatment of ulcerative colitis[J]. Int J Nanomedicine, 2020, 15: 3937-3951.
+[198] Duarte A E, de Menezes I R, Bezerra Morais Braga M F, et al. Antimicrobial activity and
+modulatory effect of essential oil from the leaf of rhaphiodon echinus (Nees & Mart)
+schauer on some antimicrobial drugs[J]. Molecules, 2016, 21(6):743.
+[199] Abuhamdah S, Abuhamdah R, Howes M J, et al. Pharmacological and neuroprotective
+profile of an essential oil derived from leaves of aloysia citrodora palau[J]. J Pharm
+Pharmacol, 2015, 67(9): 1306-1315.
+[200] Chen P, Bai Q, Wu Y, et al. The essential oil of Artemisia argyi H.Lev. and vaniot
+attenuates NLRP3 inflammasome activation in THP-1 cells[J]. Front Pharmacol, 2021, 12:
+712907.
+[201] Chen X, Kang R, Kroemer G, et al. Ferroptosis in infection, inflammation, and
+immunity[J]. J Exp Med, 2021, 218(6):e20210518.
+120
+--- 第134页 ---
+暨南大学博士学位论文
+[202] Huang H S, Chen C J, Suzuki H, et al. Inhibitory effect of phospholipid hydroperoxide
+glutathione peroxidase on the activity of lipoxygenases and cyclooxygenases[J].
+Prostaglandins Other Lipid Mediat, 1999, 58(2-4): 65-75.
+[203] Chen X, Xu S, Zhao C, et al. Role of TLR4/NAPDH oxidase 4 pathway in promoting cell
+death through autophagy and ferroptosis during heart failure[J]. Biochem Biophys Res
+Commun, 2019, 516(1): 37-43.
+[204] Folco G, Murphy R C. Eicosanoid transcellular biosynthesis: From cell-cell interactions to
+in vivo tissue responses[J]. Pharmacol Rev, 2006, 58(3): 375-388.
+[205] Lei L, Yang J, Zhang J, et al. The lipid peroxidation product EKODE exacerbates colonic
+inflammation and colon tumorigenesis[J]. Redox Biol, 2021, 42: 101880.
+[206] Wang Y, Dattmore D A, Wang W, et al. Trans, trans-2,4-Decadienal, a lipid peroxidation
+product, induces inflammatory responses via Hsp90- or 14-3-3ζ-dependent mechanisms[J].
+J Nutr Biochem, 2020, 76: 108286.
+[207] Gasc N, Taché S, Rathahao E, et al. 4-hydroxynonenal in foodstuffs: Heme concentration,
+fatty acid composition and freeze-drying are determining factors[J]. Redox Rep, 2007,
+12(1): 40-44.
+[208] Pierre F, Peiro G, Taché S, et al. New marker of colon cancer risk associated with heme
+intake: 1,4-dihydroxynonane mercapturic acid[J]. Cancer Epidemiol Biomarkers Prev,
+2006, 15(11): 2274-2279.
+[209] Borgonetti V, Benatti C, Governa P, et al. Non-psychotropic cannabis sativa l.
+Phytocomplex modulates microglial inflammatory response through CB2 receptors-,
+endocannabinoids-, and NF-κB-mediated signaling[J]. Phytother Res, 2022, 36(5) :2246-
+2263.
+[210] Hashiesh H M, Sharma C, Goyal S N, et al. A focused review on CB2 receptor-selective
+pharmacological properties and therapeutic potential of β-caryophyllene, a dietary
+cannabinoid[J]. Biomed Pharmacother, 2021, 140: 111639.
+[211] Galaj E, Bi G-H, Moore A, et al. Beta-caryophyllene inhibits cocaine addiction-related
+behavior by activation of PPARα and PPARγ: Repurposing a FDA-approved food additive
+for cocaine use disorder[J]. Neuropsychopharmacology, 2021, 46(4): 860-870.
+121
+--- 第135页 ---
+暨南大学博士学位论文
+[212] D'Argenio G, Valenti M, Scaglione G, et al. Up-regulation of anandamide levels as an
+endogenous mechanism and a pharmacological strategy to limit colon inflammation[J].
+FASEB J, 2006, 20(3): 568-570.
+[213] Strisciuglio C, Creoli M, Tortora C, et al. Increased expression of CB2 receptor in the
+intestinal biopsies of children with inflammatory bowel disease[J]. Pediatr Res, 2022.
+122
+--- 第136页 ---
+暨南大学博士学位论文
+附表
+表 S1 β-石竹烯对目标靶蛋白的结合能
+Table S1 Interaction energy of β-caryophyllene to target proteins
+靶点 结合能（kcal/mol）
+CB2R -27.59867044
+PPARγ 9.76362534
+None
+PPARα
+None
+TLR4
+表 S2 β-石竹烯对铁死亡相关靶蛋白的结合能
+Table S2 Binding energy of β-caryophyllene to target proteins associated with ferroptosis
+靶点 PDB ID 结合能（kcal/mol）
+GPX4  5H5Q -6.1
+FTH1 5N26 -5.2
+ACSL4  AFF1 -7.2
+COX2 5F1A -6.7
+125
+--- 第137页 ---
+暨南大学博士学位论文
+附图
+图 S1 艾叶精油 GC-MS 图
+Figure S1. GC-MS analysis of Artemisia argyi essential oil.
+126
+--- 第138页 ---
+暨南大学博士学位论文
+图 S2 艾叶精油中主要成分的结构式
+Figure S2. Chemical structure of main small molecule in essential oil of Artemisia argyi.
+127
+--- 第139页 ---
+暨南大学博士学位论文
+图 S3 BCP并不是通过激活 PPARα 或 PPARγ 发挥增强 GPX 活性的作用
+Figure S3. BCP does not enhance GPX activity by activating PPARα or PPARγ. GPX activity
+was determined using a GPX activity kit after treating with 500 nM RSL3 in the presence of BCP
+(20 μM) or PPARα antagonist GW6471 (10 μM) (A) or PPARγ antagonist GW9662 (10 μM) (B)
+for 6 h. Data are presented as the mean ± S.E.M. Statistics were analyzed using one-way ANOVA.
+n.s., not significant, ##p < 0.01 versus control group; *p < 0.05, **p < 0.01, ***p < 0.001 versus
+RSL3 treatment group. All data are combined from at least three independent experiments.
+图 S4 BCP与铁死亡相关靶蛋白结合的对接结果
+Figure S4. The docking results of BCP binding to ferroptosis-related targets. The 3D
+interaction plot (upper part) and 2D interaction plot (lower part) of (A) GPX4, (B) FTH1, (C)
+ACSL4, and (D) COX2.
+128

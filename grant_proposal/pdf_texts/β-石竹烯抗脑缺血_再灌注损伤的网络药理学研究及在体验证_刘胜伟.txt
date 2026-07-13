@@ -1,0 +1,324 @@
+
+--- 第1页 ---
+二 次 研 究 ·63·
+2024年第37卷第11期
+DOI：10.12174/j.issn.2096-9600.2024.11.14
+-石竹烯抗脑缺血/再灌注损伤的
+β
+网络药理学研究及在体验证
+∗
+刘胜伟1，沈正泽1，任忠洋2，丁 玲3，刘 洁3 ，陈 昶4
+△
+1 重庆医科大学附属永川医院，重庆 402160； 2 重庆市江津区中医院，重庆 402284；
+3 重庆市江津区中心医院，重庆 402260； 4 重庆医科大学生命科学研究院，重庆 400016
+［摘 要］ 目的：采用网络药理学方法探索β-石竹烯（β-caryophyllene，BCP）在脑缺血/再灌注损伤
+（cerebral ischemia-reperfusion injury，CIRI）中发挥作用的潜在机制，并对关键通路中的关键靶点进行
+验证。方法：通过PharmMapper（pharmmapper server）数据库获得BCP相关靶点；通过人类基因数据库
+（https：//www.genecards.org/，GeneCards）和在线人类孟德尔遗传数据库（online mendelian inheri-
+tance in man，OMIM）数据库获得CIRI的相关靶点；利用VENNY 2.1.0数据库比对筛选BCP抗CIRI的潜在作
+用靶点，并利用软件Cytoscape 3.7.1绘制相互图；利用软件R语言中的clusterProfiler包对BCP抗CIRI的
+潜在靶点进行基因本体论（gene ontology，GO）富集分析及京都基因与基因组百科全书（kyoto encyclopedia
+of genes and genomes，KEGG）富集通路分析；建立大鼠CIRI模型，用western blot法验证BCP抗CIRI的潜在
+靶点。结果：筛选出BCP相关靶点194个，CIRI相关靶点1144个，共同靶点102个。BCP主要作用于白细胞介素6
+（interleukin-6，IL-6）、肿瘤坏死因子（tumor necrosis factor，TNF）、肿瘤蛋白p53（tumor protein p53，
+TP53）、丝裂原活化蛋白激酶1（mitogen-activated protein kinase 1，MAPK1）、信号转导子和转录激活子3
+（signal transducer and activator of transcription 3，STAT3）、半胱天冬酶3（caspase 3，CASP3）等关键
+靶点，通过过氧化物酶体增殖物激活受体（peroxisome proliferator-activated receptors，PPAR）、丝裂原
+活化蛋白激酶（mitogen-activated protein kinase，MAPK）、核因子κB（nuclear factor kappa-B，NF-κB）、
+P53（tumor protein p53，P53）等信号通路途径，对CIRI发挥抗炎、抗氧化、抗凋亡、神经保护作用。结论：BCP
+在CIRI治疗中的作用主要涉及抗凋亡、神经保护作用，其他还与抗炎、抗氧化等多靶点、多通路相关，体现出
+我国中医药多靶点、多环节发挥作用的特点。
+［关键词］ 脑缺血/再灌注损伤；β-石竹烯；网络药理学
+［中图分类号］ R255.2 ［文献标识码］ A ［文章编号］ 2096-9600（2024）11-0063-07
+Network Pharmacology-based Study and In-vivo Verification of β-caryophyllene
+Against Cerebral Ischemia/Reperfusion Injury
+LIU Shengwei1, SHEN Zhengze1, REN Zhongyang2, DING Ling3, LIU Jie3, CHEN Chang4
+1 The Affiliated Yongchuan Hospital of Chongqing Medical University, Chongqing 402160, China;
+2 Jiangjin District Hospital of TCM, Chongqing 402284, China;
+3 Jiangjin District Central Hospital, Chongqing 402260, China;
+4 Institute of Life Sciences, Chongqing Medical University, Chongqing 400016, China
+AAbbssttrraacctt Objective: To explore the potential mechanism of β-caryophyllene (BCP) in the treatment of
+cerebral ischemia/reperfusion injury (CIRI) using network pharmacology, and to confirm the key targets in the key
+pathway. Methods: BCP related targets were obtained from PharmMapper, CIRI related targets were gained from
+GeneCards and OMIM, the potential targets of BCP against CIRI were screened using VENNY 2.1.0 database, and
+PPI was drawn using Cytoscape 3.7.1 software, clusterProfiler package in software R language was utilized to
+perform GO enrichment analysis and KEGG enrichment pathway analysis of the potential targets of BCP against
+CIRI, and western blot method was applied to validate the potential targtes of BCP against CIRI after establishing
+rat models with CIRI. Results: The study has filtered 194 BCP related targets, 1144 CIRI related targets and 102
+common targets. BCP could exert anti-inflammatory, anti-oxidant, anti-apoptotic and neuroprotective effects on
+CIRI mainly through acting on the key targets including IL-6, TNF, TP53, MAPK1, STAT3 and CASP3, as well as
+the signaling pathways such as PPAR, MAPK, NF-κB, and p53. Conclusion: BCP mainly develops the anti-
+--- 第2页 ---
+·64· 二 次 研 究
+Western Journal of Traditional Chinese Medicine,2024 Vol.37 No.11
+apoptotic and neuroprotective effects in the treatment of CIRI, and others are related to multiple targets and
+pathways such as anti-inflammatory and antioxidant, embodying the characteristics of multi-target and multi-link
+effects of TCM in China.
+KKeeyywwoorrddss cerebral ischemia/reperfusion injury; β-caryophyllene; network pharmacology
+脑缺血作为临床常见的脑血管疾病，发病率 理盐水溶解备用。
+高、致残率高、致死率高［1-3］。目前，采用“溶栓 1.5.2 实验动物 SPF级雄性SD大鼠30只，体
+法”恢复患者缺血区血供为临床主要治疗策略， 质量265～285 g，由重庆医科大学实验动物中心
+组织型纤溶酶原激活物（tissue plasminogen 供给，动物生产许可证编号：SCXK（渝）2012-0001。
+activator，tPA）为美国食品药品监督管理局批 1.5.3 实验试剂 靶点抗体购于StantaCruz公
+准的溶栓剂，但由于其具有严重不良反应，且使用 司（TP53：sc-73566，CASP3：sc-56046，Mdm2：sc-965，
+时间被严格限制，容易继发脑缺血/再灌注损伤 B-actin：sc-8432），WB相关试剂购于碧云天公司
+（cerebral ischemia-reperfusion injury，CIRI）［4］， （批号：P0023）。
+仅适用于4%～7%的患者。β-石竹烯（β-caryophy- 1.5.4 实验仪器 WB主要仪器由BIO-RAD提供
+llene，BCP）是一种双环倍半萜烯［5］，既往研究表 （美国 Bio Rad公司；型号：Bio-Rad GelDoc XR+）。
+明，BCP对CIRI具有一定的保护作用［6-9］，但潜在 1.5.5 实验方法 将30只SD大鼠采用随机数字
+机制还有待进一步阐明。本研究拟通过网络药理 表法随机分为3组：假手术组、模型组、BCP组，每组
+学方法，系统分析BCP对CIRI发挥保护作用的可 10只。BCP组根据研究小组前期试验［8］给予BCP溶
+能机制，筛选出潜在靶点，并建立大鼠CIRI模型 液306 mg/kg灌胃，假手术组和模型组给予生理盐
+进行验证。 水灌胃，连续7天。末次给药后，模型组和BCP组采
+1 资料与方法 用改良Zea longa方法［10］建立大鼠大脑中动脉栓
+1.1 BCP靶点预测 通过PharmMapper（pharm- 塞 模 型（middle cerebral artery occlusion，
+mapper server）数据库（http：//lilab-ecust. MCAO）。缺血再灌注24 h后，用WB法检测各组大鼠
+cn/pharmmapper/），获得BCP相关靶点。 皮质中关键靶点的表达。
+1.2 CIRI相关靶点筛选 以“cerebral ischemia- 1.6 统计学方法 数据分析采用SPSS 19.0软件处
+reperfusion injury”为检索关键词，通过OMIM 理，计量资料采用x±s表示，采用t检验，P＜0.05
+ˉ
+（online mendelian inheritance in man，OMIM） 为差异有统计学意义。
+数据库（https：//www.omim.org/）和GeneCards 2 结果
+（https：//www.genecards.org/，GeneCards）数据 2.1 BCP的作用靶点 通过PharmMapper数据
+库获得CIRI的相关靶点。 库，找到BCP相关靶点194个。
+1.3 BCP抗CIRI靶点预测及PPI 应用蛋白质蛋 2.2 CIRI 相关靶点筛选 通过 GeneCards 和
+白质相互作用（protein-protein interaction， OMIM数据库，共找到CIRI相关靶点1144个。
+PPI）网络构建利用VENNY（https：//bioinfogp. 2.3 石斛碱作用于 CIRI 靶点的预测 通过
+cnb.csic.es/tools/ven-ny/，VENNY）2.1.0数据 VENNY 2.1.0软件，得到BCP作用靶点和CIRI相
+库比对BCP和脑缺血/再灌注等相关靶点，两者共 关靶点的交集靶点102个，见图1。
+有靶点即为BCP抗CIRI的潜在作用靶点，并利用 β-石竹烯 CIRI
+软件Cytoscape 3.7.1绘制相互图。
+1.4 BCP抗CIRI的GO和KEGG富集分析 利用软
+件R语言中的clus-terProfiler包对BCP抗CIRI
+的潜在靶点进行GO（gene ontology，GO）和KEGG
+（kyoto encyclopedia of genes and genomes，
+KEGG）富集分析，预测BCP抗CIRI的潜在作用机制。
+1.5 建立大鼠CIRI模型 用蛋白免疫印迹法 图1 BCP作用于CIRI靶点
+（western blot，WB）法验证BCP抗CIRI的潜在靶点。 2.4 PPI网络构建及关键靶点预测 将102个交
+1.5.1 实验药物 BCP购于Adamas公司（批号： 集靶点构建靶点交联互作网络，导入Cytoscape
+Y87524A），与10%聚氧乙烯蓖麻油混合后，再用生 3.7.1软件绘制PPI网络图。见图2。
+--- 第3页 ---
+二 次 研 究 ·65·
+2024年第37卷第11期
+图4 BCP治疗CIRI的靶点的KEGG通路富集分析
+图2 BCP治疗CIRI靶点的PPI网络图 分子的反应、抗氧化反应、活性氧代谢过程、对活
+分析网络拓扑参数，根据度值（Degree）大小， 性氧的反应等，参与膜微结构域、膜区、分泌颗粒
+得出排名前列的关键靶点有：ALB（albumin，ALB； 内腔、胞质囊腔等细胞组分，以及参与磷酸酶绑
+degree=68）、IL-6（degree=63）、TNF（degree=61）、 定、细胞因子受体结合、核受体活动、配体激活的转
+TP53（degree=56）、MAPK1（degree=50）、STAT3 录因子活性、类固醇激素受体活性、蛋白酶绑定、
+（degree=49）、SRC（proto-oncogene tyrosine- 蛋白磷酸酶绑定、抗氧化活性等分子功能。主要参
+protein kinase src，SRC；degree=49）、CASP3 与的通路有 MAPK、耐 EGFR（epidermal growth
+（degree=49）、CAT（Catalase，CAT；degree=46）、 factor receptor，EGFR）酪氨酸激酶抑制剂、FoxO
+PTGS2（prostaglandin-endoperoxide synthase （forkhead box O，FoxO）、低氧诱导因子 1、RAS
+−
+2，PTGS2；degree=46）。 （ras proteins，RAS）、PPAR、NF-κB、趋化因子、Rap1
+2.5 BCP抗CIRI的相关靶点GO和KEGG富集分 （ras-related protein 1，Rap1）、自噬 动物、药物
+−
+析 对BCP抗CIRI的潜在靶点进行GO和KEGG富 代谢-细胞色素P450、p53、ErbB（erbb receptor
+集分析。见图3—4。 feedback inhibitor，ErbB）等信号通路。
+2.6 通路分析 p53信号通路在KEGG通路分析
+中富集度也较显著（P＜0.05），可能是BCP治疗CIRI
+的关键通路之一。见图5。
+2.7 WB结果分析 以上网络药理学预测出BCP
+抗脑缺血再灌注的所有潜在靶点，均在我们前期
+研究［11］BCP抗脑缺血再灌注的转录组测序的基因
+集中有所体现，且在假手术组、模型组、BCP组中
+的表达有一定的差异。见图6。
+PPI排名前十关键靶点中的TP53（degree=56）、
+CASP3（degree=49），同时也是KEGG通路分析中富
+集度较高的p53信号通路中的潜在靶点和p53信
+号通路中另一潜在靶点Mdm2。从热图得知，这三
+个的表达尤为明显。见图7。
+与假手术组相比，模型组大鼠大脑皮质中
+图3 BCP治疗CIRI的靶点的GO富集分析
+TP53、CASP3、Mdm2蛋白的表达明显增加；与模型
+GO富集包含了生物过程、细胞组成、分子功 组相比，BCP组TP53、CASP3、Mdm2蛋白的表达明显
+能三方面信息，关联的前十位生物过程主要有对 降低，差异具有统计学意义（P＜0.05）。见表1、
+类固醇激素的反应、对脂多糖的反应、对细菌来源 图8。
+--- 第4页 ---
+·66· 二 次 研 究
+Western Journal of Traditional Chinese Medicine,2024 Vol.37 No.11
+注：红色表示BCP治疗CIRI的潜在靶点
+图5 P53信号通路
+图6 BCP治疗CIRI靶点的基因表达量TPM热图
+--- 第5页 ---
+二 次 研 究 ·67·
+2024年第37卷第11期
+图7 BCP对MCAO大鼠TP53、CASP3、Mdm2 基因TPM表达量的影响
+表1 BCP对MCAO大鼠 及关键靶点，并通过在体实验加以初步验证，具有
+TP53、CASP3、Mdm2蛋白表达的影响（x±s） 一定的意义。
+ˉ
+组别 鼠数 TP53 CASP3 Mdm2 本研究共筛选出BCP相关靶点92个，CIRI相
+假手术组 10 0.51±0.04b 0.18±0.01b 0.31±0.02b 关靶点1042个，两者交集靶点102个。PPI显示：
+模型组 10 1.71±0.08a 0.69±0.04a 0.79±0.06a Degree前十的关键靶点为ALB、IL-6、TNF、TP53、
+BCP组 10 1.11±0.07b 0.31±0.05b 0.41±0.04b MAPK1、STAT3、CASP3、SRC、CAT、PTGS2，表明BCP可
+注：a表示与假手术组比较，P＜0.05；b表示与模型组 能是通过作用于以上关键靶点起效的，这些靶点
+比较，P＜0.05 又贯穿于各条通路中，共同发挥效应。
+CIRI的病理机制复杂，缺血再灌注后脑组织
+TP53
+损伤严重程度既取决于血流减少程度，还与氧化
+CASP3 应激、炎症损伤、线粒体损伤、多巴胺、一氧化氮大
+量合成、能量代谢障碍、兴奋性氨基酸毒性、钙超
+Mdm2
+载等因素有关，诸多因素、环节互为因果、相互影
+响，产生神经毒性，进而导致神经细胞发生坏死或
+β-actin
+凋亡，局部脑组织损伤［14］。结合CIRI可能的发生
+假手术组 模型组 β-石竹烯组 发展机制，根据KEGG富集结果：PPAR、MAPK、NF-
+图8 BCP对MCAO大鼠TP53、CASP3、Mdm2蛋白表达的影响 κB、p53等信号通路相关性较大。
+PPAR信号通路：PPAR是核受体家族成员，包
+3 讨论
+大脑是维持人类生命功能的关键器官，脑血
+括PPARα、PPARγ、PPARβ/δ，与代谢、能量稳态、细胞
+发育和分化有关。在配体结合后，PPAR转运到细
+管事件是公认的危险甚至致命的疾病，在全球范
+胞核，在那里它们与维A酸X受体异二聚并结合过
+围内，每年造成的死亡人数超过500万人。尽管
+人们已经做出了大量的努力，但脑血管疾病的预 氧 化 物 酶 体 增 殖 物 反 应 元 件（peroxisome
+后仍不乐观。在各种脑血管事件中，脑缺血性占 proliferator response elements，PPREs）来调
+有重要地位［12］。血流恢复引起的CIRI不可避免 控靶基因的转录［15］。由于PPAR具有重要的调节
+地导致严重的继发性损伤，如过度炎症、氧化应 代谢作用，故其激动剂在临床上用于治疗多种代
+激、自噬和凋亡。 谢性疾病，特别是血脂异常和2型糖尿病（type
+近年来，BCP已被证实具有很大的潜力，是一 2 diabetes mellitus，T2DM），此外其还参与多
+种具有神经保护作用的天然提取物，对CIRI神经 种炎症相关疾病的发生、发展。研究表明，经配
+损伤具有显著的治疗潜力，为脑缺血性疾病的治 体激活的PPARγ可抑制体内TNF、IL-6等多种炎
+疗提供了一种创新性的解决方案［13］。然而，目前 症因子表达，进而抑制炎症反应，发挥抗CIRI作
+相关研究报道较少，机制尚不明确，揭示其潜在机 用［16］。HUANG等［17］认为，PPARγ激动剂可减轻CIRI，
+制，实现其药用价值迫在眉睫。本研究利用网络 其机制可能与激活PPARγ，抑制NOD（nucleotide
+药理学方法预测BCP抗CIRI的潜在分子作用机制 binding oligomerization domain，NOD）样受体
+--- 第6页 ---
+·68· 二 次 研 究
+Western Journal of Traditional Chinese Medicine,2024 Vol.37 No.11
+家族3（NLR family pyrin domain containing 重要的负反馈调节因子。CASP3是一种半胱氨酸
+3，NLRP3）表达，减轻炎症反应，进而减少活化的半 蛋白酶，位于细胞凋亡级联反应下游，CASP3被激
+胱天冬酶1（Caspase-1）介导的细胞凋亡有关。 活后，可裂解、破坏细胞结构、断裂DNA，以执行细
+MAPK 信号通路：包含JNK（c-Jun N-terminal 胞凋亡程序［26-27］。同时，PPI结果也提示TP53、
+kinase，JNK）、p38 MAPK（p38 mitogen-activated CASP3位列Degree前十，可能为潜在关键靶点。
+protein kinase，p38 MAPK）、ERK（mitogen- “假手术组-模型组-BCP组”热图也显示：与假手
+activated protein kinase 1，ERK）三大通路，通 术相比，TP53、CASP3、Mdm2三个指标上调明显，给
+过响应不同刺激，将信号从细胞膜传递至细胞核， 予BCP后下调明显。既往研究显示：BCP对MCAO
+调控着细胞增殖、分化、死亡等过程，在心脑血管 模型大鼠具有保护作用，且306 mg/kg剂量的BCP
+疾病中具有重要作用［18］。其中，Degree前十的 灌胃效果最佳［8］。故本研究按照原方法建立MCAO
+MAPK1，也称为ERK或者ERK2基因，参与细胞增殖、 大鼠模型，给予原最佳剂量，以上关键靶点进行检
+分化和转录调节等细胞的多个进程。研究发现， 测，Western Blot结果也进一步证实了这三个靶
+激活MAPK1，对肾脏缺血再灌注具有一定保护作 点对CIRI的重要性以及BCP对这三个指标的重要
+用［19］。IL-6为促炎细胞因子、抗炎性肌球蛋白； 影响。
+TN包括促炎因子TNF-α及TNF-β，能引起细胞凋 综上所述，本研究采用网络药理学方法，研究
+亡；p38通路的激活可使TNF、IL-6等炎症因子分 BCP作用CIRI的主要机制，筛选了BCP抗CIRI的潜
+泌增加，诱发炎症级联反应，而激活的JNK，ERK1/2 在靶点，主要作用于IL-6、TNF、TP53、MAPK1、STAT3、
+又可进一步加重炎症反应［20］。此外，研究表明，通 CASP3等关键靶点，通过PPAR、MAPK、NF-κB、p53信
+过下调p38 MAPK介导的NF-κB信号通路，可促进 号通路等途径，发挥抗炎、抗氧化、抗凋亡、神经保
+炎症因子表达，抑制细胞凋亡［21］。 护作用，体现出我国中医药多靶点、多环节发挥作
+NF-κB和p53信号通路：NF-κB信号通路，NF-κB 用的特点。
+为关键蛋白，与Degree前十的STAT3等多种功能 参考文献
+性合作伙伴共同调节细胞的多种代谢过程，包括 ［1］ AVAN A，DIGALEH H，Di NAPOLI M，et al.Socioeconomic
+status and stroke incidence，prevalence，mortality，
+生存、炎症、凋亡，甚至触发细胞死亡的“自噬细胞
+and worldwide burden：an ecological analysis from
+死亡”［22-23］。在CIRI中，NF-κB可诱导p53和Bax的
+the Global Burden of Disease Study 2017［J］.BMC Med，
+表达，使细胞发生凋亡和自噬。p53信号通路的 2019，17（1）：191.
+激活，可进一步促进细胞自噬和凋亡［24-25］。NF-κB、 ［2］ Radu R A，Terecoas E O，B jenaru O A，et al.Etio-
+■ ■
+p53及其介导的自噬和凋亡在CIRI恶化中的关 logic classification of ischemic stroke：where do
+we stand［J］.Clin Neurol Neurosurg，2017，159：93-106.
+键作用也已得到证实，抑制NF-κB和下游p53可
+［3］ BENJAMIN E J，MUNTNER P，ALONSO A，et al.American
+显著减弱神经元的自噬和凋亡，实现显著的神经
+heart association council on epidemiology and
+保护作用［26］。回顾BCP抗CIRI的相关文献，几乎 prevention statistics committee and stroke sta-
+均为本课题组成员的研究，既往研究中有证实 tistics subcommittee，heart disease and stroke
+BCP可通过抑制炎症通路NF-κB的激活并减少 statistics—2019 update：a report from the Ameri-
+can heart association［J］.Circulation，2019，146（24）：
+TNF-α、IL-1β释放来发挥疗效的［6］，但对p53信号
+56-528.
+通路研究少且浅，本研究图5的p53信号通路图显
+［4］ TOBINM K，BONDSJ A，MINSHALLR D，et al.Neurogenesis
+示，TP53、CASP3、Mdm2为石竹烯通过该通路治疗 and inflammation after ischemic stroke：what is
+CIRI的潜在靶点。TP53即p53，是p53信号通路 known and where we go from here［J］.J Cereb Blood
+的关键靶点，转录因子p53具有双重调节作用，激 Flow Metab，2014，34（10）：1573-1584.
+［5］ CHICCA A，CAPRIOGLIO D，MINASSI A，et al.Functionali-
+活p53，可致细胞周期停滞、启动DNA修复，修复受
+zation of β-caryophyllene generates novel poly-
+损DNA。但若DNA损伤过度，p53会进一步激活下
+pharmacology in the endocannabinoid system［J］.ACS
+游的促凋亡基因发生转录，诱导细胞凋亡，并杀灭 Chem Biol，2014，9（7）：1499-1507.
+含有DNA损伤的细胞。Mdm2，一种针对p53的特异 ［6］ WANG Y C，LIU J D，CHEN S，et al.β-caryophylene al-
+性泛素化E3连接酶，可与p53直接结合，促进p53 leviates ischemic stroke injury in mice by upreg-
+ulating miR-183 expression［J］.Acta Academiae-
+蛋白发生泛素化并降解，在细胞内的p53蛋白动
+Medicinae Militaris Tertiae，2020，42（16）：1625-1632.
+态平衡中也发挥了关键作用，同时，Mdm2自身也
+［7］ YANG M，AN R D，LI M H，et al.β-caryophyllene miti-
+可被p53激活，故在p53信号通路中，Mdm2是非常 gates cere-bral ischemia/reperfusion injury in
+--- 第7页 ---
+二 次 研 究 ·69·
+2024年第37卷第11期
+mice by inhibiting HMGB1/TLR4/NF-κB pathway［J］. ［22］ CUID R，WANG L，JIANG W，et al.Propofol prevents cere-
+Chin J Immun，2017，33（7）：1009-1013． bral ischemia-triggered autophagy activation and cell
+［8］ CAO G X，LI R R，LIU J，et al.β-caryophylene allevi- death in the rat hippocampus through the NF-κB/p53
+ates cerebral cortical injury in rats with focal signaling pathway［J］.Neuroscience，2013，246（19）：
+cerebral ischemia/reperfusion through antioxidant 117-132.
+activity［J］.Pharmacol Clin Chin Mater Med，2016，32（1）： ［23］ 李伟艺，刘红松，高山瑛，等.基于Notch1/NF-κB信号通路
+56-60． 探究补阳还五汤对脑缺血再灌注损伤的拮抗作用及其机
+［9］ WANG Q，RAO J Y，WANG Y C.Protective effect of β- 制［J］.西部中医药，2022，35（11）：16-21.
+caryo-phylene on cerebral ischemia/reperfusion ［24］ WANG Y，DONG X X，CAO Y，et al.p53 induction con-
+white matter injury in rats［J］.Chinese Pharmaco- tributes to excitotoxic neuronal death in rat
+logical Bulletin，2020，36（3）：360-365． striatum through apoptotic and autophagic mecha-
+［10］ LONGAE Z，WEINSTEINP R，CARLSON S，et al.Reversible nisms［J］.Eur J Neurosci，2009，30（12）：2258-2270.
+middle cerebral artery occlusion without craniec- ［25］ 吴春凤，黄艳霞，郑景辉.基于网络药理学分析荆芥—防风
+tomy in rats［J］.Stroke，1989，20（1）：84-91. 药对的分子作用机制［J］.西部中医药，2022，35（2）：35-39.
+［11］ LIU S，LIU J，WANG Y，et al.Differentially expressed ［26］ GUO H，REN F，ZHANG L，et al.Kaempferol induces
+genes induced by β-caryophyllene in a rat model apoptosis in HepG2 cells via activation of the
+of cerebral ischemia-reperfusion injury［J］.Life endoplasmic reticulum stress pathway［J］.Mol Med
+Sci，2021，273（10）：119293-119296. Rep，2016，13（3）：2791-2800.
+［12］ AZARPAZHOOHM R，MANDZIA J L，THRIFT A G，et al.Age， ［27］ 王静，杨志华，易宣洪，等.复方斑蝥胶囊治疗非小细胞肺
+sex，and setting in the etiology of stroke study 癌的网络药理学研究［J］.西部中医药，2023，36（3）：28-34.
+（ASSESS）：study design and protocol［J］.J Neurol
+Sci，2019，399（4）：209-213.
+［13］ RAO J Y，WANG Q，WANG Y C，etal.A study of β-caryo-
+收稿日期：2024-06-06
+phylene alleviating cerebral ischemia/reperfusion
+*基金项目：国家自然科学基金青年科学基金项目
+（81701477）；重庆市科卫联合中医药技术创新与应用发展项目
+injury in rats by activating autophagy［J］.China
+（2021ZY3591）；重庆市永川区科学技术局2022年度公益类科研
+J Chin Mater Med，2020，45（4）：230-234.
+项目（2022yc-jckx20055）；重庆医科大学附属永川医院2020年
+［14］ LANG F S，HUANG Y X，XU Y.et al.Research progress
+度院内科研课题资助项目（YJJC202009）；重庆医科大学附属永川
+of pathophysiological mechanism of cerebral isch-
+医院2021年度院内科研课题资助项目（YJSJ202132）。
+emia-reperfusion injury［J］.Food and Drug，2018，20（4）：
+312-316.
+作者简介：刘胜伟（1985—），男，硕士学位，主管药师。研究
+方向：中药药理学、生物信息学等。
+［15］ CHANL S A，WELLSR A.Cross-talk between PPARs and
+the partners of RXR：a molecular perspective［J］.
+通讯作者：刘洁（1991—），女，硕士学位，主管药师。研究
+△
+方向：中药药理、神经药理学等相关疾病研究。E-mail：
+PPARRes，2009，4（9）：1-9.
+453039683@qq.com。
+［16］ WUX J，SUNX H，WANGS W，et al.Mifepristone allevi-
+ates cerebral ischemia-reperfusion injury in rats
+by stimulating PPARΓ［J］.Eur Rev Med Pharmacol
+Sci，2018，22（17）：5688-5696.
+［17］ HUANG Y，PENG T，CHENG C，et al.Effect of activa-
+tion of PPAR-γ on inflammatory response in cere-
+bral ischemia-reperfusion injury［J］.J Clin Anes-
+thesiol，2020，36（7）：63-68.
+［18］ WANG K L，YU Z K，ZHANG Y X，etal.Effect of huxinkang
+tablets on MAPK signal pathway in atherosclerosis
+rats［J］.Guiding J TCM，2019，25（21）：37-39.
+［19］ LUO F，SHI J，SHI Q，et al.Mitogen-activated pro-
+tein kinases and hypoxic/ischemic nephropathy［J］.
+Cell Physiol Biochem，2016，39（3）：1051-1067.
+［20］ ZHONG W M，JIN X，ZHENG M Y，etal.L-glutamine inhi-
+bited allergic contact dermatitis through the p38
+MAPK/cPLA2 signaling pathway［J］. Med J Yanbian
+University，2017，40（2）：79-82.
+［21］ ZHAO Y，TIAN X，LIU G，et al.Berberine protects myo-
+cardial cells against anoxia-reoxygenation injury
+via p38 MAPK-mediated NF-κB signaling pathways［J］.
+Exp Ther Med，2019，17（1）：230-236.

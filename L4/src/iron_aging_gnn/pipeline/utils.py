@@ -43,21 +43,6 @@ def log_step_time(start_time: float, step_name: str) -> float:
     logger.info(f"  [{step_name}] 耗时: {elapsed:.2f}s")
     return time.time()
 
-def handle_oom_and_retry(model, optimizer, scaler, batch_seeds, loss_fn, max_retries=3):
-    """OOM 降级重试：减小 batch 后重试前向传播。"""
-    if not torch.cuda.is_available():
-        raise RuntimeError("OOM on CPU — 不应发生")
-    for attempt in range(max_retries):
-        try:
-            torch.cuda.empty_cache()
-            reduced_batch = batch_seeds[: max(1, len(batch_seeds) // (2 ** attempt))]
-            return loss_fn(reduced_batch)
-        except torch.cuda.OutOfMemoryError as e:
-            logger.warning(f"  OOM 重试 {attempt+1}/{max_retries}: {e}")
-            if attempt == max_retries - 1:
-                raise
-    return None
-
 def check_gradient_norm(model: nn.Module, warn_threshold: float = 100.0) -> float:
     """计算模型总梯度范数，超过阈值时警告。"""
     total_norm = 0.0

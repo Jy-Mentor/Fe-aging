@@ -1,4 +1,4 @@
-﻿"""语义注意力机制 — 跨视图/跨模态语义级注意力融合
+"""语义注意力机制 — 跨视图/跨模态语义级注意力融合
 
 GHCDTI (2025) 提出语义注意力用于跨模态对齐：
   - 蛋白质嵌入表现出强选择性（高注意力集中在特定维度）
@@ -243,7 +243,6 @@ def cross_view_infonce_loss_with_mask(
         if valid_idx.numel() < 2:
             return torch.tensor(0.0, device=view_embeddings.device)
         view_embeddings = view_embeddings[:, valid_idx, :]
-        N = valid_idx.numel()
 
     return cross_view_infonce_loss(
         view_embeddings,

@@ -26,7 +26,7 @@ v4 修复内容：
 数据来源（全部真实，不模拟）：
   - CPI: L4/results/experimental_actives_detail_cleaned.csv
   - 蛋白嵌入: L4/results_v10_minibatch/esm2_protein_embeddings.npz
-  - TCM池: L3/results/tcm_compound_pool_tox_filtered_noleak.csv
+  - TCM池: L3/results/tcm_compound_pool_tox_filtered.csv
   - 中药映射: L3/results/herb_ingredient_mapping.xlsx
 
 输出：
@@ -37,7 +37,6 @@ v4 修复内容：
 """
 
 import logging
-import os
 import sys
 import time
 import traceback
@@ -54,9 +53,8 @@ from sklearn.decomposition import PCA
 from sklearn.ensemble import (
     ExtraTreesClassifier,
     RandomForestClassifier,
-    VotingClassifier,
 )
-from sklearn.model_selection import KFold, StratifiedKFold
+from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import (
     average_precision_score,
     f1_score,
@@ -258,7 +256,7 @@ def build_multifingerprint_features(smiles_list, rdkit_scaler=None):
     if rdkit_scaler is None:
         rdkit_scaler = StandardScaler()
         X_rdkit = rdkit_scaler.fit_transform(X_rdkit)
-        logger.info(f"  RDKit2D 已标准化 (mean=0, std=1)")
+        logger.info("  RDKit2D 已标准化 (mean=0, std=1)")
         return X_binary, X_rdkit, rdkit_scaler, binary_labels, rdkit_names
     else:
         X_rdkit = rdkit_scaler.transform(X_rdkit)
@@ -285,7 +283,7 @@ def process_protein_embeddings(protein_embeddings, target_dim=128, pca_model=Non
         # 标准化
         scaler = StandardScaler()
         vectors_scaled = scaler.fit_transform(vectors_reduced)
-        logger.info(f"  蛋白嵌入已标准化")
+        logger.info("  蛋白嵌入已标准化")
 
         # 返回字典
         processed = {k: vectors_scaled[i] for i, k in enumerate(keys)}
@@ -1085,7 +1083,7 @@ def main():
     cpi_df = pd.read_csv(L4_RESULTS / "experimental_actives_detail_cleaned.csv", low_memory=False)
     protein_embeddings_raw = {str(k): v.astype(np.float32) for k, v in
                               np.load(L4_RESULTS_V10 / "esm2_protein_embeddings.npz", allow_pickle=True).items()}
-    tcm_df = pd.read_csv(L3_RESULTS / "tcm_compound_pool_tox_filtered_noleak.csv", low_memory=False)
+    tcm_df = pd.read_csv(L3_RESULTS / "tcm_compound_pool_tox_filtered.csv", low_memory=False)
 
     # 获取所有需要的 SMILES
     all_smiles = list(cpi_df["canonical_smiles"].dropna().astype(str).unique())
@@ -1297,7 +1295,7 @@ def main():
     top_path = L4_RESULTS / "tree_v4_top_candidates.csv"
     top50.to_csv(top_path, index=False)
 
-    logger.info(f"\nTop 20 候选化合物:")
+    logger.info("\nTop 20 候选化合物:")
     for i, row in enumerate(top50.head(20).itertuples(index=False), 1):
         logger.info(f"  {i:2d}. {row.molecule_name} | max={row.max_score:.4f} "
                     f"| mean={row.mean_score:.4f} "
@@ -1306,7 +1304,7 @@ def main():
                     f"| {row.top_3_genes}")
 
     logger.info(f"\nTop 50 候选已保存: {top_path}")
-    logger.info(f"任务完成!")
+    logger.info("任务完成!")
 
 
 if __name__ == "__main__":

@@ -125,6 +125,7 @@ def build_esm_similarity_hard_neighbors(
         # 余弦相似度 = 内积（已 L2 归一化）
         sim_matrix = batch_emb @ emb_matrix.T  # (B, N)
 
+        sim_idx = 0
         for i, gene in enumerate(batch_genes):
             emb_idx = gene_to_emb_idx.get(gene)
             if emb_idx is None:
@@ -135,7 +136,8 @@ def build_esm_similarity_hard_neighbors(
             if g_local < 0:
                 continue
 
-            similarities = sim_matrix[i]  # (N,)
+            similarities = sim_matrix[sim_idx]  # (N,)
+            sim_idx += 1
             # 排除自身
             similarities[emb_idx] = -1.0
 

@@ -2,7 +2,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 import requests
-import json
 
 url = "https://bindingdb.org/axis2/services/BDBService/getLigandsByUniprotID"
 params = {"uniprot": "P27487", "affinity_type": "IC50", "cutoff": 10000, "response": "json"}

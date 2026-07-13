@@ -116,7 +116,7 @@ def main():
     # 5. 熵权法确定权重
     X = df[['quality_score', 'coverage_score', 'network_score']].values
     weights = entropy_weights(X)
-    print(f"\n熵权法权重:")
+    print("\n熵权法权重:")
     print(f"  quality_score:  {weights[0]:.4f}")
     print(f"  coverage_score: {weights[1]:.4f}")
     print(f"  network_score:  {weights[2]:.4f}")

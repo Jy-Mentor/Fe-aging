@@ -66,6 +66,7 @@ class Validator:
         val_compounds: list[int],
         compound_to_pos: dict,
         n_compounds: int,
+        n_proteins: int,
         use_amp: bool = True,
     ) -> dict:
         """SAGE 验证 — 全图前向 + 验证函数。"""
@@ -73,7 +74,7 @@ class Validator:
         with torch.no_grad(), torch.amp.autocast('cuda', enabled=use_amp):
             metrics = self.validate_fn(
                 model, x, edge_index,
-                val_compounds, compound_to_pos, n_compounds,
+                val_compounds, compound_to_pos, n_compounds, n_proteins,
             )
         model.train()
         return metrics

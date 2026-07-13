@@ -82,7 +82,6 @@ def predict_hgt_target_proteins_minibatch(
         num_neighbors = hgt_val_num_neighbors if hgt_val_num_neighbors is not None else [64, 32]
     hetero_data = graphs["hetero_data"]
     hetero_adj = graphs["hetero_adj"]
-    n_compounds = graphs["n_compounds"]
     n_proteins = graphs["n_proteins"]
 
     cpi_adj = hetero_adj[("compound", "interacts", "protein")]

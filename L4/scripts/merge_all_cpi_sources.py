@@ -11,7 +11,6 @@ import numpy as np
 from rdkit import Chem
 from pathlib import Path
 import logging
-import sys
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
@@ -219,7 +218,7 @@ def build_drugbank_df():
                 "doi": "",
                 "drugbank_id": db_id,
                 "drug_name": compound_name,
-                "note": f"DrugBank DTI from GitHub (NMTF-DrugRepositioning)",
+                "note": "DrugBank DTI from GitHub (NMTF-DrugRepositioning)",
             })
     return pd.DataFrame(rows)
 

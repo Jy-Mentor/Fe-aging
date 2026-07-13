@@ -448,7 +448,6 @@ def train_evaluate_models(X, y, target_gene, n_positives):
     from sklearn.model_selection import StratifiedKFold, cross_val_score
     from sklearn.ensemble import RandomForestClassifier
     from sklearn.linear_model import LogisticRegression
-    from sklearn.metrics import roc_auc_score, average_precision_score
 
     results = {"gene": target_gene, "n_positives": n_positives, "n_samples": len(X),
                "n_positive_samples": int(np.sum(y)), "n_negative_samples": int(len(y) - np.sum(y))}
@@ -807,7 +806,7 @@ def rank_candidates(pred_df, compound_data, top_n=50):
 
     # 打印Top 20
     logger.info(f"\n{'='*80}")
-    logger.info(f"Top 20 候选化合物")
+    logger.info("Top 20 候选化合物")
     logger.info(f"{'='*80}")
     for _, row in top_df.head(20).iterrows():
         name = str(row["molecule_name"])[:35]
@@ -833,14 +832,14 @@ def generate_report(results_df, top_df, pred_df, actives, compound_data):
     lines.append(f"\n生成时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
     # 数据概览
-    lines.append(f"\n## 1. 数据概览")
+    lines.append("\n## 1. 数据概览")
     lines.append(f"- TCM化合物总数: {len(compound_data['mol_ids'])}")
     lines.append(f"- 目标靶标总数: {len(results_df)}")
     lines.append(f"- 特征维度: {compound_data['combined'].shape[1]} (ECFP4 + MACCS + 标准化描述符)")
     lines.append(f"- 蛋白特征维度: {list(compound_data['combined'].shape)[0]} 后拼接70维蛋白特征")
 
     # 靶标分层
-    lines.append(f"\n## 2. 靶标分层统计")
+    lines.append("\n## 2. 靶标分层统计")
     rich = results_df[results_df["n_matched"] >= 20]
     medium = results_df[(results_df["n_matched"] >= 1) & (results_df["n_matched"] < 20)]
     cold = results_df[results_df["n_matched"] == 0]
@@ -850,13 +849,13 @@ def generate_report(results_df, top_df, pred_df, actives, compound_data):
     lines.append(f"- 冷启动靶标 (0匹配): {len(cold)} 个")
 
     if len(rich) > 0:
-        lines.append(f"\n### 富样本靶标")
+        lines.append("\n### 富样本靶标")
         for _, row in rich.iterrows():
             rf_auc = row.get("RF_AUC_mean", "N/A")
             lines.append(f"- {row['gene']}: {int(row['n_matched'])} 个匹配, RF AUC={rf_auc}")
 
     # 模型性能
-    lines.append(f"\n## 3. 模型性能")
+    lines.append("\n## 3. 模型性能")
     has_model_col = "has_model" in results_df.columns
     modeled = results_df[results_df["has_model"]] if has_model_col else pd.DataFrame()
     if len(modeled) > 0 and "RF_AUC_mean" in modeled.columns:
@@ -865,36 +864,36 @@ def generate_report(results_df, top_df, pred_df, actives, compound_data):
             lines.append(f"- RF AUC均值: {np.mean(aucs):.4f} +/- {np.std(aucs):.4f}")
             lines.append(f"- RF AUC范围: {np.min(aucs):.4f} - {np.max(aucs):.4f}")
     else:
-        lines.append(f"- 无可独立建模靶标, 使用相似性排序")
+        lines.append("- 无可独立建模靶标, 使用相似性排序")
 
     # 预测方法统计
     if "method" in pred_df.columns:
         method_counts = pred_df["method"].value_counts()
-        lines.append(f"\n### 预测方法分布")
+        lines.append("\n### 预测方法分布")
         for m, c in method_counts.items():
             lines.append(f"- {m}: {c} 条")
 
     # Top候选
-    lines.append(f"\n## 4. Top 20 候选化合物")
-    lines.append(f"| 排名 | 化合物 | 综合得分 | 平均得分 | 命中 | Top靶标 |")
-    lines.append(f"|------|--------|----------|----------|------|---------|")
+    lines.append("\n## 4. Top 20 候选化合物")
+    lines.append("| 排名 | 化合物 | 综合得分 | 平均得分 | 命中 | Top靶标 |")
+    lines.append("|------|--------|----------|----------|------|---------|")
     for _, row in top_df.head(20).iterrows():
         name = str(row["molecule_name"])[:30]
         targets = str(row.get("top_targets", "N/A"))[:80]
         lines.append(f"| {int(row['rank'])} | {name} | {row['composite_score']:.4f} | {row['mean_score']:.4f} | {int(row['n_hits'])} | {targets} |")
 
     # 策略建议
-    lines.append(f"\n## 5. 策略建议")
+    lines.append("\n## 5. 策略建议")
     n_rich = len(rich)
     if n_rich >= 5:
         lines.append(f"- 富样本靶标充足 ({n_rich}个), 模型预测结果可信度较高")
-        lines.append(f"- 建议: 对Top 20化合物进行分子对接验证")
+        lines.append("- 建议: 对Top 20化合物进行分子对接验证")
     elif n_rich >= 1:
         lines.append(f"- 富样本靶标有限 ({n_rich}个), 建议结合分子对接和MD模拟进一步验证")
-        lines.append(f"- 建议: 对Top 50化合物进行多靶标分子对接")
+        lines.append("- 建议: 对Top 50化合物进行多靶标分子对接")
     else:
-        lines.append(f"- 无可独立建模靶标, 当前结果基于向量化相似性排序")
-        lines.append(f"- 建议: 转入Phase 5基于结构的虚拟筛选")
+        lines.append("- 无可独立建模靶标, 当前结果基于向量化相似性排序")
+        lines.append("- 建议: 转入Phase 5基于结构的虚拟筛选")
 
     report_path = L4_RESULTS / "phase4_report.md"
     with open(report_path, "w", encoding="utf-8") as f:

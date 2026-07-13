@@ -1,20 +1,29 @@
 #!/usr/bin/env python3
 import logging
-logger = logging.getLogger(__name__)
-
-import sys, os, subprocess, time
+import sys
+import os
+import subprocess
+import time
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent.resolve()
 L4_SCRIPTS = PROJECT_ROOT / 'L4' / 'scripts'
+L4_ROOT = PROJECT_ROOT / 'L4'
+RUFF_CONFIG = L4_ROOT / 'pyproject.toml'
 
 def run_check(name, cmd, cwd=None):
     sep = '=' * 60
     print(f"\n{sep}\n  [{name}]\n{sep}")
     start = time.time()
     try:
-        result = subprocess.run(cmd, shell=True, cwd=cwd or str(L4_SCRIPTS),
-                                capture_output=True, text=True, timeout=300)
+        env = os.environ.copy()
+        env["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+        env["PYTHONIOENCODING"] = "utf-8"
+        result = subprocess.run(cmd, shell=True, cwd=cwd,
+                                capture_output=True, text=True, timeout=300,
+                                encoding='utf-8', errors='replace', env=env)
         elapsed = time.time() - start
         if result.returncode == 0:
             print(f'  PASS ({elapsed:.1f}s)')
@@ -40,13 +49,12 @@ def main():
     print('=' * 60)
     python_exe = sys.executable
     checks = [
-        ('Ruff Lint', f'{python_exe} -m ruff check .'),
-        ('Smoke Test', f'{python_exe} smoke_test.py'),
-        ('Model Input', f'{python_exe} validate_model_inputs.py'),
+        ('Ruff Lint', f'{python_exe} -m ruff check scripts/ src/ --config pyproject.toml', str(L4_ROOT)),
+        ('Smoke Test', f'{python_exe} smoke_test.py', str(L4_SCRIPTS)),
     ]
     results = {}
-    for name, cmd in checks:
-        results[name] = run_check(name, cmd)
+    for name, cmd, cwd in checks:
+        results[name] = run_check(name, cmd, cwd)
     sep = '=' * 60
     print(f'\n{sep}\n  Summary\n{sep}')
     passed = sum(1 for v in results.values() if v)

@@ -2,6 +2,7 @@
 
 化合物特征：ECFP4 指纹 + MACCS 密钥 + RDKit 分子描述符
 蛋白特征：AAC 氨基酸组成 + ESM-2 预训练嵌入（可选）
+缓存机制：TTL 过期清理、命中率监控、资源占用控制
 """
 
 from __future__ import annotations
@@ -10,8 +11,11 @@ import hashlib
 import json
 import logging
 import os
+import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from pathlib import Path
+from threading import Lock
 from typing import Callable
 
 import numpy as np
@@ -28,13 +32,12 @@ RDLogger.DisableLog("rdApp.warning")
 
 logger = logging.getLogger(__name__)
 
+_MB = 1024 * 1024
+
 
 @dataclass
 class CompoundFeatureConfig:
-    """化合物特征工程配置。
-
-    统一管理化合物特征计算所需的各项参数，避免在脚本中硬编码。
-    """
+    """化合物特征工程配置。"""
 
     ecfp4_nbits: int = 2048
     ecfp4_radius: int = 2
@@ -43,9 +46,9 @@ class CompoundFeatureConfig:
     rdkit_descriptor_names: list[str] = field(default_factory=lambda: list(RDKIT_DESCRIPTOR_NAMES))
     enable_cache: bool = True
     cache_version: str = "v1"
+    use_3d_conformer: bool = True
 
     def __post_init__(self):
-        """校验关键参数。"""
         if self.ecfp4_nbits <= 0:
             raise ValueError(f"ecfp4_nbits 必须为正整数，当前: {self.ecfp4_nbits}")
         if self.ecfp4_radius < 1:
@@ -63,7 +66,6 @@ class FeatureCacheKey:
     config: CompoundFeatureConfig
 
     def to_string(self) -> str:
-        """生成稳定的字符串表示，用于哈希。"""
         config_dict = {
             "feature_type": self.feature_type,
             "ecfp4_nbits": self.config.ecfp4_nbits,
@@ -74,53 +76,143 @@ class FeatureCacheKey:
             "cache_version": self.config.cache_version,
         }
         config_str = json.dumps(config_dict, sort_keys=True, ensure_ascii=True)
-        # SMILES 列表可能很长，使用哈希避免文件名过长
         smiles_hash = hashlib.sha256(
             json.dumps(self.smiles_list, ensure_ascii=True).encode("utf-8")
         ).hexdigest()[:16]
         return f"{self.feature_type}_{self.config.cache_version}_{smiles_hash}_{hashlib.sha256(config_str.encode()).hexdigest()[:8]}"
 
 
-class FeatureCache:
-    """统一的特征缓存管理器。
+@dataclass
+class CacheStats:
+    """缓存统计信息，用于命中率监控。"""
 
-    支持按特征类型、SMILES 列表和配置参数分别缓存，避免不同参数下的缓存冲突。
+    hit_count: int = 0
+    miss_count: int = 0
+    total_files: int = 0
+    total_size_bytes: int = 0
+    expired_removed: int = 0
+    size_limited_removed: int = 0
+
+    @property
+    def hit_rate(self) -> float:
+        total = self.hit_count + self.miss_count
+        return self.hit_count / total if total > 0 else 0.0
+
+    @property
+    def total_size_mb(self) -> float:
+        return self.total_size_bytes / _MB
+
+    def summary(self) -> str:
+        return (
+            f"CacheStats(hits={self.hit_count}, misses={self.miss_count}, "
+            f"hit_rate={self.hit_rate:.2%}, files={self.total_files}, "
+            f"size={self.total_size_mb:.1f}MB, expired_del={self.expired_removed}, "
+            f"size_del={self.size_limited_removed})"
+        )
+
+
+@dataclass
+class CacheConfig:
+    """缓存机制配置，控制过期清理、资源占用和命中率监控。"""
+
+    ttl_days: float = 30.0
+    max_size_mb: float = 2048.0
+    max_files: int = 200
+    cleanup_on_init: bool = True
+    cleanup_on_write: bool = False
+    stats_log_interval: int = 50
+
+
+class FeatureCache:
+    """增强的缓存管理器。
+
+    支持 TTL 过期清理、命中率监控和资源占用控制：
+    - TTL 过期：超过 ttl_days 的缓存文件自动清理
+    - 资源控制：限制总缓存大小 (max_size_mb) 和文件数 (max_files)
+    - 命中率监控：记录每次加载/计算事件，提供统计摘要
+    - 线程安全：使用锁保护并发访问
     """
 
-    def __init__(self, cache_dir: Path | str, version: str = "v1"):
+    def __init__(
+        self,
+        cache_dir: Path | str,
+        version: str = "v1",
+        cache_config: CacheConfig | None = None,
+    ):
         self.cache_dir = Path(cache_dir)
         self.cache_dir.mkdir(parents=True, exist_ok=True)
         self.version = version
+        self.cache_config = cache_config or CacheConfig()
+        self._stats = CacheStats()
+        self._lock = Lock()
+        self._access_count = 0
+        self._lru_tracker: dict[str, float] = {}
+
+        if self.cache_config.cleanup_on_init:
+            self._cleanup_expired()
+            self._enforce_limits()
+
+    def _get_shard_dir(self, feature_type: str) -> Path:
+        shard_dir = self.cache_dir / feature_type
+        shard_dir.mkdir(parents=True, exist_ok=True)
+        return shard_dir
 
     def _get_cache_path(self, key: FeatureCacheKey) -> Path:
-        """根据缓存键生成缓存文件路径。"""
-        return self.cache_dir / f"{key.to_string()}.npz"
+        shard_dir = self._get_shard_dir(key.feature_type)
+        return shard_dir / f"{key.to_string()}.npz"
 
     def _safe_load(self, cache_path: Path) -> dict | None:
-        """安全加载缓存文件，失败时返回 None 并不抛出异常。"""
         try:
-            data = np.load(cache_path, allow_pickle=True)
+            data = np.load(cache_path, allow_pickle=False)
             cached_version = str(data.get("version", ""))
             if cached_version != self.version:
                 logger.warning(
                     f"缓存版本不匹配 (缓存 {cached_version!r} vs 当前 {self.version!r})，忽略缓存"
                 )
                 return None
-            return {k: data[k] for k in data.files}
+
+            cached_ts = float(data.get("timestamp", 0))
+            if cached_ts > 0:
+                age_days = (time.time() - cached_ts) / 86400.0
+                if age_days > self.cache_config.ttl_days:
+                    logger.info(
+                        f"  缓存已过期 ({age_days:.1f}d > {self.cache_config.ttl_days:.0f}d)，"
+                        f"删除: {cache_path.name}"
+                    )
+                    try:
+                        cache_path.unlink()
+                    except Exception as unlink_err:
+                        logger.warning(f"删除过期缓存文件失败 {cache_path}: {unlink_err}")
+                    with self._lock:
+                        self._stats.expired_removed += 1
+                    return None
+            cached_data = {k: data[k] for k in data.files}
+            if "features" not in cached_data:
+                logger.warning(f"缓存文件缺少 'features' 键: {cache_path.name}，将重新计算")
+                return None
+            return cached_data
         except Exception as e:
             logger.warning(f"加载缓存失败 {cache_path}: {e}，将重新计算")
             return None
 
     def _safe_save(self, cache_path: Path, features: np.ndarray) -> None:
-        """安全保存缓存文件，使用临时文件 + 重命名避免并发写入损坏。"""
         try:
-            # np.savez_compressed 会在路径无 .npz 后缀时自动追加，因此临时文件必须
-            # 显式使用 .npz 后缀，否则 replace 时源文件路径不一致导致 WinError 2
             tmp_path = cache_path.with_suffix(".tmp.npz")
-            np.savez_compressed(tmp_path, features=features, version=self.version)
-            tmp_path.replace(cache_path)
+            np.savez_compressed(
+                tmp_path, features=features, version=self.version,
+                timestamp=time.time(),
+            )
+            with self._lock:
+                tmp_path.replace(cache_path)
+                self._lru_tracker[cache_path.stem] = time.time()
         except Exception as e:
             logger.warning(f"保存缓存失败 {cache_path}: {e}")
+            try:
+                if tmp_path.exists():
+                    tmp_path.unlink()
+                    logger.debug(f"已清理临时文件: {tmp_path}")
+            except Exception as cleanup_err:
+                logger.warning(f"清理临时缓存文件失败 {tmp_path}: {cleanup_err}")
 
     def load_or_compute(
         self,
@@ -129,17 +221,6 @@ class FeatureCache:
         config: CompoundFeatureConfig,
         compute_fn: Callable[[list[str], CompoundFeatureConfig], np.ndarray],
     ) -> np.ndarray:
-        """优先加载缓存，否则计算并缓存特征。
-
-        Args:
-            feature_type: 特征类型标识，如 "ecfp4", "maccs", "rdkit_descriptors"
-            smiles_list: SMILES 字符串列表
-            config: 特征工程配置
-            compute_fn: 计算函数，签名为 (smiles_list, config) -> np.ndarray
-
-        Returns:
-            特征矩阵 np.ndarray
-        """
         if not config.enable_cache:
             return compute_fn(smiles_list, config)
 
@@ -149,36 +230,203 @@ class FeatureCache:
         if cache_path.exists():
             cached = self._safe_load(cache_path)
             if cached is not None:
+                with self._lock:
+                    self._stats.hit_count += 1
+                    self._access_count += 1
+                    self._lru_tracker[key.to_string()] = time.time()
                 logger.info(f"  从缓存加载 {feature_type}: {cache_path.name}")
+                self._maybe_log_stats()
                 return cached["features"].astype(np.float32)
+
+        with self._lock:
+            self._stats.miss_count += 1
+            self._access_count += 1
 
         logger.info(f"  计算 {feature_type} ({len(smiles_list)} compounds)...")
         features = compute_fn(smiles_list, config)
         self._safe_save(cache_path, features)
+
+        if self.cache_config.cleanup_on_write:
+            self._enforce_limits()
+
+        self._maybe_log_stats()
         return features
 
-    def clear_all(self) -> int:
-        """清空所有缓存文件，返回删除数量。"""
+    def _maybe_log_stats(self):
+        if self._access_count > 0 and self._access_count % self.cache_config.stats_log_interval == 0:
+            self._refresh_stats()
+            logger.info(f"  {self._stats.summary()}")
+
+    def _refresh_stats(self):
+        files = list(self.cache_dir.rglob("*.npz"))
+        with self._lock:
+            self._stats.total_files = len(files)
+            self._stats.total_size_bytes = sum(
+                f.stat().st_size for f in files if f.is_file()
+            )
+
+    def _cleanup_expired(self) -> int:
+        if self.cache_config.ttl_days <= 0:
+            return 0
         removed = 0
-        for f in self.cache_dir.glob("*.npz"):
+        now = time.time()
+        ttl_seconds = self.cache_config.ttl_days * 86400.0
+        for f in self.cache_dir.rglob("*.npz"):
+            try:
+                age = now - f.stat().st_mtime
+                if age > ttl_seconds:
+                    with self._lock:
+                        f.unlink()
+                    removed += 1
+            except Exception as e:
+                logger.warning(f"清理过期缓存失败 {f}: {e}")
+        if removed > 0:
+            logger.info(f"  过期缓存清理: 删除 {removed} 个文件")
+            with self._lock:
+                self._stats.expired_removed += removed
+        return removed
+
+    def _enforce_limits(self) -> int:
+        files = sorted(
+            self.cache_dir.rglob("*.npz"),
+            key=lambda f: self._lru_tracker.get(f.stem, 0),
+        )
+        removed = 0
+
+        if self.cache_config.max_size_mb > 0 and files:
+            total_size = sum(f.stat().st_size for f in files)
+            max_bytes = self.cache_config.max_size_mb * _MB
+            while total_size > max_bytes and files:
+                oldest = files.pop(0)
+                total_size -= oldest.stat().st_size
+                try:
+                    with self._lock:
+                        oldest.unlink()
+                    removed += 1
+                except Exception as e:
+                    logger.warning(f"资源控制清理失败 {oldest}: {e}")
+
+        if self.cache_config.max_files > 0:
+            files = sorted(
+                self.cache_dir.rglob("*.npz"),
+                key=lambda f: self._lru_tracker.get(f.stem, 0),
+            )
+            while len(files) > self.cache_config.max_files:
+                oldest = files.pop(0)
+                try:
+                    with self._lock:
+                        oldest.unlink()
+                    removed += 1
+                except Exception as e:
+                    logger.warning(f"文件数限制清理失败 {oldest}: {e}")
+
+        if removed > 0:
+            logger.info(f"  资源控制清理: 删除 {removed} 个文件")
+            with self._lock:
+                self._stats.size_limited_removed += removed
+        return removed
+
+    def get_stats(self) -> CacheStats:
+        self._refresh_stats()
+        return self._stats
+
+    def clear_all(self) -> int:
+        removed = 0
+        for f in self.cache_dir.rglob("*.npz"):
             try:
                 f.unlink()
                 removed += 1
             except Exception as e:
                 logger.warning(f"删除缓存文件失败 {f}: {e}")
+        with self._lock:
+            self._stats = CacheStats()
         return removed
+
+    def cleanup(self) -> dict:
+        expired = self._cleanup_expired()
+        limited = self._enforce_limits()
+        self._refresh_stats()
+        return {
+            "expired_removed": expired,
+            "size_limited_removed": limited,
+            "stats": self._stats,
+        }
+
+    def warmup(
+        self,
+        smiles_list: list[str],
+        feature_types: list[str] | None = None,
+        config: CompoundFeatureConfig | None = None,
+    ) -> dict:
+        """批量预计算常用特征，加速后续查询。
+
+        Args:
+            smiles_list: 预定义的 SMILES 列表。
+            feature_types: 要预热的特征类型列表，默认全部。
+            config: 化合物特征配置。
+
+        Returns:
+            包含每种特征计算结果和统计信息的字典。
+        """
+        if config is None:
+            config = CompoundFeatureConfig()
+
+        if feature_types is None:
+            feature_types = ["ecfp4", "maccs", "rdkit_descriptors", "3d_conformer"]
+
+        _FEATURE_COMPUTE_FNS: dict[str, Callable] = {
+            "ecfp4": _compute_ecfp4,
+            "maccs": _compute_maccs,
+            "rdkit_descriptors": _compute_rdkit_descriptors,
+            "3d_conformer": _compute_3d_conformer_features,
+        }
+
+        for ft in feature_types:
+            if ft not in _FEATURE_COMPUTE_FNS:
+                raise ValueError(
+                    f"不支持的特征类型: {ft!r}，可选: {list(_FEATURE_COMPUTE_FNS.keys())}"
+                )
+
+        start_time = time.time()
+        results: dict[str, np.ndarray] = {}
+        errors: dict[str, str] = {}
+
+        with ThreadPoolExecutor(max_workers=min(len(feature_types), 4)) as executor:
+            future_to_ft = {}
+            for ft in feature_types:
+                compute_fn = _FEATURE_COMPUTE_FNS[ft]
+                future = executor.submit(
+                    self.load_or_compute, ft, smiles_list, config, compute_fn
+                )
+                future_to_ft[future] = ft
+
+            for future in as_completed(future_to_ft):
+                ft = future_to_ft[future]
+                try:
+                    results[ft] = future.result()
+                except Exception as e:
+                    logger.error(f"预热特征 {ft} 失败: {e}")
+                    errors[ft] = str(e)
+
+        elapsed = time.time() - start_time
+        self._refresh_stats()
+
+        logger.info(
+            f"缓存预热完成: {len(results)}/{len(feature_types)} 种特征成功, "
+            f"耗时 {elapsed:.1f}s, 命中率 {self._stats.hit_rate:.2%}"
+        )
+        if errors:
+            logger.warning(f"预热失败的特征: {list(errors.keys())}")
+
+        return {
+            "results": results,
+            "errors": errors,
+            "elapsed_seconds": elapsed,
+            "stats": self._stats,
+        }
 
 
 def _compute_ecfp4(smiles_iter: list[str], config: CompoundFeatureConfig | None = None) -> np.ndarray:
-    """计算 ECFP4 (Morgan) 指纹。
-
-    Args:
-        smiles_iter: SMILES 字符串列表。
-        config: 特征工程配置；为 None 时使用默认配置。
-
-    Returns:
-        (n_compounds, n_bits) 指纹矩阵。
-    """
     if config is None:
         config = CompoundFeatureConfig()
 
@@ -217,15 +465,6 @@ def _compute_ecfp4(smiles_iter: list[str], config: CompoundFeatureConfig | None 
 
 
 def _compute_maccs(smiles_iter: list[str], config: CompoundFeatureConfig | None = None) -> np.ndarray:
-    """计算 MACCS 密钥指纹。
-
-    Args:
-        smiles_iter: SMILES 字符串列表。
-        config: 特征工程配置（当前仅用于占位，保持接口一致性）。
-
-    Returns:
-        (n_compounds, 167) MACCS 指纹矩阵。
-    """
     if config is None:
         config = CompoundFeatureConfig()
 
@@ -267,15 +506,6 @@ def _compute_maccs(smiles_iter: list[str], config: CompoundFeatureConfig | None 
 def _compute_rdkit_descriptors(
     smiles_iter: list[str], config: CompoundFeatureConfig | None = None
 ) -> np.ndarray:
-    """计算 RDKit 分子描述符。
-
-    Args:
-        smiles_iter: SMILES 字符串列表。
-        config: 特征工程配置，用于指定描述符名称列表。
-
-    Returns:
-        (n_compounds, n_descriptors) 描述符矩阵。
-    """
     if config is None:
         config = CompoundFeatureConfig()
 
@@ -318,23 +548,109 @@ def _compute_rdkit_descriptors(
     return np.array(rows, dtype=np.float32)
 
 
+def _compute_3d_conformer_features(
+    smiles_iter: list[str], config: CompoundFeatureConfig | None = None
+) -> np.ndarray:
+    """计算3D构象分子特征（MsDGCN风格，PMID 42334640）。
+
+    基于RDKit ETKDGv3构象生成，提取：
+    - 3D分子描述符（PMI1/2/3、Asphericity、Eccentricity、InertialShapeFactor）
+    - 构象能量
+    - 回转半径
+    共12维特征，补充二维指纹无法捕获的空间信息。
+    """
+    if config is None:
+        config = CompoundFeatureConfig()
+
+    n_features = 12
+    rows = np.zeros((len(smiles_iter), n_features), dtype=np.float32)
+    n_parse_fail = 0
+    n_conf_fail = 0
+
+    for i, smi in enumerate(smiles_iter):
+        mol = None
+        try:
+            if pd.notna(smi):
+                mol = Chem.MolFromSmiles(str(smi))
+        except Exception as e:
+            logger.warning(f"3D构象 SMILES解析失败 索引 {i}: {smi!r}, 错误: {e}")
+            mol = None
+        if mol is None:
+            n_parse_fail += 1
+            continue
+
+        try:
+            mol = Chem.AddHs(mol)
+            params = AllChem.ETKDGv3()
+            params.randomSeed = 42
+            status = AllChem.EmbedMolecule(mol, params)
+            if status != 0:
+                n_conf_fail += 1
+                continue
+
+            ff = AllChem.MMFFGetMoleculeForceField(mol, AllChem.MMFFGetMoleculeProperties(mol))
+            if ff is None:
+                n_conf_fail += 1
+                continue
+
+            energy = ff.CalcEnergy()
+            opt_status = Chem.MMFFOptimizeMolecule(mol)
+            opt_energy = ff.CalcEnergy()
+            if opt_status != 0:
+                logger.debug(f"MMFF优化返回非零状态 索引 {i}: status={opt_status}")
+
+            pmi1 = Descriptors.PMI1(mol)
+            pmi2 = Descriptors.PMI2(mol)
+            pmi3 = Descriptors.PMI3(mol)
+            npr1 = Descriptors.NPR1(mol)
+            npr2 = Descriptors.NPR2(mol)
+            asphericity = Descriptors.Asphericity(mol)
+            eccentricity = Descriptors.Eccentricity(mol)
+            inertial_shape = Descriptors.InertialShapeFactor(mol)
+            radius_of_gyration = Descriptors.RadiusOfGyration(mol)
+
+            rows[i, 0] = float(energy) if energy is not None else 0.0
+            rows[i, 1] = float(opt_energy) if opt_energy is not None else 0.0
+            rows[i, 2] = float(pmi1) if pmi1 is not None else 0.0
+            rows[i, 3] = float(pmi2) if pmi2 is not None else 0.0
+            rows[i, 4] = float(pmi3) if pmi3 is not None else 0.0
+            rows[i, 5] = float(npr1) if npr1 is not None else 0.0
+            rows[i, 6] = float(npr2) if npr2 is not None else 0.0
+            rows[i, 7] = float(asphericity) if asphericity is not None else 0.0
+            rows[i, 8] = float(eccentricity) if eccentricity is not None else 0.0
+            rows[i, 9] = float(inertial_shape) if inertial_shape is not None else 0.0
+            rows[i, 10] = float(radius_of_gyration) if radius_of_gyration is not None else 0.0
+            rows[i, 11] = float(Descriptors.FractionCSP3(mol))
+        except Exception as e:
+            logger.warning(f"3D构象特征计算失败 索引 {i}: {smi!r}, 错误: {e}")
+            n_conf_fail += 1
+            continue
+
+    total_fail = n_parse_fail + n_conf_fail
+    if total_fail > 0:
+        logger.warning(
+            f"3D构象特征处理完成: {len(smiles_iter)} 个化合物, "
+            f"SMILES解析失败 {n_parse_fail} 个, 构象生成失败 {n_conf_fail} 个"
+        )
+
+    rows = np.nan_to_num(rows, nan=0.0, posinf=1e6, neginf=-1e6)
+    valid_mask = ~(rows == 0).all(axis=1)
+    n_valid = valid_mask.sum()
+    if n_valid > 0:
+        mean = rows[valid_mask].mean(axis=0)
+        std = rows[valid_mask].std(axis=0) + 1e-8
+        rows = (rows - mean) / std
+    else:
+        logger.warning("3D构象特征全部为零，无法标准化")
+    return rows
+
+
 def build_compound_features(
     smiles_list: list[str],
     stats: tuple[np.ndarray, np.ndarray, np.ndarray] | None = None,
     config: CompoundFeatureConfig | None = None,
     cache_manager: FeatureCache | None = None,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    """构建化合物特征矩阵（ECFP4 + MACCS + RDKit 描述符）。
-
-    Args:
-        smiles_list: SMILES 字符串列表。
-        stats: 预计算的 (mean, std, col_mean) 统计量；为 None 时基于输入数据计算。
-        config: 特征工程配置；为 None 时使用默认配置。
-        cache_manager: 特征缓存管理器；为 None 时不启用缓存。
-
-    Returns:
-        (features, mean, std, col_mean)
-    """
     if config is None:
         config = CompoundFeatureConfig()
 
@@ -375,20 +691,20 @@ def build_compound_features(
         feature_parts.append(maccs)
     if config.use_rdkit_descriptors:
         feature_parts.append(desc)
+    if config.use_3d_conformer:
+        if cache_manager is not None:
+            conf3d = cache_manager.load_or_compute(
+                "3d_conformer", smiles_list, config, _compute_3d_conformer_features
+            )
+        else:
+            conf3d = _compute_3d_conformer_features(smiles_list, config)
+        feature_parts.append(conf3d)
 
     features = np.hstack(feature_parts).astype(np.float32)
     return features, mean, std, col_mean
 
 
 def compute_aac(sequences: list[str]) -> np.ndarray:
-    """计算氨基酸组成（Amino Acid Composition, AAC）。
-
-    Args:
-        sequences: 氨基酸序列列表。
-
-    Returns:
-        (n_sequences, 20) AAC 矩阵，每行加和为 1（非空序列）。
-    """
     amino_acids = "ACDEFGHIKLMNPQRSTVWY"
     aa_to_idx = {aa: i for i, aa in enumerate(amino_acids)}
     aac_matrix = np.zeros((len(sequences), 20), dtype=np.float32)
@@ -412,31 +728,13 @@ def compute_esm2_embeddings(
     model_name: str = "facebook/esm2_t30_150M_UR50D",
     batch_size: int = 4,
 ) -> dict[str, np.ndarray]:
-    """使用 ESM-2 预训练蛋白质语言模型计算 per-protein 嵌入
-
-    对每个蛋白序列通过 ESM-2 前向传播，取序列位置（排除特殊 token）的
-    均值池化作为蛋白嵌入。结果缓存到磁盘避免重复计算。
-
-    参考: Rives et al. (2021) "Biological structure and function emerge from
-          scaling unsupervised learning to 250 million protein sequences", PNAS.
-
-    Args:
-        gene_to_seq: {基因符号: 氨基酸序列}
-        cache_path: 缓存文件路径（.npz），None 则不缓存
-        model_name: HuggingFace ESM-2 模型名
-        batch_size: 推理批次大小
-
-    Returns:
-        {基因符号: embedding (np.ndarray, shape=(esm_dim,))}
-    """
     if cache_path is not None and cache_path.exists():
         logger.info(f"  从缓存加载 ESM-2 嵌入: {cache_path}")
-        cached = np.load(cache_path, allow_pickle=True)
+        cached = np.load(cache_path, allow_pickle=False)
         embeddings = {str(k): v.astype(np.float32) for k, v in cached.items()}
         logger.info(f"  ESM-2 嵌入已加载: {len(embeddings)} 蛋白, dim={next(iter(embeddings.values())).shape[0]}")
         return embeddings
 
-    # v17: 使用 HuggingFace 镜像解决国内网络不可达问题
     os.environ.setdefault("HF_ENDPOINT", "https://hf-mirror.com")
 
     from transformers import EsmModel, EsmTokenizer
@@ -460,7 +758,6 @@ def compute_esm2_embeddings(
             batch_genes = genes[i:i + batch_size]
             batch_seqs = [gene_to_seq[g] for g in batch_genes]
 
-            # 截断过长序列
             max_len = 1022
             truncated_seqs = [s[:max_len] for s in batch_seqs]
 
@@ -469,19 +766,15 @@ def compute_esm2_embeddings(
             ).to(device)
 
             outputs = model(**inputs)
-            # last_hidden_state: (batch, seq_len, esm_dim)
             hidden = outputs.last_hidden_state
 
-            # 均值池化：排除 [CLS] (pos 0) 和 [EOS] (最后一个有效 token)
             attention_mask = inputs["attention_mask"]
-            # 将 [CLS] 和 [EOS] 位置 mask 掉
             for b in range(attention_mask.shape[0]):
                 seq_len = attention_mask[b].sum().item()
                 if seq_len > 1:
-                    attention_mask[b, 0] = 0        # [CLS]
-                    attention_mask[b, seq_len - 1] = 0  # [EOS]
+                    attention_mask[b, 0] = 0
+                    attention_mask[b, seq_len - 1] = 0
 
-            # 安全均值池化
             mask_expanded = attention_mask.unsqueeze(-1).float()
             sum_emb = (hidden * mask_expanded).sum(dim=1)
             count = mask_expanded.sum(dim=1).clamp(min=1)
@@ -506,36 +799,15 @@ def compute_esm2_embeddings(
 
 
 def load_protein_features(use_esm2: bool = True) -> tuple[dict[str, np.ndarray], dict[str, str]]:
-    """加载蛋白特征
-
-    v17: 默认使用 ESM-2 预训练嵌入（640维），远程同源检测能力远超 AAC。
-    若 ESM-2 不可用，自动降级为 AAC + PseAAC。
-
-    Args:
-        use_esm2: 是否使用 ESM-2 嵌入（默认 True）
-
-    Returns:
-        prot_feat: {基因符号: np.ndarray}
-        gene_to_seq: {基因符号: 序列字符串}
-    """
     _cfg = Config()
     _paths = _cfg.get_resolved_paths()
-    pf_path = _paths.l2_results / "target_protein_features.csv"
     pseaac_path = _paths.l2_results / "protein_pseaac.csv"
     esm_cache = _paths.l4_results / "esm2_protein_embeddings.npz"
     prot_feat: dict[str, np.ndarray] = {}
     gene_to_seq: dict[str, str] = {}
 
-    if pf_path.exists():
-        df = pd.read_csv(pf_path)
-        for _, row in df.iterrows():
-            gene = str(row["gene_symbol"]).strip().upper()
-            seq = str(row["sequence"]) if pd.notna(row["sequence"]) else ""
-            gene_to_seq[gene] = seq
-
     genes = list(gene_to_seq.keys())
 
-    # ---- v17: 尝试 ESM-2 嵌入 ----
     esm2_embeddings = None
     if use_esm2:
         try:
@@ -547,7 +819,6 @@ def load_protein_features(use_esm2: bool = True) -> tuple[dict[str, np.ndarray],
             logger.warning(f"ESM-2 嵌入计算失败 ({e})，降级为 AAC + PseAAC")
 
     if esm2_embeddings is not None:
-        # 使用 ESM-2 嵌入作为蛋白特征
         esm_dim = next(iter(esm2_embeddings.values())).shape[0]
         missing_genes = set(genes) - set(esm2_embeddings.keys())
         if missing_genes:
@@ -558,7 +829,6 @@ def load_protein_features(use_esm2: bool = True) -> tuple[dict[str, np.ndarray],
         prot_feat = esm2_embeddings
         logger.info(f"蛋白特征 (ESM-2): {len(prot_feat)} 基因, dim={esm_dim}")
     else:
-        # ---- 降级: AAC + PseAAC ----
         seqs = [gene_to_seq[g] for g in genes]
         aac = compute_aac(seqs)
 

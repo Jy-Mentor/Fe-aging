@@ -6,7 +6,6 @@
 """
 
 import sys
-import os
 import logging
 from pathlib import Path
 from collections import defaultdict
@@ -128,7 +127,6 @@ def audit_cpi_data():
     lines.append(f"- 来源分布: {df['source'].value_counts().to_dict()}")
     
     # 基因统计
-    gene_counts = df["gene"].value_counts()
     lines.append(f"- 唯一基因数: {df['gene'].nunique()}")
     lines.append(f"- 基因列表: {', '.join(sorted(df['gene'].unique()))}")
     
@@ -262,7 +260,7 @@ def audit_esm2_embeddings():
                      f"范围=[{arr.min():.4f}, {arr.max():.4f}], "
                      f"NaN数量={np.isnan(arr).sum()}")
         if arr.ndim == 1:
-            lines.append(f"  注意: 1维数组，可能是蛋白名称或标识符")
+            lines.append("  注意: 1维数组，可能是蛋白名称或标识符")
     
     # 检查嵌入维度
     embedding_keys = [k for k in data.files if data[k].ndim == 2]
@@ -271,7 +269,7 @@ def audit_esm2_embeddings():
         emb_dim = data[emb_key].shape[1]
         lines.append(f"\n- 嵌入维度: {emb_dim} (预期640)")
         if emb_dim != 640:
-            lines.append(f"  **警告**: 嵌入维度不是640!")
+            lines.append("  **警告**: 嵌入维度不是640!")
     
     # 检查是否有对应的蛋白名称
     name_keys = [k for k in data.files if data[k].ndim == 1]
@@ -425,16 +423,12 @@ def audit_tcm_pool():
     
     lines = []
     v21_path = L3_RESULTS / "tcm_compound_pool_v21_Alevel.csv"
-    noleak_path = L3_RESULTS / "tcm_compound_pool_tox_filtered_noleak.csv"
     original_path = L3_RESULTS / "tcm_compound_pool_tox_filtered.csv"
     
     tcm_path = None
     if v21_path.exists():
         tcm_path = v21_path
         source_tag = "v21 A级"
-    elif noleak_path.exists():
-        tcm_path = noleak_path
-        source_tag = "tox_filtered_noleak"
     elif original_path.exists():
         tcm_path = original_path
         source_tag = "tox_filtered"
@@ -511,7 +505,7 @@ def audit_bindingdb_drugbank():
     
     if bindingdb_path.exists():
         bdb_df = pd.read_csv(bindingdb_path, low_memory=False)
-        lines.append(f"### BindingDB数据")
+        lines.append("### BindingDB数据")
         lines.append(f"- 文件路径: `{bindingdb_path}`")
         lines.append(f"- 总记录数: {len(bdb_df)}")
         lines.append(f"- 列名: {list(bdb_df.columns)}")
@@ -524,7 +518,7 @@ def audit_bindingdb_drugbank():
     
     if drugbank_path.exists():
         db_df = pd.read_csv(drugbank_path, low_memory=False)
-        lines.append(f"\n### DrugBank数据")
+        lines.append("\n### DrugBank数据")
         lines.append(f"- 文件路径: `{drugbank_path}`")
         lines.append(f"- 总记录数: {len(db_df)}")
         lines.append(f"- 列名: {list(db_df.columns)}")
@@ -566,8 +560,8 @@ def analyze_missing_genes(ferro96_genes, cpi_genes, supp_genes, bindingdb_genes,
     in_drugbank_only = in_drugbank - in_bindingdb
     no_data = missing - bindingdb_genes - drugbank_genes
     
-    lines.append(f"\n| 状态 | 数量 | 基因 |")
-    lines.append(f"|------|------|------|")
+    lines.append("\n| 状态 | 数量 | 基因 |")
+    lines.append("|------|------|------|")
     if in_both:
         lines.append(f"| BindingDB+DrugBank | {len(in_both)} | {', '.join(sorted(in_both))} |")
     if in_bindingdb_only:
@@ -578,7 +572,7 @@ def analyze_missing_genes(ferro96_genes, cpi_genes, supp_genes, bindingdb_genes,
         lines.append(f"| 完全无数据 | {len(no_data)} | {', '.join(sorted(no_data))} |")
     
     # 详细列出每个缺失基因
-    lines.append(f"\n### 缺失基因详细列表:")
+    lines.append("\n### 缺失基因详细列表:")
     for gene in sorted(missing):
         status = []
         if gene in bindingdb_genes:

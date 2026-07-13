@@ -15,12 +15,10 @@ from __future__ import annotations
 import json
 import logging
 import multiprocessing as mp
-import os
 import sys
 import time
 import traceback
 from pathlib import Path
-from typing import Dict, List
 from collections import defaultdict
 
 import numpy as np
@@ -219,7 +217,6 @@ def _worker_run_seed(payload: int) -> dict:
         import random
         import numpy as np
         import torch
-        import torch.nn as nn
 
         random.seed(seed)
         np.random.seed(seed)
@@ -294,7 +291,7 @@ def _worker_run_seed(payload: int) -> dict:
                     pheno_train_labels = train_pheno_lab
                     worker_logger.info(f"  表型数据: {len(train_pheno_idx)} 训练样本")
 
-        worker_logger.info(f"  训练 SAGE...")
+        worker_logger.info("  训练 SAGE...")
         sage_model = p4.SAGELinkPredictor(
             comp_feat_dim=graphs["feat_dim"], prot_feat_dim=graphs["prot_esm_dim"],
             n_compounds=graphs["n_compounds"],
@@ -334,7 +331,7 @@ def _worker_run_seed(payload: int) -> dict:
         torch.cuda.empty_cache()
         worker_logger.info("  SAGE GPU 内存已释放")
 
-        worker_logger.info(f"  训练 HGT...")
+        worker_logger.info("  训练 HGT...")
         hgt_node_feat_dims = {
             "compound": graphs["feat_dim"],
             "protein": graphs["prot_esm_dim"],

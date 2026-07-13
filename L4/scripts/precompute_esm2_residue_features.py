@@ -26,11 +26,9 @@ import io
 import logging
 import os
 import pickle
-import sys
 import time
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 import requests
 import torch

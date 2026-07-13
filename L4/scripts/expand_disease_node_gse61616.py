@@ -25,7 +25,6 @@ r"""
 - d:\铁衰老 绝不重蹈覆辙\L4\results\disease_gene_edges.csv
 """
 
-import os
 import sys
 import traceback
 from pathlib import Path
@@ -169,7 +168,7 @@ def main():
 
     # Tier 2: GSEA leading edge 基因（uppercase 后）
     leading_edge_in_fa = leading_edge & fa_genes
-    print(f"\n[5/5] 选择策略统计:")
+    print("\n[5/5] 选择策略统计:")
     print(f"       - GSE61616 全部显著 DEGs (adj.P.Val<{PVAL_THRESHOLD}, |logFC|>{LOGFC_THRESHOLD}): {len(sig_deg_genes)}")
     print(f"       - 其中属于 Ferroaging 96 基因集: {len(sig_deg_genes & fa_genes)}")
     print(f"       - GSEA Ferroaging leading edge 基因: {len(leading_edge)}")
@@ -183,7 +182,7 @@ def main():
     overlap_fa = final_genes & fa_genes
     overlap_cpi = final_genes & cpi_genes
     overlap_leading = final_genes & leading_edge
-    print(f"\n[统计]")
+    print("\n[统计]")
     print(f"       - 候选基因中属于 Ferroaging 96 基因集: {len(overlap_fa)}/{len(final_genes)}")
     print(f"       - 候选基因中属于 CPI 蛋白: {len(overlap_cpi)}/{len(final_genes)}")
     print(f"       - 候选基因中属于 GSEA leading edge: {len(overlap_leading)}/{len(final_genes)}")

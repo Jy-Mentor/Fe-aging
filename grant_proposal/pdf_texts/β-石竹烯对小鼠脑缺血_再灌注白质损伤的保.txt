@@ -1,0 +1,307 @@
+
+--- 第1页 ---
+·360· 中国药理学通报 Chinese Pharmacological Bulletin 2020 Mar;36(3):360～5
+网络出版时间:2020/3/1012:23 网络出版地址:http: //kns．cnki．net/kcms/detail/34．1086．r．20200309．1346．026．html
+β-石竹烯对小鼠脑缺血 /再灌注白质损伤的保护作用研究
+王 倩1，2，饶江燕1，2，王钰淳1，2，向菲1，2，徐 露3，田晓翠1，2，董志1，2
+(1．重庆市生物化学与分子药理学重点实验室，2． 重庆医科大学药理学教研室，重庆 400016;
+3．重庆医药高等专科学校药学院，重庆 401331)
+doi:10．3969/j．issn．1001－1978．2020．03．013 型纤溶酶原激活物( tPA) 是FDA批准用于缺血性中
+文献标志码:A 文章编号:1001－1978(2020)03－0360－06 风的有效的治疗剂。然而，其严重的不良反应和有
+中国图书分类号: R-332; R282.71; R322.81; R329.25; R619.9;
+限的治疗时间窗，使其仅适用于所有中风患者的
+R743.310.22
+4% ～7%［5］。β-石竹烯( β-caryophyllene，BCP) ，是
+摘要:目的 研究β-石竹烯( β-caryophyllene，BCP) 对小鼠脑
+一种双环倍半萜型化合物，研究表明，BCP通过调节
+缺血/再灌注(cerebral ischemia-reperfusion，CIR) 白质损伤的
+多种途径，发挥抗氧化、抗炎、抗凋亡和保护血脑屏
+保护作用。方法 随机将 C57BL/6 小鼠分为正常对照组
+(Control)、模型组( CIR)、治疗组(36、72、144 mg·kg－1)。
+障，它对脑缺血具有神经保护作用［6－7］。虽然 BCP
+线栓法建立小鼠大脑中动脉栓塞( middle cerebral artery oc-
+目前在脑缺血/再灌注( cerebral ischemia-reperfu-
+clusion ，MCAO)模型。缺血1 h，再灌注24 h，TTC染色确定 sion，CIR) 损伤模型中有较多的研究，但其作用的具
+脑梗死体积，并进行神经行为学评分;干湿重法测脑含水量; 体分子机制还不十分清楚，关于 CIR 白质损伤
+HE染色及透射电镜观察胼胝体损伤情况; Luxol Fast Blue ( white matter injury，WMI) 的研究也很少，本实验采
+(LFB)染色标记脑神经髓鞘;Western blot 测胼胝体髓鞘碱 用线栓法建立小鼠 CIR 损伤模型，给予 BCP 预处
+性蛋白(mbp)、神经丝蛋白( NF)、Bcl-2、Bax和 caspase-3 的
+理，观察BCP对CIR损伤后小鼠白质的影响。
+表达。结果 与模型组比较，BCP可降低神经行为学评分，
+1 材料与方法
+减小脑梗死体积，减轻脑水肿和胼胝体髓鞘损伤，升高髓鞘
+1．1 实验药品、试剂 β-石竹烯( 纯度 ＞80%) ，
+染色光密度( optical density，OD)，上调mbp、NF、Bcl-2 表达，
+( W225207) ，2，3，5-氯化三苯基四氮唑( TTC) ，
+降低Bax和caspase-3 表达。结论 BCP 对小鼠脑缺血/再
+( T8877) 购自 Sigma 公司; mbp( 10458-1-AP) 、NF
+灌注白质损伤有保护作用，可能与Bax/Bcl-2凋亡通路有关。
+(60189-1-lg) 、Bcl-2( 12789-1-AP) 、Bax( 50599-2-lg)
+关键词:β-石竹烯;脑缺血/再灌注;白质损伤;胼胝体;脱髓 和caspase-3 ( 19677-1-AP) 等抗体均购自 Protein-
+鞘;凋亡
+tech公司。
+1．2 实验仪器 电泳仪( 北京六一生物科技有限
+脑卒中的发病率和死亡率居世界第二位，在中
+公司) ，成像仪( BIO-RAD) ，正置荧光显微镜( Ni-
+国每年有超过200 万的新病例，是致残率最高的疾
+kon) ，高速低温离心机( Thermo 公司) ，电热鼓风干
+病［1－2］。缺血性脑卒中的常见原因是颈内或颅内血
+燥箱( 天津市泰斯特仪器有限公司) 。
+管阻塞，大脑血液供应不足，导致急性缺糖缺氧，引
+1．3 实验方法
+起严重的神经系统功能障碍［3］。中风不仅会导致
+1．3．1 实验动物与分组 SPF级♂C57BL/6小鼠75
+灰质损伤，还会引起深层的白质损伤，大脑白质主要
+只，体质量为(20±2) g，购自重庆医科大学实验动物
+由深穿支动脉供血，很容易发生缺血性损伤，常常比
+中心( 许可证号: SCXK 渝 2018-0003) ，将 C57BL/6
+灰质受到更严重的损伤，这是导致脑卒中发生率升
+小鼠随机分为正常对照组( Control) 、模型组( CIR) 、
+高和神经功能不良的危险因素［4］。迄今为止，组织
+BCP治疗组(36、72、144 mg·kg－1) ，BCP 用10%蓖
+麻油和生理盐水配制，以0.01 mL·g－1连续灌胃给
+收稿日期:2019－11－21，修回日期:2019－12－30
+药d 1 ～5，Control组和CIR组给相同溶剂。
+基金 项 目: 重 庆 市 基 础 研 究 与 前 沿 探 索 项 目 ( No
+cstc2018jcyjAX0378) 1．3．2 建立小鼠脑缺血/再灌注模型 采用线栓法
+作者简介:王 倩(1994－)，女，硕士生，研究方向:神经精神药理， 制作小鼠大脑 MCAO 模型。通过腹腔注射4%的戊
+E-mail:2419634277@qq．com; 巴比妥钠将小鼠麻醉，在手术台上以仰卧位固定，沿
+董 志(1960－)，男，博士，教授，博士生导师，研究方向:
+颈部正中切开皮肤，找到右颈总动脉( CCA) 、颈内动
+神经精神药理，通讯作者，E-mail:100798@cqmu．edu．cn
+脉( ICA) 、颈外动脉( ECA) 分支，并结扎 ECA、CCA，
+--- 第2页 ---
+中国药理学通报 Chinese Pharmacological Bulletin 2020 Mar;36(3) ·361·
+用动脉夹暂时阻断ICA血流，在CCA剪一切口，从切 能缺损和脑含水量 与正常对照组相比，缺血1 h，
+口插入直径为(18.5 ±0.5) mm 线栓至 ICA，感到阻 再灌注24 h 后，小鼠缺血侧脑组织出现大面积梗
+力时停止，固定线栓，缺血1 h 后，将线栓拔出使血流 死，肢体有明显的偏瘫，神经行为学评分升高，脑组
+恢复，缝合伤口，再灌注24 h后，进行后续实验。 织严重水肿;与模型组相比，BCP组可减少小鼠脑梗
+1．3．3 神经行为学评分 再灌注 24 h 后，使用 死体积，降低神经行为学评分，减轻脑组织水肿( Fig
+Longa等5 分制评分对小鼠进行神经行为学评分。 1A、B、C、D ) 。结果表明，BCP能够减轻小鼠缺血/再
+1．3．4 脑梗死体积测定 再灌注24 h 后，将小鼠
+麻醉取脑，于－20 ℃放置30 min，作2 mm厚度的连
+续切片，于2%的 TTC 染液中，37 ℃水浴避光染色
+15 min，反面继续染色15 min，4%多聚甲醛固定过
+夜，拍照。运用 Image J 软件分析脑小鼠脑梗死体
+积。
+1．3．5 脑含水量测定 再灌注24 h 后，取出受伤
+侧脑组织称量其湿重后，放入120 ℃的烘箱内干燥
+48 h至恒重，即为干重。脑水含量( BWC) =( 湿重
+－干重) /湿重×100%。
+1．3．6 Western blot 法检测 mbp、NF、Bcl-2、Bax 和
+caspase-3 蛋白的表达 再灌注24 h，小鼠麻醉以取
+脑，分离受损侧白质，蛋白裂解液提取蛋白( RIPA-
+PMSF-磷酸酶抑制剂 =100 ∶ 1 ∶ 2) ，电泳分离，切
+胶，转膜，5%的胎牛血清蛋白( BSA) 封闭4 h，然后
+加入相应的一抗，抗体稀释比例均为1 ∶ 1 000 ～2
+000，4 ℃冰箱孵育过夜，TBST 洗膜( 3 ×5 min) ，再
+分别二抗孵育40 min，三抗孵育30 min，洗膜后，采
+用增强化学发光液( ECL) 显影成像。应用 Image
+Lab软件进行图像分析，β-actin作为内参。
+1．3．7 HE染色 再灌注24 h后，小鼠麻醉后仰卧固
+定，先用200 mL PBS 心脏灌注15 min，然后用4%多
+聚甲醛( 约60 mL) 灌注固定至小鼠全身僵硬，断头取
+脑，继续在4%多聚甲醛中固定过夜，石蜡包埋，切片
+( 厚5 μm) 。按照HE染色试剂盒说明书染色，于200
+倍视野下观察胼胝体髓鞘的病理改变情况。
+1．3．8 透射电镜 再灌注24 h 后，麻醉取脑，在胼
+胝体区取1 mm3 大小组织块，2.5%的戊二醛4℃固
+定，于重庆医科大学生科院电镜室进行后面步骤，并
+采集图片。
+1．3．9 LFB 染色 再灌注24 h 后，按1.3.7 项下
+操作进行灌注、外固定，用梯度乙醇脱水，二甲苯透
+明，浸蜡，包埋，切片( 5 μm) ，根据 LFB 染色试剂盒
+说明书染色，计算髓鞘染色光密度值( OD) 。
+Fig1 EffectsofBCPoncerebralinfarctionvolume，
+1．4 统计学处理 采用 SPSS 17.0 统计软件进行
+neurobehavioralandcerebraledemainCIRmice
+数据分析，结果用 x珋±s 表示，多组间比较采用单因
+A: TTC-stainedbrainsections; B: ThequatitativediagramofAdia-
+素方差分析( One-way ANOVA) 。
+gram(x珋±s，n=4); C: Neurologic deficit score ( x珋±s，n=12); D:
+2 结果 Thequatitativediagramofthemoisturecontentofmicebrain(x珋±s，n=
+2．1 BCP降低 CIR 小鼠脑梗死体积，减轻神经功 4)． ＊＊P＜0.01 vscontrolgroup; #P＜0.05，##P＜0.01 vsCIR
+--- 第3页 ---
+·362· 中国药理学通报 Chinese Pharmacological Bulletin 2020 Mar;36(3)
+灌注后损伤，其中中等剂量( 72 mg·kg－1) 效果最 髓鞘现象，髓鞘着色明显变浅，厚度变薄，髓鞘板层
+好，呈现出剂量依赖性保护作用。 疏松、剥脱，髓鞘板层断裂为小碎片或空泡，轴索内
+2．2 HE 染色观察 CIR 后脑白质的病理学改变 细胞器肿胀。给予BCP治疗后，能够明显减轻上述
+与正常对照相比，模型组小鼠的脑白质出现明显的 髓鞘的退行性改变。
+病理学改变:肉眼可见明显的脑水肿，镜下可见胼胝
+体白质疏松，纤维排列疏松凌乱，有空泡样改变。而
+BCP组CIR小鼠脑白质的病理学改变较轻，神经纤
+维排列紧密，胼胝体空泡面积明显较少( Fig 2A，2B) 。
+Fig3 EffectofBCPon
+ultrastructureofcorpus
+callosummyelinsheath
+inCIRmice(8000×100 kV)
+Black arrows showed damaged
+corpuscallosum
+2．4 LFB染色观察CIR小鼠脑白质的髓鞘损伤
+正常对照组中，小鼠胼胝体 LFB 着色较深，髓鞘排
+列整齐致密，无水肿、分层。模型组 LFB 着色较浅，
+髓鞘排列疏松、有部分崩解，呈空泡状。经 BCP 治
+疗之后，髓鞘损伤减轻，LFB 染色加深，LFB 染色的
+光密度值较模型组升高( Fig 4A，4B) 。
+2．5 BCP 对 CIR 小鼠缺血侧脑白质中 mbp、NF
+及凋亡相关蛋白表达的影响 Western blot 结果显
+示:CIR 后，小鼠脑白质中 mbp、NF 和 Bcl-2 蛋白表
+达明显减少，BCP 治疗后，可明显提高 mbp、NF 和
+Bcl-2 蛋白的表达水平。而 CIR 后，Bax 和 caspase-3
+表达增多，BCP 组则减少其在白质中的表达，其中
+72 mg·kg－1剂量组变化最明显( Fig 5) 。
+3 讨论
+灰质( gray matter，GM) 和白质( white matter，
+WM) 是中枢神经系统重要的两个组成部分，大约各
+Fig2 EffectofBCPonpathologicalchangesof 占人类大脑的一半［8］，WM 由密集的有髓鞘和无髓
+whitematterinCIRmice(x珋±s，n=5) 鞘轴索束组成，这些轴索束来自中枢神经系统的各
+A: HEstainingofbrainsections( ×200); B: Thequatitativedia- 种投射神经元［9］。研究表明，WMI 能够引发传导束
+gramoftheareaofvacuolesinthecorpuscallosum． ＊＊P＜0.01vscon-
+变性，引起运动、感觉等神经活动的联络中断而导致
+trolgroup; #P＜0.05，##P＜0.01 vsCIR
+神经功能的障碍［10－11］。胼胝体使大脑的两个半球
+2．3 透射电镜显示对CIR 小鼠胼胝体髓鞘的影响 能够快速交流，但它也是皮质下白质卒中或血管性
+如Fig 3 所示，正常对照组中，胼胝体的髓鞘结构 痴呆的主要损伤部位［9］。本实验着重研究 BCP 对
+致密，染色深，呈板状排列; 模型组神经纤维出现脱 CIR小鼠胼胝体髓鞘损伤的影响作用。
+--- 第4页 ---
+中国药理学通报 Chinese Pharmacological Bulletin 2020 Mar;36(3) ·363·
+Fig5 EffectofBCPonexpressionofmbp，NFandcaspase-3
+apoptosis-relatedproteinsinCIRmice(x珋±s，n=5)
+＊＊P＜0.01 vscontrolgroup; #P＜0.05，##P＜0.01 vsCIR
+表明BCP对CIR后小鼠白质损伤具有保护作用。
+此外，CIR后小鼠白质抗凋亡蛋白Bcl-2 表达明
+显减少，促凋亡蛋白 Bax、caspase-3 表达升高，而
+BCP则促进Bcl-2 表达，降低Bax、caspase-3 表达，提
+Fig4 EffectofBCPoninjuryofcorpuscallosummyelin 示BCP对脑白质的保护作用可能与 Bax/Bcl-2 凋亡
+sheathinCIRmicebyLFBstaining( ×200，x珋±s，n=3)
+机制有关，但具体的作用机制还需要进一步的探讨。
+＊＊P＜0.01 vscontrolgroup;#P＜0.05，##P＜0.01 vsCIR
+本实验BCP共设置了3 个浓度梯度，分别为36、72、
+白质的主要组成细胞是神经胶质细胞，其中少
+144 mg·kg－1，实验结果显示，BCP 72 mg·kg－1为
+突胶质细胞( oligodendrocyte，OLG) 是形成髓鞘的主
+最佳剂量组，36 mg·kg－1与144 mg·kg－1剂量效果
+要成分，成熟的OLG是合成髓磷脂构成髓鞘的主要 不明确，总体上36 mg·kg－1较144 mg·kg－1效果
+成分，它的突起包绕轴突形成髓鞘［12］。髓鞘碱性蛋 好，可能原因是144 mg·kg－1用药剂量过大，配药
+白( myelin basic protein，mbp) ，由成熟的少突胶质细 所用溶剂选用的是蓖麻油，会对小鼠胃肠道产生刺
+胞分泌，是髓鞘相关性蛋白的主要成分，约占30%， 激，实验过程中体重减轻，对缺血/再灌损伤的耐受
+对髓鞘的致密性起作用，集中分布在有髓纤维，是成 下降。
+熟少突胶质细胞功能活动的标记物［13］。在 CIR 发 综上所述，BCP能够改善 CIR 小鼠脑白质上述
+生时，OLG 受损伤可导致 mbp 甲基化障碍，引起髓 病理学变化，对其起到保护作用，可能与抑制 Bax/
+鞘整体结构的稳定性下降，髓鞘结构的致密性受到 Bcl-2 凋亡通路有关。尽管缺血性白质疾病具有较
+损伤进而导致髓鞘脱失，使神经轴突的营养及保护 高发病率和重要临床意义，但相对较少的努力投入
+减弱甚至消失，进一步引发了轴索变性［14］。本研究 到病理机制或寻找缺血性白质疾病的治疗靶点的研
+选择mbp作为髓鞘损伤的标志，Western blot 结果显 究上［15］。因此，有必要进一步探讨 BCP 对 CIR 小
+示，CIR后mbp 的表达明显减少，说明有脑白质髓 鼠脑白质的作用机制，对治疗脑缺血/再灌注导致的
+鞘损伤，而给予BCP治疗后，mbp的表达上升，结果 白质损伤具有重要意义。
+--- 第5页 ---
+·364· 中国药理学通报 Chinese Pharmacological Bulletin 2020 Mar;36(3)
+参考文献: terClinMed，2016，32(1): 56－60．
+［1］ SpenceJD． Recentadvancesinpreventing stroke recurrence［J］． ［8］ Fern R，Matute C． Glutamate receptors and white matter stroke
+F1000 Res，2017，6:1017． ［J］． NeurosciLett，2019，694:86－92．
+［2］ WuS，WuB，LiuM，etal． StrokeinChina: advancesandchal- ［9］ MarinMA，CarmichaelST． Mechanismsofdemyelinationandre-
+lengesinepidemiology，prevention，and management［J］． Lancet myelination in the young and aged brain following white matter
+Neurol，2019，18(4): 394－405． stroke［J］． NeurobiolDis，2018，126:5－12．
+［3］ 张小琴，苗学蒸，周丽英，等． 红景天苷对局灶性脑缺血/再灌 ［10］TaoC，HuX，LiH，etal． Whitematterinjuryafterintracerebral
+注大鼠轴突再生及Akt/GSK-3β/CRMP-2表达的影响［J］． 中 hemorrhage: pathophysiologyandtherapeuticstrategies［J］． Front
+国药理学通报，2017，33(9): 1320－4． HumNeurosci，2017，11: 422．
+［3］ Zhang X Q，Miao X Z，Zhou L Y，et al． Salidroside regulates ［11］GuimaraesJS，FreireMA，LimaRR，etal． Mechanismsofsec-
+Akt/GSK-3β/CRMP-2 expression and axonal regeneration in ondary degeneration in the central nervous system during acute
+MCAOrats［J］． ChinPharmacolBull，2017，33(9): 1320－4． neuraldisordersandwhitematterdamage［J］． RevNeurol，2009，
+［4］ ChengX，WangH，LiuC，etal． Dl-3-n-butylphthalidepromotes 48(6): 304－10．
+remyelinationprocessincerebral white matter in rats subjected to ［12］vanTilborgE，deTheijeC，vanHalM，etal． Originanddynam-
+ischemicstroke［J］． BrainRes，2019，15(1717):167－75． ics of oligodendrocytes in the developing brain: Implications for
+［5］ Yang M，Lv Y，Tian X，et al． Neuroprotective effect of beta- perinatalwhitematterinjury［J］． Glia，2018，66(2): 221－38．
+caryophylleneoncerebralischemia-reperfusioninjuryviaregulation ［13］蔡其燕． 梓醇对慢性脑缺血大鼠脑白质保护作用的实验研究
+of necroptotic neuronal death and inflammation: In Vivo and in ［D］． 第三军医大学，2011．
+Vitro［J］． FrontNeurosci，2017，11: 583． ［13］CaiQY． Protectiveeffectsofcatalpolagainstwhitematterlesions
+［6］ 杨 梅，安瑞娣，李明航，等． β-石竹烯通过作用于HMGB1/ in the rat brain after chronic cerebral hypoperfusion［D］． Third
+TLR4/NF-κB通路减轻小鼠局灶性脑缺血/再灌注损伤［J］． militarymedicalUniversity，2011．
+中国免疫学杂志，2017，33(7):1009－13． ［14］梁 燕． 法舒地尔对大鼠脑缺血/再灌注后脑白质保护作用的
+［6］ YangM，AnRD，LiMH，etal． β-caryophyllenemitigatescere- 研究［D］． 郑州大学，2011．
+bral ischemia/reperfusion injury in mice by inhibiting HMGB1/ ［14］LiangY． ProtectiveofFasudil in white matter of rats following a-
+TLR4/NF-κBpathway［J］． ChinJImmun，2017，33(7): 1009－ cute cerebral ischemia-reperfusion［D］． Zhengzhou University，
+13． 2011．
+［7］ 曹光秀，李然然，刘 洁，等． β-石竹烯通过抗氧化作用减轻局 ［15］段建钢． 针刺对缺血性脑卒中大鼠受损脑髓鞘神经保护作用
+灶性脑缺血/再灌注大鼠大脑皮质损伤［J］． 中药药理与临 的研究［D］． 四川大学，2007．
+床，2016，32(1): 56－60． ［15］Duan J G． Study on neuroprotective effect of acupuncture on in-
+［7］ CaoGX，LiRR，LiuJ，etal． β-caryophylleneprotectscerebral juredcerebralmyelin in ischemic stroke rats［D］． Sichuan Uni-
+corticalneurons against cerebral ischemia and reperfusion in rats versity，2007．
+byimprovingantioxidantactivities［J］． PharmacolClin Chin Ma-
+Protective effect of β-caryophyllene on white matter injury
+induced by cerebral ischemia/reperfusion in mice
+WANG Qian1，2，RAO Jiang-yan1，2，WANG Yu-chun1，2，XIANG Fei1，2，XU Lu3，TIAN Xiao-cui1，2，DONG Zhi1，2
+(1． Chongqing Key Lab of Biochemistry and Molecular Pharmacology，Chongqing 400016，China; 2． Dept of
+Pharmacology，Pharmacy School of Chongqing Medical University，Chongqing 400016，China;
+3． Dept of Pharmacy，Chongqing Medical and Pharmceutical College，Chongqing 401331，China)
+Abstract:Aim To investigate protective effect of β- moisture content of brain was determined by dry and
+caryophyllene on white matter injury after cerebral is- wet weight method． The damage of corpus callosum
+chemia/reperfusion ( CIR) in mice． Methods was assessed by HE staining and transmission electron
+C57BL/6 mice were randomly divided into control microscope ( TEM) ，the myelin sheath of the brain was
+group ( Control) ，model group ( CIR) and treatment tagged by Luxol Fast Blue ( LFB) staining，and the ex-
+group (36，72，144 mg·kg－1) ． The middle cerebral pressions of mbp，NF，Bcl-2，Bax and caspase-3 in
+artery occlusion ( MCAO) was established by using su- corpus callosum were detected by Western blot． Re-
+ture method． After ischemia for1 h and reperfusion for sults Compared to model group，β-caryophyllene re-
+24 h，the infarction volume was measured with TTC duced the neurobehavioral score，decreased the infarct
+staining，and neurobehavioral score was obtained; the volume，alleviated cerebral edema and injury of the
+--- 第6页 ---
+中国药理学通报 Chinese Pharmacological Bulletin 2020 Mar;36(3):365～71 ·365·
+网络出版时间:2020/3/1012:23 网络出版地址:http: //kns．cnki．net/kcms/detail/34．1086．r．20200309．1346．028．html
+白细胞介素-12 抗 NK/T 细胞淋巴瘤的活性及其机制研究
+王 媛1，惠 双1，张成辉1，郭宏强2，李 敏3，郑芝欣3
+(1．南阳市中心医院肿瘤内科，河南 南阳 473000; 2．郑州大学第一附属医院肿瘤综合病区，河南 郑州 450000;
+3． 南阳市中心医院药学室，河南 南阳 473000)
+doi:10．3969/j．issn．1001－1978．2020．03．014 源于结节外部位。结节外 NK/T 细胞淋巴瘤在亚
+文献标志码:A 文章编号:1001－1978(2020)03－0365－07 洲、尤其是中国南方及东南亚地区发病率较高［1］。
+中国图书分类号:R-332;R329．25;R345．57;R392．12;R733．4;
+NK/T 细胞淋巴瘤的具有浸润性生长的特征，病灶
+R977．6
+内肿瘤细胞增殖、凋亡及细胞周期的异常与该病理
+摘要:目的 研究白细胞介素-12( IL-12) 的抗NK/T细胞淋
+特征密切相关［2－3］，但具体的发病机制尚未完全阐
+巴瘤活性及机制。方法 培养NK/T细胞淋巴瘤的YTS细
+明。传统治疗侵袭性非霍奇金淋巴瘤的CHOP方案
+胞株并分为对照组、IL-12组、NC siRNA组、JAK2 siRNA组、
+空白质粒组、JAK2 表达质粒组，用含有 0.625、1.25、2.5、
+用于NK/T细胞淋巴瘤治疗的效果较差，即使能够
+5.0、10.0、20.0 ng·mL－1 IL-12 的培养基处理或转染 NC 获得短暂缓解、随后的复发率也较高，目前临床上仍
+siRNA、JAK2 siRNA、空白质粒、JAK2 表达质粒，检测细胞活 缺乏有效的靶向治疗NK/T细胞淋巴瘤的手段［4］。
+力、细胞凋亡、细胞周期及细胞中JAK2及STAT3的表达;选 白细胞介素-12( interleukin-12，IL-12) 是体内重
+择C57小鼠并建立移植瘤模型，随机分为对照组及IL-12组 要的免疫活性细胞因子，能够促进 Th1 细胞、NK 细
+后，测定移植瘤质量及JAK2、STAT3的表达。结果 在YTS
+胞等免疫细胞的分化及相应细胞因子的分泌，已经
+细胞中，IL-12以及JAK2 siRNA能够抑制细胞活力、细胞周
+在肺癌、乳腺癌、肝癌等恶性肿瘤细胞中被证实具有
+期及细胞中 p-JAK2、p-STAT3 的表达，诱导细胞凋亡( P ＜
+抗癌作用［5－7］。在不同类型的淋巴瘤患者中，血清
+0.05);转染JAK2的表达质粒能够使20.0 ng·mL－1的 IL-
+IL-12 含量的改变与预后不佳密切相关［8］。为了明
+12抑制细胞活力、细胞周期、细胞中 p-JAK2、p-STAT3 表达
+及诱导细胞凋亡的作用减弱;在移植瘤小鼠中，IL-12 干预 确IL-12 在NK/T细胞淋巴瘤中的治疗价值，本实验
+后，移植瘤质量及移植瘤中 p-JAK2、p-STAT3 的表达均明显 以NK/T细胞淋巴瘤细胞株 YTS 为对象，通过细胞
+下降(P＜0.05)。结论 IL-12 具有抗NK/T细胞淋巴瘤的 实验及移植瘤动物实验分析了IL-12 调控 YTS 细胞
+活性且其机制与抑制JAK2/STAT3信号通路的激活有关。 的细胞活力、细胞周期、细胞凋亡的作用及机制。
+1 材料与方法
+关键词:NK/T细胞淋巴瘤;白细胞介素-12;Janus 蛋白质酪
+1．1 材料
+氨酸激酶2;信号转导和转录活化蛋白3;凋亡;细胞周期
+1．1．1 细胞株 NK/T 细胞淋巴瘤细胞株 YTS，购
+自中科院上海细胞资源中心。
+NK/T 细胞淋巴瘤属于非霍奇金淋巴瘤，多起
+1．1．2 动物 SPF 级的 C57 小鼠、♂、( 18 ～20) g
+购自上海杰思捷实验动物有限公司，许可证号:生产
+收稿日期:2019－11－09，修回日期:2019－12－17
+基金项目:国家自然科学基金项目(No81101797) 许可 SCXK( 沪) 2018-0004。饲养环境温度( 18 ～
+作者简介:王 媛(1985－)，女，硕士研究生，副主任医师，研究方 23) ℃、适度45% ～55%、自由饮水摄食。
+向:各种恶性肿瘤的综合治疗，E-mail: nywy2119@163． 1．1．3 试剂 IL-12( 批号:SRP3204) 购自 Sigma 公
+com;
+司，DMEM 培养基、胰蛋白酶、胎牛血清购自 Gibco
+郭宏强(1977－)，男，博士，副主任医师，研究方向:各种
+公司，阴性对照( NC) siRNA、JAK2 siRNA 购自上海
+恶性肿瘤的诊断及综合治疗，通讯作者，E-mail:guohq365
+@aliyun．com 吉玛公司，空白的 pcDNA3.1 质粒、表达 JAK2 的
+myelin sheath in the corpus callosum，and increased tective effect on white matter injury after CIR in mice，
+the optical density of myelin staining ( OD) ． The ex- which may be related to Bax/Bcl-2 apoptosis pathway．
+pressions of mbp，NF and Bcl-2 were up-regulated， Key words: β-caryophyllene; cerebral ischemia/
+while the expressions of Bax and caspase-3 were down- reperfusion; white matter injury; corpus callosum; de-
+regulated． Conclusions β-caryophyllene has a pro- myelination; apoptosis

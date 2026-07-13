@@ -8,7 +8,7 @@
   - CPI 正样本: L4/results/experimental_actives_detail_cleaned.csv
   - 化合物特征: L4/results_v10_minibatch/compound_features_v31.npz (ECFP4+MACCS+RDKit)
   - 蛋白特征: L4/results_v10_minibatch/esm2_protein_embeddings.npz (ESM-2 640维)
-  - TCM 候选池: L3/results/tcm_compound_pool_tox_filtered_noleak.csv
+  - TCM 候选池: L3/results/tcm_compound_pool_tox_filtered.csv
 
 输出：
   - L4/results/tree_model_cpi_results.csv: 模型评估指标
@@ -27,11 +27,8 @@ from rdkit import Chem, RDLogger
 from rdkit.Chem import AllChem, Descriptors, rdMolDescriptors
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import (
-    auc,
     average_precision_score,
-    precision_recall_curve,
     roc_auc_score,
-    roc_curve,
 )
 from sklearn.model_selection import StratifiedKFold
 
@@ -139,10 +136,7 @@ def load_protein_embeddings() -> dict[str, np.ndarray]:
 
 def load_tcm_pool() -> pd.DataFrame:
     """加载 TCM 候选化合物池"""
-    path = L3_RESULTS / "tcm_compound_pool_tox_filtered_noleak.csv"
-    if not path.exists():
-        logger.error(f"TCM 池文件不存在: {path}")
-        sys.exit(1)
+    path = L3_RESULTS / "tcm_compound_pool_tox_filtered.csv"
     df = pd.read_csv(path, low_memory=False)
     logger.info(f"TCM 候选池: {len(df)} 化合物")
     return df
@@ -685,7 +679,7 @@ def main():
     top50.to_csv(top_path, index=False)
 
     logger.info(f"\n{'='*60}")
-    logger.info(f"Top 20 候选化合物 (按 max_score 排序):")
+    logger.info("Top 20 候选化合物 (按 max_score 排序):")
     logger.info(f"{'='*60}")
     for i, row in enumerate(top50.head(20).itertuples(index=False), 1):
         logger.info(f"  {i:2d}. {row.molecule_name} | max={row.max_score:.4f} "
@@ -694,7 +688,7 @@ def main():
                     f"| Top靶标: {row.top_3_genes}")
 
     logger.info(f"\nTop 50 候选已保存: {top_path}")
-    logger.info(f"\n任务完成!")
+    logger.info("\n任务完成!")
 
 
 if __name__ == "__main__":

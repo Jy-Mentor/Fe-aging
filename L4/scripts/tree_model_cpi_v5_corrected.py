@@ -23,7 +23,7 @@ v5 核心修正（逐项对应审查反馈）：
 数据来源（全部真实，不模拟）：
   - CPI: L4/results/experimental_actives_detail_cleaned.csv
   - 蛋白嵌入: L4/results_v10_minibatch/esm2_protein_embeddings.npz
-  - TCM池: L3/results/tcm_compound_pool_tox_filtered_noleak.csv
+  - TCM池: L3/results/tcm_compound_pool_tox_filtered.csv
   - 中药映射: L3/results/herb_ingredient_mapping.xlsx
 
 输出：
@@ -35,7 +35,6 @@ v5 核心修正（逐项对应审查反馈）：
 """
 
 import logging
-import os
 import sys
 import time
 import traceback
@@ -49,9 +48,7 @@ from rdkit.Chem import AllChem, Descriptors, MACCSkeys, rdMolDescriptors
 
 from sklearn.decomposition import PCA
 from sklearn.ensemble import (
-    ExtraTreesClassifier,
     RandomForestClassifier,
-    VotingClassifier,
 )
 from sklearn.feature_selection import mutual_info_classif
 from sklearn.model_selection import StratifiedKFold
@@ -238,7 +235,7 @@ def build_multifingerprint_features(smiles_list, rdkit_scaler=None):
     if rdkit_scaler is None:
         rdkit_scaler = StandardScaler()
         X_rdkit = rdkit_scaler.fit_transform(X_rdkit)
-        logger.info(f"  RDKit2D 已标准化 (mean=0, std=1)")
+        logger.info("  RDKit2D 已标准化 (mean=0, std=1)")
         return X_binary, X_rdkit, rdkit_scaler, binary_labels, rdkit_names
     else:
         X_rdkit = rdkit_scaler.transform(X_rdkit)
@@ -269,11 +266,11 @@ def process_protein_embeddings(protein_embeddings, target_dim=128, pca_model=Non
         ev_ratio = pca.explained_variance_ratio_.sum()
         logger.info(f"  PCA 降维: {original_dim} -> {actual_dim}, 累计解释方差比: {ev_ratio:.4f}")
         if ev_ratio < 0.7:
-            logger.warning(f"  PCA 解释方差 < 70%, 考虑增大 target_dim")
+            logger.warning("  PCA 解释方差 < 70%, 考虑增大 target_dim")
 
         scaler = StandardScaler()
         vectors_scaled = scaler.fit_transform(vectors_reduced)
-        logger.info(f"  蛋白嵌入已标准化")
+        logger.info("  蛋白嵌入已标准化")
 
         processed = {k: vectors_scaled[i] for i, k in enumerate(keys)}
         return processed, pca, scaler
@@ -547,7 +544,7 @@ class StackingEnsemble:
         # 训练 meta-learner on OOF predictions
         self.meta_learner_ = self.meta_learner.__class__(**self.meta_learner.get_params())
         self.meta_learner_.fit(oof_preds, y)
-        logger.info(f"    Stacking meta-learner 训练完成")
+        logger.info("    Stacking meta-learner 训练完成")
 
         return self
 
@@ -1012,7 +1009,7 @@ def main():
     cpi_df = pd.read_csv(L4_RESULTS / "experimental_actives_detail_cleaned.csv", low_memory=False)
     protein_embeddings_raw = {str(k): v.astype(np.float32) for k, v in
                               np.load(L4_RESULTS_V10 / "esm2_protein_embeddings.npz", allow_pickle=True).items()}
-    tcm_df = pd.read_csv(L3_RESULTS / "tcm_compound_pool_tox_filtered_noleak.csv", low_memory=False)
+    tcm_df = pd.read_csv(L3_RESULTS / "tcm_compound_pool_tox_filtered.csv", low_memory=False)
 
     all_smiles = list(cpi_df["canonical_smiles"].dropna().astype(str).unique())
     tcm_smiles = tcm_df["SMILES_std"].astype(str).tolist()
@@ -1193,7 +1190,7 @@ def main():
     )
 
     pred_df.to_csv(L4_RESULTS / "tree_v5_tcm_predictions.csv", index=False)
-    logger.info(f"TCM 预测已保存")
+    logger.info("TCM 预测已保存")
 
     # Top 候选
     comp_agg = pred_df.groupby(["MOL_ID", "molecule_name", "SMILES", "herb_cn", "herb_en"]).agg(
@@ -1209,7 +1206,7 @@ def main():
     ).reset_index().sort_values("max_score", ascending=False)
 
     comp_agg.head(50).to_csv(L4_RESULTS / "tree_v5_top_candidates.csv", index=False)
-    logger.info(f"\nTop 20 候选化合物:")
+    logger.info("\nTop 20 候选化合物:")
     for i, row in enumerate(comp_agg.head(20).itertuples(index=False), 1):
         logger.info(f"  {i:2d}. {row.molecule_name} | max={row.max_score:.4f} "
                     f"| mean={row.mean_score:.4f} "
@@ -1217,7 +1214,7 @@ def main():
                     f"| 中药: {row.herb_cn} "
                     f"| {row.top_3_genes}")
 
-    logger.info(f"\n任务完成!")
+    logger.info("\n任务完成!")
 
 
 if __name__ == "__main__":

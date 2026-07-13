@@ -40,7 +40,10 @@ def load_cpi_data() -> pd.DataFrame:
 
 
 def load_ppi_network() -> pd.DataFrame:
-    """加载 PPI 网络数据（优先补充版，降级为 DEG 显著子网，再降级为扩展网络）"""
+    """加载 PPI 网络数据（优先补充版，降级为 DEG 显著子网，再降级为扩展网络）
+
+    P2-D fix: 归一化边方向 (A<B) 并去重，保留最高置信度边。
+    """
     supplemented_path = _paths.l1_results / "ppi_network_supplemented.csv"
     significant_path = _paths.l1_results / "ppi_network_extended_significant_edges.csv"
     extended_path = _paths.l1_results / "ppi_network_extended_edges.csv"
@@ -71,6 +74,16 @@ def load_ppi_network() -> pd.DataFrame:
             df["weight"] = df["weight"] / 1000.0
         df["source"] = df["source"].astype(str).str.upper()
         df["target"] = df["target"].astype(str).str.upper()
+        # P2-D: 归一化边方向 (A<B) 并去重，保留最高置信度边
+        n_before = len(df)
+        df["_norm_a"] = df[["source", "target"]].min(axis=1)
+        df["_norm_b"] = df[["source", "target"]].max(axis=1)
+        df = df.sort_values("weight", ascending=False).drop_duplicates(
+            subset=["_norm_a", "_norm_b"], keep="first"
+        ).drop(columns=["_norm_a", "_norm_b"])
+        n_after = len(df)
+        if n_before > n_after:
+            logger.info(f"PPI 去重: {n_before} → {n_after} 条边 (移除 {n_before - n_after} 条重复边)")
         logger.info(f"PPI 网络（{network_type}）: {len(df)} 条边, "
                     f"{pd.concat([df['source'], df['target']]).nunique()} 个节点")
         return df
@@ -108,10 +121,8 @@ def load_kegg_pathways() -> dict[str, list[str]]:
 
 
 def load_tcm_pool() -> pd.DataFrame:
-    """加载 TCM 候选池（优先去泄漏版）"""
-    noleak_path = _paths.l3_results / "tcm_compound_pool_tox_filtered_noleak.csv"
-    original_path = _paths.l3_results / "tcm_compound_pool_tox_filtered.csv"
-    tcm_path = noleak_path if noleak_path.exists() else original_path
+    """加载 TCM 候选池"""
+    tcm_path = _paths.l3_results / "tcm_compound_pool_tox_filtered.csv"
     if not tcm_path.exists():
         raise FileNotFoundError(f"TCM 候选池文件不存在: {tcm_path}")
     try:
@@ -121,8 +132,7 @@ def load_tcm_pool() -> pd.DataFrame:
         raise
     if len(df) == 0:
         raise ValueError("TCM 候选池加载后为空，请检查数据文件内容")
-    source_tag = "去泄漏版" if tcm_path == noleak_path else "原始版"
-    logger.info(f"TCM 候选池（{source_tag}）: {len(df)} 个化合物")
+    logger.info(f"TCM 候选池: {len(df)} 个化合物")
     return df
 
 
@@ -143,7 +153,10 @@ def load_ferroptosis_library() -> pd.DataFrame | None:
 
 
 def load_disease_edges() -> pd.DataFrame | None:
-    """加载疾病-基因边数据（供消融实验等外部脚本调用）"""
+    """加载疾病-基因边数据（供消融实验等外部脚本调用）
+
+    P2-C fix: 按 padj < 0.05 且 |NES| > 1 过滤弱信号边。
+    """
     disease_file = _paths.l4_results / "disease_gene_edges.csv"
     if disease_file.exists():
         try:
@@ -153,7 +166,20 @@ def load_disease_edges() -> pd.DataFrame | None:
             return None
         assert "gene_symbol" in df.columns, "疾病-基因边数据缺少 gene_symbol 列"
         assert "disease_name" in df.columns, "疾病-基因边数据缺少 disease_name 列"
-        logger.info(f"疾病-基因边数据: {len(df)} 条边")
+        n_before = len(df)
+        # P2-C: 过滤低质量边 — padj < 0.05 且 |NES| > 1
+        if "padj" in df.columns:
+            df = df[df["padj"].notna() & (df["padj"] < 0.05)].copy()
+        if "nes" in df.columns:
+            nes_ok = df["nes"].isna() | (df["nes"].abs() > 1.0)
+            df = df[nes_ok].copy()
+        n_after = len(df)
+        if n_before > n_after:
+            logger.info(f"疾病-基因边数据: {n_before} → {n_after} 条边 "
+                        f"(padj<0.05 & |NES|>1 过滤, 移除 {n_before - n_after} 条弱信号边)")
+        else:
+            logger.info(f"疾病-基因边数据: {len(df)} 条边 "
+                        f"(padj/NES 列不存在或无过滤效果)")
         return df
     logger.warning(f"疾病-基因边数据不存在: {disease_file}")
     return None

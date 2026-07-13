@@ -12,7 +12,7 @@
   - 蛋白嵌入: L4/results_v10_minibatch/esm2_protein_embeddings.npz (全局 CLS)
   - 蛋白嵌入: L4/results_v10_minibatch/esm2_residue_pooled_embeddings.npz (残基池化)
   - 蛋白嵌入: L4/results_v10_minibatch/esm2_150M_residue_features.pt (残基级)
-  - TCM池: L3/results/tcm_compound_pool_tox_filtered_noleak.csv
+  - TCM池: L3/results/tcm_compound_pool_tox_filtered.csv
   - 中药映射: L3/results/herb_ingredient_mapping.xlsx
 
 输出：
@@ -32,7 +32,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from rdkit import Chem, RDLogger
-from rdkit.Chem import AllChem, Descriptors, MACCSkeys, rdMolDescriptors
+from rdkit.Chem import Descriptors, rdMolDescriptors
 
 from sklearn.base import clone
 from sklearn.decomposition import PCA
@@ -52,6 +52,15 @@ RDLogger.DisableLog("rdApp.error")
 RDLogger.DisableLog("rdApp.warning")
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+L4_SRC = PROJECT_ROOT / "L4" / "src"
+sys.path.insert(0, str(L4_SRC))
+
+from iron_aging_gnn.data.features import (  # noqa: E402
+    CompoundFeatureConfig,
+    _compute_ecfp4 as compute_ecfp4,
+    _compute_maccs as compute_maccs,
+)
+
 L4_RESULTS = PROJECT_ROOT / "L4" / "results"
 L4_RESULTS_V10 = PROJECT_ROOT / "L4" / "results_v10_minibatch"
 L3_RESULTS = PROJECT_ROOT / "L3" / "results"
@@ -80,37 +89,6 @@ FERROAGING_ALL = sorted([
     "SNCA","SOCS1","SOCS2","SOD1","SP1","SPATA2","TBX2","TFRC","TLR4","TNFAIP1",
     "TNFAIP3","TXNIP","WNT5A","WWTR1","YAP1","ZEB1",
 ])
-
-
-def compute_ecfp(smiles_list, radius=2, nbits=2048):
-    """ECFP 指纹（二进制）"""
-    fps = np.zeros((len(smiles_list), nbits), dtype=np.float32)
-    for i, smi in enumerate(smiles_list):
-        if not smi or pd.isna(smi):
-            continue
-        mol = Chem.MolFromSmiles(str(smi))
-        if mol is None:
-            continue
-        fp = AllChem.GetMorganFingerprintAsBitVect(mol, radius, nBits=nbits)
-        for bit in fp.GetOnBits():
-            fps[i, bit] = 1.0
-    return fps
-
-
-def compute_maccs(smiles_list):
-    """MACCS 密钥（二进制）"""
-    fps = np.zeros((len(smiles_list), 167), dtype=np.float32)
-    for i, smi in enumerate(smiles_list):
-        if not smi or pd.isna(smi):
-            continue
-        mol = Chem.MolFromSmiles(str(smi))
-        if mol is None:
-            continue
-        fp = MACCSkeys.GenMACCSKeys(mol)
-        for bit in fp.GetOnBits():
-            if bit < 167:
-                fps[i, bit] = 1.0
-    return fps
 
 
 def compute_atom_pairs(smiles_list, nbits=1024):
@@ -196,14 +174,19 @@ def compute_rdkit_2d(smiles_list):
 
 
 def _get_feature_cache_path():
-    """特征缓存路径"""
+    """特征缓存路径（保留旧缓存路径用于兼容）"""
     cache_dir = L4_RESULTS / "feature_cache"
     cache_dir.mkdir(parents=True, exist_ok=True)
     return cache_dir / "compound_multifingerprint_features_v6.npz"
 
 
 def build_multifingerprint_features(smiles_list, rdkit_scaler=None, use_cache=True):
-    """构建多指纹融合特征矩阵（支持缓存）"""
+    """构建多指纹融合特征矩阵（支持缓存）。
+
+    本函数保留原有接口和行为，但内部复用统一特征模块计算 ECFP4 和 MACCS，
+    降低代码重复。AtomPairs / Avalon / Pharmacophore 仍为树模型特有，保留在
+    本脚本中。
+    """
     t0 = time.time()
     n = len(smiles_list)
     logger.info(f"  计算 {n} 个化合物的多指纹特征...")
@@ -239,16 +222,18 @@ def build_multifingerprint_features(smiles_list, rdkit_scaler=None, use_cache=Tr
     binary_fps = []
     binary_labels = []
 
-    fp = compute_ecfp(smiles_list, radius=2, nbits=2048)
+    # 复用统一特征模块计算 ECFP4
+    fp = compute_ecfp4(smiles_list)
     binary_fps.append(fp)
     binary_labels.append("ECFP4")
     logger.info(f"    ECFP4: {fp.shape} (binary)")
 
-    fp = compute_ecfp(smiles_list, radius=3, nbits=2048)
+    fp = compute_ecfp4(smiles_list, config=CompoundFeatureConfig(ecfp4_radius=3))
     binary_fps.append(fp)
     binary_labels.append("ECFP6")
     logger.info(f"    ECFP6: {fp.shape} (binary)")
 
+    # 复用统一特征模块计算 MACCS
     fp = compute_maccs(smiles_list)
     binary_fps.append(fp)
     binary_labels.append("MACCS")
@@ -347,7 +332,7 @@ def process_protein_embeddings(protein_embeddings, target_dim=128, pca_model=Non
 
 
 
-PROTEIN_EMB_MODES = ["global", "residue_pooled", "residue_meanmaxstd", "combined"]
+PROTEIN_EMB_MODES = ["global", "residue_pooled", "combined"]
 
 
 def _load_protein_embeddings_global():
@@ -373,9 +358,22 @@ def _load_protein_embeddings_global():
 
 
 def _load_protein_embeddings_residue_pooled():
-    """加载预池化的残基层 ESM-2 嵌入"""
-    d = np.load(L4_RESULTS_V10 / "esm2_residue_pooled_embeddings.npz",
-                allow_pickle=True)
+    """加载预池化的残基层 ESM-2 嵌入（注意力池化, 640D）。
+
+    优先从 esm2_residue_pooled_embeddings.npz 加载；
+    若文件不存在，回退到 esm2_protein_embeddings.npz（全局均值池化, 640D）。
+    """
+    pooled_path = L4_RESULTS_V10 / "esm2_residue_pooled_embeddings.npz"
+    global_path = L4_RESULTS_V10 / "esm2_protein_embeddings.npz"
+
+    load_path = pooled_path if pooled_path.exists() else global_path
+    source_tag = "注意力池化" if pooled_path.exists() else "全局均值池化(回退)"
+
+    if not load_path.exists():
+        logger.error(f"无可用的蛋白嵌入文件: {pooled_path} 和 {global_path} 均不存在")
+        return {}
+
+    d = np.load(load_path, allow_pickle=True)
     result = {}
     skipped = 0
     for k in d.files:
@@ -387,18 +385,18 @@ def _load_protein_embeddings_residue_pooled():
     total = len(d.files)
     skip_ratio = skipped / total if total > 0 else 0
     if skip_ratio > 0.1:
-        logger.warning(f"  残基池化嵌入: 跳过 {skipped}/{total} 个键 ({skip_ratio:.1%})，"
-                       f"跳过比例过高，可能存在数据损坏")
+        logger.warning(f"  蛋白嵌入 ({source_tag}): 跳过 {skipped}/{total} 个键 ({skip_ratio:.1%})")
     else:
-        logger.info(f"  残基池化嵌入: {len(result)} 个蛋白 (跳过 {skipped} 个非数值键)")
+        logger.info(f"  蛋白嵌入 ({source_tag}): {len(result)} 个蛋白 (跳过 {skipped} 个非数值键)")
     return result
 
 
 def _load_protein_embeddings_residue_stats(stats=("mean", "max", "std")):
     """
-    从 esm2_150M_residue_features.pt 计算残基层统计特征。
-    返回每个基因的固定长度向量（mean/max/std 拼接）。
-    支持缓存以加速重复调用。
+    [已弃用] 从 esm2_150M_residue_features.pt 计算残基层统计特征。
+    返回每个基因的固定长度向量（mean/max/std 拼接, 1920D）。
+    此方法已被 640D 全局均值池化替代，仅保留用于向后兼容。
+    不应再作为主蛋白表征使用。
     """
     import torch
     stats_key = "_".join(stats)
@@ -466,14 +464,15 @@ def _load_protein_embeddings_combined():
     return result
 
 
-def load_protein_embeddings_by_mode(mode="global"):
-    """按模式加载蛋白嵌入"""
+def load_protein_embeddings_by_mode(mode="residue_pooled"):
+    """按模式加载蛋白嵌入。默认使用 residue_pooled (640D)，回退到 global。"""
     if mode == "global":
         return _load_protein_embeddings_global()
     elif mode == "residue_pooled":
         return _load_protein_embeddings_residue_pooled()
     elif mode == "residue_meanmaxstd":
-        return _load_protein_embeddings_residue_stats(stats=("mean", "max", "std"))
+        logger.warning("residue_meanmaxstd 模式已弃用，回退到 residue_pooled")
+        return _load_protein_embeddings_residue_pooled()
     elif mode == "combined":
         return _load_protein_embeddings_combined()
     else:
@@ -1109,7 +1108,7 @@ def run_mode_cv_ablation(mode, cpi_df, all_smiles, X_binary_all, X_rdkit_raw_all
         cpi_df, dummy_protein, dummy_compound, all_smiles,
         neg_ratio=3, random_seed=random_seed,
         real_protein_embeddings=protein_embeddings_raw,
-        compound_ecfp4=compute_ecfp(all_smiles, radius=2, nbits=2048),
+        compound_ecfp4=compute_ecfp4(all_smiles),
     )
     n_pos = int(y.sum())
     n_genes = len(cpi_genes_in_emb)
@@ -1187,7 +1186,7 @@ def run_full_pipeline(mode, cpi_df, tcm_df, all_smiles,
         cpi_df, dummy_protein, dummy_compound, all_smiles,
         neg_ratio=3, random_seed=random_seed,
         real_protein_embeddings=protein_embeddings_raw,
-        compound_ecfp4=compute_ecfp(all_smiles, radius=2, nbits=2048),
+        compound_ecfp4=compute_ecfp4(all_smiles),
     )
     logger.info(f"  有效基因数: {len(cpi_genes_in_emb)}, 正样本数: {int(y.sum())}, 总样本数: {len(y)}")
 
@@ -1331,7 +1330,7 @@ def main():
 
     logger.info("\n[1/8] 加载原始数据...")
     cpi_df = pd.read_csv(L4_RESULTS / "experimental_actives_detail_cleaned_combined.csv", low_memory=False)
-    tcm_df = pd.read_csv(L3_RESULTS / "tcm_compound_pool_tox_filtered_noleak.csv",
+    tcm_df = pd.read_csv(L3_RESULTS / "tcm_compound_pool_tox_filtered.csv",
                          low_memory=False)
     logger.info(f"  CPI 记录: {len(cpi_df)}, TCM 化合物: {len(tcm_df)}")
 
@@ -1390,7 +1389,7 @@ def main():
         logger.info(f"\n  消融实验结果已保存: {ablation_path}")
 
     if best_mode is None:
-        best_mode = "residue_meanmaxstd"
+        best_mode = "residue_pooled"
         logger.warning(f"  所有模式均失败，回退到默认模式: {best_mode}")
 
     logger.info(f"\n  最佳蛋白嵌入模式: {best_mode} (AUPR={best_aupr:.4f})")

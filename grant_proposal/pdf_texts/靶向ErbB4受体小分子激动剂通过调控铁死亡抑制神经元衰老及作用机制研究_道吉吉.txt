@@ -1,0 +1,2347 @@
+
+--- 第1页 ---
+硕 士 学 位 论 文
+（学 术 学 位）
+题 目： 靶向 ErbB4 受体小分子激动剂通过调控
+铁死亡抑制神经元衰老及作用机制研究
+英文并列题目：
+Research on the inhibition of neuronal
+aging and the mechanism of action by a
+small molecule agonist targeting the ErbB4
+receptor through regulating ferroptosis
+研究生姓名： 道吉吉
+专 业 ： 药理学
+研 究 方 向 ： 神经药理学
+导 师 姓 名 ： 赵炜疆 教授
+指导小组成员： 申延琴教授 崔春副教授 乔晨萌副教授
+学位授予日期： 2025 年 6 月
+答辩委员会主席： 刘恭平
+江 南 大 学
+地址：无锡市蠡湖大道1800号
+二○二五 年 六 月
+--- 第2页 ---
+摘要
+摘要
+背景：随着全球老龄化进程的加速，衰老及其相关疾病的预防与治疗已成为生命
+科学领域的重要研究课题。衰老是多种神经退行性疾病的主要风险因素之一，在
+人体老化过程中，大脑会发生一系列结构性和功能性变化，包括脑组织萎缩、神
+经元数量减少以及突触连接减弱等现象，这些变化可能导致记忆力减退和认知功
+能障碍。神经元作为神经系统的基本结构和功能单位，其数量随着年龄的增长而
+逐渐减少，并表现出衰老样表型，导致多种功能障碍，进而引发与衰老相关的神
+经系统退行性疾病。
+铁元素对于维持基本生命活动至关重要，但在脑组织中，铁水平随衰老而升
+高，过量的铁沉积会破坏细胞内的铁稳态，诱导细胞发生铁死亡，这一过程与衰
+老相关神经退行性疾病的进展密切相关。ErbB4 是表皮生长因子受体受体酪氨酸
+激酶家族（ErbB1-ErbB4）的重要成员，可被表皮生长因子样神经调节蛋白
+Neuregulin 激活，在中枢神经系统发育以及成熟中枢神经系统中发挥着关键作用。
+已有研究表明，NRG1/ErbB4 信号通路在神经系统中具有重要意义，参与了多种
+神经退行性疾病的病理进程。
+褪黑素是由松果体分泌的一种吲哚类内分泌激素，在神经系统退行性疾病的
+病理生理过程中起着重要作用，可通过抗炎和抗氧化机制减轻阿尔茨海默病患者
+海马脑区β-淀粉样蛋白沉积并减少神经元损失，从而有助于认知功能的恢复。
+已有研究表明，褪黑素能够调节ErbB4 蛋白的表达，降低活性氧（ROS）水平，
+并增强细胞的抗氧化能力。因此，本研究选择褪黑素作为阳性对照，旨在验证靶
+向激活ErbB4 受体的小分子激动剂（E4A）通过抑制神经元铁死亡来延缓神经元
+衰老的效果及其潜在机制，并探讨联合给药方案的疗效。
+目的：本研究旨在利用D-半乳糖（D-galactose, D-gal）诱导的衰老模型，以褪黑
+素作为阳性对照药物，探讨一种能够靶向激活 ErbB4 受体的小分子激动剂 E4A
+对神经元衰老的逆转效果。研究将在细胞和动物两个层面上深入探讨 E4A 与褪
+黑素联合给药的潜在协同效应。
+方法：
+（1）采用不同浓度的D-gal 处理HT22 小鼠海马神经元细胞系，通过细胞增殖实
+验、蛋白免疫印迹分析和衰老相关β-半乳糖苷酶（SA-β-gal）染色实验确定诱
+导细胞衰老的有效剂量。在确认细胞衰老模型的基础上，分别给予小分子激动剂
+E4A、褪黑素或联合给药处理，验证其抑制细胞衰老的作用及其潜在机制。在此
+基础上，进一步通过蛋白免疫印迹实验探讨 E4A 和褪黑素对 ErbB4 信号通路及
+铁死亡相关蛋白的影响，揭示其通过抑制铁死亡对抗神经元衰老的可能机制。最
+后，利用Nrf2 抑制剂（AEM1）和Akt 抑制剂（MK2206），验证E4A 和褪黑素
+通过调控Akt/Nrf2 信号通路抑制神经元衰老的具体机制。
+（2）通过腹腔注射D-gal 构建C57/BL6J 小鼠衰老模型。随后分别给予E4A、褪
+黑素或联合给药进行药物干预，并通过一系列行为学实验（包括水迷宫、Y 迷宫
+和新物体识别实验）评估D-gal 诱导的衰老小鼠的记忆功能衰退和认知障碍，以
+及E4A、褪黑素和联合给药的治疗效果。在此基础上，进一步利用蛋白免疫印迹
+技术检测海马组织中与衰老相关蛋白表达水平，以验证 E4A 和褪黑素给药对神
+经元衰老的抑制作用。此外，结合蛋白免疫印迹和免疫荧光实验，探讨 E4A 和
+I
+--- 第3页 ---
+摘要
+褪黑素通过靶向激活 ErbB4 信号通路调控铁死亡途径，从而逆转海马神经元衰
+老的具体机制。
+结果：
+（1）200mMD-gal 诱导HT22 细胞24小时可成功建立神经元细胞衰老模型，表
+现为细胞活力明显下降，衰老相关蛋白P53、P21 和P16 的蛋白水平显著上升，
+且SA-β-gal 阳性细胞数增多，而使用 10nM E4A 或50μM 褪黑素治疗之后可以
+有效逆转HT22细胞衰老。
+（2）长期 D-gal 诱导构建的小鼠衰老模型中，分别给予 E4A、褪黑素以及两者
+联合用药。行为学测试结果显示，E4A和褪黑素能够显著改善D-gal 诱导的衰老
+小鼠认知功能障碍和记忆能力下降。通过蛋白免疫印迹实验检测发现，E4A 和褪
+黑素治疗可有效减轻D-gal 诱导的衰老效应，具体表现为下调衰老小鼠海马组织
+中与衰老相关的P53、P21、P16 及GFAP、Iba1蛋白表达；此外，免疫荧光实验
+表明，E4A和褪黑素能促进衰老小鼠海马和皮层区域Lamin B1 的表达。
+（3）蛋白免疫印迹实验结果显示，在D-gal 诱导的HT22 衰老细胞中，铁死亡相
+关蛋白的表达发生了显著变化：Nrf2、SLC7A11和GPX4 的表达下调，而TFRC
+的表达上调。同时，ROS 和 MDA 水平显著升高，GSH 水平降低。E4A 和褪黑
+素的治疗能够有效逆转上述变化。此外，在使用铁死亡诱导剂Erastin 处理HT22
+细胞的基础上，进一步证实了 E4A 和褪黑素对铁死亡的抑制作用。体内实验通
+过蛋白免疫印迹和免疫荧光分析表明，E4A 和褪黑素能够显著抑制小鼠海马神经
+元中的铁死亡。
+（4）体内和体外实验结果表明，E4A 和褪黑素能够显著激活ErbB4 受体，促进
+其在神经元细胞及小鼠海马中的磷酸化，并进一步增强下游 pAkt1 的表达。在
+D-gal 诱导的HT22 细胞衰老模型中，当分别抑制Nrf2 和Akt 时，E4A 和褪黑素
+对SLC7A11和GPX4 表达的促进作用被显著抑制，同时阻碍了E4A 和褪黑素逆
+转神经元细胞衰老的效果。这些结果证明，靶向激活 ErbB4 受体的小分子激动
+剂和褪黑素通过Akt/Nrf2 信号通路抑制神经元衰老。
+结论：基于本研究的现有结果，ErbB4 受体的靶向激活能够有效抑制D-gal 诱导
+的神经元衰老和铁死亡相关分子，其作用机制与褪黑素类似。此外，与单独使用
+小分子激动剂相比，联合应用激动剂和褪黑素并未显著增强对D-gal 诱导的神经
+元衰老的抑制效果，提示这两种药物可能通过相似的机制发挥抑制铁死亡来减缓
+神经元衰老的作用。相较于褪黑素，靶向ErbB4 的小分子化合物在D-gal 诱导的
+衰老小鼠模型中表现出更强的依赖于Akt 信号通路来对抗铁死亡。与传统的重组
+蛋白疗法相比，小分子化合物在成本效益方面具有显著优势，并在临床转化应用
+中展现出广阔的应用前景。因此，本研究通过使用靶向激活 ErbB4 受体的小分
+子激动剂，为治疗衰老相关的神经系统退行性疾病提供了重要的参考依据。
+关键词：神经元衰老；D-半乳糖；ErbB4 受体；小分子化合物；铁死亡
+II
+--- 第4页 ---
+Abstract
+Abstract
+Background: With the acceleration of the global aging process, the prevention and
+treatment of aging and its associated diseases have emerged as significant research
+topics within the field of life sciences. Aging is a primary risk factor for numerous
+neurodegenerative diseases. Throughout the aging process, the human brain
+undergoes a series of structural and functional alterations, including phenomena such
+as brain tissue atrophy, a reduction in the number of neurons, and the weakening of
+synaptic connections. These changes can lead to memory loss and cognitive
+dysfunction. Neurons, which serve as the fundamental structural and functional units
+of the nervous system, experience a gradual decline in number with advancing age
+and exhibit aging-like phenotypes.This decline results in various functional disorders,
+ultimately contributing to the onset of neurodegenerative diseases associated with
+aging.
+Iron is essential for the maintenance of fundamental biological functions.
+However, in cerebral tissue, iron concentrations tend to increase with advancing age.
+Excessive accumulation of iron can disrupt intracellular iron homeostasis and trigger
+ferroptosis, a form of cell death that is intricately linked to the progression of
+age-associated neurodegenerative disorders. ErbB4, a significant member of the
+epidermal growth factor receptor tyrosine kinase family (ErbB1-ErbB4), can be
+activated by the epidermal growth factor-like neuromodulator Neuregulin. This
+activation plays a pivotal role in both the development and functioning of the central
+nervous system. Prior research has demonstrated that the NRG1/ErbB4 signaling
+pathway holds considerable importance within the nervous system and is implicated
+inthe pathological mechanisms underlying various neurodegenerative diseases.
+Melatonin, an indole endocrine hormone secreted by the pineal gland, plays a
+significant role in the pathophysiological processes of neurodegenerative diseases. It
+has been shown to reduce β-amyloid deposition in the hippocampal region of
+Alzheimer's disease patients and mitigate neuronal loss through its anti-inflammatory
+and antioxidant properties, thereby aiding in the recovery of cognitive function.
+Previous research has demonstrated that melatonin, can upregulate the expression of
+ErbB4, decrease reactive oxygen species (ROS) levels, and enhance the antioxidant
+capacity of cells. Consequently, in this study, melatonin was employed as a positive
+control to assess the effects and potential mechanisms of a small molecule agonist
+(E4A) that targets the activation of the ErbB4 receptor in delaying neuronal aging by
+inhibiting neuronal ferroptosis. Additionally, the study aimed to explore the efficacy
+ofacombined administration regimen.
+Objective: This study seeks to employ the D-galactose (D-gal)-induced aging model,
+utilizing melatonin as a positive control, to investigate the potential reversing effects
+of the small molecule agonist E4A, which targets and activates the ErbB4 receptor, on
+neuronal aging. The research will conduct an in-depth examination of the potential
+synergistic effects of the combined administration of E4A and melatonin at both
+cellular and animal levels.
+III
+--- 第5页 ---
+Abstract
+Methods:
+(1) HT22 mouse hippocampal neuronal cell lines will be treated with varying
+concentrations of D-gal. The effective dose for inducing cellular aging will be
+determined through cell proliferation assays, Western blot analysis, and
+senescence-associated β-galactosidase (SA-β-gal) staining. Following the
+establishment of the cellular aging model, treatments with small molecule agonist
+E4A, melatonin, or their combination will be administered to assess their inhibitory
+effects on cellular aging and elucidate the underlying mechanisms. On this basis, the
+impact of E4Aand melatonin on the ErbB4 signaling pathway and ferroptosis-related
+proteins was investigated using Western blotting experiments. This approach aimed to
+elucidate the potential mechanisms by which these agents may counteract neuronal
+aging through the inhibition of ferroptosis. Subsequently, the specific mechanisms by
+which E4A and melatonin inhibit neuronal aging via the regulation of the Akt/Nrf2
+signaling pathway were validated using the Nrf2 inhibitor (AEM1) and the Akt
+inhibitor(MK2206).
+(2) An aging model in C57/BL6J mice was established through intraperitoneal
+injection of D-gal. Following this, interventions with E4A, melatonin, or their
+combination were administered. A series of behavioral assessments, including the
+Morris water maze, Y-maze, and novel object recognition tests, were conducted to
+evaluate the decline in memory function and cognitive impairment induced by D-gal
+in aging mice, as well as to assess the therapeutic effects of the small molecule
+compounds, melatonin, and their combined administration. On this basis, the
+expression levels of proteins associated with aging in hippocampal tissue were further
+assessed using Western blotting to confirm the inhibitory effects of E4A and
+melatonin administration on neuronal aging. Additionally, through a combination of
+Western blotting and immunofluorescence assays, the specific mechanism by which
+E4A and melatonin mitigate hippocampal neuronal aging was investigated, focusing
+on their role in targeting and activating the ErbB4 signaling pathway to modulate the
+ferroptosispathway.
+Results:
+(1) HT22 cells exposed to 200 mM D-galactose for 24 hours successfully established
+a model of neuronal aging, characterized by a marked decrease in cell viability, a
+significant upregulation of aging-related proteins P53, P21, and P16, and an increase
+in the number of SA-β-gal positive cells. However, co-treatment with 10 nM E4Aand
+50μM melatonin effectively reversed theaging phenotypein HT22 cells.
+(2) In a mouse model of aging induced by long-term administration of D-gal, E4A,
+melatonin, and their combination were administered sebsequently. Behavioral
+assessments revealed that both E4Aand melatonin significantly ameliorated cognitive
+dysfunction and memory decline in D-gal-induced aging mice. Western blot analyses
+demonstrated that treatment with E4A and melatonin effectively mitigated the aging
+effects induced by D-gal, as evidenced by the down-regulation of aging-related
+proteins P53, P21, P16, GFAP, and Iba1 in the hippocampal tissue of the aging mice.
+Furthermore, immunofluorescence assays indicated that E4Aand melatonin enhanced
+IV
+--- 第6页 ---
+Abstract
+the expression of Lamin B1 in the hippocampal and cortical regions of the aging
+mice.
+(3) The results of the Western blotting experiment demonstrated that in HT22
+senescent cells induced by D-galactose, there were significant alterations in the
+expression of ferroptosis-related proteins. Specifically, the expressions of Nrf2,
+SLC7A11, and GPX4 were downregulated, whereas the expression of TFRC was
+upregulated. Concurrently, there was a marked increase in the levels of reactive
+oxygen species (ROS) and malondialdehyde (MDA), alongside a decrease in
+glutathione (GSH) levels. Treatment with E4A and melatonin effectively reversed
+these changes. Furthermore, the inhibitory effects of E4A and melatonin on
+ferroptosis were further validated in HT22 cells treated with the ferroptosis inducer
+Erastin. In vivo experiments, utilizing Western blotting and immunofluorescence
+analysis, indicated that E4Aand melatonin significantly inhibited ferroptosis in mouse
+hippocampal neurons.
+(4) The findings from both in vivo and in vitro experiments demonstrated that E4A
+and melatonin profoundly activate the ErbB4 receptor, facilitating its phosphorylation
+in neuronal cells and the mouse hippocampus, which subsequently enhances the
+expression of downstream pAkt1. In the HT22 cell senescence model induced by
+D-galactose, the inhibition of Nrf2 and Akt expression levels significantly attenuated
+the effects of E4A and melatonin on the expression of SLC7A11 and GPX4.
+Concurrently, the ability of E4Aand melatonin to counteract neuronal cell senescence
+was also impeded. These results suggest that small molecule agonists targeting ErbB4
+receptor activation, along with melatonin, mitigate neuronal senescence via the
+Akt/Nrf2 signaling pathway.
+Conclusion: Based on the findings of this study, the targeted activation of the ErbB4
+receptor effectively inhibits molecules associated with neuronal aging and
+D-gal-induced ferroptosis, with a mechanism of action akin to that of melatonin.
+Furthermore, thecombined application ofsmall molecule agonists and melatonin does
+not significantly enhance the inhibitory effect on D-gal-induced neuronal aging
+compared to the use of agonists alone. This suggests that both agents may mitigate
+ferroptosis and thereby decelerate neuronal aging through similar mechanisms. In
+comparison to melatonin, small molecule compounds targeting ErbB4 exhibit a
+greater reliance on the Akt signaling pathway to counteract ferroptosis in a
+D-gal-induced aging mouse model. Additionally, small molecule compounds present
+significant cost-effectiveness advantages over traditional recombinant protein
+therapies and hold promising potential for clinical translation and application.
+Consequently, this study offers a valuable reference for the treatment of aging-related
+neurodegenerative diseases through the use of small molecule agonists that target and
+activate theErbB4 receptor.
+Keywords:neuronal aging,D-galactose, ErbB4 receptor,small molecule compound,
+ferroptosis
+V
+--- 第7页 ---
+中英缩略词表
+中英缩略词表
+简称 英文名称 中文名称
+AD Alzheimer’s disease 阿尔茨海默病
+D-gal D-galactose D-半乳糖
+Targeted ErbB4 small molecule 靶向 ErbB4 小分子化
+E4A
+compound 合物
+EGFR Epidermal growth factor receptor 表皮生长因子受体
+酪氨酸激酶受体 2 受
+ErbB4 ErbB2 receptor tyrosine kinase4
+体酪氨酸激酶4
+FTD Frontotemporal dementia 额颞叶痴呆
+GFAP Glial fibrillary acidic protein 胶质纤维酸性蛋白
+谷胱甘肽过氧化物酶
+GPX4 Glutathioneperoxidase4
+4
+GSH Glutathione 谷胱甘肽
+HD Huntington’sdisease 亨廷顿舞蹈症
+Ionized calcium binding adaptor 离子钙结合接头分子
+Iba-1
+molecule1 1
+KDa Kilodaltons 千道尔顿
+mg Milligram 毫克
+ml Millilitre 毫升
+MLT Melatonin 褪黑素
+mM Millimole 毫摩尔
+NeuN Neuron-specific nuclear protein 神经元特异性核蛋白
+VI
+--- 第8页 ---
+中英缩略词表
+nM Nano-mole 纳摩尔
+Nuclear factor-erythroid 2-related 核转录因子红系 2
+Nrf2
+factor2 相关因子 2
+NRG1 Neuregulin-1 神经调节蛋白-1
+PD Parkinson’s disease 帕金森病
+RIPA Radio immunoprecipitation assay 蛋白裂解液
+ROS reactiveoxygen species 活性氧
+Recombinant solute carrier 溶质载体家族7成员
+SLC7A11
+family 7,member 11 11
+TFRC Transferrin receptor protein 1 转铁蛋白受体1
+βIII-Tubulin Tubulinbeta-III β-微管蛋白III
+μL Microliter 微升
+μM Micromolar 微摩尔
+VII
+--- 第9页 ---
+目 录
+第一章 绪论............................................................................................... 1
+1.1 衰老 ................................................................................................... 1
+1.1.1 衰老与神经退行性疾病 ............................................................. 1
+1.1.2 神经元衰老 ................................................................................. 1
+1.2 铁死亡 ............................................................................................... 2
+1.2.1 铁死亡概况 ................................................................................. 2
+1.2.2 铁死亡与衰老相关神经退行性疾病 ........................................ 3
+1.3 ErbB4 受体 ....................................................................................... 4
+1.3.1 ErbB4 受体蛋白结构与基本功能 ............................................. 4
+1.3.2 ErbB4 与衰老相关神经退行性疾病 ......................................... 5
+1.4 褪黑素 ............................................................................................... 7
+1.5 科学假设与研究内容 ....................................................................... 7
+1.5.1 科学假设 ..................................................................................... 7
+1.5.2 研究内容 ..................................................................................... 8
+第二章 靶向 ErbB4 小分子激动剂抑制 D-gal 诱导的 HT22 细胞
+衰老 ......................................................................................................... 10
+2.1 实验材料 ......................................................................................... 10
+2.1.1 实验设备 ................................................................................... 10
+2.1.2 实验试剂 ................................................................................... 11
+2.1.3 实验试剂配制 ........................................................................... 12
+2.1.4 实验用细胞系 ........................................................................... 12
+2.2 实验方法 ......................................................................................... 12
+2.2.1 细胞培养 ................................................................................... 12
+2.2.2 CCK-8 法检测 HT22 细胞活力 .............................................. 13
+2.2.3 蛋白免疫印迹实验 ................................................................... 13
+2.2.4 β-半乳糖苷酶实验 .................................................................... 14
+2.2.5 统计学分析 ............................................................................... 14
+2.3 实验结果 ......................................................................................... 14
+2.3.1 细胞衰老模型的建立 ............................................................... 14
+2.3.2 D-gal 诱导 HT22 细胞衰老机制的初步探究 ....................... 17
+2.3.3 靶向 ErbB4 小分子化合物抑制 D-gal 诱导的 HT22 细胞
+衰老的发生 ....................................................................................... 18
+2.4 小结与讨论 ..................................................................................... 22
+第三章 靶向 ErbB4 小分子激动剂改善 D-gal 诱导衰老小鼠的神经
+--- 第10页 ---
+元衰老 ..................................................................................................... 24
+3.1 实验材料 ......................................................................................... 24
+3.1.1 实验设备 ................................................................................... 24
+3.1.2 实验试剂 ................................................................................... 25
+3.1.3 实验试剂配制 ........................................................................... 26
+3.2 实验方法 ......................................................................................... 26
+3.2.1 动物实验设计 ........................................................................... 26
+3.2.2 水迷宫 ....................................................................................... 27
+3.2.3 Y 迷宫 ........................................................................................ 27
+3.2.4 新物体识别实验 ....................................................................... 27
+3.2.5 小鼠取材 ................................................................................... 27
+3.2.6 蛋白免疫印迹分析 ................................................................... 27
+3.2.7 小鼠脑部石蜡切片的制备 ....................................................... 28
+3.2.8 组织免疫荧光实验 ................................................................... 28
+3.2.9 统计学分析 ............................................................................... 28
+3.3 实验结果 ......................................................................................... 28
+3.3.1 靶向 ErbB4 小分子激动剂给药治疗后小鼠的体重变化趋势
+........................................................................................................... 28
+3.3.2 靶向 ErbB4 小分子激动剂对 D-gal 诱导衰老小鼠在水迷
+宫实验中的影响 ............................................................................... 29
+3.3.3 靶向 ErbB4 小分子激动剂对 D-gal 诱导衰老小鼠在 Y 迷
+宫实验中的影响 ............................................................................... 30
+3.3.4 靶向 ErbB4 小分子激动剂对 D-gal 诱导衰老小鼠在新物
+体识别中的影响 ............................................................................... 31
+3.3.5 靶向 ErbB4 小分子激动剂对 D-gal 诱导小鼠神经元衰老
+的抑制作用 ....................................................................................... 32
+3.4 小结与讨论 ..................................................................................... 36
+第四章 靶向 ErbB4 小分子激动剂对铁死亡的调节作用 ................... 37
+4.1 实验材料 ......................................................................................... 37
+4.1.1 实验设备 ................................................................................... 37
+4.1.2 实验试剂 ................................................................................... 37
+4.1.3 实验试剂配制 ........................................................................... 38
+4.1.4 实验用细胞系 ........................................................................... 38
+4.2 实验方法 ......................................................................................... 38
+4.2.1 细胞培养 ................................................................................... 38
+4.2.2 CCK-8 法检测 HT22 细胞活力 .............................................. 38
+4.2.3 蛋白免疫印迹实验 ................................................................... 38
+4.2.4 HT22 细胞内 ROS 水平检测 .................................................. 39
+--- 第11页 ---
+4.2.5 HT22 细胞内 MDA 含量检测 ................................................. 39
+4.2.6 HT22 细胞内 GSH 含量检测 .................................................. 39
+4.2.7 小鼠脑部石蜡切片的制备 ....................................................... 40
+4.2.8 组织免疫荧光实验 ................................................................... 40
+4.2.9 统计学分析 ............................................................................... 40
+4.3 实验结果 ......................................................................................... 40
+4.3.1 靶向 ErbB4 小分子激动剂对 D-gal 诱导 HT22 细胞铁死
+亡的调节作用 ................................................................................... 40
+4.3.2 靶向 ErbB4 小分子激动剂抑制 Erastin 诱导的 HT22 细
+胞铁死亡 ........................................................................................... 43
+4.3.3 靶向 ErbB4 小分子激动剂对 D-gal 诱导衰老小鼠中铁死
+亡的调节作用 ................................................................................... 48
+4.4 小结与讨论 ..................................................................................... 56
+第五章 靶向 ErbB4 小分子激动剂通过激活 ErbB4 受体和调节
+Akt/Nrf2 信号通路抑制 D-gal 诱导的海马神经元衰老 ..................... 57
+5.1 实验材料 ......................................................................................... 57
+5.1.1 实验设备 ................................................................................... 57
+5.1.2 实验试剂 ................................................................................... 57
+5.1.3 实验试剂配制 ........................................................................... 58
+5.1.4 实验用细胞系 ........................................................................... 58
+5.2 实验方法 ......................................................................................... 58
+5.2.1 细胞培养 ................................................................................... 58
+5.2.2 CCK-8 法检测 HT22 细胞活力 .............................................. 58
+5.2.3 蛋白免疫印迹实验 ................................................................... 58
+5.2.4 组织免疫荧光实验 ................................................................... 59
+5.2.5 统计学分析 ............................................................................... 59
+5.3 实验结果 ......................................................................................... 59
+5.3.1 靶向 ErbB4 小分子激动剂对 D-gal 诱导 HT22 细胞
+ErbB4、Akt1 蛋白磷酸化水平的影响 ........................................... 59
+5.3.2 靶向 ErbB4 小分子激动剂促进小鼠海马 ErbB4 和 Akt 的
+磷酸化激活 ....................................................................................... 60
+5.3.3 靶向 ErbB4 小分子激动剂对小鼠海马和皮层中 Nrf2 表达
+的影响 ............................................................................................... 61
+5.3.4 靶向 ErbB4 小分子激动剂通过 Akt/Nrf2 信号通路抑制
+D-gal 诱导的 HT22 细胞衰老 ........................................................ 63
+5.4 小结与讨论 ..................................................................................... 67
+第六章 主要结论与展望 ........................................................................ 70
+主要结论 ................................................................................................ 70
+--- 第12页 ---
+展望 ........................................................................................................ 71
+参考文献 ................................................................................................... 72
+--- 第13页 ---
+绪论
+第一章 绪论
+1.1 衰老
+1.1.1 衰老与神经退行性疾病
+衰老是一种随年龄增长而发生的器官生理性衰退过程，是一系列慢性疾病最大的危
+险因素。随着全球老龄化进程的加速，衰老和衰老相关疾病的预防和治疗研究已成为生
+命科学领域的一个重要课题。老龄化带来最严峻的问题是慢性病的高发，老年人常患多
+种慢性病，严重影响生活质量，从而加重社会负担。衰老是大多数神经退行性疾病的主
+要影响因素，人体的衰老会影响机体的各个器官，随着人体的衰老，大脑会经历一系列
+变化，包括脑萎缩、神经元丢失、突触连接减弱等，从而导致记忆功能衰退和认知障碍，
+最终演变为神经退行性疾病的发生[1]。神经退行性疾病包括阿尔茨海默症(Alzheimer's
+disease，AD)、帕金森病（Parkinson's disease，PD）、亨廷顿病（Huntington’s disease，
+HD）、额颞叶痴呆（Frontotemporal Dementia，FTD）。研究发现，AD 的年发病率随
+着年龄的增长呈现指数级增长[2]，PD也是常见的与年龄相关的神经退行性疾病之一，近
+年来其发病率也随着年龄的增长而增加[3]。尽管这些疾病在病理学上为典型的神经退行
+性疾病，但其共同特点是神经元结构和功能的逐渐衰退、丢失和死亡，继而造成不可逆
+的神经功能障碍。
+1.1.2 神经元衰老
+神经元是神经系统最基本的结构功能单位，神经元细胞的死亡和进行性丢失会引起
+进行性神经损伤，具有不可逆性。大脑中神经元的数量减少，会逐渐表现出神经元衰老
+样表型，诱发一系列功能障碍，导致与衰老相关的神经退行性疾病的发生[4-5]。
+研究证明，长期体外培养的原代大鼠海马神经元表现出明显的衰老样表型，包括衰
+老相关β-半乳糖苷酶（SA-β-gal）活性增加，衰老标记物 P16表达上升[6]。此外，在老
+年C57Bl/6小鼠中观察到约40-80%的浦肯野神经元和20-40%的皮质、海马和外周神经
+元表现出严重的 DNA 损伤，从而诱导神经元衰老，是大脑衰老的重要原因之一[7]。研
+究发现，AD 患者海马神经元出现衰老样表型[8]，大脑中表达衰老标记的神经元比例明
+显更高，且 AD 患者来源的诱导神经元（iNs）表现出特定的人类神经元衰老样状态的
+转录组学、表观遗传学等特征，包括p38/MAPK 活性增加、TGF-βm RNA 和IL-6 表达
+水平增加[9]。多巴胺能神经元的衰老是PD病理过程中的一个重要促进因素[10]。在老年
+PD患者中，衰老的多巴胺能神经元不仅引发局部炎症反应，还可促进细胞衰老现象，
+导致衰老标志物的表达水平显著升高[11]。鉴于衰老神经元在神经退行性疾病中的关键作
+用，抑制其衰老进程对于治疗与衰老相关的神经退行性疾病具有重要意义。
+1
+--- 第14页 ---
+江南大学硕士学位论文
+1.2 铁死亡
+1.2.1 铁死亡概况
+铁是人体内含量最高的过渡金属元素，也是维持生命所必需的金属元素。但是研究
+表明，随着年龄的增长，铁沉积会发生在包括肝脏、肾脏、大脑等多个器官中[12]，在大
+脑中，铁水平会随着衰老而增高，大脑中过量的铁沉积会破坏细胞内的铁稳态，诱导细
+胞发生铁死亡，而这与衰老相关的神经退行性疾病的发生和发展有关[13]。
+铁死亡是一种由铁依赖的脂质过氧化损伤引起的细胞死亡，于 2012年被首次提出
+[14]，铁死亡在形态学、生化和基因调控方面其他形式细胞死亡不同，在细胞形态学上主
+要表现为线粒体膜固缩，膜密度增加，线粒体嵴模糊不清、减少或消失，其生化特征为
+铁超载和细胞内脂质过氧化物、活性氧 (ROS) 的过量积累[15]。因此铁死亡的机制研究
+多与铁代谢异常和氧化损伤相关。
+（1）铁代谢异常
+膜蛋白转铁受体（TFRC）负责将细胞外的 Fe3+转运至细胞核内体中。研究显示，
+在细胞核内体中，Fe3+被前列腺跨膜上皮3抗原（STEAP3）还原为Fe2+，随后在二价金
+属转运蛋白-1（DMT1）的介导下，Fe2+从细胞核内体转运至细胞质中的不稳定铁池[16]，
+多余的铁离子以铁蛋白轻链（FTL）和铁蛋白重链1（FTH1）的形式储存在胞质中[17]，
+在此过程中，铁的摄取、转运或储存任一环节发生异常均会导致细胞内铁稳态失衡，进
+而诱导细胞发生铁死亡。
+（2）氧化损伤
+胱氨酸/谷氨酸反向转运体（System Xc-）是细胞重要的抗氧化系统，也是调控铁死
+亡的主要机制之一。该转运体由轻链亚基（SLC7A11）和重链亚基（SLC3A2）组成[18]，
+其中SLC7A11是System Xc－的核心组件，负责将胱氨酸导入细胞。在细胞内环境中，
+胱氨酸分子经过还原反应转化为半胱氨酸（Cys），该代谢产物作为关键前体物质参与
+GSH 的合成过程，维持细胞内氧化还原稳态。进入细胞内的胱氨酸被还原为半胱氨酸
+（Cysteine），进而参与谷胱甘肽（GSH）的合成，以维持细胞内的氧化还原平衡。GSH
+作为一种关键的抗氧化剂，能够有效防止脂质过氧化，并通过将有毒的脂质过氧化物还
+原为无毒的脂肪醇，降低脂质过氧化物水平，从而抑制铁死亡的发生[19]。在该过程中，
+谷胱甘肽过氧化物酶 4（Glutathione Peroxidase 4，GPX4）作为主要的还原酶[20]，利用
+还原型谷胱甘肽（GSH）来消除磷脂氢过氧化物，同时自身被氧化为谷胱甘肽二硫化物
+（GSSG）。GPX4 在这一过程中的关键作用使其成为铁死亡抑制的核心因子。研究表
+明，在AD脑组织中，GPX4 的表达受到抑制，导致脂质过氧化增加，加速了海马神经
+元的铁死亡[21]。
+核因子红系2相关因子 2（Nrf2）在细胞应对氧化应激的防御机制中起核心调控作
+用。近年来，多项研究表明 Nrf2 参与调控铁死亡途径中的多种酶和蛋白质的表达，包
+括SLC7A11、GPX4、TFRC 及铁转运蛋白（FPN）等[22]，因此，Nrf2 被认为是脂质过
+氧化与铁死亡过程的核心调控因子，促进Nrf2 活化能够有效抑制细胞铁死亡[23]。
+2
+--- 第15页 ---
+绪论
+图1-1 铁死亡信号通路示意图[24]
+Figure1-1Schematicdiagramoftheferroptosissignalingpathway
+1.2.2 铁死亡与衰老相关神经退行性疾病
+近年来，铁死亡与衰老之间的相互关系引起了广泛关注，越来越多的研究表明, 铁
+死亡在衰老相关的神经退行性疾病，如PD、AD、肌萎缩性脊髓侧索硬化症(amyotrophic
+lateral scleroriss,ALS)的发生和发展中起着重要作用[25-27]。衰老能够导致细胞内的铁稳态
+失衡，铁在神经元中的过量积累可能会通过诱导细胞铁死亡而非细胞凋亡引起神经损伤。
+此外，神经胶质细胞中铁的积累可能引发炎症反应，导致神经炎症和神经退行性病变[28]。
+小鼠脑内抗氧化功能可随衰老而逐渐减弱，清除脂质过氧化物的能力下降，从而对铁死
+亡更加敏感[29]。铁死亡的主要生化特征包括 ROS的积累、GSH 的消耗以及GPX4 活性
+的降低[14]。研究发现，与正常小鼠相比，GPX4 敲除小鼠表现出明显的学习、记忆功能
+障碍和认知障碍，而使用铁死亡抑制剂可以显著改善这些症状[30]。此外，在AD 患者中
+观察到GSH含量降低，而作为GPX4 的辅助因子，GSH具有抗铁死亡发生的作用[31]。
+另有研究表明，PD患者脑内黑质中GPX4 的含量显著下降[32]。
+近年来，越来越多的证据表明衰老和铁死亡之间存在密切的相互作用。研究显示，
+衰老抑制蛋白 Klotho 通过增加 SLC7A11 和 GPX4 的表达来抑制 D-gal 诱导的 H9C2 细
+3
+--- 第16页 ---
+江南大学硕士学位论文
+胞衰老，此外，降低衰老相关基因 P53 的表达水平可进一步增强 SLC7A11和 GPX4 的
+表达[33]。衰老过程中神经元内铁积累增加，并通过诱导铁死亡促进神经退行性病变。细
+胞内过量铁积累可通过引发DNA 损伤加速细胞衰老过程[34]。氧化应激反应是铁死亡的
+重要下游效应之一，也是细胞衰老的关键因素[35]。在 1-甲基-4-苯基吡啶离子
+(1-methyl-4-phenylpyridinium,MPP+)诱导PC12细胞发生铁死亡的情况下，给予铁死亡抑
+制剂Ferrostatin-1（Fer-1）可下调p53表达，同时上调SLC7A11和GPX4 表达。此外，
+抑制 p53 的表达可上调 SLC7A11 和GPX4 的表达，从而缓解细胞衰老，这一发现表明
+铁死亡调节机制参与了MPP+诱导的细胞衰老[36]。因此，抑制细胞铁死亡的发生可能是
+延缓衰老并且改善与衰老相关退行性疾病的有效途径。
+1.3 ErbB4 受体
+1.3.1ErbB4受体蛋白结构与基本功能
+ErbB4（ErbB2 receptortyrosine kinase4）属于受体酪氨酸激酶家族，该家族成员包
+括ErbB1-ErbB4[37]。ErbB 受体可被多种表皮生长因子样神经调节蛋白Neuregulin 激活，
+在发育过程中及成熟中枢神经系统中发挥关键作用。在细胞膜外侧，当配体与 ErbB 家
+族受体结合后，可促进其形成同源或异源二聚体结构。这种寡聚化作用会引起受体蛋白
+的构象重排，进而使其胞内结构域中特定酪氨酸位点发生磷酸化，触发下游信号转导蛋
+白的依次募集与活化，引发一系列相关基因的活化，调控细胞的生长、分化、增殖、血
+管生成和凋亡[38]。作为EGFR家族的独特成员，ErbB4不同于不能直接结合配体的ErbB2
+和不具有功能性激酶结构域的ErbB3，它是一种能够通过同源二聚体和异源二聚体进行
+信号转导的全功能受体酪氨酸激酶[39]，也是唯一能够通过形成同源二聚体与NRG1相互
+作用，产生细胞内信号传导的受体。ErbB4 广泛表达于全身组织和器官，在骨骼组织、
+乳腺、心脏和大脑中均有显著表达[40]，并在各种生理和病理过程中起着重要的调节作用。
+研究表明，ErbB4 信号通路能够调节神经发育中的多个生物过程，如神经元迁移、树突
+和神经胶质细胞发育、轴突髓鞘形成和引导以及神经递质信号传递[41]。
+4
+--- 第17页 ---
+绪论
+图1-2NRG/ErbB信号传导和下游信号通路[37]
+Figure1-2NRG/ErbBsignalinganddownstreamsignalingpathway
+1.3.2ErbB4与衰老相关神经退行性疾病
+ErbB4 受体能够与七种配体结合而被激活，包括NRG和EGF 家族的部分成员。作
+为神经神经系统中的重要信号通路[42]，NRG1/ErbB4 信号通路已成为精神分裂症的候选
+治疗靶点。研究表明，当 NRG1/ErbB4 及其下游 PI3K/Akt/mTOR 信号通路被激活时，
+可以有效治疗精神分裂症[43]。此外，NRG1/ErbB4 信号通路参与多种神经退行性疾病的
+病理过程。例如，在LPS 诱导的全身炎症模型中，海马区NRG1/ErbB4 信号传导的功能
+障碍可能导致记忆功能下降[44]。NRG1/ErbB4 对Aβ诱导的海马长时程增强（Long-Term
+Potentiation,LTP）损伤具有保护作用[45]。在实验性脑疟疾（Experimental Cerebral Malaria,
+ECM）模型中，NRG1治疗通过刺激ErbB4 受体磷酸化（pErbB4），进而激活Akt 并抑
+制STAT3，从而降低ECM 死亡率。此外，寿命较长的啮齿动物体内NRG1和ErbB4 水
+平较高，这表明 NRG1/ErbB4 信号传导可能通过维持神经元完整性对最大寿命潜力
+（MaximumLifespan Potential,MLSP）发挥关键作用[46]。
+研究发现，在室管膜下区（Subventricular Zone,SVZ）ErbB4 的转录水平在新生儿
+中最高，并随着年龄的增长而降低，SVZ ErbB4 mRNA 数量在新生儿出生一年后降低
+85%以上，几乎无法被检测到[47]。中间神经元中NRG1-ErbB4 信号传导的抑制可导致异
+氟烷诱导的衰老小鼠的海马依赖性认知障碍，而通过补充外源性 NRG1-β1逆转这一病
+理过程[48]。在转基因5xFAD小鼠中可以观察到，当NRG1-ErbB4 信号传导受到抑制时，
+会加速海马Schaffer侧支通路中LTP 基础神经元网络的损伤。此外，在老年野生型小鼠
+中也可观察到类似的神经元损伤现象[49]。以上数据表明，ErbB4 受体信号传导缺陷与神
+5
+--- 第18页 ---
+江南大学硕士学位论文
+经元衰老及神经退行性疾病之间存在密切关联，提示靶向激活ErbB4 受体可能在治疗神
+经元衰老及其他相关神经退行性病变方面具有潜在的临床价值。
+在ErbB4 与衰老相关研究中发现，主动脉平滑肌细胞中ErbB4 的缺失会导致细胞衰
+老[50]。此外，当ErbB4 信号通路被激活时，能够通过减轻心脏成纤维细胞和衰老间充质
+干细胞的衰老和凋亡进程，从而改善心脏功能[51-53]。新近研究表明，在褪黑素调解下，
+NRG/ErbB 信号通路通过促进TRPM8的表达，延缓垂体泌乳素细胞的衰老，并增加PRL
+的分泌[54,55]。然而，目前尚未有研究报道靶向激活ErbB4 受体在体外和体内具有逆转神
+经元衰老的治疗作用。
+近年来的研究表明，重组人 NRG1（rhNRG1）用于缺血性心脏病和病毒性心肌病
+等心衰动物模型中显著改善了心脏功能[56]。然而，在神经退行性疾病治疗中的临床研究
+相对较少。与此同时，越来越多的研究采用靶向分子对接技术，开发出能够更好地穿透
+中枢神经系统的靶向小分子化合物，用于治疗与衰老相关的神经退行性疾病[57]，最近的
+一项研究证明，ErbB4 受体能够通过激活 PI3K/Akt/mTOR 信号通路介导人参皂苷 Rd
+（G-Rd）的治疗作用，对脑缺血/再灌注损伤（CIRI）诱导的脑血管内皮细胞铁死亡的
+抑制作用[58]。此外，实验室前期结果证明，针对 ErbB4 受体的小分子激动剂可以在 Aβ
+诱导的病理条件下有效激活ErbB4 受体及其下游信号通路，改善Aβ诱导的AD 样病理
+特征。因此，本研究使用经筛选获得的针对人和小鼠ErbB4 受体共有氨基酸位点的小分
+子化合物，验证了靶向ErbB4 小分子激动剂（E4A）通过抑制神经元铁死亡，从而延缓
+D-gal 诱导的小鼠神经元衰老的潜在治疗作用和相关机制。
+图1-3 分子对接结果
+(A) 通过虚拟筛选所得小分子化合物F0349-3143（E4A）可以与ErbB4靶蛋白形成两个氢键作用、
+一个π-π作用和多个疏水作用：苯环可以与 PHE95 形成π-π作用；羟基和羧基可以与GLN126 形
+成氢键作用，距离分别为1.8Å和2.1Å。(B) 化合物可以与多个氨基酸形成疏水作用，比如：ALA93、
+ILE94、PHE95、LEU96、TYR123。
+6
+--- 第19页 ---
+绪论
+Figure1-3.Moleculardockingresults
+(A)ThesmallmoleculecompoundF0349-3143（E4A）canformtwohydrogenbonds,oneπ-πinteraction
+and multiple hydrophobic interactions with the targeted protein：The benzene ring can form π - π
+interactions with PHE95; Hydroxyl and carboxyl groups can form hydrogen bonds with GLN126 at
+distances of 1.8 Å and 2.1 Å, respectively. (B) Compounds can form hydrophobic interactions with
+multipleaminoacids,suchas:ALA93、ILE94、PHE95、LEU96、TYR123。
+1.4 褪黑素
+褪黑素（melatonin，MLT）是一种由松果体分泌的吲哚类内分泌激素，具有亲水和
+亲脂的双重特性，通过三种膜受体发挥生物学功能[59]。多项研究证实，褪黑素能够有效
+延缓神经退行性病变进程。褪黑素可通过抗氧化损伤和抗炎效应降低阿尔茨海默病患者
+脑内β-淀粉样斑块的形成，同时保护神经元免受损伤，从而改善患者的认知功能障碍[60]。
+此外，褪黑素通过与MT2 受体结合激活ERK/Nrf2 信号通路，从而改善急性睡眠剥夺所
+导致的认知障碍和海马神经元铁死亡[61]。另有研究发现，外源性褪黑素治疗可以改善缺
+氧缺血性脑损伤诱导的病理变化，抑制神经元铁死亡[62]。上述研究提示，褪黑素可能通
+过调节铁死亡而发挥抗衰老的作用。进一步研究表明，褪黑素通过抑制NCOA4 与FTH1
+结合介导的自噬依赖性铁死亡来改善中风[63]。同时，褪黑素通过MT2 受体激活Nrf2 和
+下游基因（如 HO-1/NQO1），抑制蛛网膜下腔出血引起的神经元铁死亡，从而改善大
+鼠的神经功能[5]。此外，MT1 受体的过表达和激活可以抑制α-syn PFF 诱导的细胞内α-syn
+聚集，增强SIRT1/Nrf2/HO-1/GPX4 信号通路和FTH1 蛋白的表达，部分阻断PD中的铁
+死亡[64]。外源性褪黑素治疗还可通过Akt/Nrf2/GPX4 通路对缺氧缺血性脑损伤的法师神
+经保护作用[62]。
+褪黑素不仅具有抗铁死亡和抗衰老的双重功效，还能够调节内源性ErbB4 受体的表
+达。已有研究表明，褪黑素还可通过上调 ErbB4 受体的表达，有效降低 ROS 水平，从
+而增强细胞的抗氧化能力[65,66]，因此，本研究选择褪黑素作为阳性对照药物，旨在探讨
+靶向激活ErbB4 受体的小分子激动剂在延缓神经元衰老中的作用。此外，通过联合应用
+褪黑素和ErbB4 受体激动剂，进一步探究其是否能通过促进ErbB4 受体的表达来增强小
+分子激动剂延缓神经元衰老的作用。
+1.5 科学假设与研究内容
+1.5.1 科学假设
+（1）在体外D-gal 诱导的HT22细胞衰老模型中，通过给予E4A、褪黑素或联合给药进
+行干预，可能通过靶向激活ErbB4 受体并调节铁死亡途径来抑制HT22 小鼠海马神经元
+细胞的衰老。
+7
+--- 第20页 ---
+江南大学硕士学位论文
+（2）在 D-gal 慢性腹腔注射诱导的小鼠衰老模型中，E4A 或褪黑素的药物治疗通过靶
+向激活ErbB4 受体及其下游信号通路发挥神经元保护作用，抑制海马神经元的衰老过程，
+并改善衰老小鼠的记忆下降和认知障碍。
+（3）褪黑素与 ErbB4 受体激动剂联合应用，可能通过促进 ErbB4 受体的表达来增强小
+分子激动剂延缓神经元衰老的作用。
+1.5.2 研究内容
+（1）通过细胞活力实验、蛋白免疫印迹实验和衰老相关染色实验，构建 HT22 细胞的
+衰老模型，并确定最佳诱导时间和浓度。进一步利用蛋白免疫印迹实验，检测D-gal 诱
+导衰老的 HT22 细胞中 ErbB4、Akt 磷酸化蛋白及铁死亡相关蛋白水平的变化。此外，
+通过细胞活力实验、蛋白免疫印迹实验和衰老染色实验验证 E4A 和褪黑素对衰老的抑
+制作用及其初步机制。
+（2）通过慢性 D-gal 诱导建立小鼠衰老模型，并通过行为学实验评估 E4A、褪黑素以
+及两者联合给药对D-gal 诱导衰老小鼠认知功能和记忆能力的改善效果。同时，利用蛋
+白免疫印迹分析验证E4A、褪黑素以及联合给药是否能逆转 D-gal 诱导的海马神经元衰
+老。
+（3）通过蛋白免疫印迹实验，验证 E4A 和褪黑素在 D-gal 诱导的 HT22 细胞和小鼠海
+马组织中铁死亡的调节作用。此外，通过检测铁死亡相关指标的变化，进一步验证这两
+种药物通过调节铁死亡途径抑制神经元衰老的作用。
+（4）在体外构建 HT22 细胞铁死亡模型后，给予 E4A 和褪黑素处理，通过蛋白免疫印
+迹实验和活性氧水平检测，验证其抗铁死亡的效果。
+（5）在D-gal 诱导的HT22 细胞衰老模型中，分别抑制Nrf2 和Akt，通过蛋白免疫印迹
+实验检测相关信号分子的变化，验证 E4A 和褪黑素是否通过激活 ErbB4 受体并调控
+Akt/Nrf2 信号通路来抑制神经元衰老。
+8
+--- 第21页 ---
+绪论
+图1-4 实验流程图
+Figure1-4Experimentalflowchart
+9
+--- 第22页 ---
+江南大学硕士学位论文
+第二章 靶向 ErbB4 小分子激动剂抑制 D-gal 诱导的 HT22
+细胞衰老
+HT22细胞作为小鼠海马来源的永生化神经元细胞系，保留成熟神经元的关
+键特性，便于基因编辑操作，被广泛用于体外研究神经毒性机制和评价神经保护
+作用的标准化模型[67]。D-gal 是一种单糖，能够通过多种机制加速细胞和组织的
+衰老。D-gal 在体内被代谢为过氧化物，导致氧化应激增加，进而引发细胞损伤
+和功能衰退，该效应与自然衰老过程中观察到的氧化应激积累相似，因此D-gal
+被广泛用于模拟衰老过程。此外，D-gal 已被广泛应用于各种细胞和动物模型中，
+是一种可靠的衰老模型来研究衰老及其相关的病理生理过程。相较于其他诱导衰
+老的方法，D-gal 诱导衰老操作方便，可以通过调整其浓度和处理时间，控制衰
+老模型的程度，便于研究不同阶段的衰老变化。D-gal 作为一种有效的诱导剂，
+能够模拟自然衰老过程中的多种特征，易于操作且成本效益高，因此在本研究中
+用于建立HT22细胞衰老模型。
+2.1 实验材料
+2.1.1 实验设备
+仪器名称 公司
+-80℃冰箱（DW-86L348） 苏州海思源仪器设备有限公司
+4℃医用冷藏箱（BYC-250） 山东博科生物产业有限公司
+水平摇床（OS-A10） 杭州普睿博仪器有限公司
+4℃医用冷藏箱（BYC-250） 山东博科生物产业有限公司
+CO 培养箱（HH.CP-T） 上海卓的仪器设备有限公司
+2
+小型温控高速离心机（XU-5K-R） 杭州析牛科技有限公司
+电子天平（YP2001B200g/0.01 g） 上海力辰科技仪器有限公司公司
+蛋白电泳仪（DYCP-1） 上海拓赫机电科技有限公司
+恒温金属浴（ZL-20G2） 上海助蓝仪器科技有限公司
+快速多通道半干转印仪（TY-201-01） 南京中科通仪科技有限公司
+10
+--- 第23页 ---
+第二章 靶向ErbB4小分子化合物抑制D-gal诱导的HT22细胞衰老
+水浴锅（HH-4SY） 上海恩谊医疗科技发展有限公司
+小型温控高速离心机（XU-5K-R） 杭州析牛科技有限公司
+制冰机（BLO-100） 佛山市冰力欧电器制造有限公司
+全功能微孔板检测仪（Synergy H4） 美国伯腾仪器有限公司
+蔡 司 正 置 荧 光 显 微 镜 （ Zeiss Axio
+德国卡尔蔡司公司
+Imager2）
+蔡司倒置荧光显微镜（AxioVertA1） 德国卡尔蔡司公司
+2.1.2 实验试剂
+试剂名称 公司
+D-gal（ST1218） 上海碧云天生物技术公司
+CCK-8 试剂盒（BS350B） 合肥白鲨生命科技公司
+ErbB4 小分子化合物 Sigma-Aldrich（上海）
+褪黑素（ST1497） 上海碧云天生物技术公司
+SA-β-gal 试剂盒 （C0602） 上海碧云天生物技术公司
+10%胎牛血清（11011-8611） 浙江天航生物技术有限公司
+胰酶（J121002） 上海源培生物科技股份有限公司
+PBS 磷酸缓冲盐溶液（P1033） 北京索莱宝生物科技有限公司
+1%青霉素/链霉素混合物（C0222） 上海碧云天生物技术公司
+高糖DMEM 培养基（D211113） 上海源培生物科技股份有限公司
+兔抗P53抗体（AF5258） 上海碧云天生物技术公司
+鼠抗P21抗体（AP021） 上海碧云天生物技术公司
+兔抗P16抗体（bs-23797R） 北京博奥森生物技术有限公司
+兔抗Lamin B1 抗体（12987-1-AP） 武汉三鹰生物技术有限公司
+11
+--- 第24页 ---
+江南大学硕士学位论文
+兔抗pErbB4 抗体（Bioss） 北京博奥森生物技术有限公司
+兔抗ErbB4 抗体（AF6807） 上海碧云天生物技术公司
+鼠抗GAPDH抗体（GB15002） 武汉赛维尔生物技术公司
+兔抗pAkt1 抗体（AF1546） 上海碧云天生物技术公司
+鼠抗Akt1 抗体（sc-377457） 美国SantaCruz生物科技有限公司
+MOPS-SDS电泳液（BR0001-02） 南京ACE 生物科技有限公司
+ECL 发光液（BK0041-02） 南京ACE 生物科技有限公司
+BCA蛋白质测定试剂盒（AL006‑ 01） 南京ACE 生物科技有限公司
+10%SDS 聚丙烯酰胺凝胶 南京ACE 生物科技有限公司
+快速转膜液（BR0003-01） 南京ACE 生物科技有限公司
+2.1.3 实验试剂配制
+3%BSA溶液：纯水溶解BSA 粉末1.5g，定容到50mL。
+2.1.4 实验用细胞系
+小鼠海马神经元HT22细胞（CL‑0595）购自武汉普诺赛生命科技有限公司。
+2.2 实验方法
+2.2.1 细胞培养
+HT22细胞于DMEM 完全培养基中（10%胎牛血清和1%青霉素-链霉素双抗
+溶液）培养，于37℃恒温、5%二氧化碳浓度培养箱中培养。
+细胞复苏：从-80℃冰箱取出 HT22 细胞，放入 37℃水浴锅中迅速融化，加
+入1mL 完全培养基混合均匀，1000rpm，离心5min，弃去上清液，加入新鲜培
+养基吹打均匀后加入细胞培养皿，放入37 ℃，含5%CO 培养箱中静置培养。
+2
+细胞传代：弃去旧培养基，加入2ml 胰酶并轻轻摇晃培养皿，消化30s-60 s，
+显微镜下看到细胞变得圆润且呈现漂浮状态时，说明消化已充分进行。弃去胰酶
+并按照1：4比例进行传代，8字法摇匀混合放入培养箱中进行后续培养操作。
+细胞冻存：弃去旧液，加入2mL 胰酶消化，终止消化后，1000rpm，离心
+5min，弃上清加入1mL 细胞冻存液，缓慢吹打细胞均匀后-80 ℃冰箱保存。
+12
+--- 第25页 ---
+第二章 靶向ErbB4小分子化合物抑制D-gal诱导的HT22细胞衰老
+2.2.2CCK-8 法检测 HT22细胞活力
+细胞接种：当 HT22 细胞生长至皿底面积 80 %时加入胰酶进行消化，加入
+培养基制成细胞悬液，吹打均匀取10μL 加入血球计数板中，在显微镜下计数，
+细胞悬液经调整至5×103个/mL 的终浓度后，充分混匀并接种至96孔培养板，
+每孔接种体积为 100 μL。外周孔均加入同等体积的 PBS 消除边缘效应。接种完
+成后于培养箱中持续孵育24小时。
+细胞给药：
+（1）称取D-gal 粉末，用DMEM 基础培养基溶解成300mM 的母液，震荡
+混匀，用0.22μm 的滤膜过滤之后，梯度浓度稀释至终浓度为200mM、100mM、
+50 mM 和空白对照，96 孔板加药从上至下为 0-300 mM 的浓度分布，给药后继
+续培养24小时或48小时。
+（2）称取D-gal 粉末，用DMEM 基础培养液溶解成200mM 的母液，震荡
+混匀，用0.22μm的滤膜过滤，E4A给药组为含10nM 小分子化合物和200mM
+D-gal 的混合溶液，MLT给药组为含50μM 褪黑素和200mM D-gal 的混合溶液，
+联合给药组为含 10nM 小分子化合物、50μM 褪黑素和 200 mM D-gal 的混合溶
+液。96 孔板从上至下按照空白对照组，D-gal 组、E4A 给药组、MLT 给药组和
+联合给药组进行加药刺激，培养24小时。
+吸光度检测：检测前，用 DMEM 基础培养基将 CCK-8 按 1:10（CCK-8 试
+剂：培养基）稀释，混匀配成 CCK-8 工作液。然后弃去培养孔中的上清，加入
+稀释好的CCK-8 工作液，100μL/孔。37 ℃恒温环境避光反应 1.5h后，用酶标
+仪于450nm波长处进行吸光度测定。
+2.2.3 蛋白免疫印迹实验
+细胞接种：当HT22 细胞生长至皿底面积80% 时加入胰酶进行消化，加入
+培养基制成细胞悬液，吹打均匀取10μL 加入血球计数板中，在显微镜下计数，
+将细胞密度稀释至2.5×104 个/mL，吹打均匀后接种于48孔板中，每孔200μL。
+放入培养箱中孵育24小时。
+细胞给药：
+（1）按照空白对照组、50mM D-gal、100mM D-gal 和 200mMD-gal 组分
+别给药，在培养箱中孵育24小时。
+（2）按照空白对照组、200mM D-gal 模型组、E4A 给药组、MLT给药组和
+联合给药进行加药刺激，在培养箱中孵育24小时。
+蛋白提取、定量：刺激 24小时后收集细胞，加入裂解液裂解 20min，收集
+蛋白，4℃，13000rpm 离心10min，取上清液进行BCA 蛋白质定量。
+凝胶电泳、转膜、封闭：蛋白样品经与上样缓冲液混合后，置于100℃金属
+13
+--- 第26页 ---
+江南大学硕士学位论文
+浴加热装置中变性5min。随后，取等量蛋白样品垂直加样至浓度为10%-12%的
+十二烷基硫酸钠-聚丙烯酰胺凝胶电泳系统。电泳初期电压为120v，等蛋白样品
+被压成一条线后， 将电压调为 150 v 至溴酚蓝抵达电泳底部停止电泳。根据分
+离胶的大小裁剪的 PVDF 膜并活化 30 s，将凝胶和 PVDF膜组装成经典转膜三
+明治放入转膜仪中，350mA恒流条件下转膜1小时。 转膜结束后于3%BSA 溶
+液中室温封闭1小时。
+抗体孵育、显影：封闭完成后，加入稀释至工作浓度的一抗溶液，置于4℃
+冷室中孵育过夜。次日，移除一抗溶液，TBST 洗膜 4次，每次 5min，加入相
+应种属来源的二抗工作液，室温条件于摇床孵育 1h。移除二抗后，重复上述洗
+涤步骤，应用ECL 进行条带显影，通过凝胶成像分析系统采集图像。采用Image
+J 图像处理软件进行定量分析。
+2.2.4β-半乳糖苷酶实验
+细胞接种和细胞给药方式同 3.2.3实验操作。PBS 洗涤细胞，清除残余细胞
+培养液，随后向各孔加入 200 μl 固定液，室温固定 15 min。固定期间按照试剂
+盒说明书配置β-半乳糖苷酶染色工作液。固定完成后，移除固定液，使用 PBS
+三次洗涤细胞3次，每次3min，清除残余染色固定液。每孔加入200 μL新配
+制的染色工作液，37℃恒温孵育24h，培养板四周用封口膜密封以防止液体挥发。
+光学显微镜下观察，表达β-半乳糖苷酶的细胞呈现蓝色，去除染色工作液，加入
+PBS，拍照并计数。
+2.2.5 统计学分析
+所有结果均以平均±标准差（SD）表示，数据分析采用 GraphPad Prism 9
+进行。采用单因素方差分析（one-wayANOVA）比较组间差异，结合 Tukey 事
+后检验进行评估。p<0.05为统计具有显著性差异。
+2.3 实验结果
+2.3.1 细胞衰老模型的建立
+2.3.1.1 不同浓度 D-gal 对HT22 细胞活力的影响。
+首先，我们为了研究D-gal 对小鼠海马神经元HT22 细胞活力的影响，我们
+用梯度浓度的D-gal 诱导HT22 细胞24小时或48小时，采用CCK8 法检测细胞
+活力。如图2-1A所示，随着D-gal 浓度的增加，HT22细胞活力逐渐下降，其中
+200μM 处理24小时后，细胞活力下降至 80%左右，因此后续实验中选择D-gal
+诱导HT22细胞24小时作为最佳诱导时间。
+14
+--- 第27页 ---
+第二章 靶向ErbB4小分子化合物抑制D-gal诱导的HT22细胞衰老
+图2-1CCK-8实验检测HT22细胞活性
+(A) 不同浓度D-gal 诱导HT22细胞 24小时，细胞活力的变化。(B) 不同浓度D-gal 诱导
+HT22细胞48小时，细胞活力的变化。n=6。****P<0.0001,ns, 不显著。
+Figure2-1.CellviabilityofD-gal-inducedHT22cellswasevaluatedusingtheCCK-8assay
+(A) Cell viability of HT22 cells induced by different concentrations of D-gal for 24 hours. (B)
+CellviabilityofHT22cellsinducedbydifferentconcentrationsofD-galfor48hours.n=6.****P
+<0.0001.ns,notsignificant.
+2.3.1.2 不同浓度 D-gal 对HT22 细胞衰老相关蛋白的影响
+接着，为了在蛋白水平上检测不同浓度D-gal（0、50、100、200mM）诱导
+HT22细胞衰老的效果，我们在蛋白水平上检测细胞衰老相关蛋白表达的变化，
+包括Lamin B1、P53、P21、P16。如图2-2A 和C-E 所示，随着D-gal 浓度的增
+加，P53、P21、P16 的表达逐渐上升，而 LaminB1 的表达逐渐下降，且在浓度
+200mM 时都具有显著性差异（图 2-2 A 和 B），说明 D-gal 浓度越高，细胞衰
+老趋势越明显。
+15
+--- 第28页 ---
+江南大学硕士学位论文
+图2-2WesternBlot实验检测不同浓度D-gal对HT22细胞衰老相关蛋白的影响
+(A) 不同浓度D-gal诱导HT22细胞24小时，LaminB1、P53、P21和P16的代表性条带。
+(B)LaminB1、(C)P53、(D)P21、(E)P16的蛋白定量结果。n=4-6。*P<0.05，**P<0.01，
+***P<0.001和 ****P<0.0001,ns, 不显著。
+Figure2-2.Theexpressionofaging-relatedproteinsofHT22cellsatdifferentconcentrationsof
+D-galbyWesternBlot
+(A) Representative western blotting of Lamin B1, P53, P21, P16 and GAPDH. Quantification of
+(B) Lamin B1, (C) P53, (D) P21, (E) P16 protein levels. n=4-6. *P < 0.05, **P < 0.01, ***P <
+0.001,****P<0.0001.ns,notsignificant.
+2.3.1.3 不同浓度 D-gal 对HT22 细胞β-半乳糖苷酶表达的影响
+D-gal（0、50、100、200mM）诱导HT22 细胞24小时后，使用β-半乳糖苷
+酶（SA-β-gal）染色试剂盒进行染色，检测 SA-β-gal 阳性细胞。结果如图 2-3A
+所示，随着D-gal 浓度的增加，染色细胞数越多，染色程度越深，定量结果2-3 B
+显示，SA-β-gal 阳性细胞呈浓度依赖性增加。
+图2-3β-半乳糖苷酶实验检测不同浓度D-gal对HT22细胞SA-β-gal的影响
+(A) 不同浓度D-gal诱导HT22细胞24小时β-半乳糖苷酶实验检测细胞衰老，蓝色细胞为
+SA-β-gal阳性细胞。(B) 衰老相关β-半乳糖苷酶（SA-β-gal）染色强度的定量统计。n=4。标
+16
+--- 第29页 ---
+第二章 靶向ErbB4小分子化合物抑制D-gal诱导的HT22细胞衰老
+尺：100μm。***P<0.001和 ****P<0.0001。
+Figure2-3.DetectionofHT22cellsenescencestainingatdifferentconcentrationsofD-galby
+SA-β-gal
+(A) Visualization of cellular senescence through SA-β-gal staining. (B) Quantification of
+senescence-associated β-galactosidase (SA-β-gal) staining intensities. n=4. Scale bar = 100 μm.
+***P<0.001,****P<0.0001.
+根据以上的实验，我们成功建立了HT22 细胞衰老模型，确定其最佳诱导浓
+度为200mM，最佳诱导时间为 24小时。
+2.3.2D-gal 诱导 HT22细胞衰老机制的初步探究
+2.3.2.1 不同浓度 D-gal 诱导HT22 细胞衰老对 ErbB4、Akt1 磷酸化水平的影响
+越来越多的研究表明，ErbB4 与多种神经退行性疾病的发生、发展有关，因
+此，我们在确定 D-gal 诱导衰老的最佳条件之后，通过 Western Blot 实验检测了
+在细胞衰老的条件下对ErbB4、Akt1磷酸化的蛋白水平的影响。结果如图2-4A-C
+所示，随着D-gal 浓度的增加，ErbB4、Akt1 的磷酸化水平逐渐下降，说明D-gal
+的诱导会抑制HT22细胞中ErbB4 和Akt1磷酸化蛋白水平的表达。
+图2-4WesternBlot实验检测不同浓度D-gal对HT22细胞ErbB4、Akt1磷酸化水平的影响
+(A) 不同浓度D-gal诱导HT22细胞24小时，pErbB4、ErbB4、pAkt1和Akt1的代表性条带。
+(B)pErbB4/ErbB4，(C)pAkt1/Akt1的蛋白定量结果。n=4-5。**P<0.01。
+Figure2-4.ThephosphorylatedactivationofErbB4andAkt1receptorsinD-gal-inducedHT22
+cells
+(A) Representative western blotting of pErbB4, ErbB4, pAkt1,Akt1 and GAPDH. Quantification
+of(B)pErbB4/ErbB4,(C)pAkt1/Akt1proteinlevels.n=4-5.**P<0.01.
+2.3.2.2 不同浓度 D-gal 诱导HT22 细胞衰老对铁死亡相关蛋白水平的影响
+近年来，越来越多的研究将铁死亡与细胞衰老联系起来。因此，我们通过
+Western Blot 实验检测在诱导细胞衰老的情况下，铁死亡标志蛋白的变化。结果
+17
+--- 第30页 ---
+江南大学硕士学位论文
+显示，随着HT22 细胞衰老程度的加深，铁死亡抑制基因（Nrf2、SLC7A11、GPX4）
+的表达逐渐下降（图2-5B、D 和E），而TFRC 表达明显上调（图2-5A和C），
+且在 D-gal 浓度为 200 mM 时都有统计学意义，说明 D-gal 诱导的 HT22 细胞衰
+老与铁死亡之间存在一定的联系。
+图2-5WesternBlot实验检测不同浓度D-gal对HT22细胞铁死亡相关蛋白水平的影响
+(A) 不同浓度D-gal诱导HT22细胞24小时，Nrf2、TFRC、SLC7A11和GPX4的代表性条
+带。(B)Nrf2、(C)TFRC、(D)SLC7A11、(E)GPX4的蛋白定量结果。n=4-6。**P<0.01，
+***P<0.001和 ****P<0.0001,ns, 不显著。
+Figure2-5.Theexpressionofferroptosis-relatedproteinsofHT22cellsatdifferentconcentrations
+ofD-galbyWesternBlot
+(A) Representative western blotting of Nrf2, TFRC, SLC7A11, GPX4 and GAPDH.
+Quantificationof(B)Nrf2,(C)TFRC,(D)SLC7A11,(E)GPX4proteinlevels.n=4-6.**P<0.01,
+***P<0.001,****P<0.0001.ns,notsignificant.
+2.3.3 靶向ErbB4 小分子化合物抑制 D-gal 诱导的 HT22细胞衰老的发生
+基于以上结果，我们通过虚拟筛选的方法，获得靶向 ErbB4 的小分子化合
+物（E4A），并且以褪黑素作为阳性对照药物，探讨所筛选靶向药物抑制D-gal
+诱导的细胞衰老的作用。
+2.3.3.1 不同浓度靶向 ErbB4小分子化合物和褪黑素对 HT22 细胞的影响
+为了评估 E4A 和褪黑素对小鼠海马神经元细胞增值的影响，我们首先通过
+细胞活力实验药物对HT22 细胞增值的影响。使用不同浓度的 E4A（0、2、5、
+10、20 nM）和褪黑素（0、25、50、100、200 μM）分别刺激 HT22 细胞 24 小
+18
+--- 第31页 ---
+第二章 靶向ErbB4小分子化合物抑制D-gal诱导的HT22细胞衰老
+时。如图2-6A 和B所示，低浓度的E4A（0-10 nM）和褪黑素（0-50 μM）对细
+胞活力没有明显的影响，在高浓度时细胞活力都出现了显著的下降，说明低浓度
+的E4A和褪黑素对于HT22 细胞无明显毒性作用。
+接着，我们又在蛋白水平上检测了无细胞毒性浓度的E4A和褪黑素对HT22
+细胞中ErbB4 受体磷酸化的激活情况、下游Akt1 信号的激活以及铁死亡相关的
+蛋白表达的影响。图2-6 C和D 结果表明在安全浓度范围中，E4A 和褪黑素都可
+以有效促进 HT22 细胞中ErbB4 和下游 Akt1 的磷酸化水平，且这种作用呈现明
+显的剂量依赖性，此外，Western Blot 的结果表明E4A 和褪黑素可以显著促进铁
+死亡抑制基因（Nrf2、SLC7A11、GPX4）的表达，在剂量为 10nM 时，Nrf2、
+SLC7A11、GPX4 蛋白表达水平最高。这些结果提示E4A 和褪黑素可能通过激活
+ErbB4 受体，调节下游Akt1 和下游铁死亡信号通路从而发挥神经保护作用。
+图2-6 不同浓度E4A和褪黑素对HT22 细胞的影响
+(A) 不同浓度E4A刺激HT22细胞24小时，细胞活力的影响。(B) 不同浓度褪黑素刺激HT22
+细胞24 小时，细胞活力的影响。(C) 不同浓度E4A诱导HT22细胞24小时，pErbB4、Nrf2、
+PSD95、pAkt1、SLC7A11和GPX4的代表性条带。(D) 不同浓度褪黑素诱导HT22细胞24
+小时，pErbB4、Nrf2、PSD95、pAkt1、SLC7A11和GPX4的代表性条带。n=5。****P<
+19
+--- 第32页 ---
+江南大学硕士学位论文
+0.0001,ns, 不显著。
+Figure2-6.TheeffectsofdifferentconcentrationsofE4AandmelatoninonHT22cells
+(A)CellviabilityofHT22cellstreatedbydifferentconcentrationsofE4Afor24hours.
+(B) Cell viability of HT22 cells treated by different concentrations of melatonin for 24 hours.
+Representative western blotting of pErbB4, Nrf2, PSD95, pAkt1, SLC7A11, GPX4 and GAPDH
+afterthetreatmentofsmallmoleculecompounds(C)andmelatonin(D).n=5.****P<0.0001.ns,
+notsignificant.
+2.3.3.2 不同浓度靶向 ErbB4 小分子化合物和褪黑素对 D-gal 诱导 HT22 细胞活
+力的影响
+为了探究在 D-gal 诱导HT22 细胞衰老的条件下，E4A和褪黑素对 HT22 细
+胞增值的影响，我们通过 CCK-8 实验检测了细胞活力的变化。结果如图 2-7A
+和B 所示，HT22 细胞活力随着E4A和褪黑素浓度的增加而逐渐增强，且在E4A
+浓度为10nM，褪黑素浓度为50μM 时促进细胞增值作用最强。此外，根据前期
+调研结果，褪黑素作为内源性分泌的激素，它还具有调节 ErbB4 受体表达的作
+用，因此我们通过联合给药，探讨联合给药的可能效果。图2-7 C 结果显示，E4A
+和褪黑素的联合用药可以有效改善D-gal 诱导引起的HT22 细胞活力的下降，但
+是这种促进细胞增值作用与单独给予E4A或褪黑素效果差别不大。
+图2-7E4A和褪黑素对D-gal诱导HT22细胞活力的影响
+(A)E4A对D-gal诱导HT22细胞活力的影响。(B) 不同浓度褪黑素对D-gal诱导HT22细胞
+活力的影响。(C)E4A和褪黑素以及两种药物的联合应用对HT22细胞活力的影响。n=5-7。
+*<0.05，**P<0.01，***P<0.001和 ****P<0.0001。
+Figure2-7.TheeffectsoftheE4AandmelatoninonD-gal-inducedHT22cellviability
+(A) Cell viability following co-treatment with D-gal and different concentration of E4A. (B) Cell
+viability following co-treatment with D-gal and different concentration melatonin. (C) Cell
+20
+--- 第33页 ---
+第二章 靶向ErbB4小分子化合物抑制D-gal诱导的HT22细胞衰老
+viability following co-treatment with D-gal, E4A and melatonin. n=5-7. *P < 0.05, **P < 0.01,
+***P<0.001,****P<0.0001.
+2.3.3.3 靶向 ErbB4 小分子激动剂和褪黑素对 D-gal 诱导 HT22 衰老细胞中衰老
+相关蛋白的变化情况
+基于以上结果，我们选用10nM 浓度的E4A和50μM 的褪黑素进行后续实
+验。首先我们在蛋白水平上验证 E4A 和褪黑素抑制 HT22 细胞衰老的作用。
+Western Blot 实验结果显示，D-gal 诱导后P53、P21、P16的表达显著增加，E4A
+和褪黑素的治疗可以有效改善D-gal 诱导引起的衰老相关蛋白表达的增加，两种
+药物的联合使用也具有逆转细胞衰老的作用（图2-8A-D）。说明E4A 和褪黑素
+具有神经保护作用，能够改善D-gal 诱导的小鼠海马神经元衰老。
+图2-8E4A和褪黑素对D-gal诱导HT22细胞衰老相关蛋白表达的影响
+(A)E4A和褪黑素对D-gal诱导HT22细胞中P53、P21和P16的代表性条带。(B)P53、(C)P21、
+(D)P16的蛋白定量结果。n=4-7。*<0.05，**P<0.01，***P<0.001和 ****P<0.0001,
+ns, 不显著。
+Figure2-8.TheeffectsofE4Aandmelatoninontheexpressionofaging-relatedproteinsin
+D-gal-inducedHT22cells
+(A) Representative western blotting of P53, P21, P16 and GAPDH in D-gal-induced HT22 cells
+co-treatedwithE4Aandmelatonin.(B)Quantificationof(B)P53,(C)P21,(D)P16proteinlevels.
+n=4-7.*P<0.05,**P<0.01,***P<0.001,****P<0.0001.ns,notsignificant.
+2.3.3.4 靶向 ErbB4 小分子化合物和褪黑素对 D-gal 诱导 HT22 细胞β-半乳糖苷
+酶染色的影响
+21
+--- 第34页 ---
+江南大学硕士学位论文
+通过β-半乳糖苷酶染色实验（图2-9A），在光学显微镜下观察发现，与D-gal
+组相比，E4A和褪黑素的治疗以及联合用药后，SA-β-gal 阳性细胞数量明显减少，
+定量结果图 2-9 B 也显示，E4A 和褪黑素可以有效逆转 D-gal 诱导所致的 HT22
+细胞的衰老。
+图2-9β-半乳糖苷酶实验检测E4A和褪黑素对D-gal诱导HT22细胞中SA-β-gal的影响
+(A)E4A和褪黑素刺激D-gal诱导HT22细胞，β-半乳糖苷酶实验检测细胞衰老，蓝色细胞
+为SA-β-gal阳性细胞。(B) 衰老相关β-半乳糖苷酶（SA-β-gal）染色强度的定量统计。n=3。
+标尺：100μm。**P<0.01，***P<0.001和 ****P<0.0001,ns, 不显著。
+Figure2-9.DetectionofHT22cellsenescencestainingfollowingco-treatmentwithD-gal,E4A
+andmelatoninbySA-β-gal
+(A) Visualization of cellular senescence through SA-β-gal staining. (B) Quantification of
+senescence-associated β-galactosidase (SA-β-gal) staining intensities. n=3. Scale bar = 100 μm.
+**P<0.01,***P<0.001,****P<0.0001.ns,notsignificant.
+2.4 小结与讨论
+本节中，我们用200mM D-gal 诱导HT22 细胞24小时，成功建立了神经元
+细胞衰老模型。P53-P21 和 P16-Rb 通路是调控细胞衰老的关键途径，其激活可
+导致细胞周期阻滞并促进衰老表型的形成[68]。实验结果表明， D-gal 处理显著降
+低了细胞活力，同时上调了衰老相关蛋白P53、P21 和P16的表达水平，并增加
+了SA-β-gal 阳性细胞的比例。在此基础上，我们通过实验选择最佳E4A（10nM）
+和褪黑素（50μM）浓度，与 D-gal 共处理后检测在细胞衰老的状态下，E4A 和
+22
+--- 第35页 ---
+第二章 靶向ErbB4小分子化合物抑制D-gal诱导的HT22细胞衰老
+褪黑素的治疗作用。结果说明，E4A和褪黑素以及联合给药都可以有效逆转D-gal
+诱导的HT22细胞衰老。
+此外，我们在D-gal 诱导衰老的条件下检测ErbB4 和Akt 磷酸化蛋白和铁死
+亡相关蛋白的变化，发现 D-gal 刺激抑制了 HT22 细胞内 ErbB4 和 Akt1 的磷酸
+化激活，且铁死亡相关蛋白的表达发生变化。单独给予 E4A 或褪黑素的刺激，
+可以促进ErbB4 和Akt1 磷酸化激活，并且促进抗铁死亡蛋白的表达。这些结果
+提示了小分子化合物和褪黑素抑制衰老的初步机制。
+23
+--- 第36页 ---
+江南大学硕士学位论文
+第三章 靶向 ErbB4 小分子激动剂改善 D-gal 诱导衰老小鼠
+的神经元衰老
+在第二章的研究中，我们已经发现 E4A 和褪黑素在细胞水平上可以有效改
+善D-gal 诱导的 HT22 细胞衰老，在本章实验中，我们将通过腹腔注射 D-gal 在
+动物水平上构建小鼠衰老模型，再通过 E4A 和褪黑素的药物治疗检测其在小鼠
+衰老模型中的治疗效果。
+常见的动物衰老模型有自然衰老、诱导衰老和转基因衰老动物，目前，D-gal
+诱导动物衰老模型被广泛应用于多种研究领域，包括神经退行性疾病、心血管疾
+病、免疫系统衰退等[69-71]。D-gal 通过注射进入体内后，会导致一系列与自然衰
+老相似的病理生理变化，如氧化应激增加、抗氧化能力下降、细胞凋亡增多、炎
+症反应增强等[72,73]。这些变化与自然衰老的动物相具有相似的衰老体征，因此可
+以用来模拟衰老的过程。此外，在本研究中我们使用C57BL/6J 小鼠作为实验动
+物，其遗传背景清晰，个体差异小，能够确保实验结果的稳定性和可重复性。同
+时，C57 小鼠对D-gal 诱导的敏感性较高，容易表现出明显的衰老特征。
+3.1 实验材料
+3.1.1 实验设备
+仪器名称 公司
+小鼠 Morris 水迷宫视频分析系统
+上海吉量软件科技有限公司
+（DigBehv001）
+小 鼠 Y 迷 宫 视 频 分 析 系 统
+上海欣软信息科技有限公司
+（Supermaze）
+小 鼠 新 物 体 识 别 视 频 分 析 系 统
+上海欣软信息科技有限公司
+（Supermaze）
+微量迷你离心机（S1010E） 上海珂淮仪器有限公司
+-80°C 冰箱（DW-86L348） 苏州海思源仪器设备有限公司
+水平摇床（OS-A10） 杭州普睿博仪器有限公司
+4℃医用冷藏箱（BYC-250） 山东博科生物产业有限公司
+CO 培养箱（HH.CP-T） 杭州析牛科技有限公司
+2
+24
+--- 第37页 ---
+第三章 靶向ErbB4小分子化合物改善D-gal诱导衰老小鼠的神经元衰老
+小型温控高速离心机（XU-5K-R） 上海恩谊医疗科技发展有限公司
+电子天平（YP2001B200g/0.01 g） 上海珂淮仪器有限公司
+蛋白电泳仪（DYCP-1） 上海拓赫机电科技有限公司
+恒温金属浴（ZL-20G2） 上海助蓝仪器科技有限公司
+全功能微孔板检测仪（Synergy H4） 美国伯腾仪器有限公司
+快速多通道半干转印仪（TY-201-01） 南京中科通仪科技有限公司
+水浴锅（HH-4SY） 上海恩谊医疗科技发展有限公司
+制冰机（BLO-100） 佛山市冰力欧电器制造有限公司
+3.1.2 实验试剂
+试剂名称 公司
+D-gal（ST1218） 上海碧云天生物技术公司
+ErbB4 小分子化合物 Sigma-Aldrich（上海）
+褪黑素（ST1497） 上海碧云天生物技术公司
+10%胎牛血清（11011-8611） 浙江天航生物技术有限公司
+胰酶（J121002） 上海源培生物科技股份有限公司
+PBS 磷酸缓冲盐溶液（P1033） 北京索莱宝生物科技有限公司
+CoraLite®594 山羊抗小鼠二级抗体
+武汉三鹰生物技术有限公司
+（SA00013-3）
+CoraLite®488 山羊抗小鼠二级抗体
+武汉三鹰生物技术有限公司
+（SA00013-2）
+1%青霉素/链霉素混合物（C0222） 上海碧云天生物技术公司
+高糖DMEM 培养基（D211113） 上海源培生物科技股份有限公司
+山羊抗兔二级抗体（bs‑40295G） 北京博奥森生物技术有限公司
+25
+--- 第38页 ---
+江南大学硕士学位论文
+山羊抗小鼠二级抗体（bs‑40296G） 北京博奥森生物技术有限公司
+ECL 发光液（BK0041-02） 南京ACE 生物技术公司
+兔抗Iba-1 抗体（AF7143） 上海碧云天生物技术公司
+兔抗NeuN 抗体（AF1072） 上海碧云天生物技术公司
+鼠抗GFAP抗体（sc-33673） 美国SantaCruz生物科技有限公司
+鼠抗GAPDH抗体（GB15002） 武汉赛维尔生物技术公司
+3.1.3 实验试剂配制
+3%BSA溶液：纯水溶解BSA 粉末1.5g，定容到50mL。
+3.2 实验方法
+3.2.1 动物实验设计
+健康雄性 C57BL/6J 小鼠 50 只，体重 18-22 g，8 周龄。小鼠由维通利华公
+司提供。在一周适应期结束之后，将所有小鼠随机分为 5 组，分组如下（1）对
+照组：生理盐水腹腔注射11周（2）D-gal 组：100mg/kg D-gal 腹腔注射11周（3）
+D-gal+E4A 组：100 mg/kg D-gal 腹腔注射 7 周，之后将 D-gal 溶液与 400 ng/kg
+的小分子化合物混合共同给药4周（4）D-gal+MLT组：100mg/kg D-gal 腹腔注
+射 7 周，之后将 D-gal 溶液与 10 mg/kg 的褪黑素混合共同给药 4 周（5）
+D-gal+E4A+MLT组：100mg/kg D-gal腹腔注射7周，之后将D-gal溶液、400ng/kg
+的小分子化合物和 10 mg/kg 的褪黑素混合共同给药 4 周。第十一周进行行为学
+测试，动物实验流程图如图3-1 所示。本研究的所有实验程序均已获得江南大学
+动物伦理委员会批准（伦理委员会批准号：JN.NO20240315c0400701[110]）
+图3-1 小鼠实验流程图
+Figure3-1Flowchartofthemiceexperiment
+26
+--- 第39页 ---
+第三章 靶向ErbB4小分子化合物改善D-gal诱导衰老小鼠的神经元衰老
+3.2.2 水迷宫
+Morris 水迷宫测试（Morris water maze,MWM）是一种经典的行为学评估方
+法，通过记录啮齿类动物在水环境中定位隐藏平台的能力，评价其空间学习和记
+忆功能。MWM装置的中间放置一个圆形的白色水箱（直径= 120厘米，高度= 50
+厘米），周围是一块不透明的布，将一个隐形固定平台（直径 10cm）浸入水面
+以下 1cm。将小鼠从面对池壁的四个象限随机放入池中，进行四次实验，两次
+实验之间的时间间隔为15-20min。给每只小鼠60秒来搜索隐藏的平台，记录小
+鼠爬到平台的逃逸潜伏期和路径，如果小鼠在 60 秒内找不到平台，就让小鼠爬
+上平台，并在每次实验结束时在平台停留 30秒。每只小鼠每天进行 4 次实验，
+平台和视觉线索在恒定位置。连续测试六天。第7天进行空间探索测试，将隐藏
+平台撤除，实验小鼠被允许在水迷宫中自由探索 60秒。记录小鼠穿越原平台所
+在区域的次数和在原平台所在象限内的停留时长，以此评估其空间记忆的巩固程
+度。
+3.2.3Y迷宫
+Y迷宫的每只手臂长50厘米，高20厘米，宽10厘米。每只老鼠从Y 迷宫
+的一个臂中放入，记为起始臂，并允许它们在迷宫中自由移动5分钟。用摄像机
+记录这一过程，并通过supermaze 软件进行分析，记录每只小鼠进入三支臂的次
+序，得到每只小鼠的自主交替率。自主交替率计算为[（轮换次数）/（总臂项数
+-2）]×100。
+3.2.4 新物体识别实验
+采用新物体识别（NOR）实验来评估与新物体识别相关的记忆。在实验适
+应期，小鼠被放入空的NOR 装置（尺寸：40×20×20cm）内，自由探索5min，
+之后被放回原来的笼子中。测试阶段，实验小鼠被面向墙壁放置于包含两个完全
+一致物品的NOR 实验箱中，允许其自由活动5分钟。24小时后，将其中一个熟
+悉物品更换为形状不同的新物体，采用相同方法再次进行5min行为观察。记录
+小鼠对新旧物体探索的时间，计算识别指数。识别指数= [（探索新物体的时间）
+/（探索新物体和旧物体的总时间）]×100%。
+3.2.5 小鼠取材
+小鼠行为学实验结束之后进行解剖取材。收集小鼠脑组织并放入-80 ℃保存，
+部分脑组织固定在4%的多聚甲醛中，放入4 ℃冰箱冷藏保存。
+3.2.6 蛋白免疫印迹分析
+取小鼠海马组织置于预冷的 RIPA裂解缓冲液（含 2%磷酸酶抑制剂混合物
+27
+--- 第40页 ---
+江南大学硕士学位论文
+及1%PMSF蛋白酶抑制剂）中。每个管中加入2颗预冷钢珠，用组织匀浆仪以
+60Hz频率进行研磨，研磨3次，每次1min。匀浆完成后冰浴静置20分钟，4℃
+条件下 13000 g 离心 15 min，收集上清液，BCA 法测定蛋白浓度。其余步骤同
+3.2.3电泳操作。
+3.2.7 小鼠脑部石蜡切片的制备
+（1）脱水：小鼠脑组织浸入4% PFA溶液中，4℃条件下固定24 小时。固
+定完成后，PBS 缓冲液洗3次，每次5分钟。随后进行梯度脱水处理。
+（2）包埋：将组织样本置于预热的石蜡模具中，确保待观察切面与模具底
+面保持平行。标记样本编号后，待表层石蜡半凝固时转移至-20℃冷冻台快速冷
+却20分钟。待蜡块完全固化后，从包埋模具中取出并进行修整处理。
+（3）切片：将成型蜡块安装于切片机样品夹，调节厚度参数至4μm 进行连
+续切片。将组织切片平铺于40℃恒温水浴表面展平，使用载玻片捞取后置于60℃
+烘片机中烘烤60分钟，最后室温干燥保存待用。
+3.2.8 组织免疫荧光实验
+将石蜡切片置于60℃烤片机烤片1h，随后脱蜡处理：先后置于环保型脱蜡
+液Ⅰ、环保型脱蜡液Ⅱ和环保型脱蜡液Ⅲ中分别脱蜡 1h，使用梯度酒精复水：
+先后置于 100% 乙醇、95% 乙醇、90% 乙醇、80% 乙醇、70% 乙醇、蒸馏水
+中各5 min。将组织切片浸入 0.1mol/L柠檬酸钠缓冲液(pH 6.0)中，沸水浴条件
+下加热1小时。结束后自然降温至室温。PBS 漂洗3次，每次5min。随后用 3%
+TritonX-100 常温浸泡20min，随后用封闭液封闭30min，滴加稀释的一抗工作
+液，置于湿盒中4℃孵育过夜。取出切片恢复至室温，PBS 洗三次，每次 10min。
+滴加二抗工作液，避光室温孵育2小时。PBS 洗涤三次，每次10min。吸去多余
+液体后滴加抗荧光淬灭封片剂封片。使用ZEISSAxioImager Z2 荧光显微镜进行
+图像采集。
+3.2.9 统计学分析
+所有结果均以平均±标准差（SD）表示，数据分析采用 GraphPad Prism 9
+进行。采用单因素方差分析（one-wayANOVA）比较组间差异，结合 Tukey 事
+后检验进行评估。p<0.05为统计具有显著性差异。
+3.3 实验结果
+3.3.1 靶向ErbB4小分子激动剂给药治疗后小鼠的体重变化趋势
+在小鼠造模期间，每天观察小鼠的精神变化并记录小鼠的体重变化，隔一周
+28
+--- 第41页 ---
+第三章 靶向ErbB4小分子化合物改善D-gal诱导衰老小鼠的神经元衰老
+进行一次统计。如图 3-2 所示，D-gal 组小鼠的体重随着造模时间的延长而出现
+下降的趋势，通过 E4A 和褪黑素的治疗，小鼠的体重有了上升趋势，且平均体
+重与对照组小鼠相似。
+图3-2 小鼠体重变化趋势
+Figure3-2Bodyweightchangetrendofmice
+3.3.2 靶向ErbB4 小分子激动剂对 D-gal 诱导衰老小鼠在水迷宫实验中的影响
+Morris 水迷宫实验（MWM）是英国的心理学家Morris 于20世纪80年代开
+发的一项用于评估啮齿类动物空间学习和记忆能力的经典方法，广泛应用于多种
+实验模型[74]。
+如图3-3B 所示，在训练期内，到第六天时所有小鼠的逃避潜伏期都表现出
+下降趋势。在每一天的训练过程中，D-gal 组小鼠的逃避潜伏期都高于对照组，
+表现出明显的记忆功能障碍及空间辨别能力障碍，而通过 E4A 和褪黑素治疗的
+小鼠其逃避潜伏期明显下降，在第六天训练时，衰老小鼠的平均逃避潜伏期为
+30.68秒，对照小鼠、D-gal 与E4A共处理小鼠、D-gal 与褪黑素共处理小鼠以及
+联合给药组的平均逃避潜伏期分别为 14.58 秒、12.98 秒、15.04 秒和 13.89，说
+明经过药物治疗可以明显改善D-gal 诱导衰老小鼠的记忆功能障碍。
+第七天时，我们进行了空间探索实验，记录了各组小鼠的平台穿越次数和目
+标象限停留时间。结果如图 3-3 C 和 D 所示，当平台被撤掉后，与对照组相比
+D-gal 组小鼠找到平台的次数明显减少，且在平台所在象限区域的停留时间也明
+显下降，说明D-gal 诱导衰老小鼠出现明显的记忆功能障碍。通过E4A 和褪黑素
+29
+--- 第42页 ---
+江南大学硕士学位论文
+药物治疗后，可以有效改善这种记忆功能的下降，穿越平台位置的次数显著增加，
+而且在目标象限游泳的时间也明显高于D-gal 诱导小鼠。联合治疗组小鼠的平台
+穿越次数虽然也有增加趋势，但是没有显著性差异。说明经过 E4A 和褪黑素治
+疗的小鼠，记忆功能和空间认知能力有显著提升。
+图3-3E4A和褪黑素对D-gal诱导衰老小鼠MWM实验中学习记忆能力的影响
+(A)Morris水迷宫（MWM）空间探索试验中，不同实验组小鼠运动轨迹代表图。(B) 不同
+实验组小鼠的逃避潜伏期。(C)MWM空间探索实验期间的平台穿越次数。(D)MWM 空间
+探索实验期间目标象限停留时间。n=6-8。*<0.05，**P<0.01，***P<0.001，****P<
+0.0001，ns, 不显著。
+Figure3-3TheeffectsofE4AandmelatoninonlearningandmemoryabilitiesofD-gal-induced
+miceinMWMexperiments
+(A) Representative swimming trajectories of mice subjected to different treatments in the Morris
+WaterMaze(MWM)spatialprobetest.(B)Escapelatencyacrossthefiveexperimentalgroups.(C)
+Number of target crossings during the MWM probe test. (D) Time spent in the target quadrant
+during the MWM probe test. *P < 0.05, **P < 0.01, ***P < 0.001, ****P < 0.0001. ns, not
+significant.
+3.3.3 靶向ErbB4 小分子激动剂对 D-gal 诱导衰老小鼠在 Y迷宫实验中的影响
+Y 迷宫实验是一个三臂迷宫,用于评估小鼠空间记忆和探索行为，适用于研
+究小鼠的认知功能、学习能力和焦虑水平[75]。在 Y 迷宫实验中，将动物置于迷
+宫的一个臂中，允许其自由探索所有通道，记录每只小鼠动物进入每个通道的次
+数、持续时间，小鼠进入不同臂的次数，经过统计得到每组小鼠的自发交替率。
+30
+--- 第43页 ---
+第三章 靶向ErbB4小分子化合物改善D-gal诱导衰老小鼠的神经元衰老
+结果如图3-4A 所示，各组小鼠的运动轨迹上没有很明显的差异，但是通过统计
+自发交替率可以发现对照组小鼠的平均自发交替率为 70.78 ％，D-gal 组小鼠的
+评估自发交替率为58.80%，而通过E4A 和褪黑素治疗后该指标都出现上升的趋
+势，分别为70.74 ％、71.20 ％、72.07 ％（图3-4B）。该实验结果说明D-gal
+诱导对于小鼠的空间记忆功能有一定的损害，E4A 和褪黑素可以改善小鼠的记忆
+能力。
+图3-4E4A和褪黑素对D-gal诱导衰老小鼠Y迷宫实验中空间记忆能力的影响
+(A) 不同实验组小鼠在Y迷宫实验中的运动轨迹热图。(B) 不同实验组小鼠的自发交替率。
+n=6。**P<0.01。
+Fig.3-4TheeffectsofE4AandmelatoninonSpatialmemoryabilityofD-gal-inducedmiceinY
+mazetest
+(A) Representative heat maps of mice subjected to different treatments in the Y maze test. (B)
+SpontaneousalternationbehaviorsintheY-mazetestwereassessed.**P<0.01.n=6.
+3.3.4 靶向ErbB4 小分子激动剂对 D-gal 诱导衰老小鼠在新物体识别中的影响
+1988年，Ennaceur 和Delacour 利用大鼠探索新奇事物的这一天性，提出了
+新物体识别实验（NOR），后来也用于小鼠实验，逐渐成为了一种常用的学习、
+记忆等行为学分析实验，现已成为检测其物体记忆的标准方法。如图3-5所示，
+D-gal 诱导衰老小鼠的认知指数明显显著低于对照组，经过E4A 和褪黑素处理之
+31
+--- 第44页 ---
+江南大学硕士学位论文
+后，认知指数明显上升，说明D-gal 诱导后小鼠的认知记忆能力下降，E4A 和褪
+黑素有效改善了这种损害作用。
+图3-5E4A和褪黑素对D-gal诱导衰老小鼠新物体识别实验中记忆能力的影响
+(A) 不同实验组小鼠在新物体识别实验中的热图。(B) 不同实验组小鼠的识别指数。n=7。*
+<0.05，ns, 不显著。
+Fig.3-5TheeffectsofE4AandmelatoninonmemoryabilityofD-gal-inducedmiceinNOR
+(A) Representative heat maps of mice subjected to different treatments in the Novel Object
+Recognition test. (B) Recognition index in the Novel Object Recognition test among the
+experimentalgroups.n=7.*P<0.05.ns,notsignificant.
+3.3.5 靶向ErbB4 小分子激动剂对 D-gal 诱导小鼠神经元衰老的抑制作用
+3.3.5.1 靶向 ErbB4小分子激动剂和褪黑素对 D-gal 诱导小鼠海马组织中衰老相
+关蛋白水平的影响
+为了验证E4A和褪黑素对D-gal 诱导衰老小鼠海马神经元衰老的抑制作用，
+我们通过 Western Blot 实验检测了各组小鼠海马组织中 Lamin B1、P53、P21 以
+及P16 的表达变化。如图 3-6A 和C-E 所示，与对照组相比，D-gal 诱导衰老小
+鼠海马组织中p53、p21和p16蛋白水平显著上调，D-gal 诱导衰老小鼠中Lamin
+B1 的表达明显降低，然而，通过 E4A 和褪黑素的治疗，P53和P21 的表达都明
+显下降（图 3-6 C 和 D），Lamin B1 的表达上升（图 3-6 B），P16 也呈现出相
+应下降趋势（图3-6 E），说明 E4A和褪黑素的治疗可有效减轻 D-gal 诱导的衰
+老效应。联合治疗组与单独治疗组的抗衰老疗效无显著性差异。
+32
+--- 第45页 ---
+第三章 靶向ErbB4小分子化合物改善D-gal诱导衰老小鼠的神经元衰老
+图3-6E4A和褪黑素对D-gal诱导衰老小鼠海马中衰老相关蛋白水平的影响
+(A) 不同实验组小鼠海马组织中LaminB1、P53、P21和P16的代表性条带。(B)LaminB1、
+(C)P53、(D)P21、(E)P16的蛋白定量结果。n=4-5。*<0.05，**P<0.01，***P<0.001。
+Fig.3-6TheeffectsofE4Aandmelatoninontheexpressionofaging-relatedproteinsinthe
+hippocampusofD-gal-inducedagingmice
+(A) Representative western blotting of Lamin B1, P53, P21, and P16 in hippocampal of mice in
+differentexperimental groups.Quantification of(B) Lamin B1, (C) P53, (D) P21, (E) P16protein
+levels.n=4-5.*P<0.05,**P<0.01,***P<0.001.
+3.3.5.2 靶向ErbB4 小分子激动剂和褪黑素对D-gal 诱导小鼠海马组织中 GFAP
+和Iba1 表达水平的影响
+越来越多的研究表证明，随着年龄的增长会出现星形胶质细胞增多和小胶质
+细胞增生。因此，我们检测了小鼠海马组织中GFAP和Iba1 的表达水平。图3-7
+结果发现，与对照组相比，D-gal 诱导的衰老小鼠模型中出现明显的星形胶质细
+胞和小胶质细胞增生。我们观察到，与对照组小鼠相比，D-gal 组海马中 GFAP
+的蛋白表达水平显著增加，E4A、褪黑素或两种药物的联合治疗这可以部分逆转
+这一现象、但没有观察到统计学意义。同样，我们检测到与对照小鼠相比 Iba1
+的蛋白表达水平上调，E4A、褪黑素或联合治疗可以部分下调Iba1 在小鼠海马区
+域的表达。E4A和联合治疗组有统计学意义。以上结果说明，E4A 和褪黑激素，
+可以改善D-gal 诱导的小鼠海马神经元衰老。
+33
+--- 第46页 ---
+江南大学硕士学位论文
+图3-7E4A和褪黑素对D-gal诱导衰老小鼠海马GFAP和Iba1水平的影响
+(A) 不同实验组小鼠海马组织中GFAP和Iba1的代表性条带。(B)GFAP、(C)Iba1的蛋白定
+量结果。n=4。*<0.05。
+Fig.3-7TheeffectsoftargetedErbB4receptoragonistsandmelatoninontheexpressionofGFAP
+andIba1inthehippocampusofD-gal-inducedagingmice
+(A) Representative western blotting of GFAP and Iba1 in hippocampal of mice in different
+experimentalgroups.Quantificationof(B)GFAP,(C)Iba1proteinlevels.n=4.*P<0.05.
+3.3.5.3 靶向 ErbB4小分子激动剂和褪黑素对 D-gal 诱导小鼠 DG 区域和皮层区
+域Lamin B1表达的影响
+Lamin B1 是核纤层蛋白家族的重要成员，作为核膜结构的关键组分，在维
+持核的结构和功能完整性中发挥重要作用[76]。研究表明，Lamin B1 的表达水平
+随细胞衰老而下调，影响核膜完整性，进而影响染色质状态和基因表达，其表达
+的下调可以作为判断细胞衰老的核膜标记物[77,78]。
+我们通过免疫荧光实验检测了小鼠海马区域和皮层区域 Lamin B1 的表达。
+如图 3-8A 和 B 所示，在衰老小鼠海马 DG 区和皮层区域，Lamin B1 的表达明
+显下降，E4A、褪黑素治疗小鼠后其表达上升，且在DG 颗粒下层区和皮层区的
+表达更为明显。说明 E4A 和褪黑素的治疗可以保护神经元细胞核膜的完整性，
+抑制神经元的衰老。
+34
+--- 第47页 ---
+第三章 靶向ErbB4小分子化合物改善D-gal诱导衰老小鼠的神经元衰老
+图3-8E4A和褪黑素对D-gal诱导衰老小鼠海马、皮层区域LaminB1表达的影响
+(A) 不同实验组小鼠海马 DG 区域 Lamin B1 的表达情况。(B) 不同实验组小鼠皮层区域
+LaminB1的表达情况。
+Figure3-8TheeffectsofE4AandmelatoninontheImmunofluorescenceanalysisofLamin
+B1-positivecellsinthehippocampusandcortexregionofD-gal-inducedagingmice
+(A) Immunofluorescence analysis of Lamin B1-positive cells in the dentate gyrus (DG) regions.
+(B)ImmunofluorescenceanalysisofLaminB1-positivecellsinthecortex.Scalebar=50μm.
+35
+--- 第48页 ---
+江南大学硕士学位论文
+3.4 小结与讨论
+在本节中，我们通过慢性诱导 D-gal 构建了小鼠衰老模型，也确定了 E4A
+以及阳性对照药物褪黑素对D-gal诱导衰老小鼠的认知功能和记忆能力的改善作
+用。小鼠行为学结果显示，在水迷宫实验训练期，D-gal 诱导小鼠找到平台的时
+间明显增加，在空间探索实验中，小鼠在目标象限的运动时间和平台穿越次数都
+明显增多，E4A和褪黑素的药物治疗可以有效逆转这些情况，改善衰老小鼠的记
+忆功能。
+通过蛋白免疫印迹分析可知，E4A和褪黑素均可有效下调D-gal 小鼠海马组
+织中P53、P21 和P16 关键衰老标志蛋白的表达，Lamin B1 作为验证细胞衰老的
+核膜特异性生物标志物[79]，免疫荧光实验显示 E4A 和褪黑素能促进衰老小鼠海
+马和皮层区域Lamin B1 的表达，说明E4A 和褪黑素有效抑制了小鼠海马神经元
+的衰老。此外，在一些与衰老相关的神经退行性疾病发现神经炎症反应和胶质细
+胞的活化[80]，当神经系统受损时，会激活小胶质细胞和星形胶质细胞的活化，表
+现为Iba-1 和GFAP的高表达[81]。为了观察E4A 与褪黑素是否能抑制小胶质细胞
+和星形胶质细胞的活化，我们在蛋白水平上检测了小鼠海马组织中Iba-1和GFAP
+的表达，观察到治疗组小鼠海马组织中GFAP 和Iba1 的表达水平显著降低。E4A
+和褪黑素的治疗可以有效逆转D-gal诱导所导致的海马神经元的衰老和神经炎症。
+E4A联合褪黑素给药的效果不如预期，其具体原因还需进一步研究。
+36
+--- 第49页 ---
+第四章 靶向ErbB4小分子化合物对铁死亡的调节作用
+第四章 靶向 ErbB4 小分子激动剂对铁死亡的调节作用
+铁死亡与多种病理过程有关，包括神经退行性疾病、缺血再灌注损伤等。铁
+死亡的关键特征是细胞内脂质过氧化物积累，这通常伴随着谷胱甘肽（GSH）耗
+竭和GPX4 活性下降。
+在第二章的研究中我们发现D-gal诱导的HT22细胞衰老可能与铁死亡有关，
+在细胞衰老状态下，其铁死亡相关蛋白的表达发生了明显的变化，提示细胞可能
+发生铁死亡，此外，单独给与HT22 细胞E4A或褪黑素的刺激，可以激活HT22
+细胞内抗铁死亡相关蛋白的表达，因此在本章中，我们将在体内和体外实验中检
+测E4A或褪黑素通过调节铁死亡途径抑制D-gal 诱导的神经元衰老。
+4.1 实验材料
+4.1.1 实验设备
+同2.2.1。
+4.1.2 实验试剂
+试剂名称 公司
+D-gal（ST1218） 上海碧云天生物技术公司
+CCK-8 试剂盒（BS350B） 合肥白鲨生命科技公司
+ErbB4 小分子化合物 Sigma-Aldrich（上海）
+褪黑素（ST1497） 上海碧云天生物技术公司
+Erastin（SC0224） 上海碧云天生物技术公司
+DyLight 594-山羊抗兔二级抗体
+武汉博士德生物工程有限公司
+（BA1142）
+DyLight 488-山羊抗小鼠二级抗体
+武汉博士德生物工程有限公司
+（BA1126）
+1×TBST 缓冲液（粉剂）（T1086） 北京索莱宝生物科技有限公司
+GSH检测试剂盒（A006-2-1） 南京建成生物工程研究所
+ROS检测试剂盒（MA0219） 大连美仑生物技术有限公司
+MDA检测试剂盒（A003-1） 南京建成生物工程研究所
+37
+--- 第50页 ---
+江南大学硕士学位论文
+ECL 发光液（BK0041-02） 南京ACE 生物技术公司
+鼠抗βIII‑ Tubulin 抗体（sc‑ 80016） 美国SantaCruz生物科技有限公司
+兔抗Nrf2 抗体（AF7623） 上海碧云天生物技术公司
+兔抗TFRC 抗体（AF8136） 上海碧云天生物技术公司
+兔抗SLC7A11抗体（GB115276） 武汉赛维尔生物技术公司
+兔抗GPX4 抗体（AF7020） 上海碧云天生物技术公司
+鼠抗GAPDH抗体（GB15002） 武汉赛维尔生物技术公司
+4.1.3 实验试剂配制
+3%BSA溶液：纯水溶解BSA 粉末1.5g，定容到50mL。
+4.1.4 实验用细胞系
+小鼠海马神经元HT22细胞（CL‑0595）购自武汉普诺赛生命科技有限公司。
+4.2 实验方法
+4.2.1细胞培养
+操作同3.2.1步骤。
+4.2.2CCK-8 法检测 HT22细胞活力
+细胞接种：同2.2.2操作步骤。
+细胞给药：将 10 mM 的Erastin 原液用 DMEM 基础培养基稀释为 40μM，
+再梯度稀释至浓度分别为20μM、10μM、5μM、 2μM，96孔板加药从上至下
+为0-40μM的浓度分布，Erastin 继续培养24小时后，按照CCK-8 试剂盒说明进
+行吸光度检测。
+4.2.3 蛋白免疫印迹实验
+小鼠脑组织蛋白样品制备：
+操作步骤同3.2.6。
+细胞样本蛋白制备：
+细胞接种操作流程同2.2.3。之后按照以下分组分别给药处理：
+（1）按照空白对照组、10μM Erastin、5μM Erastin、 2μM Erastin 浓度
+38
+--- 第51页 ---
+第四章 靶向ErbB4小分子化合物对铁死亡的调节作用
+给药在培养箱中孵育24小时。
+（2）按照空白对照组、200mM D-gal 模型组、E4A 给药组、MLT给药组和
+联合给药进行加药刺激，在培养箱中孵育24小时。
+（3）按照空白对照组、10μMErastin 模型组，E4A给药组、MLT给药组和
+联合给药进行加药刺激，在培养箱中孵育24小时。
+其余实验步骤同2.2.3。
+4.2.4HT22细胞内 ROS 水平检测
+当HT22细胞生长至皿底面积80%时处理细胞，调整细胞浓度至5×104 个
+/mL接种至24孔培养板，每孔500 μL。24小时后，参照5.2.2 的给药方式分组
+给药刺激24小时。药物处理结束后，按照ROS检测试剂盒操作流程，将DCFH-DA
+探针用无血清 DMEM 培养基按 1:1000 比例稀释至终浓度 10 μM。移除孔板中
+的培养上清，每孔加入适量DCFH-DA 工作液，置于37℃、5%CO 培养箱中避
+2
+光孵育 30分钟。孵育结束后，用基础培养液洗涤细胞 3次。荧光显微镜下采集
+荧光信号图像，并采用Image J 图像分析软件对荧光强度进行定量统计。
+4.2.5HT22细胞内 MDA 含量检测
+当HT22细胞生长至皿底面积80%时加入胰酶进行消化，当HT22 细胞生长
+至皿底面积80%时处理细胞，调整细胞浓度至3×105 个/mL接种至6孔培养板，
+每孔 1.5 mL。将 6 孔板放入培养箱中孵育，等细胞生长至皿底面积 90%时按照
+5.2.2细胞给药分组给药刺激24小时。药物刺激结束后，通过用胰酶消化的方法
+获得细胞沉淀，收集好的细胞用PBS 洗涤两次后，采用低速离心（1000rpm，5
+min）收集细胞沉淀。随后加入 0.4 mL 等渗 PBS 重悬细胞，使用超声波破碎仪
+进行超声。
+按照说明书配制工作液。每组样本加入1mL工作液混匀后，依次加入1.5mL
+硫代巴比妥酸（TBA）溶液和1.5mL 醋酸缓冲液。混合溶液在95℃水浴中反应
+60min，反应终止后立即流动水冷却。3500rpm 离心 10min，取上清于 96孔板
+中，使用酶标仪在532nm 处测定吸光度。BCA 法测定样品蛋白浓度，根据标准
+曲线计算MDA含量。
+4.2.6HT22细胞内 GSH 含量检测
+当HT22细胞生长至皿底面积80%时加入胰酶进行消化，当HT22 细胞生长
+至皿底面积80%时处理细胞，调整细胞浓度至3×105 个/mL接种至6孔培养板，
+每孔 1.5 mL。24 小时后，参照 5.2.2 的给药方式分组给药刺激 24 小时。药物刺
+激结束后，通过用胰酶消化的方法获得细胞沉淀，将收集好的细胞，用 PBS 清
+洗2次并细胞计数后，低俗离心获得细胞沉淀，随后加入0.4mL等渗PBS 重悬
+39
+--- 第52页 ---
+江南大学硕士学位论文
+细胞，使用超声波破碎仪进行超声。取超声后的细胞悬液 0.1mL，加0.1mL 试
+剂一混匀，3500rpm 离心10min，取上清液待测。
+按照 GSH 试剂盒操作说明提前配置工作液，分别取 0.1 mL 试剂一、标准
+品和待测细胞悬液加入96孔板中，然后向每孔中分别加入0.1mL试剂二和25μL
+试剂三，轻轻震荡96孔板混匀反应液后，室温静置5分钟，使用酶标仪在405nm
+处测定吸光度。根据说明书计算GSH含量。
+4.2.7 小鼠脑部石蜡切片的制备
+操作步骤同3.2.7。
+4.2.8 组织免疫荧光实验
+操作步骤同3.2.8。
+4.2.9 统计学分析
+所有结果均以平均±标准差（SD）表示，数据分析采用 GraphPad Prism 9
+进行。采用单因素方差分析（one-wayANOVA）比较组间差异，结合 Tukey 事
+后检验进行评估。p<0.05为统计具有显著性差异。
+4.3 实验结果
+4.3.1 靶向ErbB4 小分子激动剂对 D-gal 诱导 HT22细胞铁死亡的调节作用
+4.3.1.1 靶向 ErbB4 小分子激动剂和褪黑素对 D-gal 诱导 HT22 细胞铁死亡相关
+蛋白水平的影响
+之前的研究结果表明，D-gal 诱导会影响 HT22 细胞中铁死亡相关蛋白的表
+达，D-gal 的处理可能诱导细胞发生了铁死亡的现象，E4A 和褪黑素可能有抗细
+胞铁死亡的作用，为了验证 E4A 和褪黑素是否通过抗细胞铁死亡而抑制衰老，
+我们首先通过Western Blot 实验检测了铁死亡相关蛋白的表达。结果显示，E4A
+和褪黑素显著上调了抗铁死亡蛋白Nrf2、SLC7A11和GPX4 的表达（图A、B、
+D 和 E），抑制了促铁死亡蛋白 TFRC 的表达（图 A 和 C），说明 E4A 和褪黑
+素能够抑制细胞发生铁死亡从而逆转细胞衰老。
+40
+--- 第53页 ---
+第四章 靶向ErbB4小分子化合物对铁死亡的调节作用
+图4-1E4A和褪黑素对D-gal诱导HT22细胞铁死亡相关蛋白的影响
+(A)E4A和褪黑素对D-gal诱导HT22细胞中Nrf2、TFRC、SLC7A11和GPX4的代表性条
+带。(B)Nrf2、(C)TFRC、(D)SLC7A11和 (E)GPX4的蛋白定量结果。n=4-6。*<0.05，**
+P<0.01，***P<0.001和 ****P<0.0001,ns, 不显著。
+Figure4-1TheEffectsofE4Aandmelatoninonferroptosis-relatedproteinsbyD-gal-induced
+HT22cell
+(A) Representative western blotting of Nrf2, TFRC, SLC7A11, GPX4 and GAPDH in
+D-gal-induced HT22 cells co-treated with E4Aand melatonin. (B) Quantification of (B)Nrf2, (C)
+TFRC, (D) SLC7A11, (E) GPX4 protein levels. n=4-6. *P < 0.05, **P < 0.01, ***P < 0.001,
+****P<0.0001.ns,notsignificant.
+4.3.1.2 靶向ErbB4小分子激动剂和褪黑素对D-gal诱导HT22细胞ROS水平的
+影响
+细胞内过量的游离二价铁离子聚集，参与芬顿反应导致细胞内活性氧（ROS）
+聚集，是引起细胞铁死亡的重要因素。因此我们通过特异性荧光探针（DCFH-DA）
+检测其荧光强度的变化，从而定量检测细胞内 ROS 水平。通过 DCFH-DA 染色
+实验，在荧光显微镜下观察。如图 4-2 所示，D-gal 诱导 HT22 细胞衰老会导致
+细胞ROS积累，与对照组相比荧光强度明显增强，而用E4A 和褪黑素治疗之后，
+减轻了D-gal 诱导所导致的ROS 积累，荧光强度显著减下降。
+41
+--- 第54页 ---
+江南大学硕士学位论文
+图4-2E4A和褪黑素对D-gal诱导HT22细胞ROS水平的影响
+(A)DCFH-DA检测细胞ROS水平，在DCFH-DA荧光染色中ROS呈绿色。比例尺=200μm。
+(B)ROS水平定量统计结果。n=4。***P<0.001和 ****P<0.0001。
+Figure4-2TheEffectsofE4AandmelatoninonROSlevelinD-gal-inducedHT22cell
+(A) Intracellular ROS generation was measured using DCFH-DA, with ROS appearing green in
+DCFH-DAfluorescentstaining. Scale bar = 200 μm. (B) Quantitative analysis of ROS levels was
+undertaken.n=4.***P<0.001,****P<0.0001.
+4.3.1.3 靶向ErbB4小分子激动剂和褪黑素对D-gal诱导HT22细胞MDA和GSH
+水平的影响
+除了ROS检测之外，谷胱甘肽（GSH）和丙二醛（MDA）也是检测细胞铁
+死亡的两个重要指标。GSH是一种强效的还原剂，可作为谷胱甘肽过氧化物酶4
+（GPX4）的辅因子，在细胞内将过氧化物还原为醇类。MDA 是脂质过氧化的主
+要产物之一，当细胞发生铁死亡时，MDA含量也会相应升高。
+如图4-3A 所示，D-gal 刺激后，与对照组相比HT22 细胞内MDA 水平显著
+上升，而经过E4A以及褪黑素治疗后，明显抑制了细胞的脂质过氧化，相应的，
+D-gal 诱导后导致细胞 GSH 水平明显下降，药物治疗后 HT22 细胞的 GSH 水平
+恢复到与对照组差不多（图4-3B）。
+42
+--- 第55页 ---
+第四章 靶向ErbB4小分子化合物对铁死亡的调节作用
+图4-3E4A和褪黑素对D-gal诱导HT22细胞MDA和GSH水平的影响
+(A)HT22细胞中MDA水平定量统计结果。n=5。(B)HT22细胞中GSH水平定量统计结果。
+n=4。*<0.05，**P<0.01。
+Figure4-3TheEffectsofE4AandmelatoninonMDAandGSHexpressioninD-gal-induced
+HT22cells
+(A) Quantitative statistical results of MDA levels in HT22 cells. n=5. (B) Quantitative statistical
+resultsofMDAlevelsinHT22cells.n=4.*P<0.05,**P<0.01.
+以上结果说明用D-gal诱导HT22细胞衰老后，出现了明显的铁死亡的现象，
+而通过 E4A 和褪黑素的治疗，可以有效抑制细胞铁死亡的发生，从而抑制细胞
+衰老，这些结果进一步证实 E4A 和褪黑素可能通过调控铁死亡途径抑制小鼠海
+马神经元细胞的衰老。
+4.3.2 靶向ErbB4 小分子激动剂抑制 Erastin 诱导的 HT22 细胞铁死亡
+为了证实我们所筛选的小分子激动剂确实具有抑制铁死亡的作用，我们使用
+铁死亡诱导剂 Erastin 诱导 HT22 细胞铁死亡，再通过 E4A或者褪黑素进行治疗
+验证其抑制铁死亡的作用，此外在诱导细胞铁死亡的条件下探究衰老与铁死亡之
+间的联系。
+4.3.2.1Erastin 诱导HT22 细胞铁死亡
+Erastin 是第一个被发现可抑制胱氨酸/谷氨酸反转运蛋白（system xc-）的铁
+死亡诱导剂，导致GPX4 的辅助因子——谷胱甘肽（GSH）耗竭，从而诱导细胞
+发生铁死亡。首先我们检测 Erastin 诱导后 HT22 细胞活力的变化，结果发现用
+43
+--- 第56页 ---
+江南大学硕士学位论文
+10μM的Erastin诱导HT22细胞24小时，细胞活力出现了明显的下降（图4-4A）。
+为了检测 Erastin 是否能够诱导 HT22 细胞铁死亡，我们使用梯度浓度的 Erastin
+（0、2、5、10μM），通过Western Blot 实验检测了铁死亡相关蛋白Nrf2、SLC7A11、
+GPX4以及TFRC的表达变化，结果显示，随着Erastin浓度的增加，Nrf2、SLC7A11、
+GPX4蛋白的表达逐渐下降，而TFRC的表达逐渐增加，且在Erastin浓度为10μM
+时诱导铁死亡效果最为显著（图 4-4B-F）。此外，我们还在细胞铁死亡模型中
+检测了衰老相关蛋白 P21 和 P16 的表达变化，结果发现 P21 和 P16 的表达随着
+Erastin 浓度的增加而上升，在10μM 时具有显著性差异（图4-4 B 和G-H）。说
+明在Erastin 诱导的衰老模型中，细胞也出现衰老样特征。
+图4-4Erastin诱导对HT22细胞活力和铁死亡相关蛋白水平的影响
+(A) 不同浓度Erastin 诱导HT22 细胞24小时，细胞活力的影响。n=4-6。(B)Erastin 诱导
+44
+--- 第57页 ---
+第四章 靶向ErbB4小分子化合物对铁死亡的调节作用
+HT22细胞24小时，Nrf2、TFRC、SLC7A11、GPX4、P21和P16的代表性条带。(C)Nrf2、
+(D)TFRC、(E)SLC7A11、(F)GPX4、(G)P21和 (H)P16的蛋白定量结果。n=4-7。*<0.05，
+**P<0.01，***P<0.001和 ****P<0.0001，ns, 不显著。
+Figure4-4TheeffectofErastinonHT22cellviabilityandferroptosis-relatedproteinlevels
+(A)Cell viability of HT22 cells induced bydifferent concentrations of D-gal for 24 hours. n=4-6.
+(B) Representative western blotting of Nrf2, TFRC, SLC7A11, GPX4, P21, P16 and GAPDH.
+Quantification of(C) Nrf2, (D)TFRC, (E) SLC7A11,(F) GPX4, (G) P21, (H) P16 protein levels.
+n=4-7.*P<0.05,**P<0.01,***P<0.001,****P<0.0001.ns,notsignificant.
+4.3.2.2 靶向 ErbB4 小分子激动剂和褪黑素对 Erastin 诱导的 HT22 细胞活力和
+ROS的影响
+根据前述结果，我们用10μM 的Erastin 诱导HT22 细胞24小时建立细胞铁
+死亡模型。Erastin 分别与 E4A和褪黑素共处理，CCK-8 实验检测细胞活力，结
+果发现，E4A和褪黑素可以显著提高Erastin诱导所致的细胞活力下降（图4-5A）。
+说明E4A和褪黑素可以缓解Erastin诱导的细胞铁死亡。接着我们通过DCFH-DA
+实验检测了各组细胞中ROS水平的变化，结果显示与对照组相比，Erastin 诱导
+24小时后HT22细胞内ROS水平显著增高，而与E4A 或者褪黑素共处理之后其
+荧光强度明显降低（图4-5 B 和C）。说明E4A 和褪黑素治疗可以减少细胞内过
+量积累的ROS，发挥抑制细胞铁死亡的作用。
+45
+--- 第58页 ---
+江南大学硕士学位论文
+图4-5E4A和褪黑素对Erastin诱导的HT22细胞活力和ROS的影响
+(A)E4A和褪黑素对Erastin诱导的HT22细胞活力的影响。(B)DCFH-DA检测细胞ROS水
+平，在DCFH-DA荧光染色中ROS呈绿色。比例尺=200 μm。(C)ROS水平定量统计结果。
+n=4。*<0.05，**P<0.01，ns, 不显著。
+Figure4-5TheEffectsofE4AandmelatoninoncellviabilityandROSlevelinErastin-induced
+HT22cells
+(A) Cell viability following co-treatment with Erastin, E4Aand melatonin. (B) Intracellular ROS
+generation was measured using DCFH-DA, with ROS appearing green in DCFH-DA fluorescent
+staining. Scale bar = 200 μm. (C) Quantitative analysis of ROS levels was undertaken. n=4. *P<
+0.05,**P<0.01,ns,notsignificant.
+4.3.2.3 靶向 ErbB4 小分子激动剂和褪黑素对 Erastin 诱导 HT22 细胞内铁死亡
+相关蛋白水平的影响
+为进一步验证 E4A 和褪黑素是否具有抗铁死亡的作用，我们在蛋白水平上
+检测了 Erastin 诱导 HT22 细胞铁死亡后，E4A 和褪黑素对铁死亡相关蛋白表达
+的影响。结果如图4-6所示，10μM的Erastin 诱导24小时后，Nrf2、SLC7A11
+以及GPX4 的表达都出现下降的趋势，TFRC 的表达显著上升，通过E4A 和褪黑
+素的治疗，显著上调了Nrf2、SLC7A11、GPX4 的表达，抑制TFRC 的表达。说
+明 E4A 和褪黑素可以有效促进抗铁死亡蛋白以及抑制促铁死亡蛋白的表达，从
+而抑制Erastin 诱导的细胞铁死亡。
+46
+--- 第59页 ---
+第四章 靶向ErbB4小分子化合物对铁死亡的调节作用
+图4-6E4A和褪黑素对Erastin诱导HT22细胞铁死亡相关蛋白的影响
+(A)E4A和褪黑素对Erastin诱导HT22细胞中Nrf2、TFRC、SLC7A11和GPX4的代表性条
+带。(B)Nrf2、(C)TFRC、(D)SLC7A11和 (E)GPX4的蛋白定量结果。n=4-7。*<0.05，**
+P<0.01，***P<0.001。
+Figure4-6TheEffectsofE4Aandmelatoninonferroptosis-relatedproteinsbyErastin-induced
+HT22cell
+(A) Representative western blotting of Nrf2, TFRC, SLC7A11, GPX4 and GAPDH in
+Erastin-inducedHT22cellsco-treatedwithE4Aandmelatonin.(B)Quantificationof(B)Nrf2,(C)
+TFRC,(D)SLC7A11,(E)GPX4proteinlevels.n=4-7.*P<0.05,**P<0.01,***P<0.001.
+4.3.2.4 靶向 ErbB4 小分子激动剂和褪黑素对 Erastin 诱导的 HT22 细胞内衰老
+相关蛋白的影响
+之前的研究结果发现 Erastin 诱导的 HT22 细胞铁死亡模型中，衰老相关蛋
+白的表达显著上升。因此我们在Erastin与药物共处理组中继续检测P21以及P16
+的表达，如图4-7 所示，E4A 和褪黑素显著下调衰老相关蛋白P21和P16的表达。
+这些结果说明进一步证实细胞衰老与铁死亡之间存在联系，而 E4A 和褪黑素抑
+制细胞衰老可能是通过抑制细胞铁死亡的途径实现的。
+47
+--- 第60页 ---
+江南大学硕士学位论文
+图4-7E4A和褪黑素对Erastin诱导HT22细胞衰老相关蛋白的影响
+(A)E4A和褪黑素对Erastin诱导HT22细胞中P21和P16的代表性条带。(B)P21、(C)P16
+的蛋白定量结果。n=4-5。*<0.05，**P<0.01，***P<0.001。
+Figure4-7TheEffectsofE4Aandmelatoninonaging-relatedproteinsbyErastin-inducedHT22
+cell
+(A) Representative western blotting of P21, P16 and GAPDH in Erastin-induced HT22 cells
+co-treated with E4Aand melatonin. (B) Quantification of (B) P21, (C) P16 protein levels. n=4-5.
+*P<0.05,**P<0.01,***P<0.001.
+4.3.3 靶向ErbB4 小分子激动剂对 D-gal 诱导衰老小鼠中铁死亡的调节作用
+以上的研究结果表明，D-gal 诱导的衰老小鼠模型中，小鼠出现了明显的记
+忆功能和认知功能障碍，导致小鼠海马神经元的衰老，通过 E4A 和褪黑素的治
+疗可以有效改善小鼠的认知功能障碍及海马神经元衰老。为了探究 E4A 和褪黑
+素是否通过调控铁死亡途径抑制小鼠海马神经元的衰老，我们通过免疫荧光实验
+和Western Blot 实验检测小鼠大脑铁死亡水平的变化。
+4.3.3.1 靶向 ErbB4小分子激动剂和褪黑素对 D-gal 诱导衰老小鼠中铁死亡相关
+蛋白水平的影响
+首先我们通过Western Blot实验检测了各组小鼠海马组织中铁死亡相关蛋白
+的表达水平，包括抗铁死亡蛋白Nrf2、SLC7A11、GPX4 和促铁死亡蛋白TFRC。
+结果显示，D-gal 小鼠海马中促铁死亡蛋白TFRC 显著上调，经过E4A 和褪黑素
+的治疗之后表达下降（图4-8A和C），D-gal 诱导后显著下调Nrf2 和GPX4 的
+表达，E4A、褪黑素及联合给药后GPX4 的表达明显上升，Nrf2 的表达呈现上升
+趋势，但是只有E4A 治疗有显著性差异（图4-8A、B 和D）。检测小鼠海马组
+织中SLC7A11的表达，呈现出相对符合预期的变化趋势，但是都没有统计学意
+义（图4-8A 和E）。说明E4A 和褪黑素可能通过调控铁死亡途径抑制小鼠海马
+神经元的衰老。
+48
+--- 第61页 ---
+第四章 靶向ErbB4小分子化合物对铁死亡的调节作用
+图4-8E4A和褪黑素对D-gal诱导衰老小鼠海马铁死亡相关水平的影响
+(A) 不同实验组小鼠海马组织中Nrf2、TFRC、SLC7A11和GPX4的代表性条带。(B)TFRC、
+(C)SLC7A11、(D)GPX4的蛋白定量结果。n=4-5。*<0.05，**P<0.01，***P<0.001，
+****P<0.0001。
+Figure4-8TheeffectsofE4Aandmelatoninontheexpressionofferroptosis-relatedproteinsin
+thehippocampusofD-gal-inducedagingmice
+(A)Representative westernblotting ofNrf2,TFRC,SLC7A11andGPX4 inhippocampalofmice
+in different experimental groups. Quantification of(B) Nrf2, (C)TFRC, (D) SLC7A11, (E) GPX4
+proteinlevels.n=4-5.*P<0.05,**P<0.01,***P<0.001,****P<0.0001.
+4.3.3.2 靶向 ErbB4小分子激动剂和褪黑素对 D-gal 诱导衰老小鼠海马区域铁死
+亡相关蛋白表达的影响
+脑内前额叶皮层和海马区域是负责工作记忆的主要脑区[82]。其中海马参与记
+忆和高级认知功能，有助于信息的检索和存储，当脑内海马区域受到损伤时，会
+影响实验动物的记忆和认知功能[83]。上述研究已经证明，D-gal 衰老模型小鼠中
+海马铁死亡相关蛋白水平的异常变化，D-gal 诱导后导致小鼠脑内铁死亡的发生。
+E4A和褪黑素的治疗可以调节小鼠海马铁死亡蛋白的异常表达。在此基础上，我
+们通过免疫荧光实验进一步验证小鼠海马区域铁死亡水平的变化。
+GPX4 在铁死亡的调控中发挥重要作用，它对膜脂中的氢过氧化物具有直接
+解毒作用，同时能够抑制脂质过氧化产物。GPX4 功能异常被认为是铁死亡的原
+因之一。我们检测了小鼠海马齿状回区域（DG区）和CA1区域GPX4 的表达水
+平，结果如图 4-9 所示，对照组小鼠 DG 区（图 4-9A）和 CA1（图 4-9 B）区
+域GPX4 的表达较为丰富，荧光信号较强。D-gal 诱导衰老后小鼠海马区域GPX4
+阳性信号减弱，与衰老组小鼠相比，E4A和褪黑素治疗后，小鼠海马区域中GPX4
+49
+--- 第62页 ---
+江南大学硕士学位论文
+阳性信号增强。说明E4A和褪黑素可以提高小鼠海马区域GPX4 的表达。
+图4-9E4A和褪黑素对D-gal诱导衰老小鼠海马区域GPX4表达的影响
+(A) 不同实验组小鼠海马DG区域GPX4的表达情况。(B) 不同实验组小鼠海马CA1区域
+GPX4的表达情况。
+50
+--- 第63页 ---
+第四章 靶向ErbB4小分子化合物对铁死亡的调节作用
+Figure4-9TheeffectsofE4AandmelatoninontheImmunofluorescenceanalysisof
+GPX4-positivecellsinthehippocampusofD-gal-inducedagingmice
+(A) Immunofluorescence analysis of GPX4-positive cells in the dentate gyrus (DG) regions. (B)
+ImmunofluorescenceanalysisofGPX4-positivecellsintheCA1regions.Scalebar=50μm.
+SLC7A11-GPX4 信号通路作为调控铁死亡的重要分子机制，通过维持细胞内
+氧化还原稳态发挥关键作用。因此我们检测了小鼠海马齿状回区域（DG区）和
+CA1 区域SLC7A11的表达水平。如图4-10 所示，与GPX4 的表达变化趋势相似，
+D-gal 衰老模型小鼠海马DG 区（图4-10A）和CA1（图4-10 B）区域抗铁死亡
+蛋白SLC7A11的表达出现下降的趋势，而通过E4A 和褪黑素治疗后可以有效逆
+转小鼠海马区域所发生的变化。
+51
+--- 第64页 ---
+江南大学硕士学位论文
+图4-10E4A和褪黑素对D-gal诱导衰老小鼠海马区域SLC7A11表达的影响
+(A) 不同实验组小鼠海马DG区域SLC7A11的表达情况。(B) 不同实验组小鼠海马CA1区
+域SLC7A11的表达情况。
+Figure4-10TheeffectsofE4AandmelatoninontheImmunofluorescenceanalysisof
+SLC7A11-positivecellsinthehippocampusofD-gal-inducedagingmice
+(A) Immunofluorescence analysis of SLC7A11-positive cells in the dentate gyrus (DG) regions.
+(B) Immunofluorescence analysis of SLC7A11-positive cells in the CA1 regions. Scale bar = 50
+μm.
+TFRC 作为介导细胞铁摄取的关键蛋白，在维持细胞内铁离子稳态和调控铁
+代谢过程中具有不可替代的生物学功能。我们检测了小鼠海马 DG 区和 CA1 区
+域TFRC 的表达水平。D-gal 衰老模型小鼠海马DG 区（图4-11A）和CA1 区（图
+4-11B）域促铁死亡蛋白TFRC 的表达呈上升趋势，而通过E4A 和褪黑素治疗后
+可以有效逆转小鼠海马区域所发生的变化。
+52
+--- 第65页 ---
+第四章 靶向ErbB4小分子化合物对铁死亡的调节作用
+图4-11E4A和褪黑素对D-gal诱导衰老小鼠海马区域TFRC表达的影响
+(A) 不同实验组小鼠海马DG区域TFRC的表达情况。(B) 不同实验组小鼠海马CA1区域
+TFRC的表达情况。
+Figure4-11TheeffectsofE4AandmelatoninontheImmunofluorescenceanalysisof
+53
+--- 第66页 ---
+江南大学硕士学位论文
+TFRC-positivecellsinthehippocampusofD-gal-inducedagingmice
+(A) Immunofluorescence analysis of TFRC-positive cells in the dentate gyrus (DG) regions. (B)
+ImmunofluorescenceanalysisofTFRC-positivecellsintheCA1regions.Scalebar=50μm.
+4.3.3.3 靶向 ErbB4小分子激动剂和褪黑素对 D-gal 诱导衰老小鼠皮层区域铁死
+亡相关蛋白表达的影响
+前额叶皮层的神经元活动参与对信息的编码和执行，前额叶皮层和海马的协
+同工作有助于复杂的认知功能，如学习、决策和空间导航[84]，当大脑前额叶皮层
+区域受到损伤时，会影响实验动物在执行工作记忆任务时的行为学正确率[85]。因
+此我们用免疫荧光实验检测了各组小鼠皮层区域SLC7A11（图4-12A）、GPX4
+（图4-11B）和TFRC（图4-11C）的表达情况。结果和小鼠海马区域的荧光结
+果一致，说明 E4A 和褪黑素可以逆转小鼠海马和皮层区域的铁死亡，从而抑制
+小鼠神经元的衰老。
+54
+--- 第67页 ---
+第四章 靶向ErbB4小分子化合物对铁死亡的调节作用
+图4-12E4A和褪黑素对D-gal诱导衰老小鼠皮层区域SLC7A11、GPX4和TFRC表达的影
+响
+(A) 不同实验组小鼠皮层区域SLC7A11的表达情况。(B) 不同实验组小鼠皮层区域GPX4
+的表达情况。(C)不同实验组小鼠皮层区域TFRC的表达情况。
+55
+--- 第68页 ---
+江南大学硕士学位论文
+Figure4-12TheeffectsofE4AandmelatoninontheImmunofluorescenceanalysisofSLC7A11-
+positivecells、GPX4-positivecellsandTFRC-positivecellsinthecortexregionofD-gal-induced
+agingmice
+(A) Immunofluorescence analysis of SLC7A11-positive cells in the cortex region. (B)
+Immunofluorescence analysis of GPX4-positive cells in the cortex region. (C)
+ImmunofluorescenceanalysisofTFRC-positivecellsinthecortexregion.Scalebar=50μm.
+4.4 小结与讨论
+在本节中，我们通过体内和体外实验验证了 E4A 以及阳性对照药物褪黑素
+通过调节铁死亡途径抑制神经元衰老的作用，此外，E4A联合褪黑素给药后，可
+以有效改善海马神经元的铁死亡，但是与单独给药相比，并没有发挥显著的抑制
+铁死亡的作用。
+首先通过对各组小鼠海马脑组织进行蛋白免疫印迹分析，E4A 和褪黑素可以
+有效激活D-gal 诱导衰老小鼠中Nrf2 表达，并改善了D-gal 诱导所致的GPX4 表
+达的下降，TFRC 表达的上升，通过免疫荧光实验分析，E4A 和褪黑素的治疗降
+低了衰老小鼠海马区域和皮层区域的铁死亡，提高了海马DG区、CA1 区和皮层
+区抗铁死亡蛋白的表达，抑制促铁死亡蛋白的表达，缓解衰老小鼠脑组织中的铁
+死亡，海马区作为学习记忆的关键脑区，其神经元铁死亡的抑制可能与小鼠认知
+功能的改善有关[86]。
+在体外实验D-gal诱导的HT22细胞模型中，通过蛋白免疫印迹结果证明E4A
+和褪黑素可以激活 D-gal 刺激 HT22 细胞中 Nrf2 的表达，提高了 SLC7A11 和
+GPX4 的表达，抑制TFRC 的表达。此外，E4A 和褪黑素有效抑制衰老细胞模型
+中 MDA 和脂质 ROS 的水平，提高 GSH 的表达水平。作为抗氧化反应的关键
+调控因子，Nrf2 可以激活下游靶基因SLC7A11和GPX4 的表达[87,88]，这可能是
+其抑制铁死亡的重要机制。在 Erastin 诱导的 HT22 细胞铁死亡模型中，确定了
+E4A和褪黑素的抗铁死亡作用，蛋白免疫印迹结果显示，两种药物显著降低TFRC
+的蛋白表达水平，提高 Nrf2、SLC7A11、GPX4 的蛋白表达水平，抑制 Erastin
+诱导后的 ROS 水平的升高。说明 E4A 和褪黑素能够抑制 Erastin 诱导的细胞铁
+死亡，进一步验证了其抗铁死亡的特异性。但是 E4A 和褪黑素抑制神经元衰老
+的具体机制还需进一步探究。
+56
+--- 第69页 ---
+第五章 靶向ErbB4小分子化合物通过激活ErbB4受体和调节Akt/Nrf2信号通路抑制D-gal
+诱导的海马神经元衰老
+第五章 靶向 ErbB4 小分子激动剂通过激活 ErbB4 受体和调
+节 Akt/Nrf2 信号通路抑制 D-gal 诱导的海马神经元衰老
+目前，铁死亡已被证实参与了阿尔茨海默病、出血性脑卒中、缺血性脑卒中
+等多种疾病的发生和进展过程[89-91]。核因子E2相关因子2（nuclear factor-erythroid
+2-related factor2，Nrf2）是细胞内调节多种抗氧化酶转录的重要转录因子，其活
+性很大程度上受上游因子蛋白激酶B（protein kinaseB，PKB 或Akt）的调控[92]，
+Akt/Nrf2 通路有可能成为调控铁死亡的靶点。褪黑素是松果体分泌的一种胺类激
+素，既往研究表明，褪黑素具有抗氧化损伤、抗炎等作用[93]，并且对缺氧缺血性
+脑损伤具有神经保护作用[94]，前述的研究结果已经在体内和体外实验中均 E4A
+和褪黑素对D-gal 诱导的HT22 细胞具有调节铁死亡的作用，但是其具体机制尚
+不明确。
+5.1 实验材料
+5.1.1 实验设备
+同2.1.1。
+5.1.2 实验试剂
+试剂名称 公司
+Nrf2 抑制剂AEM1（HY-113848） Medchem Express
+Akt 抑制剂MK2206（SF2712） 上海碧云天生物技术公司
+ErbB4 小分子化合物 Sigma-Aldrich（上海）
+褪黑素（ST1497） 上海碧云天生物技术公司
+DyLight 594-山羊抗兔二级抗体
+武汉博士德生物工程有限公司
+（BA1142）
+DyLight 488-山羊抗小鼠二级抗体
+武汉博士德生物工程有限公司
+（BA1126）
+兔抗Nrf2 抗体（AF7623） 上海碧云天生物技术公司
+57
+--- 第70页 ---
+江南大学硕士学位论文
+鼠抗P21抗体（AP021） 上海碧云天生物技术公司
+兔抗Lamin B1 抗体（12987-1-AP） 武汉三鹰生物技术有限公司
+兔抗pErbB4 抗体（Bioss） 北京博奥森生物技术有限公司
+兔抗ErbB4 抗体（AF6807） 上海碧云天生物技术公司
+兔抗pAkt1 抗体（AF1546） 上海碧云天生物技术公司
+鼠抗Akt1 抗体（sc-377457） 美国SantaCruz生物科技有限公司
+鼠抗GAPDH抗体（GB15002） 武汉赛维尔生物技术公司
+5.1.3 实验试剂配制
+3%BSA溶液：纯水溶解BSA 粉末1.5g，定容到50mL。
+5.1.4 实验用细胞系
+小鼠海马神经元HT22细胞（CL‑0595）购自武汉普诺赛生命科技有限公司。
+5.2 实验方法
+5.2.1细胞培养
+操作流程同2.2.1。
+5.2.2CCK-8 法检测 HT22细胞活力
+细胞接种操作流程同2.2.2。
+细胞给药:
+(1) 将 AEM1 粉末用二甲基亚砜（DMSO）配置成浓度为 10 mM 的母液，
+之后用DMEM 基础培养基梯度稀释至终浓度分别为20μM、10μM、5μM、2μM、
+1μM。96孔板加药从上至下为0-20 μM 的浓度分布。
+(2) 将母液浓度为10mM的MK2206用DMEM 基础培养基梯度稀释至终浓
+度分别为4μM、3μM、2μM、1μM、0.5μM。96孔板加药从上至下为0-4 μM
+的浓度分布。
+给药结束后进行吸光度检测。
+5.2.3 蛋白免疫印迹实验
+小鼠脑组织蛋白样品制备：
+58
+--- 第71页 ---
+第五章 靶向ErbB4小分子化合物通过激活ErbB4受体和调节Akt/Nrf2信号通路抑制D-gal
+诱导的海马神经元衰老
+操作步骤同3.2.6。
+细胞样本蛋白制备：
+细胞接种操作流程同2.2.3。之后按照以下分组分别给药处理：
+(1) 细胞分组为：空白对照组、D-gal 组（200mM）、D-gal+E4A 给药组（10
+nM）、D-gal+MLT给药组（50μM）、联合给药组。
+(2) 为了检测抑制 Nrf2 的表达之后小分子化合物和褪黑素对 D-gal 诱导的
+HT22细胞衰老的影响，将细胞分为6组，分别为空白对照组、D-gal 组（200mM）、
+D-gal+E4A给药组（10nM）、D-gal+E4A+AEM1 组（5μM）、D-gal+MLT给药
+组（50 μM）、D-gal+MLT+AEM1 组。在 D-gal 给药之前，用 Nrf2 抑制剂预处
+理HT22细胞3小时后弃去培养液进行后续给药处理。
+(3) 为了检测抑制 Akt 的表达之后小分子化合物和褪黑素对 D-gal 诱导的
+HT22细胞衰老的影响，将细胞分为6组，分别为空白对照组、D-gal 组（200mM）、
+D-gal+E4A给药组（10nM）、D-gal+E4A+MK2206 组（2μM）、D-gal+MLT给
+药组（50μM）、D-gal+MLT+MK2206 组。在 D-gal 给药之前，用 Akt 抑制剂预
+处理HT22细胞3小时后弃去培养液进行后续给药处理。
+其余实验步骤同2.2.3。
+5.2.4 组织免疫荧光实验
+操作同4.2.8。
+5.2.5 统计学分析
+所有结果均以平均±标准差（SD）表示，数据分析采用 GraphPad Prism 9
+进行。采用单因素方差分析（one-wayANOVA）比较组间差异，结合 Tukey 事
+后检验进行评估。p<0.05为统计具有显著性差异。
+5.3 实验结果
+5.3.1 靶向 ErbB4 小分子激动剂对 D-gal 诱导 HT22 细胞 ErbB4、Akt1 蛋白磷
+酸化水平的影响
+通过之前的结果，我们验证了通过虚拟筛选的E4A、阳性对照褪黑素以及两
+种药物的联合使用均可以逆转D-gal 诱导的HT22 细胞衰老，但是其抑制衰老的
+具体机制尚不明确。
+第二章的研究结果表明，D-gal诱导HT22细胞衰老后，会抑制细胞内pErbB4
+和 pAkt1 的表达。而 E4A 和褪黑素都可以显著促进 HT22 细胞 ErbB4 受体的磷
+酸化激活，也促进了下游pAkt1的表达。在此基础上，我们在HT22 细胞衰老的
+59
+--- 第72页 ---
+江南大学硕士学位论文
+状态下，在蛋白水平上检测了 E4A 和褪黑素给药处理后对 ErbB4、Akt1 蛋白磷
+酸化水平的影响，探究这两种药物是否可以在细胞衰老状态下促进 ErbB4 磷酸
+化的激活并且调控下游相关蛋白的变化。结果如图 5-1 所示，D-gal 分别与小分
+子化合物和褪黑素共处理之后，显著上调了 HT22 细胞中 pErbB4 和pAkt1 的蛋
+白水平，说明 E4A 和褪黑素可以明显促进 D-gal 诱导衰老条件下 HT22 细胞中
+ErbB4 的磷酸化激活，进而促进pAkt1的表达，此外，两种药物的联合应用也有
+相似的效果，但是与单独给药相比其作用效果差别不大。
+图5-1E4A和褪黑素对D-gal诱导HT22细胞ErbB4、Akt1蛋白磷酸化水平的影响
+(A)E4A和褪黑素对D-gal诱导HT22细胞中pErbB4、ErbB4、pAkt1和Akt1的代表性条带。
+(B)pErbB4/ErbB4,(C)pAkt1/Akt1的蛋白定量结果。n=4-5。*<0.05。
+Figure5-1TheEffectsofE4AandmelatoninonthephosphorylatedactivationofErbB4andAkt1
+inHT22cellsadministratedbyD-gal
+(A) Representative western blotting of pErbB4, ErbB4, pAkt1, Akt1 and GAPDH in
+D-gal-induced HT22 cells co-treated with E4A and melatonin. (B) Quantification of (B)
+pErbB4/ErbB4,(C)pAkt1/Akt1proteinlevels.n=4-5.*P<0.05.
+5.3.2 靶向ErbB4 小分子激动剂促进小鼠海马 ErbB4和Akt 的磷酸化激活
+为了检测在D-gal 衰老小鼠模型中，E4A 和褪黑素对小鼠脑内ErbB4 和Akt
+受体磷酸化激活的影响，我们通过 Western Blot 实验检测各组小鼠海马组织中
+pErbB4/ErbB4 和pAkt/Akt的表达变化。结果如图5-2 所示，D-gal 诱导显著抑制
+了小鼠海马组织中 ErbB4 的磷酸化激活，也抑制了下游 Akt 的磷酸化激活，但
+是没有显著性差异，经过 E4A、褪黑素和联合用药后，都有效促进了 ErbB4 和
+Akt 的磷酸化激活，pErbB4/ErbB4 和 pAkt/Akt 的表达出现上升的趋势。说明在
+D-gal 衰老模型小鼠中，E4A 和褪黑素也可以激活小鼠海马中pErbB4 和pAkt 的
+表达。
+60
+--- 第73页 ---
+第五章 靶向ErbB4小分子化合物通过激活ErbB4受体和调节Akt/Nrf2信号通路抑制D-gal
+诱导的海马神经元衰老
+图5-2E4A和褪黑素对D-gal诱导衰老小鼠海马组织ErbB4、Akt1蛋白磷酸化水平的影响
+(A)E4A和褪黑素对D-gal诱导海马组织中pErbB4、ErbB4、pAkt1和Akt1的代表性条带。
+(B)pErbB4/ErbB4、(C)pAkt1/Akt1的蛋白定量结果。n=4。***P<0.001。
+Figure5-2TheEffectsofE4AandmelatoninonthephosphorylatedactivationofErbB4andAkt1
+inthehippocampusofD-gal-inducedagingmice
+(A) Representative western blotting of pErbB4, ErbB4, pAkt1, Akt1 and GAPDH in
+D-gal-induced aging mice co-treated with E4A and melatonin. (B) Quantification of (B)
+pErbB4/ErbB4,(C)pAkt1/Akt1proteinlevels.n=4.***P<0.001.
+5.3.3 靶向ErbB4 小分子激动剂对小鼠海马和皮层中 Nrf2 表达的影响
+之前的研究结果已经证明 E4A 和褪黑素可以上调 D-gal 诱导衰老小鼠海马
+中Nrf2 的表达，接下来我们将通过免疫荧光实验进一步验证这两种药物在对小
+鼠海马和皮层不同区域中Nrf2 表达的影响。结果如图5-3 所示，D-gal 诱导后导
+致了小鼠海马和皮层中Nrf2 的下调，表明Nrf2 失活。与D-gal 组相比，使用E4A
+和褪黑素治疗后，衰老小鼠海马 DG区（图5-3A）、CA1 区（图5-3 B）和皮层
+区域（图5-3C）Nrf2 表达明显增多，说明E4A和褪黑素显著促进了D-gal 诱导
+衰老小鼠海马和皮层中Nrf2 的激活。
+61
+--- 第74页 ---
+江南大学硕士学位论文
+62
+--- 第75页 ---
+第五章 靶向ErbB4小分子化合物通过激活ErbB4受体和调节Akt/Nrf2信号通路抑制D-gal
+诱导的海马神经元衰老
+图5-3E4A和褪黑素对D-gal诱导衰老小鼠海马和皮层中Nrf
+2表达的影响
+(A) 不同实验组小鼠海马DG区Nrf2的表达情况。(B) 不同实验组小鼠海马CA1区域Nrf2
+的表达情况。(C)不同实验组小鼠皮层区域Nrf2的表达情况。
+Figure5-3TheeffectsofE4AandmelatoninontheImmunofluorescenceanalysisofNrf2-positive
+cellsinthehippocampalandcortexregionofD-gal-inducedagingmice
+(A) Immunofluorescence analysis of Nrf2-positive cells in the DG region. (B)
+Immunofluorescence analysis of Nrf2-positive cells in the CA1 region. (C) Immunofluorescence
+analysisofNrf2-positivecellsinthecortexregion.Scalebar=50μm.
+5.3.4 靶向ErbB4小分子激动剂通过Akt/Nrf2信号通路抑制D-gal诱导的HT22
+细胞衰老
+上述研究结果证明，E4A和褪黑素都可以逆转D-gal诱导的HT22细胞衰老，
+且这种抑制作用可能是通过靶向激活 ErbB4 受体并调节下游细胞铁死亡途径实
+现的，但是其中的具体机制尚不明确。通过我们之前的研究结果及文献调研
+Akt/Nrf2 通路有可能成为调控铁死亡的靶点。
+5.3.4.1 靶向ErbB4小分子激动剂和褪黑素对Nrf2抑制的D-gal诱导HT22细胞
+中SLC7A11及 GPX4 水平的影响
+我们通过在D-gal 诱导的衰老细胞中使用Nrf2 抑制剂（AEM1），探究Nrf2
+63
+--- 第76页 ---
+江南大学硕士学位论文
+在 E4A 和褪黑素抑制神经元衰老中是否发挥关键作用。为了筛选合适的浓度，
+我们首先用梯度浓度的 AEM1（0、1、2、5、10、20 μM）作用于 HT22 细胞，
+CCK8 实验检测其对 HT22 细胞的毒性作用。结果显示，1-5 μM 浓度范围内的
+AEM1 对 HT22 细胞活力无明显抑制作用，当 AEM1 浓度达到 10 μM 时，细胞
+活力出现明显下降，对细胞具有一定毒性作用（图5-4A）。
+基于以上结果，我们使用5μM 的AEM1预处理HT22 细胞3小时，然后分
+别加入药物刺激24小时后，检测Nrf2 抑制后对下游基因的影响。结果显示，在
+D-gal 诱导衰老的 HT22 细胞中 Nrf2 基因被抑制后，E4A 以及褪黑素对 Nrf2 的
+上调作用被显著抑制。接着我们检测了Nrf2 下游SLC7A11和GPX4 的表达，结
+果发现，当细胞中Nrf2 受到抑制后，也抑制了E4A 和褪黑素对其下游SLC7A11
+和GPX4 蛋白的上调作用（图5-4 B-E）。说明当Nrf2 的表达被抑制之后，E4A
+和褪黑素对SLC7A11和GPX4 的促进作用也被抑制。
+图5-4E4A和褪黑素对Nrf2抑制的D-gal诱导HT22细胞中SLC7A11及GPX4水平的影响
+(A)Nrf2抑制剂对HT22细胞活力的影响。(B)Nrf2、SLC7A11和GPX4的代表性条带。(C)
+Nrf2、(D)SLC7A11、(E)GPX4的蛋白定量结果。n=4-7。*<0.05，**P<0.01，***P<0.001，
+****P<0.0001，ns, 不显著。
+Figure5-4TheEffectsofE4AandmelatoninonSLC7A11andGPX4levelsinD-gal-induced
+HT22cellswithNrf2inhibition
+(A) Cell viability of HT22 cells inducedby differentconcentrations ofAEM1. (B) Representative
+64
+--- 第77页 ---
+第五章 靶向ErbB4小分子化合物通过激活ErbB4受体和调节Akt/Nrf2信号通路抑制D-gal
+诱导的海马神经元衰老
+western blotting of Nrf2, SLC7A11 and GPX4. Quantification of (C) Nrf2, (D) SLC7A11, (E)
+GPX4 protein levels. n=4-7. *P < 0.05, **P < 0.01, ***P < 0.001, ****P < 0.0001. ns, not
+significant.
+5.3.4.2 靶向ErbB4小分子激动剂和褪黑素对Nrf2抑制的D-gal诱导HT22细胞
+中Lamin B1及 P21 水平的影响
+为了探究Nrf2 被抑制之后，对E4A和褪黑素逆转细胞衰老的影响，我们通
+过 Western Blot 实验检测了 Nrf2 抑制的 D-gal 诱导的 HT22 细胞内 Lamin B1 和
+P21 的表达水平。结果如图 5-5 所示，与没有经过 AEM1 预处理组相比，Nrf2
+抑制组细胞内Lamin B1 的表达有下降趋势，P21 表达出现明显的上升。说明Nrf2
+的抑制阻碍了E4A和褪黑素逆转D-gal 诱导的HT22 细胞衰老的作用。
+图5-5E4A和褪黑素对Nrf2抑制的D-gal诱导HT22细胞中LaminB1和P21水平的影响
+(A) 衰老相关蛋白LaminB1和P21的代表性条带。(B)LaminB1、(C)P21的蛋白定量结果。
+n=4-7。**P<0.01，***P<0.001，****P<0.0001，ns, 不显著。
+Figure5-5TheEffectsofE4AandmelatoninonLaminB1andP21levelsinD-gal-inducedHT22
+65
+--- 第78页 ---
+江南大学硕士学位论文
+cellswithNrf2inhibition
+(A) Representative western blotting of Lamin B1 and P21. Quantification of (B) Lamin B1, (C)
+P21proteinlevels.**P<0.01,***P<0.001,****P<0.0001.ns,notsignificant.
+5.3.4.3 靶向 ErbB4 小分子激动剂和褪黑素对 Akt抑制的 D-gal 诱导 HT22 细胞
+的影响
+Akt 是调节细胞新陈代谢和炎症反应的重要信号传导分子，磷酸化的 Akt
+（pAkt）可以通过调节多种基因表达和转录因子激活参与多种疾病的发展过程。
+Nrf2 的转录活性很大程度上受Akt 的调控，pAkt 可以提高Nrf2 的表达，从而增
+强细胞的抗氧化能力。在确定了Nrf2 是E4A和褪黑素发挥作用的重要靶点后，
+通过抑制细胞中的 Akt 基因，探究 Akt 是否在 E4A 和褪黑素的抗神经衰老中也
+发挥重要作用。我们使用Akt 抑制剂（MK2206）抑制HT22 细胞中Akt 的表达。
+为了筛选合适的浓度，我们首先用梯度浓度的MK2206（0、0.5、1、2、3、4μM）
+作用于HT22细胞，CCK-8 实验检测其对细胞的毒性作用。结果显示，0.5-2μM
+浓度范围内的MK2206 对HT22 细胞活力无明显抑制作用，当MK2206 浓度达到
+3μM 时，细胞活力出现明显下降，对细胞具有一定毒性作用（图5-6A）。因此
+在后续实验中，我们选择2μM MK2206抑制细胞中Akt基因的表达。
+基于以上结果，我们使用2μM 的MK2206预处理HT22 细胞3小时，然后
+分别加入药物刺激24小时后，检测Akt 抑制后对下游基因的影响。通过Western
+Blot实验检测MK2206预处理后D-gal诱导的HT22细胞内pAkt1、Nrf2、和GPX4
+的表达水平，结果显示，在 D-gal诱导衰老的 HT22 细胞中抑制 Akt 基因的表达
+后，E4A和褪黑素对pAkt1的激活作用被显著抑制，也抑制了下游Nrf2 和GPX4
+的表达（图5-6B-E），说明Akt 被抑制后E4A和褪黑素无法促进pAkt1、Nrf2
+和GPX4 的表达。
+以上实验结果显示，Nrf2 和Akt 基因被抑制后，E4A和褪黑素对D-gal 诱导
+的 HT22 细胞衰老模型中衰老和铁死亡相关蛋白的调节能力被显著抑制，说明
+E4A和褪黑素通过靶向Akt/Nrf2 信号通路抑制神经元衰老。
+66
+--- 第79页 ---
+第五章 靶向ErbB4小分子化合物通过激活ErbB4受体和调节Akt/Nrf2信号通路抑制D-gal
+诱导的海马神经元衰老
+图5-6E4A和褪黑素对Akt抑制的D-gal诱导HT22细胞中Akt/Nrf2信号通路的影响
+(A)Akt抑制剂对HT22细胞活力的影响。n=10。(B)PAkt1、Akt1、Nrf2和GPX4的代表性
+条带。(C)PAkt1/Akt1、(D)Nrf2、(E)GPX4的蛋白定量结果。n=4。*<0.05，****P<0.0001。
+Figure5-6TheeffectsofE4AandmelatoninontheAkt/Nrf2signalingpathwayinD-gal-induced
+HT22cellswithAktinhibition
+(A) Cell viability of HT22 cells induced by different concentrations of MK2206. n=10. (B)
+Representative western blotting of PAkt1, Akt1, Nrf2 and GPX4. Quantification of (C)
+PAkt1/Akt1,(D)Nrf2,(E)GPX4proteinlevels.n=4.*P<0.05,****P<0.0001.
+5.4 小结与讨论
+在本节中，我们验证了 E4A 以及阳性对照褪黑素抑制神经元衰老的具体机
+制，验证两种药物通过激活ErbB4 受体和调节Akt/Nrf2 信号通路抑制D-gal 诱导
+的海马神经元衰老。研究证明 Nrf2 通过调节铁死亡途径在抑制衰老中发挥关键
+作用的关键作用[95-98]。在D-gal 诱导的大鼠急性衰老模型中，Nrf2 表达被激活时
+会改善 D-gal 诱导衰老大鼠的认知障碍[97]。Eldecalcitol 降低了细胞内 ROS 和
+MDA的产生，上调Nrf2 和GPX4 的表达，在D-半乳糖诱导的衰老OVX 小鼠中
+表现出骨骼保护作用[95]。据报道，维生素D（VD）通过增加GSH 水平同时降低
+MDA以及细胞内和线粒体内ROS水平来缓解衰老海马神经元的铁死亡，这这种
+67
+--- 第80页 ---
+江南大学硕士学位论文
+作用是由 VDR/Nrf2/HO-1 信号通路介导的[96]。研究验证了铁死亡在年龄相关性
+骨质疏松症中的重要作用，表明VDR 激活通过刺激Nrf2/GPX4 信号通路减轻成
+骨细胞铁死亡[98]。
+我们的研究结果发现，两种药物均能显著促进HT22 细胞和小鼠海马组织中
+ErbB4 及其下游分子Akt 的磷酸化激活，免疫荧光实验结果进一步显示，两种药
+物处理明显增强小鼠脑组织中Nrf2 的表达。为深入阐明分子机制，我们使用Nrf2
+抑制剂AEM1。结果显示，两种药物对Nrf2 及其下游靶基因SLC7A11和GPX4
+的激活作用被显著抑制，且促进了 HT22 细胞的衰老，这一结果证实了 Nrf2 在
+药物抗衰老效应中的关键作用。多项研究表明，Nrf2 通过调控包括SLC7A11和
+GPX4 在内的多种抗氧化基因的表达，在抵抗氧化应激和铁死亡中发挥核心作用
+[87,88]，我们的发现为这一机制在神经元衰老中的重要性提供了新的实验证据。使
+用Akt 抑制剂 MK2206 后，显著抑制了 E4A和褪黑素对 Akt 的磷酸化激活和下
+游Nrf2 和GPX4 的表达，说明E4A和褪黑素通过激活Akt/Nrf2 信号通路发挥神
+经保护作用。
+图5-7 靶向ErbB4小分子激动剂通过调控铁死亡抑制神经元衰老的机制图
+小分子激动剂（E4A）可激活ErbB4受体，调节Akt/Nrf2信号通路，在D-gal诱导的神经元
+衰老中发挥神经保护作用。D-gal处理增加了晚期糖基化终末产物（AGEs）的积累，从而刺
+激活性氧（ROS）的产生，增加了衰老标记基因P53、P16、P21的表达。E4A可促进Akt1
+磷酸化，促进Nrf2进入细胞核，参与调控铁死亡抑制基因SLC7A11和GPX4的表达，减轻
+68
+--- 第81页 ---
+第五章 靶向ErbB4小分子化合物通过激活ErbB4受体和调节Akt/Nrf2信号通路抑制D-gal
+诱导的海马神经元衰老
+脂质过氧化，抑制细胞铁死亡和神经元衰老。
+Fig.5-7SchematicdiagramillustratingtheeffectsoftargetedactivationofErbB4receptoron
+neuronalagingviaferroptosisinhibition.
+Smallmoleculeagonist（E4A）canactivateErbB4 receptorsandregulate theAkt/Nrf2 signaling
+pathway to achieve neuroprotective effect in D-gal-induced neuronal aging. D-gal treatment
+increases the accumulation of advanced glycation end products (AGEs) which stimulates the
+production of reactive oxygen species (ROS) and increase the expression of senescence marker
+genes P53, P16, P21. E4Acan promoteAkt1 phosphorylation and promote Nrf2 entrance into the
+nucleus, in which it involves in regulating the expression of ferroptosis suppressor gene, such as
+SLC7A11 and GPX4 to attenuate lipid peroxidation, which can inhibit cell ferroptosis and
+neuronalaging.
+69
+--- 第82页 ---
+第六章 主要结论与展望
+第六章 主要结论与展望
+主要结论
+基于课题组前期的研究及通过虚拟筛选所得 E4A 对于与衰老相关的神经退
+行性疾病 AD 具有治疗效果。本研究使用 D-gal 诱导的 HT22 细胞衰老模型、
+Erastin 诱导的 HT22 细胞铁死亡模型、D-gal 诱导的衰老小鼠模型、褪黑素为阳
+性对照，在体内和体外验证E4A的调控机制，为推动E4A 应用于衰老相关疾病
+的临床治疗提供理论支撑。
+(1) 用E4A 和褪黑素处理D-gal 诱导的HT22 细胞，显著提高了细胞活力，
+抑制 HT22 细胞衰老，减少细胞内 ROS 的产生，进而阻止了 MDA 的生成，抑
+制细胞的铁死亡；用 E4A 和褪黑素处理 Erastin 诱导的 HT22 细胞，显著减少细
+胞内 TFRC 蛋白的表达，增加 Nrf2、SLC7A11、GPX4 的表达，抑制细胞 ROS
+的增加，发挥抗铁死亡的作用。对以上两种细胞模型的研究均表明了 E4A 和褪
+黑素具有神经保护作用，对于发生神经损伤的HT22 细胞表现出抗衰老作用和抗
+铁死亡作用。
+(2) 在D-gal 诱导的衰老小鼠中，发现了明显的记忆能力和认知功能的下降，
+E4A 和褪黑素提高小鼠的记忆力和空间认知能力。E4A 和褪黑素改善小鼠海马
+区域的衰老和神经炎症，改善了小鼠海马区域和皮层区域铁死亡损伤。
+(3) 在 D-gal 诱导的衰老状态下，E4A 和褪黑素显著促进了 HT22 细胞以及
+小鼠海马中ErbB4 以及下游Akt 的磷酸化激活，当 HT22 细胞中的Nrf2 基因和
+Akt 被抑制后，E4A 和褪黑素对铁死亡和调节能力被显著抑制，表明 E4A 和褪
+黑素通过靶向激活 ErbB4 受体并调节 Akt/Nrf2 信号通路抑制铁死亡介导的神经
+元衰老，从而改善D-gal 诱导的病理和行为学障碍。
+(4) 在体内和体外实验中，我们均设置了E4A联合褪黑素给药的实验组，且
+在体内体外均可以抑制D-gal 诱导的神经元衰老，且这种作用可能是通过靶向激
+活 ErbB4 受体并调控铁死亡的途径实现的。但是与预期结果相比，联合给药并
+为发挥出优于单独给药的作用。
+综上所述，我们的研究结果表明，ErbB4 受体的靶向激活能够有效抑制D-gal
+诱导的神经元衰老和铁死亡，并在细胞模型中明确了其作用靶点，可以获得如图
+5-7 所示抑制神经元衰老的作用机制。与褪黑素相比，E4A 在对抗 D-gal 诱导的
+衰老小鼠中的铁死亡时更依赖于 Akt 信号通路。该研究为 E4A 应用于衰老相关
+的临床研究提供了科学依据。与传统的重组蛋白疗法相比，小分子化合物具有更
+好的穿透中枢神经系统的能力，可以提高它们在治疗神经退行性疾病方面的疗效。
+此外，小分子化合物更具成本效益，在临床转化应用方面显示出更大的潜力。
+70
+--- 第83页 ---
+第六章 主要结论与展望
+创新点和不足之处
+本研究首次揭示了ErbB4受体的靶向激活在抑制D-gal诱导的神经元衰老和
+铁死亡中的重要作用，通过实验证明了虚拟筛选获得的小分子化合物治疗神经元
+衰老的可行性，为治疗衰老相关神经退行性疾病提供了新的研究思路。且本研究
+具有潜在的临床应用价值，有望在未来转化为可广泛应用且经济实惠的治疗方法，
+为治疗神经退行性疾病等衰老相关疾病提供了一种新策略。
+在本研究中只使用了D-gal 诱导的衰老小鼠一种模型，其与自然衰老具有存
+在差异，基于该模型得出的研究结果可能没有完全准确地反映 ErbB4 受体靶向
+激活在自然衰老过程中的真实效果，需要进一步在自然衰老模型中进行验证。
+展望
+本研究证实，靶向 ErbB4 受体的小分子激动剂 E4A 及褪黑素可通过激活
+Akt/Nrf2 信号通路，抑制铁死亡并改善神经元衰老，为神经退行性疾病的干预提
+供了新的潜在策略。然而通过我们的实验结果发现，E4A 和褪黑素在单独给药时
+均表现出显著的神经保护作用，但联合给药并未显示出预期的协同效应。在未来
+研究中应深入探讨两者是否存在竞争性结合 ErbB4 受体的可能性，或通过其他
+信号通路相互干扰，也可通过优化给药剂量、时间或顺序，探索更有效的联合给
+药方案。尽管本研究明确了 Akt/Nrf2 通路在 E4A 抗衰老中的作用，但该通路与
+其他衰老相关信号的交互作用尚未明确。未来可利用基因编辑或特异性抑制剂，
+进一步解析 ErbB4 下游网络的调控机制。此外，由于体外实验异于体内实验，
+还需在动物模型中敲除Nrf2 基因或Akt 基因，确定E4A 的作用靶点及具体的作
+用机制。
+71
+--- 第84页 ---
+参考文献
+参考文献
+[1] BISHOPNA,LUT,YANKNERBA.Neuralmechanismsofageingandcognitivedecline[J].
+Nature,2010,464(7288):529-35.
+[2] ROCCA W A, PETERSEN R C, KNOPMAN D S, et al. Trends in the incidence and
+prevalenceofAlzheimer'sdisease,dementia,andcognitiveimpairmentintheUnitedStates[J].
+AlzheimersDement,2011,7(1):80-93.
+[3] DUNCAN G W, KHOO TK, COLEMAN SY,et al. The incidence of Parkinson's disease in
+theNorth-EastofEngland[J].AgeAgeing,2014,43(2):257-63.
+[4] IBRAYEVAA, BAYM, PU E, et al. Early stem cell aging in the mature brain [J]. Cell Stem
+Cell,2021,28(5):955-66e7.
+[5] MA Y, FARNY N G. Connecting the dots: Neuronal senescence, stress granules, and
+neurodegeneration[J].Gene,2023,871:147437.
+[6] ISHIKAWA S, ISHIKAWA F. Proteostasis failure and cellular senescence in long-term
+culturedpostmitoticratneurons[J].AgingCell,2020,19(1):e13071.
+[7] JURK D, WANG C, MIWA S, et al. Postmitotic neurons develop a p21-dependent
+senescence-like phenotype driven by a DNA damage response [J]. Aging Cell, 2012, 11(6):
+996-1004.
+[8] HERDYJR,TRAXLERL,AGARWALRK,etal.Increasedpost-mitoticsenescenceinaged
+human neurons is a pathological feature of Alzheimer's disease [J]. Cell Stem Cell, 2022,
+29(12):1637-52e6.
+[9] SI Z, SUN L, WANG X. Evidence and perspectives of cell senescence in neurodegenerative
+diseases[J].BiomedPharmacother,2021,137:111327.
+[10] RIESSLAND M, KOLISNYK B, KIM T W, et al. Loss of SATB1 Induces p21-Dependent
+Cellular Senescence in Post-mitotic Dopaminergic Neurons [J]. Cell Stem Cell, 2019, 25(4):
+514-30e8.
+[11] TAN F C, HUTCHISON E R, EITAN E, et al. Are there roles for brain cell senescence in
+agingandneurodegenerativedisorders?[J].Biogerontology,2014,15(6):643-60.
+[12] COOK C I,YU B P. Iron accumulation in aging: modulation by dietary restriction [J]. Mech
+AgeingDev,1998,102(1):1-13.
+[13] TIANY,TIANY,YUANZ,etal.IronMetabolisminAgingandAge-RelatedDiseases[J].Int
+JMolSci,2022,23(7).
+[14] DIXONSJ,LEMBERGKM,LAMPRECHTMR,etal.Ferroptosis:aniron-dependentform
+ofnonapoptoticcelldeath[J].Cell,2012,149(5):1060-72.
+[15] FRIEDMANN ANGELI J P, SCHNEIDER M, PRONETH B, et al. Inactivation of the
+73
+--- 第85页 ---
+参考文献
+ferroptosisregulatorGpx4triggersacuterenalfailureinmice[J].NatCellBiol,2014,16(12):
+1180-91.
+[16] EL HOUT M, DOS SANTOS L, HAMAI A, et al. A promising new approach to cancer
+therapy: Targeting iron metabolism in cancer stem cells [J]. Semin Cancer Biol, 2018, 53:
+125-38.
+[17] TORTI S V, TORTI F M. Iron and cancer: more ore to be mined [J]. Nat Rev Cancer, 2013,
+13(5):342-55.
+[18] SATO H, TAMBA M, ISHII T, et al. Cloning and expression of a plasma membrane
+cystine/glutamate exchange transporter composed of two distinct proteins [J]. J Biol Chem,
+1999,274(17):11455-8.
+[19] KOPPULAP,ZHUANGL,GANB.CystinetransporterSLC7A11/xCTincancer:ferroptosis,
+nutrientdependency,andcancertherapy[J].ProteinCell,2021,12(8):599-620.
+[20] MAIORINO M, CONRAD M, URSINI F. GPx4, Lipid Peroxidation, and Cell Death:
+Discoveries,Rediscoveries,andOpenIssues[J].AntioxidRedoxSignal,2018,29(1):61-74.
+[21] YOO M H, GU X, XU X M, et al. Delineating the role of glutathione peroxidase 4 in
+protecting cells against lipid hydroperoxide damage and inAlzheimer's disease [J].Antioxid
+RedoxSignal,2010,12(7):819-27.
+[22] OSAMAA, ZHANG J,YAO J, et al. Nrf2: a dark horse inAlzheimer's disease treatment [J].
+AgeingResRev,2020,64:101206.
+[23] XUT,DINGW,JIX,etal.Molecularmechanismsofferroptosisanditsroleincancertherapy
+[J].JCellMolMed,2019,23(8):4900-12.
+[24] LI J, CAO F,YIN H L, et al. Ferroptosis: past, present and future [J]. Cell Death Dis, 2020,
+11(2):88.
+[25] MAHONEY-SANCHEZ L, BOUCHAOUI H, AYTON S, et al. Ferroptosis and its potential
+roleinthephysiopathologyofParkinson'sDisease[J].ProgNeurobiol,2021,196:101890.
+[26] WANGT,TOMASD,PERERAND,etal.Ferroptosismediatesselectivemotorneurondeath
+inamyotrophiclateralsclerosis[J].CellDeathDiffer,2022,29(6):1187-98.
+[27] WANG Y, LV M N, ZHAO W J. Research on ferroptosis as a therapeutic target for the
+treatmentofneurodegenerativediseases[J].AgeingResRev,2023,91:102035.
+[28] RAMOS P, SANTOS A, PINTO N R, et al. Iron levels in the human brain: a post-mortem
+study of anatomical region differences and age-related changes [J]. J Trace Elem Med Biol,
+2014,28(1):13-7.
+[29] WEILANDA,WANGY,WUW,etal.FerroptosisandItsRoleinDiverseBrainDiseases[J].
+MolNeurobiol,2019,56(7):4880-93.
+[30] HAMBRIGHT W S, FONSECA R S, CHEN L, et al. Ablation of ferroptosis regulator
+74
+--- 第86页 ---
+参考文献
+glutathione peroxidase 4 in forebrain neurons promotes cognitive impairment and
+neurodegeneration[J].RedoxBiol,2017,12:8-17.
+[31] ASHRAFA, JEANDRIENS J, PARKES H G, et al. Iron dyshomeostasis, lipid peroxidation
+and perturbed expression of cystine/glutamate antiporter inAlzheimer's disease: Evidence of
+ferroptosis[J].RedoxBiol,2020,32:101494.
+[32] BELLINGER F P, BELLINGER M T, SEALE L A, et al. Glutathione Peroxidase 4 is
+associated with Neuromelanin in Substantia Nigra and Dystrophic Axons in Putamen of
+Parkinson'sbrain[J].MolNeurodegener,2011,6(1):8.
+[33] XIONG X, WANG G, WANG Y, et al. Klotho protects against aged myocardial cells by
+attenuatingferroptosis[J].ExpGerontol,2023,175:112157.
+[34] SFERA A, BULLOCK K, PRICE A, et al. Ferrosenescence: The iron age of
+neurodegeneration?[J].MechAgeingDev,2018,174:63-75.
+[35] ZHUJ,CHENH,WUJ,etal.FerroptosisinGlaucoma:APromisingAvenueforTherapy[J].
+AdvBiol(Weinh),2024,8(5):e2300530.
+[36] LI S, WANG M, WANG Y, et al. p53-mediated ferroptosis is required for
+1-methyl-4-phenylpyridinium-induced senescence of PC12 cells [J]. Toxicol In Vitro, 2021,
+73:105146.
+[37] OUGY,LINWW,ZHAOWJ.NeuregulinsinNeurodegenerative Diseases[J].FrontAging
+Neurosci,2021,13:662474.
+[38] AHSANA, HINIKER SM, DAVIS MA, et al. Role ofcell cycle in epidermal growth factor
+receptorinhibitor-mediatedradiosensitization[J].CancerRes,2009,69(12):5108-14.
+[39] WANGZ.ErbBReceptorsandCancer[J].MethodsMolBiol,2017,1652:3-35.
+[40] PITCHER J L, ALEXANDER N, MIRANDA P J, et al. ErbB4 in the brain: Focus on high
+gradeglioma[J].FrontOncol,2022,12:983514.
+[41] DENG C, PAN B, ENGEL M, et al. Neuregulin-1 signalling and antipsychotic treatment:
+potential therapeutic targets in a schizophrenia candidate signalling pathway [J].
+Psychopharmacology(Berl),2013,226(2):201-15.
+[42] BUONANNOA,FISCHBACHGD.NeuregulinandErbBreceptorsignalingpathwaysinthe
+nervoussystem[J].CurrOpinNeurobiol,2001,11(3):287-96.
+[43] NAWWAR DA, ZAKI H F, SAYED R H. Role of the NRG1/ErbB4 and PI3K/AKT/mTOR
+signaling pathways in the anti-psychotic effects of aripiprazole and sertindole in
+ketamine-induced schizophrenia-like behaviors in rats [J]. Inflammopharmacology, 2022,
+30(5):1891-907.
+[44] GAO Y Z, WU X M, ZHOU Z Q, et al. Dysfunction of NRG1/ErbB4 Signaling in the
+Hippocampus Might Mediate Long-term Memory Decline After Systemic Inflammation [J].
+75
+--- 第87页 ---
+参考文献
+MolNeurobiol,2023,60(6):3210-26.
+[45] MIN S S,AN J, LEE J H, et al. Neuregulin-1 prevents amyloid beta-induced impairment of
+long-termpotentiationinhippocampalslicesviaErbB4[J].NeurosciLett,2011,505(1):6-9.
+[46] EDREYY H, CASPER D, HUCHON D, et al. Sustained high levels of neuregulin-1 in the
+longest-lived rodents; a key determinant of rodent longevity [J]. Aging Cell, 2012, 11(2):
+213-22.
+[47] CHONG V Z, WEBSTER M J, ROTHMOND DA, et al. Specific developmental reductions
+in subventricular zone ErbB1 and ErbB4 mRNAin the human brain [J]. Int J Dev Neurosci,
+2008,26(7):791-803.
+[48] LI X M, SU F, JI M H, et al. Disruption of hippocampal neuregulin 1-ErbB4 signaling
+contributestothehippocampus-dependentcognitiveimpairmentinducedbyisofluraneinaged
+mice[J].Anesthesiology,2014,121(1):79-88.
+[49] SEO H J, PARK J E, CHOI S M, et al. Inhibitory Neural Network's Impairments at
+HippocampalCA1LTPinanAgedTransgenicMouse ModelofAlzheimer'sDisease[J].IntJ
+MolSci,2021,22(2).
+[50] SHAKERI H, GEVAERT A B, SCHRIJVERS D M, et al. Neuregulin-1 attenuates
+stress-inducedvascularsenescence[J].CardiovascRes,2018,114(7):1041-51.
+[51] SHIRAISHI M, YAMAGUCHI A, SUZUKI K. Nrg1/ErbB signaling-mediated regulation of
+fibrosisaftermyocardialinfarction[J].FASEBJ,2022,36(2):e22150.
+[52] TAO L, BEIY, ZHANG H, et al. Exercise for the heart: signaling pathways [J]. Oncotarget,
+2015,6(25):20773-84.
+[53] LIANG X, DING Y, LIN F, et al. Overexpression of ERBB4 rejuvenates aged mesenchymal
+stemcellsandenhancesangiogenesisviaPI3K/AKTandMAPK/ERKpathways[J].FASEBJ,
+2019,33(3):4559-70.
+[54] LINWW,OUGY,DAIHF,etal.Neuregulin4(Nrg4)cooperateswithmelatonintoregulate
+the PRLexpressionvia ErbB4/Erksignaling pathway asa potential prolactin (PRL) regulator
+[J].JCellBiochem,2024,125(5):e30551.
+[55] ZHANG W, DAO J J, LI Q, et al. Neuregulin 1 mitigated prolactin deficiency through
+enhancing TRPM8 signaling under the influence of melatonin in senescent pituitary
+lactotrophs[J].IntJBiolMacromol,2024,275(Pt1):133659.
+[56] FANG S J, LI P Y, WANG C M, et al. Inhibition of endoplasmic reticulum stress by
+neuregulin-1 protects against myocardial ischemia/reperfusion injury [J]. Peptides, 2017, 88:
+196-207.
+[57] SHINDE P, VIDYASAGAR N, DHULAP S, et al. Natural Products based P-glycoprotein
+Activators for Improved beta-amyloid Clearance in Alzheimer's Disease: An in silico
+76
+--- 第88页 ---
+参考文献
+Approach[J].CentNervSystAgentsMedChem,2015,16(1):50-9.
+[58] HUS,FEIY,JINC,etal.GinsenosideRdenhancesblood-brainbarrierintegrityaftercerebral
+ischemia/reperfusion by alleviating endothelial cells ferroptosis via activation of
+NRG1/ErbB4-mediated PI3K/Akt/mTOR signaling pathway [J]. Neuropharmacology, 2024,
+251:109929.
+[59] CHEN D, ZHANG T, LEE T H. Cellular Mechanisms of Melatonin: Insight from
+NeurodegenerativeDiseases[J].Biomolecules,2020,10(8).
+[60] LI Y, ZHANG J, WAN J, et al. Melatonin regulatesAbeta production/clearance balance and
+Abeta neurotoxicity: A potential therapeutic molecule for Alzheimer's disease [J]. Biomed
+Pharmacother,2020,132:110887.
+[61] WANG X, WANG Z, CAO J, et al. Melatonin Alleviates Acute Sleep Deprivation-Induced
+Memory Loss in Mice by Suppressing Hippocampal Ferroptosis [J]. Front Pharmacol, 2021,
+12:708645.
+[62] GOU Z, SU X,HU X,et al.Melatonin improveshypoxic-ischemic braindamage through the
+Akt/Nrf2/Gpx4signalingpathway[J].BrainResBull,2020,163:40-8.
+[63] YU X, WANG S, WANG X, et al. Melatonin improves stroke by inhibiting
+autophagy-dependentferroptosismediatedbyNCOA4bindingtoFTH1[J].ExpNeurol,2024,
+379:114868.
+[64] LV Q K, TAO K X, YAO X Y, et al. Melatonin MT1 receptors regulate the
+Sirt1/Nrf2/Ho-1/Gpx4 pathway to prevent alpha-synuclein-induced ferroptosis in Parkinson's
+disease[J].JPinealRes,2024,76(2):e12948.
+[65] MOSHKDANIAN G, MOGHANI-GHOROGHI F, PASBAKHSH P, et al. Melatonin
+upregulatesErbB1andErbB4,twoprimaryimplantationreceptors,inpre-implantationmouse
+embryos[J].IranJBasicMedSci,2017,20(6):655-61.
+[66] SHAFIEI G, MOGHANI-GHOROGHI F, MIYAN J, et al. Melatonin protects against visible
+light-induced oxidative stress and promotes the implantation potential of mouse blastocyst in
+vitro[J].ResVetSci,2023,155:29-35.
+[67] LIM J, BANG Y, KIM K M, et al. Differentiated HT22 cells as a novel model for in vitro
+screeningofserotoninreuptakeinhibitors[J].FrontPharmacol,2022,13:1062650.
+[68] CHILDS B G, DURIK M, BAKER D J, et al. Cellular senescence in aging and age-related
+disease:frommechanismstotherapy[J].NatMed,2015,21(12):1424-35.
+[69] CHEN C F, LANG S Y, ZUO P P, et al. Effects of D-galactose on the expression of
+hippocampal peripheral-type benzodiazepine receptor and spatial memory performances in
+rats[J].Psychoneuroendocrinology,2006,31(7):805-11.
+[70] CUI X, ZUO P, ZHANG Q, et al. Chronic systemic D-galactose exposure induces memory
+77
+--- 第89页 ---
+参考文献
+loss, neurodegeneration, and oxidative damage in mice: protective effects of R-alpha-lipoic
+acid[J].JNeurosciRes,2006,83(8):1584-90.
+[71] PARK J H, CHOI T S. Polycystic ovary syndrome (PCOS)-like phenotypes in the
+d-galactose-induced aging mouse model [J]. Biochem Biophys Res Commun, 2012, 427(4):
+701-4.
+[72] FORMAN H J,TORRES M. Reactive oxygen species and cell signaling: respiratory burst in
+macrophagesignaling[J].AmJRespirCritCareMed,2002,166(12Pt2):S4-8.
+[73] VALKO M, RHODES C J, MONCOL J, et al. Free radicals, metals and antioxidants in
+oxidativestress-inducedcancer[J].ChemBiolInteract,2006,160(1):1-40.
+[74] VORHEES C V, WILLIAMS M T. Morris water maze: procedures for assessing spatial and
+relatedformsoflearningandmemory[J].NatProtoc,2006,1(2):848-58.
+[75] WANG C, HAO J, LIU X, et al. Isoforsythiaside Attenuates Alzheimer's Disease via
+RegulatingMitochondrial FunctionThroughthe PI3K/AKTPathway [J].IntJMolSci, 2020,
+21(16).
+[76] MATIAS I, DINIZ L P, DAMICO I V, et al. Loss of lamin-B1 and defective nuclear
+morphology are hallmarks of astrocyte senescence in vitro and in the aging human
+hippocampus[J].AgingCell,2022,21(1):e13521.
+[77] GONZALEZ-GUALDA E, BAKER A G, FRUK L, et al. A guide to assessing cellular
+senescenceinvitroandinvivo[J].FEBSJ,2021,288(1):56-80.
+[78] KOUFI F D, NERI I, RAMAZZOTTI G, et al. Lamin B1 as a key modulator of the
+developingandagingbrain[J].FrontCellNeurosci,2023,17:1263310.
+[79] SHAH PP, DONAHUE G, OTTE G L, et al. Lamin B1 depletion in senescent cells triggers
+large-scale changes in gene expression and the chromatin landscape [J]. Genes Dev, 2013,
+27(16):1787-99.
+[80] PHATNANI H,MANIATIST.Astrocytes inneurodegenerative disease [J].ColdSpring Harb
+PerspectBiol,2015,7(6).
+[81] ZHANG B, LIAN W, ZHAO J, et al. DL0410 Alleviates Memory Impairment in
+D-Galactose-Induced Aging Rats by Suppressing Neuroinflammation via the
+TLR4/MyD88/NF-kappaBPathway[J].OxidMedCellLongev,2021,2021:6521146.
+[82] FUNAHASHI S. Prefrontal cortex and working memory processes [J]. Neuroscience, 2006,
+139(1):251-61.
+[83] BARKER G R, WARBURTON E C. When is the hippocampus involved in recognition
+memory?[J].JNeurosci,2011,31(29):10721-31.
+[84] ROLLS E T. The hippocampus, ventromedial prefrontal cortex, and episodic and semantic
+memory[J].ProgNeurobiol,2022,217:102334.
+78
+--- 第90页 ---
+参考文献
+[85] DALLEY J W, CARDINAL R N, ROBBINS T W. Prefrontal executive and cognitive
+functions in rodents: neural and neurochemical substrates [J]. Neurosci Biobehav Rev, 2004,
+28(7):771-84.
+[86] MORRISONJH,BAXTERMG.Theageingcorticalsynapse:hallmarksandimplicationsfor
+cognitivedecline[J].NatRevNeurosci,2012,13(4):240-50.
+[87] DODSON M, CASTRO-PORTUGUEZ R, ZHANG D D. NRF2 plays a critical role in
+mitigatinglipidperoxidationandferroptosis[J].RedoxBiol,2019,23:101107.
+[88] SUN X, OU Z, CHEN R, et al.Activation of the p62-Keap1-NRF2 pathway protects against
+ferroptosisinhepatocellularcarcinomacells[J].Hepatology,2016,63(1):173-84.
+[89] JAKARIA M, BELAIDI A A, BUSH A I, et al. Ferroptosis as a mechanism of
+neurodegenerationinAlzheimer'sdisease[J].JNeurochem,2021,159(5):804-25.
+[90] WELLINGLC,RABELO NN,DESENABARBOSAMG,etal.IntracerebralHemorrhage
+andFerroptosis:SomethingElsethatSTICHShouldKnow? [J].WorldNeurosurg,2021,150:
+211-2.
+[91] PEEPLES E S, GENARO-MATTOS T C. Ferroptosis: A Promising Therapeutic Target for
+NeonatalHypoxic-IschemicBrainInjury[J].IntJMolSci,2022,23(13).
+[92] YU C, XIAO J H.The Keap1-Nrf2 System:AMediator between Oxidative Stress andAging
+[J].OxidMedCellLongev,2021,2021:6635460.
+[93] GUNATAM, PARLAKPINAR H,ACET HA. Melatonin:Areview of its potential functions
+andeffectsonneurologicaldiseases[J].RevNeurol(Paris),2020,176(3):148-65.
+[94] ZAKRIA M, AHMAD N, AL KURY L T, et al. RETRACTED: Melatonin rescues the mice
+brain against cisplatin-induced neurodegeneration, an insight into antioxidant and
+anti-inflammatoryeffects[J].Neurotoxicology,2021,87:1-10.
+[95] FU Y F, GUO Y X, XIA S H, et al. Eldecalcitol protected osteocytes against ferroptosis of
+D-gal-induced senescent MLO-Y4 cells and ovariectomized mice [J]. Exp Gerontol, 2024,
+189:112408.
+[96] LI J, CAO Y, XU J, et al. Vitamin D Improves Cognitive Impairment and Alleviates
+FerroptosisviatheNrf2SignalingPathwayinAgingMice[J].IntJMolSci,2023,24(20).
+[97] XIAO L, WEN H, PENG S, et al. Polygonatum polysaccharide ameliorates
+D-galactose-induced cognitive dysfunction in aging rats by inhibiting ferroptosis through
+activationofNrf2[J].NeurosciLett,2024,836:137873.
+[98] XU P, LIN B, DENG X, et al. VDR activation attenuates osteoblastic ferroptosis and
+senescencebystimulatingtheNrf2/GPX4pathwayinage-relatedosteoporosis[J].FreeRadic
+BiolMed,2022,193(Pt2):720-35.
+79

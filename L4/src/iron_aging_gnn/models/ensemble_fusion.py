@@ -1,6 +1,8 @@
-"""可学习集成融合模块（H2GnnDTI SAIF 风格）
+"""可学习集成融合模块
 
-使用 softmax 权重替代固定加权平均，权重通过梯度下降学习。
+基于 KLaR (PMID 42412844) 门控融合思想：
+- GatedEnsembleFusion: 上下文感知门控融合，动态控制各视图贡献
+- LearnableEnsembleFusion: softmax 权重学习（H2GnnDTI SAIF 风格）
 """
 
 from __future__ import annotations
@@ -10,34 +12,52 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-class LearnableEnsembleFusion(nn.Module):
-    """可学习集成融合层（H2GnnDTI SAIF 风格）
+class GatedEnsembleFusion(nn.Module):
+    """上下文感知门控集成融合（KLaR 风格，PMID 42412844）。
 
-    使用 softmax 权重替代固定加权平均，权重通过梯度下降学习。
-
-    用法::
-
-        fusion = LearnableEnsembleFusion(n_branches=3, temperature=0.1)
-        fused_scores = fusion(sage_scores, hgt_scores, simplehgn_scores)
-
-    注意：在 TCM 预测阶段，AUPR 动态加权已提供有效的集成策略。
-    此模块作为可选替代方案，可在需要端到端可学习融合时启用。
+    动态计算每个分支的贡献权重，而非固定的 softmax 权重。
+    门控信号由各分支嵌入拼接后通过 MLP 生成，实现上下文感知融合。
     """
+
+    def __init__(self, n_branches: int = 3, emb_dim: int = 128, hidden_dim: int = 64):
+        super().__init__()
+        self.n_branches = n_branches
+        self.gate_net = nn.Sequential(
+            nn.Linear(n_branches * emb_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Linear(hidden_dim, n_branches),
+        )
+        self.temperature = nn.Parameter(torch.tensor(0.5))
+
+    def forward(self, *branch_embs):
+        if len(branch_embs) != self.n_branches:
+            raise ValueError(
+                f"GatedEnsembleFusion 期望 {self.n_branches} 个分支，"
+                f"但收到 {len(branch_embs)} 个"
+            )
+        stacked = torch.cat(branch_embs, dim=-1)
+        gate_logits = self.gate_net(stacked)
+        gates = F.softmax(gate_logits / self.temperature.abs(), dim=-1)
+        result = torch.zeros_like(branch_embs[0])
+        for k, emb in enumerate(branch_embs):
+            result = result + gates[:, k:k + 1] * emb
+        return result
+
+
+class LearnableEnsembleFusion(nn.Module):
+    """可学习集成融合层（H2GnnDTI SAIF 风格）。"""
 
     def __init__(self, n_branches: int = 3, temperature: float = 0.1):
         super().__init__()
         self.log_weights = nn.Parameter(torch.zeros(n_branches))
         self.temperature = temperature
 
-    def forward(self, *branch_scores: torch.Tensor) -> torch.Tensor:
-        """融合多个分支的预测分数。
-
-        Args:
-            *branch_scores: 每个分支的 (n_tcm, n_genes) 预测分数张量
-
-        Returns:
-            (n_tcm, n_genes) 融合后的分数
-        """
+    def forward(self, *branch_scores):
+        if len(branch_scores) != self.n_branches:
+            raise ValueError(
+                f"LearnableEnsembleFusion 期望 {self.n_branches} 个分支，"
+                f"但收到 {len(branch_scores)} 个"
+            )
         weights = F.softmax(self.log_weights / self.temperature, dim=0)
         result = torch.zeros_like(branch_scores[0])
         for w, score in zip(weights, branch_scores):
@@ -45,4 +65,4 @@ class LearnableEnsembleFusion(nn.Module):
         return result
 
 
-__all__ = ["LearnableEnsembleFusion"]
+__all__ = ["GatedEnsembleFusion", "LearnableEnsembleFusion"]

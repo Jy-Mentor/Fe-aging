@@ -15,8 +15,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from phase4_v10_minibatch import (
     build_graphs_and_adj, load_protein_features, load_cpi_data,
     load_ppi_network, load_kegg_pathways, load_tcm_pool,
-    ALL_FERRORAGING_GENES, DEVICE,
-    _build_val_safe_homo_edge_index, _build_val_safe_hetero_data
+    ALL_FERRORAGING_GENES, _build_val_safe_homo_edge_index, _build_val_safe_hetero_data
 )
 
 
@@ -100,7 +99,7 @@ def main():
     pos_prot_list = sorted(val_pos_proteins)
     neg_prot_list = sorted(val_proteins - val_pos_proteins)
 
-    print(f"\n验证蛋白通路特征统计:")
+    print("\n验证蛋白通路特征统计:")
     print(f"  正样本验证蛋白数: {len(pos_prot_list)}")
     print(f"  负样本验证蛋白数: {len(neg_prot_list)}")
 
@@ -124,7 +123,7 @@ def main():
             elif p_freq > 0:
                 fold_change[i] = np.inf
         top_pathways = np.argsort(fold_change)[-10:][::-1]
-        print(f"\n  正样本最富集通路 (top 10):")
+        print("\n  正样本最富集通路 (top 10):")
         for idx in top_pathways:
             print(f"    通路 {idx}: 正样本频率={pos_pathway_freq[idx]}/{len(pos_prot_list)}, "
                   f"负样本频率={neg_pathway_freq[idx]}/{len(neg_prot_list)}, 倍数={fold_change[idx]:.2f}")
@@ -143,7 +142,7 @@ def main():
         print(f"\n{name}:")
         print(f"  验证蛋白作为源节点的边数: {src_in_val}")
         print(f"  验证蛋白作为目标节点的边数: {dst_in_val}")
-        print(f"  期望 (蛋白冷启动): 都为 0")
+        print("  期望 (蛋白冷启动): 都为 0")
         return src_in_val + dst_in_val
 
     print("\n验证安全图检查:")
@@ -153,7 +152,7 @@ def main():
     # 异质图严格隔离检查
     hetero_data_prot_cold = _build_val_safe_hetero_data(
         graphs["hetero_data"], val_comp_set, val_proteins)
-    print(f"\n异质蛋白冷启动图边数:")
+    print("\n异质蛋白冷启动图边数:")
     for et, ei in hetero_data_prot_cold.edge_index_dict.items():
         print(f"  {et}: {ei.shape[1]} 条边")
 
