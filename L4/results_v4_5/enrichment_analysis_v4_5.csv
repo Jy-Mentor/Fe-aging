@@ -1,7 +1,0 @@
-gene,top_percent,n_top,n_hits,n_pos_tcm,baseline_rate,enrichment_factor
-PTGS2,1,14,0,1,0.00067,0.0
-PTGS2,5,74,1,1,0.00067,20.15
-PTGS2,10,149,1,1,0.00067,10.01
-STAT3,1,14,0,1,0.00067,0.0
-STAT3,5,74,0,1,0.00067,0.0
-STAT3,10,149,0,1,0.00067,0.0

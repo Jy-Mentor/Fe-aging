@@ -1,14 +1,16 @@
 """HGT 异质图编码器 + 可插拔解码器
 
 特性:
-  - 节点自适应门控，缓解过平滑
+  - v70: 残差连接 + LayerNorm + ReLU 替换门控机制（与 SimpleHGN 对齐）
   - 多任务联合训练（铁死亡表型分类头）
   - 支持疾病节点嵌入（四模态异质图）
   - 支持 MLP / Dot / Bilinear / ResidueAwareBilinear 解码器切换
 
 参考:
   - Hu et al. (2020) "Heterogeneous Graph Transformer", WWW
-  - Hadipour et al. (2025) "GraphBAN: An Inductive Graph-Based Approach for Enhanced Prediction of Compound-Protein Interactions", Nature Communications, DOI:10.1038/s41467-025-57536-9
+  - Chen et al. (2025) "Residual Connections Provably Mitigate Oversmoothing in GNNs", arXiv:2501.00762
+  - Wang et al. (2025) "DHGT-DTI: Dual-View Heterogeneous Network with GraphSAGE and Graph Transformer", J. Pharm. Anal.
+  - Lv et al. (2021) "Are we really making much progress? Revisiting, benchmarking, and refining heterogeneous GNNs", KDD
 """
 
 from __future__ import annotations
@@ -17,6 +19,7 @@ import logging
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from torch_geometric.nn import HGTConv
 
 from .decoders import MLPDecoder, DotProductDecoder, BilinearDecoder, ResidueAwareBilinearDecoder
@@ -98,7 +101,7 @@ class HGTLinkPredictor(nn.Module):
         self.prot_dropout = nn.Dropout(dropout)
 
         self.convs = nn.ModuleList()
-        self.gates = nn.ModuleList()
+        self.norms = nn.ModuleList()
         if metadata:
             node_types, edge_types = metadata
             # 子图采样会动态添加反向边，HGTConv 初始化时必须知晓这些边类型
@@ -119,9 +122,7 @@ class HGTLinkPredictor(nn.Module):
                     hidden_dim, aug_metadata,
                     heads=num_heads,
                 ))
-                gate = nn.Linear(hidden_dim, 1)
-                nn.init.constant_(gate.bias, 0.0)
-                self.gates.append(gate)
+                self.norms.append(nn.LayerNorm(hidden_dim))
 
         self.out_proj = nn.Identity() if hidden_dim == out_dim else nn.Linear(hidden_dim, out_dim, bias=False)
 
@@ -234,18 +235,20 @@ class HGTLinkPredictor(nn.Module):
                 x_dict["pathway"] = self.pathway_embed(
                     x_dict["pathway"].squeeze(-1).long().clamp(0, self.pathway_embed.num_embeddings - 1))
 
-        for layer_idx, conv in enumerate(self.convs):
+        for layer_idx, (conv, norm) in enumerate(zip(self.convs, self.norms)):
             out = conv(x_dict, edge_index_dict)
+            conv_output_types = set(out.keys())
             for nt in x_dict:
                 if nt not in out:
                     out[nt] = x_dict[nt]
-            # 节点自适应门控，缓解过平滑
-            gate = self.gates[layer_idx]
-            for nt in out:
+            # v70: 残差连接 + LayerNorm + ReLU 替换门控机制
+            # 仅对 conv 有输出的节点类型做残差（避免孤立节点翻倍累积）
+            # 参考: Chen et al. (2025) arXiv:2501.00762 — 残差连接可证明缓解过平滑
+            for nt in conv_output_types:
                 if nt in x_dict and x_dict[nt].shape == out[nt].shape:
-                    g = torch.sigmoid(gate(x_dict[nt]))
-                    out[nt] = g * out[nt] + (1 - g) * x_dict[nt]
-            x_dict = out
+                    out[nt] = out[nt] + x_dict[nt]
+            x_dict = {k: norm(v) for k, v in out.items()}
+            x_dict = {k: F.relu(v) for k, v in x_dict.items()}
             x_dict = {k: self.dropout(v) for k, v in x_dict.items()}
 
         # 仅对 compound 和 protein 执行 out_proj

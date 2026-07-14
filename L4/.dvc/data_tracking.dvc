@@ -1,0 +1,29 @@
+# 铁衰老GNN项目关键数据文件版本控制
+# 注意: 此文件为 DVC 追踪模板，实际 MD5 哈希需通过 `dvc add <path>` 生成
+# 用法: dvc checkout 恢复数据 / dvc push 推送数据到远程
+outs:
+  - md5: null
+    size: null
+    path: results_v10_minibatch/esm2_protein_embeddings.npz
+    desc: "ESM-2 蛋白嵌入 (640维, facebook/esm2_t30_150M_UR50D)"
+    type: numpy
+  - md5: null
+    size: null
+    path: results/experimental_actives_detail_cleaned_combined.csv
+    desc: "实验验证的化合物-蛋白互作数据 (经清洗去重)"
+    type: csv
+  - md5: null
+    size: null
+    path: results_v10_minibatch/graph_cache_v60.pkl
+    desc: "预构建的图数据缓存 (同质图+异质图+邻接表)"
+    type: pickle
+  - md5: null
+    size: null
+    path: ../../L3/results/tcm_compound_pool_tox_filtered_noleak.csv
+    desc: "TCM 化合物候选池 (毒性过滤+去泄漏)"
+    type: csv
+  - md5: null
+    size: null
+    path: ../../L1/results/ppi_network_supplemented.csv
+    desc: "PPI 蛋白互作网络 (96/96基因覆盖补充版)"
+    type: csv

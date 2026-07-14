@@ -1,0 +1,11 @@
+# DVC 缓存目录（不提交到 Git）
+/var/
+/tmp/
+/cache/
+
+# DVC 锁文件（自动生成）
+*.lock
+
+# DVC 临时文件
+*.tmp
+*.temp

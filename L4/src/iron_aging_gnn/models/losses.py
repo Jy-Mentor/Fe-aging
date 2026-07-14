@@ -42,7 +42,7 @@ BPR_WEIGHT = 0.4
 CPI_LOSS_WEIGHT = 0.6
 INFONCE_WEIGHT = 0.0
 INFONCE_TEMPERATURE = 0.07
-AUX_RECON_WEIGHT = 0.0
+AUX_RECON_WEIGHT = 0.05  # v70-fix: 与 default.yaml 同步，辅助重建损失已实现
 SEMANTIC_ATTN_WEIGHT = 0.0
 SEMANTIC_ATTN_TEMPERATURE = 0.5
 
@@ -532,15 +532,154 @@ def compute_auxiliary_reconstruction_loss(
 ) -> torch.Tensor:
     """计算辅助网络重建损失（trainer 接口）。
 
-    与 compute_aux_recon_loss 不同，此函数接受 trainer 传递的参数格式，
-    内部将参数转换为 compute_aux_recon_loss 所需的格式。
+    v70-fix: 修复空实现，基于真实邻接矩阵计算 PPI 边重建损失。
+    参考: DHGT-DTI (Lai et al. 2025) 多任务学习框架 — 辅助重建正则化
+          GHCDTI (Peng et al. 2025) 跨视图对比学习
+
+    Args:
+        model: 模型实例（未直接使用，保留接口兼容性）
+        prot_emb: 蛋白嵌入 [n_batch_prots, out_dim]
+        prot_local_indices: 蛋白在全局图中的节点索引列表
+        homo_adj: 同质图邻接矩阵 {'edge_index': (2, E), 'edge_weights': (E,)}
+        n_compounds: 化合物节点数
+        ppi_samples: PPI 边采样数
+        is_hetero: 是否为异质图模型
+        comp_emb: 化合物嵌入 [n_batch_comps, out_dim]（异质图模式）
+        comp_local_indices: 化合物全局索引列表（异质图模式）
+        ddi_samples: DDI 边采样数（异质图模式）
+        prot_to_path_neighbors: 蛋白-通路邻居映射（异质图模式）
+        prot_disease_samples: 蛋白-疾病边采样数（异质图模式）
+        hetero_adj: 异质图邻接矩阵 dict（异质图模式）
+        n_diseases: 疾病节点数（异质图模式）
+        disease_embed: 疾病嵌入（异质图模式）
+        pathway_samples: 通路边采样数（异质图模式）
+        drug_disease_samples: 药物-疾病边采样数（异质图模式）
 
     Returns:
-        辅助重建损失
+        辅助重建损失标量
     """
-    if AUX_RECON_WEIGHT <= 0:
-        return torch.tensor(0.0, device=prot_emb.device, dtype=prot_emb.dtype)
-    return torch.tensor(0.0, device=prot_emb.device, dtype=prot_emb.dtype)
+    device = prot_emb.device
+    dtype = prot_emb.dtype
+    zero = torch.tensor(0.0, device=device, dtype=dtype)
+
+    if prot_emb.shape[0] < 4 or prot_local_indices is None or len(prot_local_indices) < 4:
+        return zero
+
+    # 构建全局蛋白索引 -> 局部 batch 索引映射
+    global_to_local = {g: i for i, g in enumerate(prot_local_indices)}
+
+    total_loss = zero
+    active_count = 0
+
+    # ── PPI 边重建（同质图模式） ──────────────────────────────────
+    if homo_adj is not None and "edge_index" in homo_adj:
+        edge_index = homo_adj["edge_index"]
+        if edge_index.shape[1] > 0:
+            src = edge_index[0]
+            dst = edge_index[1]
+            # 筛选 PPI 边：两端均为蛋白节点（node_id >= n_compounds）
+            ppi_mask = (src >= n_compounds) & (dst >= n_compounds)
+            ppi_src = src[ppi_mask]
+            ppi_dst = dst[ppi_mask]
+            if ppi_src.shape[0] > 0:
+                # 映射到 batch 局部索引
+                ppi_local_src = []
+                ppi_local_dst = []
+                for s, d in zip(ppi_src.tolist(), ppi_dst.tolist(), strict=False):
+                    ls = global_to_local.get(s)
+                    ld = global_to_local.get(d)
+                    if ls is not None and ld is not None:
+                        ppi_local_src.append(ls)
+                        ppi_local_dst.append(ld)
+                if len(ppi_local_src) >= 4:
+                    ppi_local_src_t = torch.tensor(ppi_local_src, device=device, dtype=torch.long)
+                    ppi_local_dst_t = torch.tensor(ppi_local_dst, device=device, dtype=torch.long)
+                    ppi_loss = _compute_edge_recon_loss(
+                        prot_emb[ppi_local_src_t], prot_emb[ppi_local_dst_t], ppi_samples
+                    )
+                    if ppi_loss.item() > 0:
+                        total_loss = total_loss + ppi_loss
+                        active_count += 1
+
+    # ── 异质图模式：PPI + 通路边重建 ──────────────────────────────
+    if is_hetero and hetero_adj is not None:
+        # PPI 边（异质图）
+        ppi_key = ("protein", "ppi", "protein")
+        if ppi_key in hetero_adj:
+            ppi_ei = hetero_adj[ppi_key]
+            if ppi_ei.shape[1] > 0:
+                ppi_src, ppi_dst = ppi_ei
+                ppi_local_src = []
+                ppi_local_dst = []
+                for s, d in zip(ppi_src.tolist(), ppi_dst.tolist(), strict=False):
+                    ls = global_to_local.get(s)
+                    ld = global_to_local.get(d)
+                    if ls is not None and ld is not None:
+                        ppi_local_src.append(ls)
+                        ppi_local_dst.append(ld)
+                if len(ppi_local_src) >= 4:
+                    ppi_local_src_t = torch.tensor(ppi_local_src, device=device, dtype=torch.long)
+                    ppi_local_dst_t = torch.tensor(ppi_local_dst, device=device, dtype=torch.long)
+                    ppi_loss = _compute_edge_recon_loss(
+                        prot_emb[ppi_local_src_t], prot_emb[ppi_local_dst_t], ppi_samples
+                    )
+                    if ppi_loss.item() > 0:
+                        total_loss = total_loss + ppi_loss
+                        active_count += 1
+
+        # 通路-蛋白边重建（异质图）
+        pw_key = ("pathway", "pathway_protein", "protein")
+        if pw_key in hetero_adj and prot_to_path_neighbors is not None:
+            pw_ei = hetero_adj[pw_key]
+            if pw_ei.shape[1] > 0 and hasattr(model, "pathway_embed") and model.pathway_embed is not None:
+                pw_src, pw_dst = pw_ei
+                pw_local_src = []  # pathway embedding indices
+                pw_local_dst = []
+                for s, d in zip(pw_src.tolist(), pw_dst.tolist(), strict=False):
+                    ld = global_to_local.get(d)
+                    if ld is not None:
+                        pw_local_src.append(s)
+                        pw_local_dst.append(ld)
+                if len(pw_local_src) >= 4:
+                    pw_local_src_t = torch.tensor(pw_local_src, device=device, dtype=torch.long)
+                    pw_local_dst_t = torch.tensor(pw_local_dst, device=device, dtype=torch.long)
+                    pw_emb = model.pathway_embed(pw_local_src_t)
+                    pw_loss = _compute_edge_recon_loss(
+                        pw_emb, prot_emb[pw_local_dst_t], min(pathway_samples, len(pw_local_src))
+                    )
+                    if pw_loss.item() > 0:
+                        total_loss = total_loss + pw_loss
+                        active_count += 1
+
+        # DDI 边重建（异质图）
+        ddi_key = ("drug", "ddi", "drug")
+        if ddi_key in hetero_adj and comp_emb is not None and comp_local_indices is not None:
+            ddi_ei = hetero_adj[ddi_key]
+            if ddi_ei.shape[1] > 0:
+                ddi_src, ddi_dst = ddi_ei
+                comp_global_to_local = {g: i for i, g in enumerate(comp_local_indices)}
+                ddi_local_src = []
+                ddi_local_dst = []
+                for s, d in zip(ddi_src.tolist(), ddi_dst.tolist(), strict=False):
+                    ls = comp_global_to_local.get(s)
+                    ld = comp_global_to_local.get(d)
+                    if ls is not None and ld is not None:
+                        ddi_local_src.append(ls)
+                        ddi_local_dst.append(ld)
+                if len(ddi_local_src) >= 4:
+                    ddi_local_src_t = torch.tensor(ddi_local_src, device=device, dtype=torch.long)
+                    ddi_local_dst_t = torch.tensor(ddi_local_dst, device=device, dtype=torch.long)
+                    ddi_loss = _compute_edge_recon_loss(
+                        comp_emb[ddi_local_src_t], comp_emb[ddi_local_dst_t], ddi_samples
+                    )
+                    if ddi_loss.item() > 0:
+                        total_loss = total_loss + ddi_loss
+                        active_count += 1
+
+    if active_count == 0:
+        return zero
+
+    return total_loss / active_count
 
 
 def compute_infonce_loss(

@@ -1,6 +1,0 @@
-Dataset,Platform,Species,Data_Type,Samples,Genes/Probes,Groups
-GSE104036,GPL17021,Mouse,RNAseq_counts,27,22339,"{'Contralateral': 12, 'Ipsilateral': 12, 'Sham': 3}"
-GSE16561,GPL6883,Human,Illumina_microarray,63,24531,"{'Stroke': 39, 'Control': 24}"
-GSE37587,GPL6883,Human,Illumina_microarray_non_normalized,68,24531,{'Stroke': 68}
-GSE61616,GPL1355,Rat,Affymetrix_microarray,15,N/A,"{'Sham': 5, 'MCAO': 5, 'XST_treatment': 5}"
-GSE97537,GPL1355,Rat,Affymetrix_microarray,12,N/A,"{'MCAO': 7, 'Sham': 5}"

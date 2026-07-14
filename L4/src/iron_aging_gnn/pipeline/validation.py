@@ -685,7 +685,6 @@ def validate_simplehgn(
     device,
     score_clamp,
     hetero_adj: dict | None = None,
-    meta_path_edge_indices: dict[str, torch.Tensor] | None = None,
     neg_ratio: int = 100,
 ) -> dict[str, float]:
     """SimpleHGN 全图前向验证，委托给 validate_hgt（v62 全图版本）。
@@ -701,5 +700,4 @@ def validate_simplehgn(
         all_compound_to_pos, n_compounds, n_proteins,
         device, score_clamp,
         hetero_adj=hetero_adj,
-        meta_path_edge_indices=meta_path_edge_indices,
         neg_ratio=neg_ratio)

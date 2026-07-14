@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Phase 4 v67 MODULARIZED: Mini-Batch GNN 三分支 — 化合物冷启动候选化合物发现
+"""Phase 4 v70 MODULARIZED: Mini-Batch GNN 三分支 — 化合物冷启动候选化合物发现
 
 SAGE + HGT + SimpleHGN 三分支集成：拓扑 (SAGEConv) + 语义 (HGTConv) + 边类型感知 (SimpleHGN)，支持：
 - 两阶段迁移学习 (BiMLPA/HHI 社区感知头尾划分)
@@ -587,7 +587,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
                 logger.warning(f"CLI 覆盖项 {key} 不是全局常量，已忽略")
 
     # 动态日志文件名
-    log_parts = ["phase4_v60"]
+    log_parts = ["phase4_v70"]
     if skip_sage and skip_hgt and skip_simplehgn:
         log_parts.append("reevaluate" if reevaluate else "all_skip")
     elif skip_sage and not skip_hgt and not skip_simplehgn:
@@ -620,7 +620,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
 
     start_time = time.time()
     logger.info("=" * 60)
-    logger.info("Phase 4 v67: SAGE + HGT Mini-Batch — 工业级重构（配置系统/tqdm/GPU监控/类型注解）")
+    logger.info("Phase 4 v70: SAGE + HGT Mini-Batch — 工业级重构（配置系统/tqdm/GPU监控/类型注解）")
     logger.info("v21: 移除InfoNCE / 保留课程负采样&BPR&两阶段 / 双分支 / 蛋白冷启动")
     logger.info("v22: warm靶标扩展 / 靶标优先级加权 / zero-shot bonus")
     logger.info("v23: 铁死亡表型分类辅助任务 / 表型概率融合到composite_score")
@@ -1757,7 +1757,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
 
     total_time = time.time() - start_time
     logger.info("=" * 60)
-    logger.info(f"Phase 4 v67 完成！总耗时 {total_time / 60:.1f} 分钟")
+    logger.info(f"Phase 4 v70 完成！总耗时 {total_time / 60:.1f} 分钟")
     if sage_history:
         logger.info(f"  SAGE best val_auc: {max(h['auc'] for h in sage_history):.4f}  val_aupr: {max(h.get('aupr', 0) for h in sage_history):.4f}")
     if hgt_history:
@@ -1768,7 +1768,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Phase 4 v67: SAGE + HGT + 树模型集成训练与 TCM 预测")
+    parser = argparse.ArgumentParser(description="Phase 4 v70: SAGE + HGT + 树模型集成训练与 TCM 预测")
     parser.add_argument(
         "--decoder_type",
         type=str,

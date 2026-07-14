@@ -1,12 +1,15 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿# v67 论文驱动全面优化 (2026-07-12)
-# 基于7篇论文 (DHGT-DTI, GHCDTI, H2GnnDTI, MHGNN-DTI, HTINet2, GENNDTI, MDL-HTI)
+﻿# v70 HGT架构优化 (2026-07-14)
+# 基于文献系统性检索 + 本地架构审查
 # 核心优化:
-#   - 重新启用 InfoNCE 对比学习 (GHCDTI: 跨视图对比学习提升泛化)
-#   - 增强辅助网络重建为全6类网络 (DHGT-DTI: 重建所有网络提升预测)
-#   - 添加冷启动评估 (GHCDTI: Cold Drug/Cold Target)
-#   - 添加元路径图构建模块 (DHGT-DTI/MHGNN-DTI: 高阶语义学习)
-#   - 添加 Graph Transformer 编码器 (DHGT-DTI: 全局视角元路径学习)
-#   - 添加语义注意力机制 (GHCDTI: 跨模态对齐)
+#   - HGT: 残差连接 + LayerNorm + ReLU 替换门控机制 (SimpleHGN 对齐)
+#     参考: Chen et al. (2025) "Residual Connections Provably Mitigate Oversmoothing", arXiv:2501.00762
+#   - HGT: 启用辅助网络重建正则化 (AUX_RECON_WEIGHT 0→0.05)
+#     参考: Wang et al. (2025) "DHGT-DTI: Dual-View Heterogeneous Network", J. Pharm. Anal.
+#     修复: compute_auxiliary_reconstruction_loss 空实现 → 基于真实邻接矩阵的 PPI/通路/DDI 边重建
+#   - HGT: 预训练 LR 降低至 0.0003 (防止发散)
+#   - 保留两阶段迁移学习 + 课程负采样 + Hard-BPR + 固定 1:100 验证
+#   - 日志文件名从 v60 修正为 v70
+#   - 版本号从 v67 统一为 v70
 random_seed: 42
 compound_feature:
   use_3d_conformer: true
@@ -57,7 +60,7 @@ hgt:
   - 8
   two_stage: true
   pretrain_epochs: 40
-  pretrain_lr: 0.0005
+  pretrain_lr: 0.0003
   finetune_lr_multiplier: 0.5
   use_plateau_scheduler: true
   plateau_patience: 5
@@ -119,7 +122,7 @@ loss:
   bce_weight: 0.6
   infonce_weight: 0.0
   infonce_temperature: 0.07
-  aux_recon_weight: 0.0
+  aux_recon_weight: 0.05
   aux_recon_ppi_samples: 256
   aux_recon_pathway_samples: 128
   aux_recon_ddi_samples: 128
