@@ -1,0 +1,110 @@
+===============================================================================
+  FIGURE LEGENDS
+  铁衰老项目 — CIRI Ferroaging Multi-omics Study
+  Nature Communications / Cell Reports 格式
+===============================================================================
+
+Figure 1. Single-cell transcriptomic atlas of ferroaging in ischemic stroke.
+
+(A) Uniform Manifold Approximation and Projection (UMAP) embedding of 7,414
+single nuclei from the GSE233815 snRNA-seq dataset, colored by 25 annotated
+cell types. Cell type annotations were derived from canonical marker gene
+expression and reference-based mapping.
+
+(B) Violin plots showing the distribution of ferroaging scores
+(AddModuleScore_FA96) across cell types, stratified by condition (Ctrl, blue;
+MCAO, orange). Horizontal lines indicate medians. Statistical significance was
+determined by two-sided Wilcoxon rank-sum test. ***P < 0.001, **P < 0.01,
+*P < 0.05; NS, not significant.
+
+(C) Grouped bar chart of mean ferroaging scores +/- SEM for each cell type by
+condition. Error bars represent standard error of the mean (SEM).
+
+
+Figure 2. GNN-based compound screening and LASSO feature selection for
+CIRI-ferroaging signature identification.
+
+(A) Model performance comparison of three graph neural network architectures
+(SAGE, HGT, SimpleHGN) evaluated on the CIRI-ferroaging compound-target
+prediction task. Bars represent best area under the ROC curve (AUC, blue) and
+area under the precision-recall curve (AUPR, orange). Values are labeled above
+each bar.
+
+(B) LASSO logistic regression lollipop plot of the five CIRI-ferroaging
+signature genes (SAT1, CD74, KLF6, LIFR, EBF3). Gene names are shown on the
+y-axis. Point size corresponds to absolute Cohen's d effect size. Point fill
+color represents log2 fold change (red, upregulated in high-FA group; blue,
+downregulated in high-FA group). X-axis shows LASSO selection rate across
+repeated cross-validation.
+
+(C) Lollipop plot of the top 25 traditional Chinese medicine (TCM) compound
+candidates ranked by composite screening score. Point size indicates the
+number of CIRI-ferroaging target genes hit by each compound. Point color
+encodes the maximum individual target prediction score.
+
+(D) Scatter plot showing the TCM compound screening landscape. Each point
+represents one compound from the 517-compound TCM library. The top 15
+highest-scoring compounds are labeled. Color gradient indicates maximum
+individual target prediction score.
+
+
+Figure 3. Transcriptomic validation and network-based characterization of
+ferroaging gene signatures.
+
+(A) Boxplot showing ferroaging score distribution by experimental group in
+the GSE16561 dataset. Individual data points represent biological samples.
+The ferroaging score was computed via single-sample gene set enrichment
+analysis (ssGSEA) using the 96-gene ferroaging signature.
+
+(B) Volcano plot of differential expression analysis from the GSE61616
+dataset (MCAO vs Sham, Affymetrix Rat 230 2.0 Array). A total of 31,099
+probes were mapped to human gene symbols via the GPL1355 probe-to-gene
+annotation followed by rat-to-human ortholog conversion (HomoloGene/mygene).
+Ferroaging signature genes (n = 85/96 detected) are highlighted in red.
+Color legend: red, padj < 0.01 and |log2FC| > 1.5; blue, padj < 0.05 and
+|log2FC| > 0.8; grey, not significant. Dashed lines indicate thresholds at
+|log2FC| = 1 and adjusted P = 0.05.
+
+(C) Forest plot of external validation results across three independent
+datasets (GSE16561, GSE61616, GSE97537). Spearman correlation coefficients
+(rho) between predicted and observed ferroaging scores are shown with 95%
+confidence intervals computed via Fisher z-transform. Point size represents
+ferroaging AUC. ***P < 0.001, **P < 0.01, *P < 0.05.
+
+(D) Horizontal bar chart of the top 25 hub genes in the CIRI-ferroaging
+protein-protein interaction (PPI) network ranked by degree centrality. Bar
+fill color encodes betweenness centrality. Gene names are italicized.
+
+
+Figure 4. Chemical property landscape and microglia subcluster ferroaging
+activity.
+
+(A) Histograms showing the distribution of four key physicochemical
+properties across the 517-compound TCM screening library: molecular weight
+(MW, Da), octanol-water partition coefficient (LogP), topological polar
+surface area (TPSA, Angstrom^2), and quantitative estimate of drug-likeness
+(QED). All values were computed using RDKit.
+
+(B) Bubble plot of ferroaging activity (AddModuleScore_FA96) across five
+microglia subclusters (0-4) at four time points following MCAO: control
+(Ctrl), 1 day post-injury (1DPI), 3DPI, and 7DPI. Point size indicates the
+number of nuclei per subcluster-condition combination. Point fill color
+represents the mean ferroaging score (blue, low; white, neutral; orange,
+high).
+
+(C) Horizontal bar chart showing the overlap between beta-caryophyllene (BCP)
+target genes and CIRI-ferroaging gene sets. Gene count is labeled at the end
+of each bar. Bar fill color encodes -log10(P-value) from hypergeometric
+enrichment testing.
+
+
+METHODS SUMMARY
+---------------
+Data processing and visualization were performed using R (version 4.3.3) with
+the following packages: ggplot2 (3.5.1), patchwork, ggrepel, ggsci, viridis,
+dplyr, and readr. Single-cell analysis was conducted using Seurat (v5).
+Ferroaging scores were computed using AddModuleScore. Differential expression
+analysis was performed using limma with Benjamini-Hochberg multiple testing
+correction. LASSO logistic regression was implemented via glmnet with 10-fold
+cross-validation. GNN models (SAGE, HGT, SimpleHGN) were trained using PyTorch
+Geometric. All statistical tests were two-sided unless otherwise specified.
