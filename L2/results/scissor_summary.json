@@ -1,0 +1,16 @@
+{
+  "algorithm": "Scissor (Sun et al. 2021, Nature Biotechnology)",
+  "bulk": "GSE104036",
+  "sc": "GSE174574",
+  "phenotype": "Ferroaging ssGSEA",
+  "shared_genes": 16838,
+  "Scissor+": 150,
+  "Scissor-": 150,
+  "total_cells": 15000,
+  "top_ct_plus": [
+    "Immune",
+    "OPC",
+    "Neuron"
+  ],
+  "core_top100": 4
+}
