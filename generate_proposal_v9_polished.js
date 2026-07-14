@@ -176,20 +176,20 @@ children.push(p('基于上述国内外研究现状和本项目组前期网络药
 children.push(h2('参考文献'));
 
 const refs = [
-  '[1] Liu Z, Wang X, Li Y, et al. Ferro-aging drives primate aging via ACSL4-mediated lipid peroxidation. Cell Metabolism, 2026, 38(2): 245-262.',
+  '[1] Liu L, Zheng Z, You W, et al. Vitamin C inhibits ACSL4 to alleviate ferro-aging in primates. Cell Metab, 2026, 38(4): 673-693.',
   '[2] Monroe TB, Hertzel AV, Dickey DM, et al. Lipid peroxidation products induce carbonyl stress, mitochondrial dysfunction, and cellular senescence in human and murine cells. Aging Cell, 2025, 24(1): e14367.',
-  '[3] Hu Q, Li Y, Zhang R, et al. \u03b2-Caryophyllene protects against cerebral ischemia/reperfusion injury by activating Nrf2/HO-1 pathway in rats. Phytomedicine, 2022, 105: 154328.',
+  '[3] Hu Q, Zuo T, Deng L, et al. \u03b2-Caryophyllene suppresses ferroptosis induced by cerebral ischemia reperfusion via activation of the NRF2/HO-1 signaling pathway in MCAO/R rats. Phytomedicine, 2022, 102: 154112.',
   '[4] Dixon SJ, Lemberg KM, Lamprecht MR, et al. Ferroptosis: an iron-dependent form of nonapoptotic cell death. Cell, 2012, 149(5): 1060-1072.',
   '[5] Stockwell BR, Friedmann Angeli JP, Bayir H, et al. Ferroptosis: a regulated cell death nexus linking metabolism, redox biology, and disease. Cell, 2017, 171(2): 273-285.',
-  '[6] Tchkonia T, Zhu Y, van Deursen J, et al. Cellular senescence and the senescent secretory phenotype: therapeutic opportunities. Journal of Clinical Investigation, 2013, 123(3): 966-972.',
-  '[7] Geng Y, Li S, Gao Y, et al. The role of ferroptosis in ischemic stroke and its potential therapeutic value. Acta Pharmacologica Sinica, 2024, 45(1): 51-68.',
-  '[8] Baixauli-Mart\u00edn F, L\u00f3pez-Ot\u00edn C, Mittelbrunn M. The role of senescent cells in stroke. Nature Reviews Neurology, 2025, 21(3): 165-180.',
+  '[6] Tchkonia T, Zhu Y, van Deursen J, et al. Cellular senescence and the senescent secretory phenotype: therapeutic opportunities. J Clin Invest, 2013, 123(3): 966-972.',
+  '[7] Guo J, Tuo QZ, Lei P. Iron, ferroptosis, and ischemic stroke. J Neurochem, 2023, 165(4): 487-520.',
+  '[8] Real MGC, Falcione SR, Boghozian R, et al. Endothelial cell senescence effect on the blood-brain barrier in stroke and cognitive impairment. Neurology, 2024, 103(24): e210063.',
   '[9] Barbie DA, Tamayo P, Boehm JS, et al. Systematic RNA interference reveals that oncogenic KRAS-driven cancers require TBK1. Nature, 2009, 462(7269): 108-112.',
-  '[10] Szklarczyk D, Gable AL, Lyon D, et al. STRING v11: protein-protein association networks with increased coverage, supporting functional discovery in genome-wide experimental datasets. Nucleic Acids Research, 2019, 47(D1): D607-D613.',
-  '[11] Fang X, Wang H, Han D, et al. Ferroptosis as a target for protection against cardiomyopathy. Proceedings of the National Academy of Sciences, 2019, 116(7): 2672-2680.',
-  '[12] Zhang Y, Wang K, Zhang X, et al. Targeting Nrf2 signaling pathway by natural products for neuroprotection in ischemic stroke. Pharmacological Research, 2025, 214: 107786.',
-  '[13] Gao M, Yi J, Zhu X, et al. Role of ferroptosis in the pathogenesis and treatment of neurological diseases. Acta Pharmacologica Sinica, 2025, 46(2): 303-318.',
-  '[14] Uchida K. 4-Hydroxy-2-nonenal: a product and mediator of oxidative stress. Progress in Lipid Research, 2003, 42(4): 318-343.',
+  '[10] Szklarczyk D, Gable AL, Lyon D, et al. STRING v11: protein-protein association networks with increased coverage, supporting functional discovery in genome-wide experimental datasets. Nucleic Acids Res, 2019, 47(D1): D607-D613.',
+  '[11] Fang X, Wang H, Han D, et al. Ferroptosis as a target for protection against cardiomyopathy. Proc Natl Acad Sci U S A, 2019, 116(7): 2672-2680.',
+  '[12] Wang L, Zhang X, Xiong X, et al. Nrf2 regulates oxidative stress and its role in cerebral ischemic stroke. Antioxidants (Basel), 2022, 11(12): 2377.',
+  '[13] Tuo QZ, Lei P. Ferroptosis in ischemic stroke: animal models and mechanisms. Zool Res, 2024, 45(6): 1235-1248.',
+  '[14] Uchida K. 4-Hydroxy-2-nonenal: a product and mediator of oxidative stress. Prog Lipid Res, 2003, 42(4): 318-343.',
   '[15] Zhou Y, Tao S, Chen S, et al. Advances in ferroptosis-based therapy for aging and aging-related diseases. Chinese Journal of Comparative Medicine, 2023, 33(9): 121-131, 154.',
   '[16] Daoji J, Zhao W. Small molecule agonist targeting ErbB4 receptor inhibits neuronal senescence by regulating ferroptosis via Akt/Nrf2 pathway. Master Thesis, Jiangnan University, 2025.',
   '[17] Liu J, Chen S, Wang Y, et al. \u03b2-caryophyllene improves cerebral ischemia reperfusion injury in rats via Notch1/NF-\u03baB signal axis. Journal of Third Military Medical University, 2021, 43(2): 109-117.',
@@ -462,7 +462,7 @@ const doc = new Document({
 });
 
 Packer.toBuffer(doc).then(buffer => {
-  fs.writeFileSync('D:/铁衰老 绝不重蹈覆辙/标书_国自然标准_v9_润色精简版_桂艾BCP靶向Nrf2抑制铁依赖性SIPS改善CIRI.docx', buffer);
-  console.log('Done: proposal v9 generated');
-  console.log('File: D:/铁衰老 绝不重蹈覆辙/标书_国自然标准_v9_润色精简版_桂艾BCP靶向Nrf2抑制铁依赖性SIPS改善CIRI.docx');
+  fs.writeFileSync('D:/铁衰老 绝不重蹈覆辙/标书_国自然标准_v9_润色精简版_参考文献修正版_桂艾BCP靶向Nrf2抑制铁依赖性SIPS改善CIRI.docx', buffer);
+  console.log('Done: proposal v9 (refs revised) generated');
+  console.log('File: D:/铁衰老 绝不重蹈覆辙/标书_国自然标准_v9_润色精简版_参考文献修正版_桂艾BCP靶向Nrf2抑制铁依赖性SIPS改善CIRI.docx');
 });
