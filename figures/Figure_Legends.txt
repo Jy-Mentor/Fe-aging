@@ -108,3 +108,102 @@ analysis was performed using limma with Benjamini-Hochberg multiple testing
 correction. LASSO logistic regression was implemented via glmnet with 10-fold
 cross-validation. GNN models (SAGE, HGT, SimpleHGN) were trained using PyTorch
 Geometric. All statistical tests were two-sided unless otherwise specified.
+
+
+Figure 5. SCISSOR identification of phenotype-associated cell subpopulations
+in cerebral ischemia-reperfusion injury (CIRI).
+
+(A) Uniform Manifold Approximation and Projection (UMAP) embedding of 2,953
+single nuclei from the GSE233815 snRNA-seq dataset (7DPI condition),
+highlighting SCISSOR-selected cells associated with the bulk transcriptomic
+phenotype from GSE61616 (MCAO vs Sham, binary logistic regression). Blue
+dots represent Scissor- cells (n = 1,150) associated with the Sham phenotype;
+grey dots represent background cells (n = 1,803). The SCISSOR analysis
+integrated bulk RNA-seq (GSE61616, rat MCAO model, RMA-normalized, ortholog-
+mapped to mouse) with single-cell expression via Pearson correlation and
+L1-regularized regression (alpha = 0.05, family = binomial).
+
+(B) Cell type enrichment analysis of SCISSOR-selected cells from the Python-
+based SCISSOR analysis (GSE174574, 15,000 cells). Fold enrichment is shown
+for Scissor+ (red) and Scissor- (blue) cells relative to the background
+distribution across 8 major cell types. Dashed line indicates fold
+enrichment = 1 (no enrichment). Significance was determined by hypergeometric
+test. ***P < 0.001, **P < 0.01, *P < 0.05; NS, not significant.
+
+(C) Stacked bar chart showing the proportion of Scissor+ (red) and Scissor-
+(blue) cells within each cell type. Percentages are labeled for segments
+exceeding 5% of the total.
+
+(D) Horizontal bar chart of the top 25 differentially expressed genes between
+Scissor+ and Scissor- cells (Mann-Whitney U test). Red bars indicate genes
+upregulated in Scissor+ cells; blue bars indicate genes downregulated in
+Scissor+ cells. Gene names are italicized.
+
+(E) Histogram of SCISSOR selection frequency (bootstrap stability) for all
+cells with non-zero selection probability. The distribution shows the
+stability of cell selection across 50 bootstrap iterations.
+
+
+Figure 6. Cell-cell communication network analysis using CellChatDB.
+
+(A) Chord diagram showing the cell-cell communication network among 25 cell
+types from the GSE233815 dataset. Ribbon width represents the number of
+predicted ligand-receptor interactions between each sender-receiver pair.
+Cell types are labeled around the circumference.
+
+(B) Heatmap of total communication strength (sum of interaction probabilities)
+between each sender (rows) and receiver (columns) cell type pair. Color
+gradient from white (low) to dark blue (high). Values within cells indicate
+the summed communication probability.
+
+(C) Bubble plot showing the top 50 ligand-receptor interactions across all
+sender-receiver pairs. Point size and color both encode communication
+probability. The y-axis lists ligand-receptor pair names; the x-axis shows
+sender -> receiver cell type combinations.
+
+(D) Horizontal bar chart of the top 25 signaling pathways ranked by total
+communication probability. Bar fill color indicates the pathway annotation
+category: Secreted Signaling (red), ECM-Receptor (cyan), Cell-Cell Contact
+(green), or Non-protein Signaling (dark blue). Numbers at bar ends indicate
+the count of unique ligand-receptor pairs contributing to each pathway.
+
+
+METHODS SUMMARY (Supplementary)
+-------------------------------
+SCISSOR analysis was performed following Sun et al. (Nature Biotechnology,
+2021; PMID: 34764492). Bulk RNA-seq data (GSE61616) was RMA-normalized and
+ortholog-mapped (rat -> human -> mouse via babelgene/HomoloGene). Single-cell
+data (GSE233815) was processed using Seurat v5. The SCISSOR algorithm computes
+a Pearson correlation matrix S between bulk samples and single cells across
+shared genes, followed by sparse regression on S with the phenotype vector Y.
+The reference implementation uses network-regularized sparse regression with a
+shared nearest neighbor (SNN) graph Laplacian penalty (alpha = 0.05); in this
+study, we employed an engineering approximation using LassoCV (L1-regularized
+regression) combined with stability selection (50 bootstrap iterations,
+selection frequency threshold = 0.3) to identify Scissor+ (beta > 0) and
+Scissor- (beta < 0) cells. Cell-type enrichment was assessed by hypergeometric
+test. This approximation preserves the core sparse-selection principle of
+SCISSOR while improving computational stability; the network regularization
+term was not included.
+
+Cell-cell communication analysis was performed using the CellChatDB.mouse
+ligand-receptor database (Jin et al., Nature Communications, 2021;
+PMID: 33597522; 3,379 interactions across 229 signaling pathway families).
+Following the CellChat law-of-mass-action model, communication probability
+was computed as P = L * R, where L and R are the expression levels of ligand
+and receptor in sender and receiver cell types, respectively. For multi-subunit
+complexes, expression was computed as the arithmetic mean across subunits
+(CellChat v2 'mean' aggregation mode). Cell-type average expression was
+computed as the arithmetic mean. Note: this implementation is a simplified
+version of the full CellChat algorithm. The reference CellChat pipeline uses
+geometric mean for multi-subunit complexes after network propagation on
+STRINGdb (which projects zero-expression values to non-zero via random walk);
+without network propagation, geometric mean is too strict for sparse scRNA-seq
+data. The full CellChat algorithm additionally includes (i) trimean ensemble
+averaging [ EM = 0.5*Q2 + 0.25*(Q1+Q3) ], (ii) Hill function transformation
+(Kh = 0.5), (iii) agonist/antagonist and co-stimulatory/co-inhibitory cofactor
+modulation, and (iv) permutation testing for statistical significance
+(M = 100 permutations, P < 0.05). Interactions with probability > 0.01 were
+retained. Analysis was implemented in R using circlize (chord diagram),
+ggplot2 (heatmap, bubble plot, pathway bar chart), and patchwork (multi-panel
+composite).
