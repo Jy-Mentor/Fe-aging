@@ -435,11 +435,11 @@ ggsave(file.path(OUTDIR_PDF, "Fig2_Composite_gnn_compound_screening.pdf"),
 cat("  -> Fig2 composite saved\n")
 
 # --- Fig3: Transcriptomic Validation ---
-# Layout: (A | B) / C / D
-fig3 <- ((p3a + labs(tag = "A")) | (p3c + labs(tag = "B"))) /
-        (p3b + labs(tag = "C")) /
-        (p3d + labs(tag = "D")) +
-        plot_layout(heights = c(1, 1.4, 1.2)) &
+# Layout: (A: timeseries | B: volcano) / (C: external validation | D: PPI)
+# Fixed: original had B<->C swapped vs individual scripts & legends
+fig3 <- ((p3a + labs(tag = "A")) | (p3b + labs(tag = "B"))) /
+        ((p3c + labs(tag = "C")) | (p3d + labs(tag = "D"))) +
+        plot_layout(heights = c(1, 1.2)) &
         theme(plot.tag = element_text(face = "bold", size = 14))
 
 ggsave(file.path(OUTDIR, "Fig3_Composite_transcriptomic_validation.png"),
@@ -568,14 +568,75 @@ of each bar. Bar fill color encodes -log10(P-value) from hypergeometric
 enrichment testing.
 
 
+Figure 5. SCISSOR identification of phenotype-associated cell subpopulations
+in cerebral ischemia-reperfusion injury (CIRI).
+
+(A) UMAP embedding of single nuclei from the GSE233815 snRNA-seq dataset
+(7DPI condition), highlighting SCISSOR-selected cells associated with the
+bulk transcriptomic phenotype from GSE61616. Red dots represent Scissor+
+cells, blue dots represent Scissor- cells, and grey dots represent background
+cells. SCISSOR analysis integrated bulk RNA-seq (GSE61616, rat MCAO model)
+with single-cell expression via Pearson correlation and L1-regularized
+regression.
+
+(B) Cell type enrichment analysis of SCISSOR-selected cells. Fold enrichment
+is shown for Scissor+ (red) and Scissor- (blue) cells relative to the
+background distribution across major cell types. Dashed line indicates fold
+enrichment = 1 (no enrichment). Significance was determined by hypergeometric
+test. ***P < 0.001, **P < 0.01, *P < 0.05; NS, not significant.
+
+(C) Stacked bar chart showing the proportion of Scissor+ (red) and Scissor-
+(blue) cells within each cell type. Percentages are labeled for segments
+exceeding 5% of the total.
+
+(D) Horizontal bar chart of the top differentially expressed genes between
+Scissor+ and Scissor- cells (Mann-Whitney U test). Red bars indicate genes
+upregulated in Scissor+ cells; blue bars indicate genes downregulated in
+Scissor+ cells. Gene names are italicized.
+
+(E) Histogram of SCISSOR selection frequency (bootstrap stability) for all
+cells with non-zero selection probability. The distribution shows the
+stability of cell selection across bootstrap iterations.
+
+
+Figure 6. Cell-cell communication network analysis using CellChatDB.
+
+(A) Chord diagram showing the cell-cell communication network among cell
+types from the GSE233815 dataset. Ribbon width represents the communication
+probability between each sender-receiver pair. Cell types are labeled around
+the circumference with Nature-inspired color palette.
+
+(B) Heatmap of total communication strength (sum of interaction probabilities)
+between each sender (columns) and receiver (rows) cell type pair. Color
+gradient from white (low) to dark blue (high). Values within cells indicate
+the summed communication probability.
+
+(C) Bubble plot showing the top 50 ligand-receptor interactions aggregated
+across all sender-receiver pairs. Each point represents one ligand-receptor
+interaction. The x-axis lists the 50 most significant LR interactions;
+the y-axis shows the total communication probability (summed across all
+sender-receiver cell type pairs). Point size encodes the number of unique
+sender-receiver cell type pairs (N S-R Pairs) contributing to each interaction.
+Point color encodes log10(total communication probability + 1).
+
+(D) Horizontal bar chart of the top 25 signaling pathways ranked by total
+communication probability. Bar fill color indicates the pathway annotation
+category: Secreted Signaling (red), ECM-Receptor (cyan), Cell-Cell Contact
+(green), or Non-protein Signaling (dark blue). Numbers at bar ends indicate
+the count of unique ligand-receptor pairs contributing to each pathway.
+
+
 METHODS SUMMARY
 ---------------
 Data processing and visualization were performed using R (version 4.3.3) with
 the following packages: ggplot2 (3.5.1), patchwork, ggrepel, ggsci, viridis,
-dplyr, and readr. Single-cell analysis was conducted using Seurat (v5).
-Ferroaging scores were computed using AddModuleScore. Differential expression
-analysis was performed using limma with Benjamini-Hochberg multiple testing
-correction. LASSO logistic regression was implemented via glmnet with 10-fold
+circlize, cowplot, dplyr, and readr. Single-cell analysis was conducted using
+Seurat (v5). Ferroaging scores were computed using AddModuleScore. Differential
+expression analysis was performed using limma with Benjamini-Hochberg multiple
+testing correction. SCISSOR analysis was performed following Sun et al. (Nature
+Biotechnology, 2021). Cell-cell communication analysis was performed using the
+CellChatDB.mouse ligand-receptor database (Jin et al., Nature Communications,
+2021). LASSO logistic regression was implemented via glmnet with 10-fold
 cross-validation. GNN models (SAGE, HGT, SimpleHGN) were trained using PyTorch
 Geometric. All statistical tests were two-sided unless otherwise specified.
 '

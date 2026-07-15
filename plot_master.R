@@ -78,7 +78,9 @@ scripts <- c(
   "plot_fig1_singlecell.R",
   "plot_fig2_model_compound.R",
   "plot_fig3_de_validation.R",
-  "plot_fig4_chemistry_microglia.R"
+  "plot_fig4_chemistry_microglia.R",
+  "plot_fig5_scissor.R",
+  "plot_fig6_cellchat.R"
 )
 
 base_dir <- "d:/铁衰老 绝不重蹈覆辙"
