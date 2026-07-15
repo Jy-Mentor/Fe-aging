@@ -54,7 +54,7 @@ from iron_aging_gnn.utils.config import CompoundFeatureConfig, load_config  # no
 for d in [L4_RESULTS, L4_LOGS]:
     d.mkdir(parents=True, exist_ok=True)
 
-LOG_FILE = L4_LOGS / "phase4_v67_full_train.log"
+LOG_FILE = L4_LOGS / "phase4_v70_full_train.log"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -220,7 +220,7 @@ INFONCE_WARMUP_RATIO = _cfg.two_stage.infonce_warmup_ratio if _cfg else 0.08
 INFONCE_MEM_SAMPLE = _cfg.memory_bank.infonce_mem_sample if _cfg else 128
 INFONCE_TEMPERATURE = _cfg.loss.infonce_temperature if _cfg else 0.07
 
-# v67: 辅助网络重建损失参数（DHGT-DTI/MHGNN-DTI 风格）
+# v70: 辅助网络重建损失参数（DHGT-DTI/MHGNN-DTI 风格）
 AUX_RECON_WEIGHT = _cfg.loss.aux_recon_weight if _cfg else 0.0
 AUX_RECON_PPI_SAMPLES = _cfg.loss.aux_recon_ppi_samples if _cfg else 256
 AUX_RECON_PATHWAY_SAMPLES = _cfg.loss.aux_recon_pathway_samples if _cfg else 128
@@ -231,13 +231,13 @@ AUX_RECON_DRUG_SIDE_EFFECT_SAMPLES = _cfg.loss.aux_recon_drug_side_effect_sample
 SEMANTIC_ATTN_WEIGHT = _cfg.loss.semantic_attn_weight if _cfg else 0.0
 SEMANTIC_ATTN_TEMPERATURE = _cfg.loss.semantic_attn_temperature if _cfg else 0.5
 
-# v67: 冷启动评估参数（GHCDTI 风格）
+# v70: 冷启动评估参数（GHCDTI 风格）
 ENABLE_COLD_DRUG_EVAL = _cfg.validation.enable_cold_drug_eval if _cfg else False
 ENABLE_COLD_TARGET_EVAL = _cfg.validation.enable_cold_target_eval if _cfg else False
 COLD_DRUG_SPLIT_RATIO = _cfg.validation.cold_drug_split_ratio if _cfg else 0.2
 COLD_TARGET_SPLIT_RATIO = _cfg.validation.cold_target_split_ratio if _cfg else 0.2
 
-# v67: 元路径与 Graph Transformer 配置
+# v70: 元路径与 Graph Transformer 配置
 META_PATH_ENABLED = _cfg.meta_path.enabled if _cfg else False
 GT_ENABLED = _cfg.graph_transformer.enabled if _cfg else False
 # v69: CrossModalGatedFusion 配置
@@ -288,7 +288,7 @@ RDKIT_DESCRIPTOR_NAMES = [
     "RingCount", "FractionCSP3", "BalabanJ",
 ]
 ECFP4_NBITS = 2048
-# v67 module imports — 所有功能从 iron_aging_gnn 包模块导入
+# v70 module imports — 所有功能从 iron_aging_gnn 包模块导入
 from iron_aging_gnn.data.features import build_compound_features, load_protein_features, FeatureCache  # noqa: E402
 from iron_aging_gnn.data.loader import load_cpi_data, load_ppi_network, load_kegg_pathways, load_tcm_pool  # noqa: E402
 from iron_aging_gnn.data.self_check import pipeline_self_check  # noqa: E402
@@ -300,7 +300,7 @@ from iron_aging_gnn.pipeline.validation import validate_sage, validate_hgt, vali
 from iron_aging_gnn.pipeline.prediction import predict_tcm  # noqa: E402
 
 # ============================================================================
-# v67 Wrappers -- pass global constants to module functions
+# v70 Wrappers -- pass global constants to module functions
 # ============================================================================
 
 def _get_prot_feat_dim(prot_feat):
@@ -372,9 +372,9 @@ def _check_gradient_norm(model, warn_threshold=100.0):
     return check_gradient_norm(model, warn_threshold)
 
 
-_compute_cpi_loss = compute_cpi_loss  # v67: trainer passes all args as kwargs, no wrapper needed
+_compute_cpi_loss = compute_cpi_loss  # v70: trainer passes all args as kwargs, no wrapper needed
 
-_compute_auxiliary_reconstruction_loss = compute_auxiliary_reconstruction_loss  # v67: trainer passes all args as kwargs
+_compute_auxiliary_reconstruction_loss = compute_auxiliary_reconstruction_loss  # v70: trainer passes all args as kwargs
 # -- Kept local functions --
 
 def _check_tensor_nan(tensor: torch.Tensor, name: str = "tensor") -> bool:
@@ -742,9 +742,9 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
         logger.warning(f">>> 以下铁衰老96基因缺少ESM-2特征: {missing_ferro_in_prot_feat}")
 
     # 图数据缓存路径与缓存键（修复 HGT 化合物冷启动验证信息泄漏）
-    GRAPH_CACHE_PATH = L4_RESULTS / "graph_cache_v67.pkl"
+    GRAPH_CACHE_PATH = L4_RESULTS / "graph_cache_v70.pkl"
     GRAPH_CACHE_KEY = {
-        "version": "v60",
+        "version": "v70",
         "random_seed": RANDOM_SEED,
         "compound_val_split": COMPOUND_VAL_SPLIT,
         "protein_val_split": PROTEIN_VAL_SPLIT,
@@ -781,7 +781,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             logger.warning(f"  加载图数据缓存失败: {_e}，重新构建")
 
     if not _cache_loaded:
-        # v67: 化合物特征缓存管理器
+        # v70: 化合物特征缓存管理器
         compound_cfg = _cfg.compound_feature if _cfg else CompoundFeatureConfig()
         if compound_cfg.enable_cache:
             compound_feature_cache = FeatureCache(
@@ -1009,7 +1009,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             DECODER_TYPE = "bilinear"
             residue_embeddings = None
 
-    sage_model_path = L4_RESULTS / "sage_best_v67.pt"
+    sage_model_path = L4_RESULTS / "sage_best_v70.pt"
     if skip_sage and sage_model_path.exists():
         logger.info(f">>> 跳过 SAGE 训练，加载已有模型: {sage_model_path}")
         sage_model = SAGELinkPredictor(
@@ -1097,8 +1097,8 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
 
     try:
         L4_RESULTS.mkdir(parents=True, exist_ok=True)
-        torch.save({"state_dict": sage_model.state_dict(), "version": "v60", "hidden_dim": SAGE_HIDDEN_DIM, "out_dim": SAGE_OUT_DIM}, L4_RESULTS / "sage_best_v67.pt")
-        logger.info("  SAGE 模型已保存到 sage_best_v67.pt")
+        torch.save({"state_dict": sage_model.state_dict(), "version": "v70", "hidden_dim": SAGE_HIDDEN_DIM, "out_dim": SAGE_OUT_DIM}, L4_RESULTS / "sage_best_v70.pt")
+        logger.info("  SAGE 模型已保存到 sage_best_v70.pt")
     except Exception:
         logger.error("  SAGE 模型保存失败", exc_info=True)
         raise
@@ -1129,7 +1129,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
     else:
         logger.info(f">>> 训练 HGT（v60: HGTConv + {DECODER_TYPE} + 两阶段迁移学习 + FocalLoss + 课程负采样）")
         _log_gpu_memory("HGT 训练前")
-    hgt_model_path = L4_RESULTS / "hgt_best_v67.pt"
+    hgt_model_path = L4_RESULTS / "hgt_best_v70.pt"
     if skip_hgt and hgt_model_path.exists():
         logger.info(f">>> 跳过 HGT 训练，加载已有模型: {hgt_model_path}")
         hgt_node_feat_dims = {
@@ -1239,8 +1239,8 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
 
         try:
             L4_RESULTS.mkdir(parents=True, exist_ok=True)
-            torch.save({"state_dict": hgt_model.state_dict(), "version": "v60", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "hgt_best_v67.pt")
-            logger.info("  HGT 模型已保存到 hgt_best_v67.pt")
+            torch.save({"state_dict": hgt_model.state_dict(), "version": "v70", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "hgt_best_v70.pt")
+            logger.info("  HGT 模型已保存到 hgt_best_v70.pt")
         except Exception:
             logger.error("  HGT 模型保存失败", exc_info=True)
             raise
@@ -1260,7 +1260,7 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
     else:
         logger.info(f">>> 训练 SimpleHGN（HeteroConv + GATv2Conv + {DECODER_TYPE} + 两阶段迁移学习 + FocalLoss + 课程负采样）")
         _log_gpu_memory("SimpleHGN 训练前")
-    simplehgn_model_path = L4_RESULTS / "simplehgn_best_v67.pt"
+    simplehgn_model_path = L4_RESULTS / "simplehgn_best_v70.pt"
     if skip_simplehgn and simplehgn_model_path.exists():
         logger.info(f">>> 跳过 SimpleHGN 训练，加载已有模型: {simplehgn_model_path}")
         simplehgn_node_feat_dims = {
@@ -1370,8 +1370,8 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
 
         try:
             L4_RESULTS.mkdir(parents=True, exist_ok=True)
-            torch.save({"state_dict": simplehgn_model.state_dict(), "version": "v60", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "simplehgn_best_v67.pt")
-            logger.info("  SimpleHGN 模型已保存到 simplehgn_best_v67.pt")
+            torch.save({"state_dict": simplehgn_model.state_dict(), "version": "v70", "hidden_dim": HIDDEN_DIM, "out_dim": OUT_DIM}, L4_RESULTS / "simplehgn_best_v70.pt")
+            logger.info("  SimpleHGN 模型已保存到 simplehgn_best_v70.pt")
         except Exception:
             logger.error("  SimpleHGN 模型保存失败", exc_info=True)
             raise
@@ -1709,10 +1709,10 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
     top_df = pred_df.head(TOP_N_CANDIDATES).copy()
 
     try:
-        pred_df.to_csv(L4_RESULTS / "tcm_predictions_full_v67.csv", index=False)
-        top_df.to_csv(L4_RESULTS / "tcm_top_candidates_v67.csv", index=False)
-        logger.info(f"  预测结果已保存: tcm_predictions_full_v67.csv ({len(pred_df)} 行), "
-                    f"tcm_top_candidates_v67.csv ({len(top_df)} 行)")
+        pred_df.to_csv(L4_RESULTS / "tcm_predictions_full_v70.csv", index=False)
+        top_df.to_csv(L4_RESULTS / "tcm_top_candidates_v70.csv", index=False)
+        logger.info(f"  预测结果已保存: tcm_predictions_full_v70.csv ({len(pred_df)} 行), "
+                    f"tcm_top_candidates_v70.csv ({len(top_df)} 行)")
     except Exception:
         logger.error("  预测结果 CSV 保存失败", exc_info=True)
         raise
@@ -1749,8 +1749,8 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
         perf_rows.append(simplehgn_row)
     if perf_rows:
         try:
-            pd.DataFrame(perf_rows).to_csv(L4_RESULTS / "model_performance_v67.csv", index=False)
-            logger.info(f"  模型性能报告已保存: model_performance_v67.csv (训练时间={train_time_min:.1f}min, GPU峰值={gpu_mem_peak_gb:.2f}GB)")
+            pd.DataFrame(perf_rows).to_csv(L4_RESULTS / "model_performance_v70.csv", index=False)
+            logger.info(f"  模型性能报告已保存: model_performance_v70.csv (训练时间={train_time_min:.1f}min, GPU峰值={gpu_mem_peak_gb:.2f}GB)")
         except Exception:
             logger.error("  模型性能 CSV 保存失败", exc_info=True)
             raise

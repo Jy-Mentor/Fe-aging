@@ -201,49 +201,41 @@ def build_train_safe_hetero_adj(
     val_comp_set: set,
     val_prot_set: set | None = None,
 ) -> dict:
-    """v18: 构建训练安全异质邻接表
+    """v70-fix: 构建训练安全异质邻接表（通用化过滤）
 
-    从训练图中彻底移除验证集化合物/蛋白相关的所有异质边。
+    从训练图中彻底移除验证集化合物/蛋白相关的所有异质边，
+    确保冷启动验证的严格性（inductive setting）。
+
+    通用过滤规则（基于边类型的源/目标节点类型）：
+      - 源类型为 compound 且 src ∈ val_comp_set → 移除整条源记录
+      - 源类型为 protein  且 src ∈ val_prot_set → 移除整条源记录
+      - 目标类型为 compound 且 dst ∈ val_comp_set → 移除该目标
+      - 目标类型为 protein  且 dst ∈ val_prot_set → 移除该目标
+      - pathway / disease 节点不属于验证集，不过滤
+
+    参考:
+      - PyG RandomLinkSplit transform (inductive setting)
+      - GBAN-DA (Lv et al. 2026, PMID:41687302) "rigorous cold pair splits"
+      - CFM-DTI (Li et al. 2026, PMID:42341701) ESM2 + GNN 冷启动评估
     """
+    val_prot_set = val_prot_set or set()
     train_adj = {}
     for et, adj in hetero_adj.items():
+        src_type, _rel, dst_type = et
         new_adj = defaultdict(list)
         for src, dsts in adj.items():
-            if et == ("compound", "interacts", "protein"):
-                if src in val_comp_set:
+            # 源端过滤
+            if src_type == "compound" and src in val_comp_set:
+                continue
+            if src_type == "protein" and src in val_prot_set:
+                continue
+            # 目标端过滤
+            for dst in dsts:
+                if dst_type == "compound" and dst in val_comp_set:
                     continue
-                for dst in dsts:
-                    if val_prot_set is None or dst not in val_prot_set:
-                        new_adj[src].append(dst)
-            elif et == ("protein", "ppi", "protein"):
-                if val_prot_set is not None and src in val_prot_set:
+                if dst_type == "protein" and dst in val_prot_set:
                     continue
-                for dst in dsts:
-                    if val_prot_set is None or dst not in val_prot_set:
-                        new_adj[src].append(dst)
-            elif et == ("protein", "belongs_to", "pathway"):
-                if val_prot_set is not None and src in val_prot_set:
-                    continue
-                for dst in dsts:
-                    new_adj[src].append(dst)
-            elif et == ("protein", "associated_with", "disease"):
-                # v24: 验证蛋白的疾病边需移除（冷启动隔离）
-                if val_prot_set is not None and src in val_prot_set:
-                    continue
-                for dst in dsts:
-                    new_adj[src].append(dst)
-            elif et == ("disease", "involves", "protein"):
-                # v25-fix: 疾病反向边也需过滤验证蛋白，防止冷启动信息泄漏
-                if val_prot_set is None:
-                    new_adj[src].extend(dsts)
-                else:
-                    for dst in dsts:
-                        if dst not in val_prot_set:
-                            new_adj[src].append(dst)
-            else:
-                # v25-fix: 未知边类型不应静默处理，添加日志警告便于追踪图结构变更
-                logger.warning(f"  build_train_safe_hetero_adj: 未知边类型 {et}，未做验证集过滤，直接保留所有边")
-                new_adj[src].extend(dsts)
+                new_adj[src].append(dst)
         train_adj[et] = new_adj
     return train_adj
 

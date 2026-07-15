@@ -19,13 +19,9 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING
 
 import torch
 import torch.nn.functional as F
-
-if TYPE_CHECKING:
-    from torch_geometric.data import HeteroData
 
 logger = logging.getLogger(__name__)
 
@@ -106,121 +102,6 @@ def _compute_edge_recon_loss(
     )
 
     return (pos_loss + neg_loss) / 2
-
-
-def compute_aux_recon_loss(
-    model: torch.nn.Module,
-    data: HeteroData,
-    comp_emb: torch.Tensor,
-    prot_emb: torch.Tensor,
-    device: torch.device,
-    aux_loss_config: dict | None = None,
-) -> torch.Tensor:
-    """计算辅助网络重建损失。
-
-    重建 6 类网络拓扑结构，增强嵌入的语义一致性。
-    参考: DHGT-DTI (Lai et al. 2025) 多任务学习框架
-
-    Args:
-        model: 模型实例（用于获取嵌入）
-        data: 异质图数据
-        comp_emb: 化合物嵌入 [n_compounds, out_dim]
-        prot_emb: 蛋白嵌入 [n_proteins, out_dim]
-        device: 计算设备
-        aux_loss_config: 辅助损失配置字典，可选字段见默认值
-
-    Returns:
-        加权后的总辅助重建损失
-    """
-    cfg = {
-        "ppi_samples": 256,
-        "pathway_samples": 128,
-        "ddi_samples": 128,
-        "drug_disease_samples": 128,
-        "protein_disease_samples": 128,
-        "drug_side_effect_samples": 128,
-    }
-    if aux_loss_config:
-        cfg.update(aux_loss_config)
-
-    total_loss = torch.tensor(0.0, device=device, dtype=comp_emb.dtype)
-    active_count = 0
-
-    # 1. PPI 重建
-    if hasattr(data, "protein", "ppi") and data["protein", "ppi", "protein"].edge_index.shape[1] > 0:
-        edge_idx = data["protein", "ppi", "protein"].edge_index
-        src, dst = edge_idx
-        ppi_loss = _compute_edge_recon_loss(prot_emb[src], prot_emb[dst], cfg["ppi_samples"])
-        if ppi_loss.item() > 0:
-            total_loss = total_loss + ppi_loss
-            active_count += 1
-
-    # 2. 通路-蛋白重建
-    if hasattr(data, "pathway", "pathway_protein") and data["pathway", "pathway_protein", "protein"].edge_index.shape[1] > 0:
-        if hasattr(model, "pathway_emb") and model.pathway_emb is not None:
-            edge_idx = data["pathway", "pathway_protein", "protein"].edge_index
-            src, dst = edge_idx
-            pathway_emb = model.pathway_emb.weight
-            pw_loss = _compute_edge_recon_loss(
-                pathway_emb[src], prot_emb[dst], cfg["pathway_samples"]
-            )
-            if pw_loss.item() > 0:
-                total_loss = total_loss + pw_loss
-                active_count += 1
-
-    # 3. DDI 重建
-    if (hasattr(data, "drug", "ddi") and data["drug", "ddi", "drug"].edge_index.shape[1] > 0):
-        edge_idx = data["drug", "ddi", "drug"].edge_index
-        src, dst = edge_idx
-        ddi_loss = _compute_edge_recon_loss(comp_emb[src], comp_emb[dst], cfg["ddi_samples"])
-        if ddi_loss.item() > 0:
-            total_loss = total_loss + ddi_loss
-            active_count += 1
-
-    # 4. Drug-Disease 重建
-    if (hasattr(data, "drug", "drug_disease") and data["drug", "drug_disease", "disease"].edge_index.shape[1] > 0):
-        if hasattr(model, "disease_emb") and model.disease_emb is not None:
-            edge_idx = data["drug", "drug_disease", "disease"].edge_index
-            src, dst = edge_idx
-            disease_emb = model.disease_emb.weight
-            dd_loss = _compute_edge_recon_loss(
-                comp_emb[src], disease_emb[dst], cfg["drug_disease_samples"]
-            )
-            if dd_loss.item() > 0:
-                total_loss = total_loss + dd_loss
-                active_count += 1
-
-    # 5. Protein-Disease 重建
-    if (hasattr(data, "protein", "protein_disease") and data["protein", "protein_disease", "disease"].edge_index.shape[1] > 0):
-        if hasattr(model, "disease_emb") and model.disease_emb is not None:
-            edge_idx = data["protein", "protein_disease", "disease"].edge_index
-            src, dst = edge_idx
-            disease_emb = model.disease_emb.weight
-            pd_loss = _compute_edge_recon_loss(
-                prot_emb[src], disease_emb[dst], cfg["protein_disease_samples"]
-            )
-            if pd_loss.item() > 0:
-                total_loss = total_loss + pd_loss
-                active_count += 1
-
-    # 6. Drug-SideEffect 重建
-    if (hasattr(data, "drug", "drug_side_effect") and data["drug", "drug_side_effect", "sideeffect"].edge_index.shape[1] > 0):
-        if hasattr(model, "side_effect_emb") and model.side_effect_emb is not None:
-            edge_idx = data["drug", "drug_side_effect", "sideeffect"].edge_index
-            src, dst = edge_idx
-            se_emb = model.side_effect_emb.weight
-            dse_loss = _compute_edge_recon_loss(
-                comp_emb[src], se_emb[dst], cfg["drug_side_effect_samples"]
-            )
-            if dse_loss.item() > 0:
-                total_loss = total_loss + dse_loss
-                active_count += 1
-
-    if active_count == 0:
-        logger.debug("  无辅助网络需要重建")
-        return torch.tensor(0.0, device=device, dtype=comp_emb.dtype)
-
-    return total_loss / active_count
 
 
 # ─── 语义注意力损失 ───────────────────────────────────────────────
@@ -572,46 +453,64 @@ def compute_auxiliary_reconstruction_loss(
     active_count = 0
 
     # ── PPI 边重建（同质图模式） ──────────────────────────────────
-    if homo_adj is not None and "edge_index" in homo_adj:
-        edge_index = homo_adj["edge_index"]
-        if edge_index.shape[1] > 0:
-            src = edge_index[0]
-            dst = edge_index[1]
-            # 筛选 PPI 边：两端均为蛋白节点（node_id >= n_compounds）
-            ppi_mask = (src >= n_compounds) & (dst >= n_compounds)
-            ppi_src = src[ppi_mask]
-            ppi_dst = dst[ppi_mask]
-            if ppi_src.shape[0] > 0:
-                # 映射到 batch 局部索引
-                ppi_local_src = []
-                ppi_local_dst = []
-                for s, d in zip(ppi_src.tolist(), ppi_dst.tolist(), strict=False):
-                    ls = global_to_local.get(s)
-                    ld = global_to_local.get(d)
-                    if ls is not None and ld is not None:
-                        ppi_local_src.append(ls)
-                        ppi_local_dst.append(ld)
-                if len(ppi_local_src) >= 4:
-                    ppi_local_src_t = torch.tensor(ppi_local_src, device=device, dtype=torch.long)
-                    ppi_local_dst_t = torch.tensor(ppi_local_dst, device=device, dtype=torch.long)
-                    ppi_loss = _compute_edge_recon_loss(
-                        prot_emb[ppi_local_src_t], prot_emb[ppi_local_dst_t], ppi_samples
-                    )
-                    if ppi_loss.item() > 0:
-                        total_loss = total_loss + ppi_loss
-                        active_count += 1
+    # v70-fix: homo_adj 实际是 defaultdict(list) {node_idx: [neighbor_idx, ...]}
+    # 旧代码假设 dict 含 "edge_index" 张量键，导致该分支永远不进入（静默跳过 PPI 重建）
+    # 修复：按 defaultdict(list) 邻接表格式遍历，筛选两端均为蛋白节点（idx >= n_compounds）的边
+    if homo_adj is not None and not is_hetero:
+        ppi_local_src = []
+        ppi_local_dst = []
+        for src_node, dsts in homo_adj.items():
+            if src_node < n_compounds:
+                continue  # 源是化合物节点，跳过
+            ls = global_to_local.get(src_node)
+            if ls is None:
+                continue
+            for dst_node in dsts:
+                if dst_node < n_compounds:
+                    continue  # 目标是化合物节点，跳过
+                ld = global_to_local.get(dst_node)
+                if ld is not None:
+                    ppi_local_src.append(ls)
+                    ppi_local_dst.append(ld)
+        if len(ppi_local_src) >= 4:
+            ppi_local_src_t = torch.tensor(ppi_local_src, device=device, dtype=torch.long)
+            ppi_local_dst_t = torch.tensor(ppi_local_dst, device=device, dtype=torch.long)
+            ppi_loss = _compute_edge_recon_loss(
+                prot_emb[ppi_local_src_t], prot_emb[ppi_local_dst_t], ppi_samples
+            )
+            if ppi_loss.item() > 0:
+                total_loss = total_loss + ppi_loss
+                active_count += 1
 
-    # ── 异质图模式：PPI + 通路边重建 ──────────────────────────────
+    # ── 异质图模式：PPI + 通路 + 化合物相似性边重建 ───────────────
+    # v70-fix: hetero_adj 是 dict[str, defaultdict(list)] 邻接表格式
+    #   hetero_adj[et_key] = {src_idx: [dst_idx, ...]}
+    #   NOT tensor — 旧代码访问 .shape[1] 导致 AttributeError 崩溃
+    # 同时修正边类型键名：
+    #   ("pathway", "pathway_protein", "protein") → ("pathway", "includes", "protein")
+    #   ("drug", "ddi", "drug")                   → ("compound", "similar_to", "compound")
+    # 与 graph/build.py 中实际键名保持一致
     if is_hetero and hetero_adj is not None:
-        # PPI 边（异质图）
+        # 异质图邻接表中蛋白索引已为局部索引（0 ~ n_proteins-1），
+        # 化合物索引为全局索引（0 ~ n_compounds-1），与 build.py 一致
+        def _flatten_adj(adj_dict):
+            """将 defaultdict(list) {src: [dst, ...]} 展平为 (src_list, dst_list)"""
+            src_list, dst_list = [], []
+            for s, dsts in adj_dict.items():
+                for d in dsts:
+                    src_list.append(s)
+                    dst_list.append(d)
+            return src_list, dst_list
+
+        # PPI 边重建（异质图）
         ppi_key = ("protein", "ppi", "protein")
-        if ppi_key in hetero_adj:
-            ppi_ei = hetero_adj[ppi_key]
-            if ppi_ei.shape[1] > 0:
-                ppi_src, ppi_dst = ppi_ei
+        ppi_adj = hetero_adj.get(ppi_key)
+        if ppi_adj:
+            ppi_src, ppi_dst = _flatten_adj(ppi_adj)
+            if len(ppi_src) >= 4:
                 ppi_local_src = []
                 ppi_local_dst = []
-                for s, d in zip(ppi_src.tolist(), ppi_dst.tolist(), strict=False):
+                for s, d in zip(ppi_src, ppi_dst, strict=False):
                     ls = global_to_local.get(s)
                     ld = global_to_local.get(d)
                     if ls is not None and ld is not None:
@@ -628,14 +527,14 @@ def compute_auxiliary_reconstruction_loss(
                         active_count += 1
 
         # 通路-蛋白边重建（异质图）
-        pw_key = ("pathway", "pathway_protein", "protein")
-        if pw_key in hetero_adj and prot_to_path_neighbors is not None:
-            pw_ei = hetero_adj[pw_key]
-            if pw_ei.shape[1] > 0 and hasattr(model, "pathway_embed") and model.pathway_embed is not None:
-                pw_src, pw_dst = pw_ei
-                pw_local_src = []  # pathway embedding indices
-                pw_local_dst = []
-                for s, d in zip(pw_src.tolist(), pw_dst.tolist(), strict=False):
+        pw_key = ("pathway", "includes", "protein")
+        pw_adj = hetero_adj.get(pw_key)
+        if pw_adj and hasattr(model, "pathway_embed") and model.pathway_embed is not None:
+            pw_src, pw_dst = _flatten_adj(pw_adj)
+            if len(pw_src) >= 4:
+                pw_local_src = []  # pathway indices (0 ~ n_pathways-1)
+                pw_local_dst = []  # batch-local protein indices
+                for s, d in zip(pw_src, pw_dst, strict=False):
                     ld = global_to_local.get(d)
                     if ld is not None:
                         pw_local_src.append(s)
@@ -651,16 +550,17 @@ def compute_auxiliary_reconstruction_loss(
                         total_loss = total_loss + pw_loss
                         active_count += 1
 
-        # DDI 边重建（异质图）
-        ddi_key = ("drug", "ddi", "drug")
-        if ddi_key in hetero_adj and comp_emb is not None and comp_local_indices is not None:
-            ddi_ei = hetero_adj[ddi_key]
-            if ddi_ei.shape[1] > 0:
-                ddi_src, ddi_dst = ddi_ei
+        # 化合物-化合物相似性边重建（异质图）
+        # v70-fix: 实际键名是 ("compound", "similar_to", "compound")，不是 ("drug", "ddi", "drug")
+        ddi_key = ("compound", "similar_to", "compound")
+        ddi_adj = hetero_adj.get(ddi_key)
+        if ddi_adj and comp_emb is not None and comp_local_indices is not None:
+            ddi_src, ddi_dst = _flatten_adj(ddi_adj)
+            if len(ddi_src) >= 4:
                 comp_global_to_local = {g: i for i, g in enumerate(comp_local_indices)}
                 ddi_local_src = []
                 ddi_local_dst = []
-                for s, d in zip(ddi_src.tolist(), ddi_dst.tolist(), strict=False):
+                for s, d in zip(ddi_src, ddi_dst, strict=False):
                     ls = comp_global_to_local.get(s)
                     ld = comp_global_to_local.get(d)
                     if ls is not None and ld is not None:
@@ -737,6 +637,6 @@ __all__ = [
     "TEMPERATURE", "BPR_WEIGHT", "CPI_LOSS_WEIGHT", "INFONCE_WEIGHT",
     "AUX_RECON_WEIGHT", "SEMANTIC_ATTN_WEIGHT", "SEMANTIC_ATTN_TEMPERATURE",
     "focal_loss_with_logits", "compute_cpi_loss", "compute_infonce_loss",
-    "compute_aux_recon_loss", "compute_auxiliary_reconstruction_loss",
+    "compute_auxiliary_reconstruction_loss",
     "compute_semantic_attention_loss",
 ]

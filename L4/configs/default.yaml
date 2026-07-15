@@ -1,4 +1,4 @@
-﻿# v70 HGT架构优化 (2026-07-14)
+# v70 HGT架构优化 (2026-07-14)
 # 基于文献系统性检索 + 本地架构审查
 # 核心优化:
 #   - HGT: 残差连接 + LayerNorm + ReLU 替换门控机制 (SimpleHGN 对齐)
@@ -61,7 +61,11 @@ hgt:
   two_stage: true
   pretrain_epochs: 40
   pretrain_lr: 0.0003
-  finetune_lr_multiplier: 0.5
+  # v70-fix: finetune_lr_multiplier 0.5→0.3
+  # 原因: finetune_lr = lr × multiplier = 0.001 × 0.5 = 0.0005 > pretrain_lr = 0.0003
+  # 违反迁移学习原则，导致 HGT finetune AUPR 震荡 (0.6785→0.1869)
+  # 修复后 finetune_lr = 0.001 × 0.3 = 0.0003 = pretrain_lr
+  finetune_lr_multiplier: 0.3
   use_plateau_scheduler: true
   plateau_patience: 5
   plateau_factor: 0.5
