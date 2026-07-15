@@ -168,6 +168,10 @@ FINETUNE_LR_MULTIPLIER_HGT = _cfg.hgt.finetune_lr_multiplier if _cfg else 0.5
 USE_PLATEAU_SCHEDULER_HGT = _cfg.hgt.use_plateau_scheduler if _cfg else True
 PLATEAU_PATIENCE_HGT = _cfg.hgt.plateau_patience if _cfg else 2
 PLATEAU_FACTOR_HGT = _cfg.hgt.plateau_factor if _cfg else 0.5
+FINETUNE_LR_MULTIPLIER_SIMPLEHGN = _cfg.simplehgn.finetune_lr_multiplier if _cfg else 0.5
+USE_PLATEAU_SCHEDULER_SIMPLEHGN = _cfg.simplehgn.use_plateau_scheduler if _cfg else True
+PLATEAU_PATIENCE_SIMPLEHGN = _cfg.simplehgn.plateau_patience if _cfg else 2
+PLATEAU_FACTOR_SIMPLEHGN = _cfg.simplehgn.plateau_factor if _cfg else 0.5
 WEIGHT_DECAY = _cfg.training.weight_decay if _cfg else 1e-4
 GRAD_CLIP_NORM = _cfg.training.grad_clip_norm if _cfg else 1.0
 WARMUP_RATIO = _cfg.training.warmup_ratio if _cfg else 0.10
@@ -1352,10 +1356,10 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             head_ratio=HEAD_RATIO, lambda_hhi=LAMBDA_HHI, head_undersample_ratio=HEAD_UNDERSAMPLE_RATIO,
             grad_clip_norm=GRAD_CLIP_NORM,
             pretrain_lr_multiplier=PRETRAIN_LR_MULTIPLIER, pretrain_lr_decay=PRETRAIN_LR_DECAY,
-            finetune_lr_multiplier=FINETUNE_LR_MULTIPLIER_HGT,
-            use_plateau_scheduler=USE_PLATEAU_SCHEDULER_HGT,
-            plateau_patience=PLATEAU_PATIENCE_HGT,
-            plateau_factor=PLATEAU_FACTOR_HGT,
+            finetune_lr_multiplier=FINETUNE_LR_MULTIPLIER_SIMPLEHGN,
+            use_plateau_scheduler=USE_PLATEAU_SCHEDULER_SIMPLEHGN,
+            plateau_patience=PLATEAU_PATIENCE_SIMPLEHGN,
+            plateau_factor=PLATEAU_FACTOR_SIMPLEHGN,
             use_topology_neg=USE_TOPOLOGY_NEG,
             _validate_simplehgn_fn=_validate_simplehgn,
             _compute_cpi_loss_fn=_compute_cpi_loss,

@@ -156,6 +156,9 @@ class SimpleHgnConfig(BaseModel):
         default=0.5, gt=0.0, le=1.0,
         description="微调阶段初始学习率相对于主学习率的倍数",
     )
+    use_plateau_scheduler: bool = Field(default=True, description="微调阶段是否使用 ReduceLROnPlateau")
+    plateau_patience: int = Field(default=5, ge=1, description="Plateau 调度器耐心值")
+    plateau_factor: float = Field(default=0.5, gt=0.0, lt=1.0, description="Plateau 调度器衰减因子")
 
 
 class TwoStageConfig(BaseModel):
