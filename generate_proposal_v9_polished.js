@@ -191,9 +191,9 @@ const refs = [
   '[13] Tuo QZ, Lei P. Ferroptosis in ischemic stroke: animal models and mechanisms. Zool Res, 2024, 45(6): 1235-1248.',
   '[14] Uchida K. 4-Hydroxy-2-nonenal: a product and mediator of oxidative stress. Prog Lipid Res, 2003, 42(4): 318-343.',
   '[15] Zhou Y, Tao S, Chen S, et al. Advances in ferroptosis-based therapy for aging and aging-related diseases. Chinese Journal of Comparative Medicine, 2023, 33(9): 121-131, 154.',
-  '[16] Daoji J, Zhao W. Small molecule agonist targeting ErbB4 receptor inhibits neuronal senescence by regulating ferroptosis via Akt/Nrf2 pathway. Master Thesis, Jiangnan University, 2025.',
+  '[16] Dao JJ, Zhang W, Liu C, et al. Targeted ErbB4 receptor activation prevents D-galactose-induced neuronal senescence via inhibiting ferroptosis pathway. Front Pharmacol, 2025, 16: 1528604.',
   '[17] Liu J, Chen S, Wang Y, et al. \u03b2-caryophyllene improves cerebral ischemia reperfusion injury in rats via Notch1/NF-\u03baB signal axis. Journal of Third Military Medical University, 2021, 43(2): 109-117.',
-  '[18] Zuo T, Dong Z. \u03b2-Caryophyllene alleviates cerebral ischemia-reperfusion injury in rats by activating HSF1/HSP70 signaling pathway. Master Thesis, Chongqing Medical University, 2022.',
+  '[18] Zuo TR, Hu QW, Liu JD, et al. \u03b2-Caryophyllene reduces cerebral ischemia-reperfusion injury in rats by activating HSF1/HSP70 pathway. Chinese Journal of New Drugs, 2023, 32(5): 562-570.',
   '[19] Liu S, Shen Z, Ren Z, et al. Network pharmacology-based study and in-vivo verification of \u03b2-caryophyllene against cerebral ischemia/reperfusion injury. Journal of New Chinese Medicine, 2024, 56(11): 63-69.'
 ];
 
