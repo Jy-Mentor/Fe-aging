@@ -1,0 +1,2627 @@
+[
+  {
+    "idx": 1,
+    "cn_name": "一枝黄花",
+    "zhuang_name": "棵共现",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 2,
+    "cn_name": "一点红",
+    "zhuang_name": "棵立龙",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 3,
+    "cn_name": "丁公藤",
+    "zhuang_name": "勾来",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 4,
+    "cn_name": "八角枫",
+    "zhuang_name": "棵景",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 5,
+    "cn_name": "八角茴香",
+    "zhuang_name": "芒抗",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 6,
+    "cn_name": "八角莲",
+    "zhuang_name": "莲边抗",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 7,
+    "cn_name": "九龙藤",
+    "zhuang_name": "勾燕",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 8,
+    "cn_name": "九里香",
+    "zhuang_name": "棵弄马",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 9,
+    "cn_name": "九里香油（满山香油）",
+    "zhuang_name": "有弄马",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 10,
+    "cn_name": "九层风",
+    "zhuang_name": "勾长生",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 11,
+    "cn_name": "了哥王",
+    "zhuang_name": "棵约罗",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 12,
+    "cn_name": "三七",
+    "zhuang_name": "棵点镇",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 13,
+    "cn_name": "三叉苦木",
+    "zhuang_name": "棵三咖",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 14,
+    "cn_name": "三叶青藤",
+    "zhuang_name": "勾三伯",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 15,
+    "cn_name": "三叶香茶菜",
+    "zhuang_name": "哈良怀",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 16,
+    "cn_name": "三加",
+    "zhuang_name": "蹦乐",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 17,
+    "cn_name": "土垄大白蚁巢",
+    "zhuang_name": "容门豪",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 18,
+    "cn_name": "土茯苓",
+    "zhuang_name": "勾浪蒿",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 19,
+    "cn_name": "大叶骨碎补",
+    "zhuang_name": "棵布骼",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 20,
+    "cn_name": "大叶桉油",
+    "zhuang_name": "有安卒",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 21,
+    "cn_name": "大叶蒟",
+    "zhuang_name": "棵遂冗",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 22,
+    "cn_name": "大头陈",
+    "zhuang_name": "野样夺",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 23,
+    "cn_name": "大血藤",
+    "zhuang_name": "勾柄喇",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 24,
+    "cn_name": "山风",
+    "zhuang_name": "棵矮瓤",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 25,
+    "cn_name": "山芝麻",
+    "zhuang_name": "冷喇岜",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 26,
+    "cn_name": "山豆根",
+    "zhuang_name": "壤笃岜",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 27,
+    "cn_name": "山香",
+    "zhuang_name": "棵盆共",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 28,
+    "cn_name": "山桔叶",
+    "zhuang_name": "棵勒挪",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 29,
+    "cn_name": "山银花",
+    "zhuang_name": "银华岜",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 30,
+    "cn_name": "山绿茶",
+    "zhuang_name": "棵傻岜",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 31,
+    "cn_name": "千斤拔",
+    "zhuang_name": "棵壤丁",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 32,
+    "cn_name": "广山药",
+    "zhuang_name": "扪岜",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 33,
+    "cn_name": "广西海风藤（海风藤）",
+    "zhuang_name": "勾断",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 34,
+    "cn_name": "广金钱草",
+    "zhuang_name": "旷金浅",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 35,
+    "cn_name": "广狼毒",
+    "zhuang_name": "棵法亮",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 36,
+    "cn_name": "小风艾",
+    "zhuang_name": "矮虽",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 37,
+    "cn_name": "小驳骨",
+    "zhuang_name": "哈昌僧",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 38,
+    "cn_name": "小槐花",
+    "zhuang_name": "棵文沾",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 39,
+    "cn_name": "马蹄金",
+    "zhuang_name": "碰浅力",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 40,
+    "cn_name": "天胡荽",
+    "zhuang_name": "雅挠内",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 41,
+    "cn_name": "无根藤",
+    "zhuang_name": "法夹",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 42,
+    "cn_name": "无患子",
+    "zhuang_name": "此芒苍",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 43,
+    "cn_name": "无患子果",
+    "zhuang_name": "芒苍",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 44,
+    "cn_name": "木槿花",
+    "zhuang_name": "花丹培",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 45,
+    "cn_name": "五味藤",
+    "zhuang_name": "棵贡省",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 46,
+    "cn_name": "五指柑",
+    "zhuang_name": "棵劲",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 47,
+    "cn_name": "瓦楞子",
+    "zhuang_name": "甲隆瓦",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 48,
+    "cn_name": "牛大力",
+    "zhuang_name": "勾两抹",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 49,
+    "cn_name": "牛白藤",
+    "zhuang_name": "勾抹告",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 50,
+    "cn_name": "牛耳枫",
+    "zhuang_name": "美西咩",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 51,
+    "cn_name": "牛奶木（牛奶樟）",
+    "zhuang_name": "美得",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 52,
+    "cn_name": "牛尾菜",
+    "zhuang_name": "枰当抹",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 53,
+    "cn_name": "毛两面针",
+    "zhuang_name": "剩咯金",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 54,
+    "cn_name": "毛鸡骨草",
+    "zhuang_name": "棵骼给",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 55,
+    "cn_name": "火炭母",
+    "zhuang_name": "勾莓",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 56,
+    "cn_name": "水蜈蚣",
+    "zhuang_name": "棵三林",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 57,
+    "cn_name": "玉叶金花",
+    "zhuang_name": "勾北豪",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 58,
+    "cn_name": "玉郎伞",
+    "zhuang_name": "捧吞",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 59,
+    "cn_name": "古羊藤",
+    "zhuang_name": "勾咩",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 60,
+    "cn_name": "龙血竭",
+    "zhuang_name": "美竻垄",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 61,
+    "cn_name": "龙脷叶",
+    "zhuang_name": "蒙凛垄",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 62,
+    "cn_name": "甲鱼",
+    "zhuang_name": "堵逢",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 63,
+    "cn_name": "四方木皮",
+    "zhuang_name": "美狼马",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 64,
+    "cn_name": "四方藤",
+    "zhuang_name": "勾随方",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 65,
+    "cn_name": "白花丹",
+    "zhuang_name": "棵端豪",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 66,
+    "cn_name": "白花蛇舌草",
+    "zhuang_name": "雅凛偶",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 67,
+    "cn_name": "白背叶",
+    "zhuang_name": "棵懂豪",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 68,
+    "cn_name": "汉桃叶",
+    "zhuang_name": "棵七多",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 69,
+    "cn_name": "老鸦嘴",
+    "zhuang_name": "勾蒿",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 70,
+    "cn_name": "老蛇莲",
+    "zhuang_name": "棵於捆",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 71,
+    "cn_name": "地枫皮",
+    "zhuang_name": "芒抗岜",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 72,
+    "cn_name": "地胆草",
+    "zhuang_name": "牙念堆",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 73,
+    "cn_name": "地桃花",
+    "zhuang_name": "华讨南",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 74,
+    "cn_name": "芒果叶（杧果叶）",
+    "zhuang_name": "伯莽过",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 75,
+    "cn_name": "当归藤",
+    "zhuang_name": "勾当归",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 76,
+    "cn_name": "肉桂",
+    "zhuang_name": "能桂",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 77,
+    "cn_name": "朱砂",
+    "zhuang_name": "砂红",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 78,
+    "cn_name": "朱砂根",
+    "zhuang_name": "美色根",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 79,
+    "cn_name": "羊开口",
+    "zhuang_name": "棵芒难",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 80,
+    "cn_name": "羊耳菊",
+    "zhuang_name": "雅粉抹",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 81,
+    "cn_name": "阳桃根",
+    "zhuang_name": "壤棵纺",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 82,
+    "cn_name": "红鱼眼",
+    "zhuang_name": "美定",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 83,
+    "cn_name": "红药",
+    "zhuang_name": "雅拟",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 84,
+    "cn_name": "走马风",
+    "zhuang_name": "雅友泛",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 85,
+    "cn_name": "走马胎",
+    "zhuang_name": "棵封勒",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 86,
+    "cn_name": "芙蓉叶",
+    "zhuang_name": "沙排杯",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 87,
+    "cn_name": "苍耳草",
+    "zhuang_name": "戏抖跛",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 88,
+    "cn_name": "苎麻根",
+    "zhuang_name": "棵斑",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 89,
+    "cn_name": "杠板归（扛板归）",
+    "zhuang_name": "港恩",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 90,
+    "cn_name": "两面针",
+    "zhuang_name": "棵剩咯",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 91,
+    "cn_name": "豆豉姜",
+    "zhuang_name": "高京虽",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 92,
+    "cn_name": "连钱草",
+    "zhuang_name": "碰奴",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 93,
+    "cn_name": "扶芳藤",
+    "zhuang_name": "勾咬",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 94,
+    "cn_name": "岗松",
+    "zhuang_name": "牙皂笨",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 95,
+    "cn_name": "岗松油",
+    "zhuang_name": "有皂笨",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 96,
+    "cn_name": "岗梅",
+    "zhuang_name": "楞曾",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 97,
+    "cn_name": "牡蛎",
+    "zhuang_name": "甲虽",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 98,
+    "cn_name": "余甘子",
+    "zhuang_name": "芒音",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 99,
+    "cn_name": "余甘子汁",
+    "zhuang_name": "忍芒音",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 100,
+    "cn_name": "鸡矢藤",
+    "zhuang_name": "勾邓骂",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 101,
+    "cn_name": "苦木",
+    "zhuang_name": "棵榧含",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 102,
+    "cn_name": "苦玄参",
+    "zhuang_name": "棵兜",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 103,
+    "cn_name": "茅莓",
+    "zhuang_name": "芒东",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 104,
+    "cn_name": "松叶",
+    "zhuang_name": "伯耸",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 105,
+    "cn_name": "郁金",
+    "zhuang_name": "竞闲",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 106,
+    "cn_name": "岩黄连",
+    "zhuang_name": "捂敛",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 107,
+    "cn_name": "罗汉果",
+    "zhuang_name": "芒裸寒",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 108,
+    "cn_name": "虎杖",
+    "zhuang_name": "棵天岗",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 109,
+    "cn_name": "金不换",
+    "zhuang_name": "门崩茂",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 110,
+    "cn_name": "金果榄",
+    "zhuang_name": "尽榄",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 111,
+    "cn_name": "金线风",
+    "zhuang_name": "勾机腾",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 112,
+    "cn_name": "金樱根",
+    "zhuang_name": "壤棵旺",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 113,
+    "cn_name": "狗肝菜",
+    "zhuang_name": "棵巴针",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 114,
+    "cn_name": "肿节风",
+    "zhuang_name": "卡隆",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 115,
+    "cn_name": "炉甘石",
+    "zhuang_name": "林踏养",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 116,
+    "cn_name": "珍珠",
+    "zhuang_name": "舌",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 117,
+    "cn_name": "南板蓝根",
+    "zhuang_name": "棵烘",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 118,
+    "cn_name": "战骨",
+    "zhuang_name": "猛梦",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 119,
+    "cn_name": "钩藤",
+    "zhuang_name": "勾刮欧",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 120,
+    "cn_name": "香樟",
+    "zhuang_name": "高差",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 121,
+    "cn_name": "鬼画符",
+    "zhuang_name": "美必宁",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 122,
+    "cn_name": "剑叶龙血树",
+    "zhuang_name": "榧勒垄",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 123,
+    "cn_name": "穿心莲",
+    "zhuang_name": "牙粉敛",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 124,
+    "cn_name": "穿花针",
+    "zhuang_name": "神船华",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 125,
+    "cn_name": "迷迭香",
+    "zhuang_name": "迷迭香",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 126,
+    "cn_name": "莪术",
+    "zhuang_name": "京昆",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 127,
+    "cn_name": "桂枝",
+    "zhuang_name": "能葵",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 128,
+    "cn_name": "核桃",
+    "zhuang_name": "横头",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 129,
+    "cn_name": "桃金娘果",
+    "zhuang_name": "芒您",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 130,
+    "cn_name": "铁扫帚",
+    "zhuang_name": "棵奔电",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 131,
+    "cn_name": "积雪草",
+    "zhuang_name": "碰喏",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 132,
+    "cn_name": "倒扣草",
+    "zhuang_name": "棵达刀",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 133,
+    "cn_name": "宽筋藤",
+    "zhuang_name": "勾从",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 134,
+    "cn_name": "海蛇",
+    "zhuang_name": "厄害",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 135,
+    "cn_name": "海螵蛸",
+    "zhuang_name": "弄么雨",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 136,
+    "cn_name": "黄皮叶",
+    "zhuang_name": "伯棵闷",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 137,
+    "cn_name": "黄精",
+    "zhuang_name": "京四",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 138,
+    "cn_name": "萝芙木",
+    "zhuang_name": "美老崩",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 139,
+    "cn_name": "排钱草（龙鳞草根）",
+    "zhuang_name": "壤等钱",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 140,
+    "cn_name": "蛇床子油",
+    "zhuang_name": "有矮咧",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 141,
+    "cn_name": "甜茶藤",
+    "zhuang_name": "茶完",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 142,
+    "cn_name": "盘龙参",
+    "zhuang_name": "哈参",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 143,
+    "cn_name": "猪胆汁",
+    "zhuang_name": "忍霉谋",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 144,
+    "cn_name": "猪胰",
+    "zhuang_name": "满谋",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 145,
+    "cn_name": "粗糠柴根",
+    "zhuang_name": "壤棵侥",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 146,
+    "cn_name": "断肠草",
+    "zhuang_name": "勾吻",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 147,
+    "cn_name": "喜树果",
+    "zhuang_name": "芒美扔",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 148,
+    "cn_name": "葫芦茶",
+    "zhuang_name": "茶煲",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 149,
+    "cn_name": "棒柄花叶",
+    "zhuang_name": "盟茶落",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 150,
+    "cn_name": "蛤蚧",
+    "zhuang_name": "萼婀",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 151,
+    "cn_name": "黑风藤",
+    "zhuang_name": "勾决领",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 152,
+    "cn_name": "黑吹风",
+    "zhuang_name": "勾令",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 153,
+    "cn_name": "番石榴根",
+    "zhuang_name": "壤您洪",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 154,
+    "cn_name": "滑石粉",
+    "zhuang_name": "码林柔",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 155,
+    "cn_name": "蓝花柴胡",
+    "zhuang_name": "棵来落",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 156,
+    "cn_name": "滇桂艾纳香",
+    "zhuang_name": "管牙",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 157,
+    "cn_name": "溪黄草",
+    "zhuang_name": "棵茏趁",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 158,
+    "cn_name": "槟榔",
+    "zhuang_name": "芒兵郎",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 159,
+    "cn_name": "翠云草",
+    "zhuang_name": "棵归讥",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 160,
+    "cn_name": "漆大姑",
+    "zhuang_name": "恩摸昆",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 161,
+    "cn_name": "横经席",
+    "zhuang_name": "芒满岜",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 162,
+    "cn_name": "薜荔（薜荔果）",
+    "zhuang_name": "芒不",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 163,
+    "cn_name": "薏苡仁",
+    "zhuang_name": "吼茸",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 164,
+    "cn_name": "篱栏网",
+    "zhuang_name": "勾莽拔",
+    "volume": 1,
+    "year": 2008
+  },
+  {
+    "idx": 165,
+    "cn_name": "一匹绸",
+    "zhuang_name": "勾答豪",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 166,
+    "cn_name": "丁茄根",
+    "zhuang_name": "难涌",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 167,
+    "cn_name": "九龙盘",
+    "zhuang_name": "棵社慢",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 168,
+    "cn_name": "刀豆",
+    "zhuang_name": "督样",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 169,
+    "cn_name": "三七叶",
+    "zhuang_name": "盟三镇",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 170,
+    "cn_name": "三七花",
+    "zhuang_name": "华三镇",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 171,
+    "cn_name": "三七姜",
+    "zhuang_name": "兴三镇",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 172,
+    "cn_name": "三角泡",
+    "zhuang_name": "棵灯笼",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 173,
+    "cn_name": "土太片",
+    "zhuang_name": "门底麻",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 174,
+    "cn_name": "土鳖虫",
+    "zhuang_name": "堵兜老",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 175,
+    "cn_name": "大叶桉",
+    "zhuang_name": "盟安盛",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 176,
+    "cn_name": "大半边莲",
+    "zhuang_name": "棵莲因",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 177,
+    "cn_name": "大金不换",
+    "zhuang_name": "棵楞沤",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 178,
+    "cn_name": "大浮萍",
+    "zhuang_name": "漂洪",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 179,
+    "cn_name": "大钻",
+    "zhuang_name": "勾钻洪",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 180,
+    "cn_name": "万寿果",
+    "zhuang_name": "冷要给",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 181,
+    "cn_name": "广山楂",
+    "zhuang_name": "芒山楂",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 182,
+    "cn_name": "广山楂叶",
+    "zhuang_name": "盟山楂",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 183,
+    "cn_name": "广钩藤",
+    "zhuang_name": "扣温钩",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 184,
+    "cn_name": "小茴香",
+    "zhuang_name": "碰函",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 185,
+    "cn_name": "小钻",
+    "zhuang_name": "勾钻依",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 186,
+    "cn_name": "小蜡树叶",
+    "zhuang_name": "盟甘课",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 187,
+    "cn_name": "飞龙掌血",
+    "zhuang_name": "温肖",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 188,
+    "cn_name": "飞扬草",
+    "zhuang_name": "棵降",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 189,
+    "cn_name": "马齿苋",
+    "zhuang_name": "碰北",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 190,
+    "cn_name": "马鞭草",
+    "zhuang_name": "棵鞭马",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 191,
+    "cn_name": "天花粉",
+    "zhuang_name": "壤补龙",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 192,
+    "cn_name": "无根藤",
+    "zhuang_name": "法夹",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 193,
+    "cn_name": "木棉花",
+    "zhuang_name": "华棵民",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 194,
+    "cn_name": "木鳖子",
+    "zhuang_name": "些木变",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 195,
+    "cn_name": "五指毛桃",
+    "zhuang_name": "棵西思",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 196,
+    "cn_name": "五指那藤",
+    "zhuang_name": "勾拿",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 197,
+    "cn_name": "车前草",
+    "zhuang_name": "牙底马",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 198,
+    "cn_name": "毛冬青",
+    "zhuang_name": "雅火冬",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 199,
+    "cn_name": "毛郁金",
+    "zhuang_name": "棵郁金",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 200,
+    "cn_name": "化橘红",
+    "zhuang_name": "卜能盆",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 201,
+    "cn_name": "乌桕根",
+    "zhuang_name": "壤棵够",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 202,
+    "cn_name": "六方藤",
+    "zhuang_name": "勾弄林",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 203,
+    "cn_name": "火麻仁",
+    "zhuang_name": "冷啦卖",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 204,
+    "cn_name": "巴豆",
+    "zhuang_name": "边邦灵",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 205,
+    "cn_name": "巴戟天",
+    "zhuang_name": "勾遂给",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 206,
+    "cn_name": "水半夏",
+    "zhuang_name": "半夏忍",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 207,
+    "cn_name": "水田七",
+    "zhuang_name": "老朋忍",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 208,
+    "cn_name": "水罗伞",
+    "zhuang_name": "棵亮忍",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 209,
+    "cn_name": "水银花",
+    "zhuang_name": "银花忍",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 210,
+    "cn_name": "水蛭",
+    "zhuang_name": "堵平",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 211,
+    "cn_name": "功劳木",
+    "zhuang_name": "美黄连",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 212,
+    "cn_name": "艾叶",
+    "zhuang_name": "盟埃",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 213,
+    "cn_name": "石上柏",
+    "zhuang_name": "否侬",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 214,
+    "cn_name": "石菖蒲",
+    "zhuang_name": "棵息忍",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 215,
+    "cn_name": "石斛",
+    "zhuang_name": "大黄草",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 216,
+    "cn_name": "石崖茶",
+    "zhuang_name": "茶盟熔",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 217,
+    "cn_name": "龙眼肉",
+    "zhuang_name": "诺芒俺",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 218,
+    "cn_name": "打破碗花花",
+    "zhuang_name": "棵柏夺",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 219,
+    "cn_name": "叶下珠",
+    "zhuang_name": "牙关头",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 220,
+    "cn_name": "四方藤",
+    "zhuang_name": "勾绥林",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 221,
+    "cn_name": "四块瓦",
+    "zhuang_name": "棵绥盟",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 222,
+    "cn_name": "生姜",
+    "zhuang_name": "兴",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 223,
+    "cn_name": "仙人掌",
+    "zhuang_name": "棵海低",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 224,
+    "cn_name": "仙茅",
+    "zhuang_name": "棵哈仙",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 225,
+    "cn_name": "仙鹤草",
+    "zhuang_name": "牙猜骂",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 226,
+    "cn_name": "白及",
+    "zhuang_name": "棵白及",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 227,
+    "cn_name": "白木香",
+    "zhuang_name": "陈样夺",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 228,
+    "cn_name": "白花蛇",
+    "zhuang_name": "厄混岜",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 229,
+    "cn_name": "白英",
+    "zhuang_name": "勾奔高",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 230,
+    "cn_name": "白茅根",
+    "zhuang_name": "壤哈",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 231,
+    "cn_name": "白果",
+    "zhuang_name": "白果",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 232,
+    "cn_name": "瓜蒌",
+    "zhuang_name": "冷蛮仿",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 233,
+    "cn_name": "鸟不企",
+    "zhuang_name": "动哈",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 234,
+    "cn_name": "半边旗",
+    "zhuang_name": "棍断",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 235,
+    "cn_name": "半枝莲",
+    "zhuang_name": "那松虽",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 236,
+    "cn_name": "边缘罗裙子",
+    "zhuang_name": "勾晕",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 237,
+    "cn_name": "地龙",
+    "zhuang_name": "堵黏",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 238,
+    "cn_name": "地耳草",
+    "zhuang_name": "牙万耳",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 239,
+    "cn_name": "过岗龙",
+    "zhuang_name": "勾拢",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 240,
+    "cn_name": "尖山橙",
+    "zhuang_name": "勾动撩",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 241,
+    "cn_name": "光石韦",
+    "zhuang_name": "棵盟泯",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 242,
+    "cn_name": "丢了棒根",
+    "zhuang_name": "美巧怀",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 243,
+    "cn_name": "血风藤",
+    "zhuang_name": "勾勒容",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 244,
+    "cn_name": "血党",
+    "zhuang_name": "棵散勒",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 245,
+    "cn_name": "刘寄奴",
+    "zhuang_name": "埃丁聘",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 246,
+    "cn_name": "决明子",
+    "zhuang_name": "些羊灭",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 247,
+    "cn_name": "冰糖草",
+    "zhuang_name": "甘草拓",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 248,
+    "cn_name": "灯心草",
+    "zhuang_name": "扪灯草",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 249,
+    "cn_name": "阴香皮",
+    "zhuang_name": "美中吞",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 250,
+    "cn_name": "红毛鸡",
+    "zhuang_name": "茸昆",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 251,
+    "cn_name": "红杜仲",
+    "zhuang_name": "勾兵脓",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 252,
+    "cn_name": "红背桂",
+    "zhuang_name": "盟楞红",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 253,
+    "cn_name": "红根草",
+    "zhuang_name": "棵壤红",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 254,
+    "cn_name": "苏木",
+    "zhuang_name": "棵苏木",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 255,
+    "cn_name": "杜仲",
+    "zhuang_name": "棵杜仲",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 256,
+    "cn_name": "牡荆叶",
+    "zhuang_name": "盟劲",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 257,
+    "cn_name": "秃叶黄柏",
+    "zhuang_name": "棵能现",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 258,
+    "cn_name": "何首乌",
+    "zhuang_name": "门甲",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 259,
+    "cn_name": "伸筋草",
+    "zhuang_name": "棵烟银",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 260,
+    "cn_name": "佛手",
+    "zhuang_name": "芒佛手",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 261,
+    "cn_name": "龟甲",
+    "zhuang_name": "不奎",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 262,
+    "cn_name": "灵芝",
+    "zhuang_name": "艳当",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 263,
+    "cn_name": "灵香草",
+    "zhuang_name": "牙函",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 264,
+    "cn_name": "陈皮",
+    "zhuang_name": "能柑",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 265,
+    "cn_name": "鸡血藤",
+    "zhuang_name": "勾勒给",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 266,
+    "cn_name": "鸡骨草",
+    "zhuang_name": "棵共给",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 267,
+    "cn_name": "青天葵",
+    "zhuang_name": "棵盟朵",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 268,
+    "cn_name": "青蒿",
+    "zhuang_name": "埃虽",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 269,
+    "cn_name": "茉莉花",
+    "zhuang_name": "华闷擂",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 270,
+    "cn_name": "茉莉根",
+    "zhuang_name": "壤闷擂",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 271,
+    "cn_name": "苦丁茶",
+    "zhuang_name": "茶灯",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 272,
+    "cn_name": "苦瓜干",
+    "zhuang_name": "恒冷含",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 273,
+    "cn_name": "枇杷叶",
+    "zhuang_name": "盟比巴",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 274,
+    "cn_name": "构树根",
+    "zhuang_name": "壤棵沙",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 275,
+    "cn_name": "肾茶",
+    "zhuang_name": "棵蒙秒",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 276,
+    "cn_name": "肾蕨",
+    "zhuang_name": "棍熔",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 277,
+    "cn_name": "昆布",
+    "zhuang_name": "害台",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 278,
+    "cn_name": "罗汉茶",
+    "zhuang_name": "茶罗汉",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 279,
+    "cn_name": "垂盆草",
+    "zhuang_name": "牙讽遍",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 280,
+    "cn_name": "佩兰",
+    "zhuang_name": "棵培兰",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 281,
+    "cn_name": "金边蚂蟥",
+    "zhuang_name": "堵平怀",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 282,
+    "cn_name": "金耳环",
+    "zhuang_name": "细辛拓",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 283,
+    "cn_name": "金刚刺",
+    "zhuang_name": "勾金刚",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 284,
+    "cn_name": "金花茶叶",
+    "zhuang_name": "茶花现",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 285,
+    "cn_name": "金樱子",
+    "zhuang_name": "芒旺",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 286,
+    "cn_name": "泽泻",
+    "zhuang_name": "棵泽泻",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 287,
+    "cn_name": "荆芥",
+    "zhuang_name": "棵荆该",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 288,
+    "cn_name": "草豆蔻",
+    "zhuang_name": "芒卡",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 289,
+    "cn_name": "草果",
+    "zhuang_name": "芒侯",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 290,
+    "cn_name": "荔枝核",
+    "zhuang_name": "些累谁",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 291,
+    "cn_name": "面条树叶",
+    "zhuang_name": "美屯",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 292,
+    "cn_name": "南蛇簕",
+    "zhuang_name": "勾温秒",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 293,
+    "cn_name": "栀子",
+    "zhuang_name": "粉给现",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 294,
+    "cn_name": "柿叶",
+    "zhuang_name": "盟内",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 295,
+    "cn_name": "威灵仙",
+    "zhuang_name": "壤灵仙",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 296,
+    "cn_name": "厚朴",
+    "zhuang_name": "棵厚朴",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 297,
+    "cn_name": "砂仁",
+    "zhuang_name": "棵砂仁",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 298,
+    "cn_name": "鸦胆子",
+    "zhuang_name": "棵楝依",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 299,
+    "cn_name": "韭菜",
+    "zhuang_name": "从决",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 300,
+    "cn_name": "骨碎补",
+    "zhuang_name": "兴盆",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 301,
+    "cn_name": "香附",
+    "zhuang_name": "棵寻谋",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 302,
+    "cn_name": "香茅",
+    "zhuang_name": "棵查哈",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 303,
+    "cn_name": "重楼",
+    "zhuang_name": "棵重楼",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 304,
+    "cn_name": "鬼针草",
+    "zhuang_name": "牙钳布",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 305,
+    "cn_name": "姜黄",
+    "zhuang_name": "兴现",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 306,
+    "cn_name": "扁担藤",
+    "zhuang_name": "勾盘",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 307,
+    "cn_name": "扁桃叶",
+    "zhuang_name": "盟芒开",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 308,
+    "cn_name": "荷莲豆草",
+    "zhuang_name": "溶莲",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 309,
+    "cn_name": "夏枯草",
+    "zhuang_name": "牙呀结",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 310,
+    "cn_name": "鸭脚木皮",
+    "zhuang_name": "能榧丁聘",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 311,
+    "cn_name": "鸭跖草",
+    "zhuang_name": "牙网表",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 312,
+    "cn_name": "铁包金",
+    "zhuang_name": "勾吼耨",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 313,
+    "cn_name": "铁苋菜",
+    "zhuang_name": "牙打秒",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 314,
+    "cn_name": "笔管草",
+    "zhuang_name": "棵塔桐",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 315,
+    "cn_name": "射干",
+    "zhuang_name": "棵射干",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 316,
+    "cn_name": "凉粉草",
+    "zhuang_name": "棵凉粉",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 317,
+    "cn_name": "益母草",
+    "zhuang_name": "埃闷",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 318,
+    "cn_name": "海马",
+    "zhuang_name": "堵海马",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 319,
+    "cn_name": "海金子",
+    "zhuang_name": "棵海桐",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 320,
+    "cn_name": "海金沙",
+    "zhuang_name": "溶随滇",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 321,
+    "cn_name": "海参",
+    "zhuang_name": "平害",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 322,
+    "cn_name": "桑叶",
+    "zhuang_name": "盟娘侬",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 323,
+    "cn_name": "桑寄生",
+    "zhuang_name": "棵想",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 324,
+    "cn_name": "桑椹",
+    "zhuang_name": "冷娘侬",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 325,
+    "cn_name": "黄牛木叶",
+    "zhuang_name": "茶思现",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 326,
+    "cn_name": "黄杜鹃根",
+    "zhuang_name": "三钱三",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 327,
+    "cn_name": "黄根",
+    "zhuang_name": "壤现",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 328,
+    "cn_name": "黄藤",
+    "zhuang_name": "勾现",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 329,
+    "cn_name": "菥蓂",
+    "zhuang_name": "棵习明",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 330,
+    "cn_name": "菟丝子",
+    "zhuang_name": "粉迁伐",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 331,
+    "cn_name": "救必应",
+    "zhuang_name": "美内妹",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 332,
+    "cn_name": "野菊花",
+    "zhuang_name": "华库农",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 333,
+    "cn_name": "曼陀罗叶",
+    "zhuang_name": "盟闷打拉",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 334,
+    "cn_name": "银杏叶",
+    "zhuang_name": "盟银杏",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 335,
+    "cn_name": "甜茶",
+    "zhuang_name": "茶完",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 336,
+    "cn_name": "假蒟",
+    "zhuang_name": "碰办",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 337,
+    "cn_name": "假鹰爪",
+    "zhuang_name": "棵漏挪",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 338,
+    "cn_name": "猫爪草",
+    "zhuang_name": "牙要秒",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 339,
+    "cn_name": "猫豆",
+    "zhuang_name": "督秒",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 340,
+    "cn_name": "商陆",
+    "zhuang_name": "冷朋岜",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 341,
+    "cn_name": "旋覆花",
+    "zhuang_name": "库华牛",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 342,
+    "cn_name": "淫羊藿",
+    "zhuang_name": "盟国羊",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 343,
+    "cn_name": "淡竹叶",
+    "zhuang_name": "棵坑补",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 344,
+    "cn_name": "密蒙花",
+    "zhuang_name": "华埋",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 345,
+    "cn_name": "酢浆草",
+    "zhuang_name": "棵送梅",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 346,
+    "cn_name": "紫苏叶",
+    "zhuang_name": "盟紫苏",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 347,
+    "cn_name": "紫河车",
+    "zhuang_name": "袍衣",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 348,
+    "cn_name": "蛞蝓",
+    "zhuang_name": "碾沐",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 349,
+    "cn_name": "鹅不食草",
+    "zhuang_name": "牙卡个",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 350,
+    "cn_name": "番石榴叶",
+    "zhuang_name": "盟您现",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 351,
+    "cn_name": "粪箕笃",
+    "zhuang_name": "勾弯",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 352,
+    "cn_name": "赪桐",
+    "zhuang_name": "棵赪桐",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 353,
+    "cn_name": "蒲公英",
+    "zhuang_name": "棵凛给",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 354,
+    "cn_name": "槐花",
+    "zhuang_name": "华槐",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 355,
+    "cn_name": "路边青",
+    "zhuang_name": "棵胎晴",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 356,
+    "cn_name": "路边菊",
+    "zhuang_name": "棵怀航",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 357,
+    "cn_name": "路路通",
+    "zhuang_name": "芒柔",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 358,
+    "cn_name": "蜈蚣",
+    "zhuang_name": "息挡",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 359,
+    "cn_name": "蜂蜜",
+    "zhuang_name": "糖来",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 360,
+    "cn_name": "幌伞枫皮",
+    "zhuang_name": "雅当老",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 361,
+    "cn_name": "锡叶藤",
+    "zhuang_name": "勾呀",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 362,
+    "cn_name": "矮地茶",
+    "zhuang_name": "茶堆",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 363,
+    "cn_name": "满山红",
+    "zhuang_name": "棵强垠",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 364,
+    "cn_name": "满山香",
+    "zhuang_name": "棵函博",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 365,
+    "cn_name": "榕树叶",
+    "zhuang_name": "盟棵垒",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 366,
+    "cn_name": "榕树须",
+    "zhuang_name": "蒙棵垒",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 367,
+    "cn_name": "蔓荆子",
+    "zhuang_name": "些榧瞒",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 368,
+    "cn_name": "豨签草",
+    "zhuang_name": "棵豨莶",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 369,
+    "cn_name": "辣蓼",
+    "zhuang_name": "棵菲",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 370,
+    "cn_name": "墨旱莲",
+    "zhuang_name": "黑么草",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 371,
+    "cn_name": "薄荷",
+    "zhuang_name": "棵薄荷",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 372,
+    "cn_name": "磨盘草",
+    "zhuang_name": "棵芒牧",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 373,
+    "cn_name": "藤黄檀",
+    "zhuang_name": "痛必灵",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 374,
+    "cn_name": "蟾蜍皮",
+    "zhuang_name": "能唝酬",
+    "volume": 2,
+    "year": 2011
+  },
+  {
+    "idx": 375,
+    "cn_name": "鳖甲",
+    "zhuang_name": "驾逢",
+    "volume": 2,
+    "year": 2011
+  }
+]
