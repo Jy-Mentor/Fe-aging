@@ -90,8 +90,8 @@ def get_compound_synonyms(cid, timeout=10):
             data = r.json()
             if 'InformationList' in data:
                 return data['InformationList']['Information'][0].get('Synonym', [])
-    except Exception:
-        pass
+    except Exception as e:
+        logger.debug(f"  PubChem同义词获取失败 [CID={cid}]: {e}")
     return []
 
 
