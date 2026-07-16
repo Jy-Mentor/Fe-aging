@@ -1436,13 +1436,40 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
         simplehgn_history = [{"auc": simplehgn_metrics.get("auc", 0.5), "aupr": simplehgn_metrics.get("aupr", 0.5)}]
         logger.info(f"  SimpleHGN 重新验证: auc={simplehgn_metrics.get('auc', 0.5):.4f}, aupr={simplehgn_metrics.get('aupr', 0.5):.4f}")
 
-    # v56: 动态集成权重 — 基于验证 AUPR 加权
-    # 训练时从训练历史提取；skip 时从已知最佳结果读取
+    # v70-fix: 动态集成权重 — 基于验证 AUPR 加权
+    # 训练时从训练历史提取；skip 时从 model_performance CSV 读取真实 AUPR
+    # 禁止硬编码回退值（违反数据真实性原则）
     if skip_sage and skip_hgt and not reevaluate:
-        sage_aupr = 0.7870  # SAGE v55 best_val_aupr（硬编码回退）
-        hgt_aupr = 0.1251   # HGT v53 best_val_aupr（硬编码回退）
-        simplehgn_aupr = 0.1251  # SimpleHGN 默认回退（与 HGT 同架构级别）
-        logger.info(f"  v56: 动态集成权重（skip模式）— SAGE AUPR={sage_aupr:.4f}, HGT AUPR={hgt_aupr:.4f}, SimpleHGN AUPR={simplehgn_aupr:.4f}")
+        sage_aupr = DEFAULT_AUPR
+        hgt_aupr = DEFAULT_AUPR
+        simplehgn_aupr = DEFAULT_AUPR
+        perf_csv = L4_RESULTS / "model_performance_v70.csv"
+        if perf_csv.exists():
+            try:
+                _perf_df = pd.read_csv(perf_csv)
+                for _, _row in _perf_df.iterrows():
+                    _model_name = str(_row.get("model", "")).strip()
+                    _aupr = float(_row.get("best_aupr", DEFAULT_AUPR))
+                    if _model_name == "SAGE":
+                        sage_aupr = _aupr
+                    elif _model_name == "HGT":
+                        hgt_aupr = _aupr
+                    elif _model_name == "SimpleHGN":
+                        simplehgn_aupr = _aupr
+                logger.info(f"  v70: 从 model_performance_v70.csv 读取集成 AUPR — SAGE={sage_aupr:.4f}, HGT={hgt_aupr:.4f}, SimpleHGN={simplehgn_aupr:.4f}")
+            except Exception as _e:
+                logger.warning(f"  v70: 读取 {perf_csv.name} 失败 ({_e})，全部使用 DEFAULT_AUPR={DEFAULT_AUPR}")
+        else:
+            logger.warning(f"  v70: {perf_csv.name} 不存在，全部使用 DEFAULT_AUPR={DEFAULT_AUPR}（建议使用 --reevaluate 重新评估）")
+        _missing = []
+        if abs(sage_aupr - DEFAULT_AUPR) < 1e-9:
+            _missing.append("SAGE")
+        if abs(hgt_aupr - DEFAULT_AUPR) < 1e-9:
+            _missing.append("HGT")
+        if abs(simplehgn_aupr - DEFAULT_AUPR) < 1e-9:
+            _missing.append("SimpleHGN")
+        if _missing:
+            logger.warning(f"  v70: 以下模型使用 DEFAULT_AUPR={DEFAULT_AUPR}（非真实值）: {_missing}，建议使用 --reevaluate 重新评估")
     else:
         sage_aupr = max((h.get("aupr", 0.5) for h in sage_history), default=0.5) if sage_history else 0.5
         hgt_aupr = max((h.get("aupr", 0.5) for h in hgt_history), default=0.5) if hgt_history else 0.5
