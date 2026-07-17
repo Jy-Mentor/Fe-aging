@@ -594,7 +594,7 @@ def _compute_3d_conformer_features(
                 continue
 
             energy = ff.CalcEnergy()
-            opt_status = Chem.MMFFOptimizeMolecule(mol)
+            opt_status = AllChem.MMFFOptimizeMolecule(mol)
             opt_energy = ff.CalcEnergy()
             if opt_status != 0:
                 logger.debug(f"MMFF优化返回非零状态 索引 {i}: status={opt_status}")

@@ -1611,6 +1611,13 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
     if "is_whitelist" in tcm_df.columns and "SMILES_std" in tcm_df.columns:
         wl_map = dict(zip(tcm_df["SMILES_std"], tcm_df["is_whitelist"], strict=False))
         pred_df["is_whitelist"] = pred_df["SMILES"].map(wl_map).fillna(False)
+    # 壮药来源标注（v70+: 中药-壮药对齐后的元数据传递）
+    if "herb_source" in tcm_df.columns and "SMILES_std" in tcm_df.columns:
+        hs_map = dict(zip(tcm_df["SMILES_std"], tcm_df["herb_source"], strict=False))
+        pred_df["herb_source"] = pred_df["SMILES"].map(hs_map).fillna("")
+    if "is_zhuangyao" in tcm_df.columns and "SMILES_std" in tcm_df.columns:
+        zy_map = dict(zip(tcm_df["SMILES_std"], tcm_df["is_zhuangyao"], strict=False))
+        pred_df["is_zhuangyao"] = pred_df["SMILES"].map(zy_map).fillna(False)
     # 标记TCM池中与训练集重叠的化合物（数据泄漏标记）
     train_smi_set = set(cpi_df["canonical_smiles"].dropna().unique())
     pred_df["in_train"] = pred_df["SMILES"].isin(train_smi_set)
