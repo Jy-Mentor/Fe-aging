@@ -1,0 +1,26 @@
+OncoPrint Skill Test — No Data Notice
+======================================
+
+Project: 铁衰老 (Iron Aging)
+Date: 2026-07-17
+
+Status: Project has NO MAF / somatic mutation calling data.
+  - L1 = bulk RNA-seq DE (GSE61616, GSE104036, GSE16561, GSE37587, GSE97537)
+  - L2 = single-cell RNA-seq (GSE233815) + CellChat + SCISSOR
+  - L3 = TCM compound pool
+  - L4 = GNN model predictions
+
+OncoPrint requires MAF format with columns:
+  Hugo_Symbol, Variant_Classification, Tumor_Sample_Barcode
+
+To generate OncoPrint, provide:
+  1. MAF file (.maf or .maf.gz) from mutect2/strelka/varscan/etc.
+  2. OR mutation matrix (rows=genes, cols=samples, values=mutation type)
+  3. Optional: clinical data (TMB, stage, treatment)
+
+Package availability:
+  ComplexHeatmap: OK
+  maftools:       MISSING
+
+NO FAKE WATERFALL PLOT GENERATED.
+This is intentional — honoring the user's strict no-simulation rule.
