@@ -21,9 +21,11 @@ import torch
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SCRIPTS_DIR = PROJECT_ROOT / "scripts"
+SRC_DIR = PROJECT_ROOT / "src"
+sys.path.insert(0, str(SRC_DIR))
 sys.path.insert(0, str(SCRIPTS_DIR))
 
-from phase4_v10_minibatch import (
+from phase4_v10_modular import (
     predict_tcm,
     load_tcm_pool,
     load_cpi_data,
@@ -156,13 +158,14 @@ def main():
     logger.info(">>> 执行 TCM 预测")
     t0 = time.time()
     predictions = predict_tcm(
-        sage_model= sage_model,
+        sage_model=sage_model,
         hgt_model=hgt_model,
         simplehgn_model=simplehgn_model,
         graphs=graphs,
         tcm_smiles=tcm_smiles,
         target_genes=all_target_genes,
         compound_stats=compound_stats,
+        device=device,
         mc_samples=args.mc_samples,
     )
     t0 = _log_step_time(t0, "TCM 预测完成")

@@ -548,6 +548,47 @@ def _compute_rdkit_descriptors(
     return np.array(rows, dtype=np.float32)
 
 
+def _compute_3d_conformer_single(smi: str, i: int, seed: int = 42) -> tuple:
+    """计算单个化合物的3D构象特征，返回 (index, row, success)"""
+    row = np.zeros(12, dtype=np.float32)
+    if not smi or pd.isna(smi):
+        return (i, row, False)
+    try:
+        mol = Chem.MolFromSmiles(str(smi))
+    except Exception:
+        return (i, row, False)
+    if mol is None:
+        return (i, row, False)
+    try:
+        mol = Chem.AddHs(mol)
+        params = AllChem.ETKDGv3()
+        params.randomSeed = seed
+        status = AllChem.EmbedMolecule(mol, params)
+        if status != 0:
+            return (i, row, False)
+        ff = AllChem.MMFFGetMoleculeForceField(mol, AllChem.MMFFGetMoleculeProperties(mol))
+        if ff is None:
+            return (i, row, False)
+        energy = ff.CalcEnergy()
+        AllChem.MMFFOptimizeMolecule(mol)
+        opt_energy = ff.CalcEnergy()
+        row[0] = float(energy) if energy is not None else 0.0
+        row[1] = float(opt_energy) if opt_energy is not None else 0.0
+        row[2] = float(rdMolDescriptors.CalcPMI1(mol))
+        row[3] = float(rdMolDescriptors.CalcPMI2(mol))
+        row[4] = float(rdMolDescriptors.CalcPMI3(mol))
+        row[5] = float(rdMolDescriptors.CalcNPR1(mol))
+        row[6] = float(rdMolDescriptors.CalcNPR2(mol))
+        row[7] = float(rdMolDescriptors.CalcAsphericity(mol))
+        row[8] = float(rdMolDescriptors.CalcEccentricity(mol))
+        row[9] = float(rdMolDescriptors.CalcInertialShapeFactor(mol))
+        row[10] = float(rdMolDescriptors.CalcRadiusOfGyration(mol))
+        row[11] = float(Descriptors.FractionCSP3(mol))
+        return (i, row, True)
+    except Exception:
+        return (i, row, False)
+
+
 def _compute_3d_conformer_features(
     smiles_iter: list[str], config: CompoundFeatureConfig | None = None
 ) -> np.ndarray:
@@ -558,80 +599,48 @@ def _compute_3d_conformer_features(
     - 构象能量
     - 回转半径
     共12维特征，补充二维指纹无法捕获的空间信息。
+    使用多线程并行加速（RDKit C++层释放GIL）。
     """
     if config is None:
         config = CompoundFeatureConfig()
 
     n_features = 12
-    rows = np.zeros((len(smiles_iter), n_features), dtype=np.float32)
+    n_total = len(smiles_iter)
+    rows = np.zeros((n_total, n_features), dtype=np.float32)
     n_parse_fail = 0
     n_conf_fail = 0
 
-    for i, smi in enumerate(smiles_iter):
-        mol = None
-        try:
-            if pd.notna(smi):
-                mol = Chem.MolFromSmiles(str(smi))
-        except Exception as e:
-            logger.warning(f"3D构象 SMILES解析失败 索引 {i}: {smi!r}, 错误: {e}")
-            mol = None
-        if mol is None:
-            n_parse_fail += 1
-            continue
+    max_workers = min(8, os.cpu_count() or 4)
+    logger.info(f"3D构象特征并行计算: {n_total} 个化合物, {max_workers} 线程")
 
-        try:
-            mol = Chem.AddHs(mol)
-            params = AllChem.ETKDGv3()
-            params.randomSeed = 42
-            status = AllChem.EmbedMolecule(mol, params)
-            if status != 0:
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = {
+            executor.submit(_compute_3d_conformer_single, smi, i): i
+            for i, smi in enumerate(smiles_iter)
+        }
+        completed = 0
+        for future in as_completed(futures):
+            try:
+                idx, row, success = future.result()
+                if success:
+                    rows[idx] = row
+                else:
+                    n_conf_fail += 1
+            except Exception as e:
+                logger.warning(f"3D构象线程异常: {e}")
                 n_conf_fail += 1
-                continue
-
-            ff = AllChem.MMFFGetMoleculeForceField(mol, AllChem.MMFFGetMoleculeProperties(mol))
-            if ff is None:
-                n_conf_fail += 1
-                continue
-
-            energy = ff.CalcEnergy()
-            opt_status = AllChem.MMFFOptimizeMolecule(mol)
-            opt_energy = ff.CalcEnergy()
-            if opt_status != 0:
-                logger.debug(f"MMFF优化返回非零状态 索引 {i}: status={opt_status}")
-
-            pmi1 = Descriptors.PMI1(mol)
-            pmi2 = Descriptors.PMI2(mol)
-            pmi3 = Descriptors.PMI3(mol)
-            npr1 = Descriptors.NPR1(mol)
-            npr2 = Descriptors.NPR2(mol)
-            asphericity = Descriptors.Asphericity(mol)
-            eccentricity = Descriptors.Eccentricity(mol)
-            inertial_shape = Descriptors.InertialShapeFactor(mol)
-            radius_of_gyration = Descriptors.RadiusOfGyration(mol)
-
-            rows[i, 0] = float(energy) if energy is not None else 0.0
-            rows[i, 1] = float(opt_energy) if opt_energy is not None else 0.0
-            rows[i, 2] = float(pmi1) if pmi1 is not None else 0.0
-            rows[i, 3] = float(pmi2) if pmi2 is not None else 0.0
-            rows[i, 4] = float(pmi3) if pmi3 is not None else 0.0
-            rows[i, 5] = float(npr1) if npr1 is not None else 0.0
-            rows[i, 6] = float(npr2) if npr2 is not None else 0.0
-            rows[i, 7] = float(asphericity) if asphericity is not None else 0.0
-            rows[i, 8] = float(eccentricity) if eccentricity is not None else 0.0
-            rows[i, 9] = float(inertial_shape) if inertial_shape is not None else 0.0
-            rows[i, 10] = float(radius_of_gyration) if radius_of_gyration is not None else 0.0
-            rows[i, 11] = float(Descriptors.FractionCSP3(mol))
-        except Exception as e:
-            logger.warning(f"3D构象特征计算失败 索引 {i}: {smi!r}, 错误: {e}")
-            n_conf_fail += 1
-            continue
+            completed += 1
+            if completed % 5000 == 0:
+                logger.info(f"  3D构象进度: {completed}/{n_total}")
 
     total_fail = n_parse_fail + n_conf_fail
     if total_fail > 0:
         logger.warning(
-            f"3D构象特征处理完成: {len(smiles_iter)} 个化合物, "
-            f"SMILES解析失败 {n_parse_fail} 个, 构象生成失败 {n_conf_fail} 个"
+            f"3D构象特征处理完成: {n_total} 个化合物, "
+            f"构象生成失败 {n_conf_fail} 个"
         )
+    else:
+        logger.info(f"3D构象特征处理完成: {n_total} 个化合物, 全部成功")
 
     rows = np.nan_to_num(rows, nan=0.0, posinf=1e6, neginf=-1e6)
     valid_mask = ~(rows == 0).all(axis=1)
