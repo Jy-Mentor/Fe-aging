@@ -44,7 +44,35 @@ step04_spatial_load_qc <- function(cfg) {
     # RDS 可能是单个 Seurat 或 list of Seurat (作者按切片组织)
     .load_rds_seurat_list <- function(rds_path, tag) {
       obj <- readRDS(rds_path)
+      # 修复旧版 Seurat 对象 VisiumV1/VisiumV2 misc slot 缺失问题
+      # SeuratObject 5.2+ 在 SpatialImage 类新增 misc slot (OptionalList)
+      # 旧版 RDS 中 VisiumV1 对象没有 misc slot, merge 时 validObject 失败
+      # 直接给缺失 misc slot 的 image 添加 list() 即可, 无需 UpdateSeuratObject
+      .fix_visium_misc <- function(seu) {
+        if (!inherits(seu, "Seurat")) return(seu)
+        for (im_name in Images(seu)) {
+          im_obj <- seu@images[[im_name]]
+          need_fix <- tryCatch({
+            validObject(im_obj); FALSE
+          }, error = function(e) {
+            msg <- conditionMessage(e)
+            grepl("slots in class definition but not in object", msg)
+          })
+          if (need_fix) {
+            cls_slots <- slotNames(class(im_obj))
+            if ("misc" %in% cls_slots) {
+              slot(im_obj, "misc") <- list()
+              validObject(im_obj)
+              seu@images[[im_name]] <- im_obj
+              log_info("[Step04]   ", tag, "/", im_name,
+                       ": misc slot added (Visium 5.2+ compat)")
+            }
+          }
+        }
+        seu
+      }
       if (inherits(obj, "Seurat")) {
+        obj <- .fix_visium_misc(obj)
         log_info("[Step04] ", tag, ": ", nrow(obj), " genes x ",
                  ncol(obj), " spots (single Seurat)")
         return(setNames(list(obj), tag))
@@ -54,6 +82,7 @@ step04_spatial_load_qc <- function(cfg) {
         for (i in seq_along(obj)) {
           el <- obj[[i]]
           if (inherits(el, "Seurat")) {
+            el <- .fix_visium_misc(el)
             nm <- paste0(tag, "_", i)
             # 优先用 Sample 列作为切片标识
             if ("Sample" %in% colnames(el@meta.data)) {
@@ -146,6 +175,20 @@ step04_spatial_load_qc <- function(cfg) {
 
   if (length(spatial_list) == 0) {
     stop("No spatial samples loaded successfully. Check data paths in config.")
+  }
+
+  # 统一添加 sample 列 (小写) 用于后续 merge 后 split
+  # 作者 RDS 中可能是 Sample (大写), 此处统一为 sample (小写)
+  for (sn in names(spatial_list)) {
+    seu <- spatial_list[[sn]]
+    if (!"sample" %in% colnames(seu@meta.data)) {
+      if ("Sample" %in% colnames(seu@meta.data)) {
+        seu$sample <- seu$Sample
+      } else {
+        seu$sample <- sn
+      }
+    }
+    spatial_list[[sn]] <- seu
   }
 
   # --------------------------------------------------------------------------
