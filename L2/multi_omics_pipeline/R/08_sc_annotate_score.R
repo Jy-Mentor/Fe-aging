@@ -1,14 +1,14 @@
 # ============================================================================
 # STEP 08: L3 scRNA-seq 细胞注释 + UCell 铁衰老评分
-# - 优先沿用文献既存注释 (GSE233815 Zucha 2023 已含 Cell_Type)
+# - 优先沿用文献既存注释 (GSE233815 Zucha 2024 已含 Cell_Type)
 # - 缺失注释时使用 cell type marker + UCell 自动注释
 # - 计算 Ferroptosis / Senescence / Ferroaging / BCP signature 得分
 # - 识别 Ferrosenescence 双阳性细胞
 # - SAT1 表达验证 + 细胞类型定位
 # 参考:
-#   - Andreatta & Carmona 2021 UCell (PMID: 34060939, bioRxiv 2021)
-#   - Hao Y et al. 2024 Nat Biotechnol (Seurat v5)
-#   - Zucha et al. 2023 (GSE233815)
+#   - Andreatta & Carmona 2021 UCell (PMID: 34285779, Comput Struct Biotechnol J)
+#   - Hao Y et al. 2024 Nat Biotechnol (Seurat v5, PMID: 37231261)
+#   - Zucha et al. 2024 PNAS (GSE233815, PMID: 39499634)
 # ============================================================================
 
 step08_sc_annotate_score <- function(seu, cfg) {

@@ -1,7 +1,8 @@
 # ============================================================================
 # 铁衰老单细胞测序分析 Pipeline 配置
-# 数据集: GSE233815 (MCAO 小鼠脑单核 RNA-seq, Zucha et al. 2023)
-# 4 条件: Ctrl / 1DPI / 3DPI / 7DPI; 7414 细胞; 11 主细胞类型
+# 数据集: GSE233815 (MCAO 小鼠脑 snRNA-seq + scRNA-seq + 空间转录组, Zucha et al. 2024 PNAS)
+# 4 条件: Ctrl(sham) / 1DPI / 3DPI / 7DPI
+# 数据来源: GSE233815_RAW.tar (97 文件: 48 bulk + 12 scRNA + 12 snRNA + 25 spatial)
 # ============================================================================
 
 project:
@@ -15,13 +16,37 @@ project:
   rds_dir: "L2/scRNA_pipeline_R/outputs/rds"
 
 data:
-  # 优先使用已带 ferroaging 评分的 Seurat 对象 (项目既有成果)
-  seurat_object: "L2/results/GSE233815_sn/Seurat_sn_MCAO_with_ferroaging_score.rds"
-  seurat_object_raw: "data/external/GSE233815/mendeley/Seurat_sn_MCAO_Zucha2023_QCFiltered.Rds"
+  # 主分析对象: 作者已 QC 过的 snRNA Seurat 对象 (mendeley 数据集)
+  # - 包含 Celltypes 注释、Condition 元数据、UMAP 嵌入
+  # - 由 Zucha et al. 2024 提供, 来源: GSE233815 supplementary
+  seurat_object: "data/external/GSE233815/mendeley/Seurat_sn_MCAO_Zucha2023_QCFiltered.Rds"
+
+  # 原始 10x 矩阵 (用于从头构建 Seurat 对象时使用, 需 emptyDrops 过滤)
+  # sc: 4 样本 (sham/D1/D3/D7) × 3 文件 (barcodes/genes/matrix)
+  # sn: 4 样本 (sham/D1/D3/D7) × 3 文件 (barcodes/genes/matrix)
+  sc_10x_dir: "data/external/GSE233815/sc"
+  sn_10x_dir: "data/external/GSE233815/sn"
+  sc_samples: ["sham", "D1", "D3", "D7"]
+  sn_samples: ["sham", "D1", "D3", "D7"]
+
+  # 空间转录组 (10x Visium)
+  spatial_10x_dir: "data/external/GSE233815/spatial"
+  spatial_samples: ["C1-control", "B1-D1", "D1-D3", "C1-D7", "D1-D7"]
+
+  # 已带 ferroaging 评分的 Seurat 对象 (可选, 项目既有成果)
+  seurat_object_with_ferroaging: "L2/results/GSE233815_sn/Seurat_sn_MCAO_with_ferroaging_score.rds"
+
+  # 铁衰老评分既有列 (若 seurat_object 已含则复用, 避免重复计算)
   ferroaging_col_ucell: "FA_96_UCell"
   ferroaging_col_addmodule: "AddModuleScore_FA96"
-  bulk_expr: "L1/results/GSE104036_expression_matrix.csv"
-  bulk_pheno: "L2/results/ferroaging_ssgsea_scores_GSE104036.csv"
+
+  # Bulk RNA-seq (48 samples, 用于 Scissor 整合)
+  bulk_count_dir: "data/external/GSE233815/bulk"
+  bulk_sample_metadata: "data/external/GSE233815/bulk/sample_metadata.csv"
+  bulk_expr_matrix: "L1/results/GSE233815_bulk_expression_matrix.csv"
+  bulk_pheno_scores: "L2/results/ferroaging_ssgsea_scores_GSE233815_bulk.csv"
+
+  # 铁衰老基因集与核心基因
   ferroaging_genes: "铁衰老基因.txt"
   core_genes: "L2/results/final_core_gene_set.csv"
 
@@ -35,6 +60,7 @@ analysis:
   sample_col: "Sample"
 
 qc:
+  # 数据已由 Zucha et al. 2024 QC 过滤; Pipeline 仅做二次验证
   min_nFeature_RNA: 200
   max_nFeature_RNA: 6000
   max_percent_mt: 20

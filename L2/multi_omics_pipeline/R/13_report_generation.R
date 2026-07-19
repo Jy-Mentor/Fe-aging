@@ -40,11 +40,11 @@ step13_report_generation <- function(cfg,
   add_line("旨在验证 β-caryophyllene (BCP) 通过 Nrf2/铁死亡通路纠正'铁衰老'表型的假说。")
   add_line("")
   add_line("```")
-  add_line("L1: Bulk RNA-seq (GSE233811)   → 时间序列宏观趋势 (DESeq2 + GSEA + WGCNA)")
-  add_line("L2: Spatial (GSE233814)         → 组织空间定位 (SCT + UCell + Moran's I)")
-  add_line("L3: Single-cell (GSE233518/815)→ 细胞类型分辨率 (Harmony + UCell + monocle3 + Augur)")
-  add_line("L4: Integration                 → 空间通讯 + CMap 反证 (SPOTlight + CellChat + CMap)")
-  add_line("```")
+add_line("L1: Bulk RNA-seq (GSE233815 bulk)         → 时间序列宏观趋势 (DESeq2 + GSEA + WGCNA)")
+add_line("L2: Spatial (GSE233815 spatial)           → 组织空间定位 (SCT + UCell + Moran's I)")
+add_line("L3: Single-cell (GSE233815 scRNA/snRNA)   → 细胞类型分辨率 (Harmony + UCell + monocle3 + Augur)")
+add_line("L4: Integration                           → 空间通讯 + CMap 反证 (SPOTlight + CellChat + CMap)")
+add_line("```")
   add_line("")
 
   # --------------------------------------------------------------------------
@@ -282,12 +282,12 @@ step13_report_generation <- function(cfg,
   add_line("| L1-2 | 时序差异分析 | DESeq2 Wald + LRT | apeglm shrinkage | Zhu 2019 PMID: 30617032 |")
   add_line("| L1-3a | 富集分析 | clusterProfiler + fgsea | FDR<0.25 | Yu 2012 PMID: 22455463 |")
   add_line("| L1-3b | 共表达网络 | WGCNA signed bicor | R²≥0.85 | Langfelder 2008 PMID: 18226113 |")
-  add_line("| L2-1 | 空间加载 | Seurat Load10X_Spatial | SCTransform | Hao 2024 PMID: 37128088 |")
-  add_line("| L2-2 | 基因集评分 | UCell rank-based | maxRank=1500 | Andreatta 2021 PMID: 34060939 |")
+  add_line("| L2-1 | 空间加载 | 作者 RDS / ReadMtx | SCTransform | Hao 2024 PMID: 37231261 |")
+  add_line("| L2-2 | 基因集评分 | UCell rank-based | maxRank=1500 | Andreatta 2021 PMID: 34285779 |")
   add_line("| L2-3 | 半暗带识别 | Neuron>0 & Stress>0.5 | - | Han 2024 PMID: 38324639 |")
   add_line("| L2-3 | 空间变量 | Moran's I | nfeatures=2000 | Edsgärd 2018 PMID: 29478807 |")
   add_line("| L3-1 | 整合 | Harmony | theta=2, lambda=1 | Korsunsky 2019 PMID: 31740819 |")
-  add_line("| L3-2 | UCell 评分 | UCell | maxRank=1500 | Andreatta 2021 |")
+  add_line("| L3-2 | UCell 评分 | UCell | maxRank=1500 | Andreatta 2021 PMID: 34285779 |")
   add_line("| L3-3a | 拟时序 | monocle3 | learn_graph+order_cells | Qiu 2017 PMID: 28825705 |")
   add_line("| L3-3b | 细胞优先级 | Augur | AUC binary | Skelly 2018 PMID: 30196209 |")
   add_line("| L4-1 | 空间去卷积 | SPOTlight NMFreg | top100 mgs/cell | Moncada 2020 PMID: 31844000 |")
@@ -305,9 +305,9 @@ step13_report_generation <- function(cfg,
     "[2] Zhu A et al. 2019. Heavy-tailed prior distributions for DESeq2 log fold changes. Nat Methods 16:284. PMID: 30617032",
     "[3] Yu G et al. 2012. clusterProfiler: an R package for comparing biological themes among gene clusters. OMICS 16:284-287. PMID: 22455463",
     "[4] Langfelder P, Horvath S. 2008. WGCNA: an R package for weighted correlation network analysis. BMC Bioinformatics 9:559. PMID: 19114008",
-    "[5] Hao Y et al. 2024. Dictionary learning for integrative, multimodal and scalable single-cell analysis. Nat Biotechnol 42:293-304. PMID: 37128088",
+    "[5] Hao Y et al. 2024. Dictionary learning for integrative, multimodal and scalable single-cell analysis. Nat Biotechnol 42:293-304. PMID: 37231261",
     "[6] Korsunsky I et al. 2019. Fast, sensitive and accurate integration of single-cell data with Harmony. Nat Methods 16:1289-1296. PMID: 31740819",
-    "[7] Andreatta M, Carmona SJ. 2021. UCell: robust and scalable single-cell gene signature scoring. bioRxiv. PMID: 34060939 (preprint)",
+    "[7] Andreatta M, Carmona SJ. 2021. UCell: robust and scalable single-cell gene signature scoring. Comput Struct Biotechnol J 19:3796-3798. PMID: 34285779",
     "[8] Qiu X et al. 2017. Reversed graph embedding resolves complex single-cell developmental trajectories. Nat Methods 14:979-982. PMID: 28825705",
     "[9] Skelly DA et al. 2018. Cell type prediction using single-cell transcriptomics. Cell 174:884. PMID: 30196209",
     "[10] Moncada R et al. 2020. Integrating microarray-based spatial transcriptomics and single-cell RNA-seq reveals tissue architecture in pancreatic ductal adenocarcinomas. Nat Commun 11:887. PMID: 31844000",
@@ -317,7 +317,7 @@ step13_report_generation <- function(cfg,
     "[14] Hu J et al. 2022. β-Caryophyllene suppresses cerebral ischemia-reperfusion injury via Nrf2/HO-1 pathway. Phytomedicine 100:154066. PMID: 35550220",
     "[15] Zheng P, Conrad M. 2025. The ferroptosis field opens up. Physiol Rev. PMID: 39661331",
     "[16] Han X et al. 2024. Benchmarks for integrating spatial and single-cell transcriptomics. Sci Transl Med. PMID: 38324639",
-    "[17] Zucha D et al. 2023. snRNA-seq MCAO mouse brain. GSE233815.",
+    "[17] Zucha D et al. 2024. Spatiotemporal transcriptomic map of glial cell response in a mouse model of acute brain ischemia. Proc Natl Acad Sci U S A 121:e2404203121. PMID: 39499634",
     "[18] Gu L et al. 2024. Single-cell and spatial transcriptomics reveals ferroptosis in hemorrhage stroke-induced oligodendrocyte white matter injury. Int J Biol Sci 20:4021-4041. PMID: 39113700",
     "[19] Wu Y et al. 2022. β-Caryophyllene ameliorates DSS-induced colitis via Nrf2. Int J Mol Sci. PMID: 36555694",
     "[20] Li Y et al. 2024. BCP cardioprotection. J Agric Food Chem. PMID: 39088660",
@@ -403,7 +403,7 @@ step13_report_generation <- function(cfg,
   # --------------------------------------------------------------------------
   add_line("## 11. 项目审查清单")
   add_line("")
-  add_line("- [x] 所有数据来源为 GEO 真实数据集 (GSE233811/814/518/815)")
+  add_line("- [x] 所有数据来源为 GEO 真实数据集 (GSE233815: bulk + spatial + scRNA/snRNA)")
   add_line("- [x] 所有基因集基于真实 PubMed 文献, 无模拟/捏造")
   add_line("- [x] 异常显式抛出, 无 try-except:pass")
   add_line("- [x] 每个模块独立可测试, 函数单一职责")

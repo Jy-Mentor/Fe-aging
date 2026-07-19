@@ -5,8 +5,10 @@
 # - Augur 评估各细胞类型在缺血条件下的扰动强度 (AUC 越高 = 扰动越大)
 # 参考:
 #   - Qiu X et al. 2017 Nat Methods (monocle3, PMID: 28825705)
-#   - Skelly DA et al. 2018 Cell (Augur, PMID: 30196209)
+#   - Skinnider MA et al. 2021 Nat Biotechnol (Augur, PMID: 32690972)
+#   - Squair JW et al. 2021 Nat Protoc (Augur protocol, PMID: 34172974)
 #   - Tritschler S et al. 2019 Nat Methods (monocle3 实践, PMID: 30778352)
+# Augur 安装: remotes::install_github("neurorestore/Augur")
 # ============================================================================
 
 step09_sc_pseudotime_augur <- function(seu, cfg) {
@@ -199,7 +201,8 @@ step09_sc_pseudotime_augur <- function(seu, cfg) {
   log_info("[Step09] Running Augur cell-type prioritization...")
 
   if (!requireNamespace("Augur", quietly = TRUE)) {
-    log_warn("[Step09] Augur package not installed. Skipping.")
+    log_warn("[Step09] Augur package not installed. ",
+             "Install with: remotes::install_github('neurorestore/Augur'). Skipping.")
     return(NULL)
   }
 

@@ -1,54 +1,75 @@
 # ============================================================================
 # 四层递进"铁衰老"多组学证据链 - 统一配置
-# 数据集:
-#   L1 Bulk RNA-seq:   GSE233811 (MCAO 时间序列 12h/D1/D3/D7)
-#   L2 Spatial:        GSE233814 (10x Visium 空间切片)
-#   L3 Single-cell:    GSE233518 / GSE233815 (scRNA-seq MCAO)
+# 数据集 (全部来自 GSE233815 Zucha et al. 2024 PNAS, RAW.tar 共 97 文件):
+#   L1 Bulk RNA-seq:   48 featureCounts 文件 (3h/12h/24h/3D/7D/Ctrl × MCAO/Sham)
+#   L2 Spatial:        5 10x Visium 样本 (C1-control/B1-D1/D1-D3/C1-D7/D1-D7)
+#   L3 Single-cell:    4 scRNA + 4 snRNA 10x 样本 (sham/D1/D3/D7)
+#                      + 作者 QC 过滤的 Seurat RDS (mendeley)
 #   L4 Integration:    SPOTlight + CellChat spatial + CMap 反证
 # ============================================================================
 
 project:
   name: "ferrosenescence_multi_omics"
-  root: "d:/铁衰老 绝不重蹈覆辙/L2/multi_omics_pipeline"
-  outputs_dir: "outputs"
-  log_dir: "outputs/logs"
-  figures_dir: "outputs/figures"
-  tables_dir: "outputs/tables"
-  rds_dir: "outputs/rds"
+  root: "d:/铁衰老 绝不重蹈覆辙"
+  pipeline_dir: "L2/multi_omics_pipeline"
+  outputs_dir: "L2/multi_omics_pipeline/outputs"
+  log_dir: "L2/multi_omics_pipeline/outputs/logs"
+  figures_dir: "L2/multi_omics_pipeline/outputs/figures"
+  tables_dir: "L2/multi_omics_pipeline/outputs/tables"
+  rds_dir: "L2/multi_omics_pipeline/outputs/rds"
   random_seed: 42
   n_threads: 4
 
 # ----------------------------------------------------------------------------
-# 数据路径 (按 GEO 数据集组织, 单细胞数据下载中)
+# 数据路径 (GSE233815 RAW.tar 已解压, 97 文件按类型分流)
 # ----------------------------------------------------------------------------
 data:
-  # L1: Bulk RNA-seq (GSE233811 - MCAO 时间序列)
-  bulk_dir: "data/external/GSE233811"
-  bulk_counts: "data/external/GSE233811/GSE233811_counts.csv"        # 基因×样本 count 矩阵
-  bulk_pheno: "data/external/GSE233811/GSE233811_pheno.csv"          # 样本元数据
-  bulk_time_col: "time"                                              # 时间点列名
-  bulk_time_levels: ["Control", "12h", "D1", "D3", "D7"]             # 时间点顺序
+  # L1: Bulk RNA-seq (48 featureCounts 文件, GPL19057)
+  # 时间点: 3h / 12h / 24h / 3D / 7D / Ctrl × MCAO / Sham, 每组 4-5 复复
+  bulk_dir: "data/external/GSE233815/bulk"
+  bulk_counts: "L1/results/GSE233815_bulk_expression_matrix.csv"
+  bulk_pheno: "data/external/GSE233815/bulk/sample_metadata.csv"
+  bulk_time_col: "timepoint"
+  bulk_condition_col: "condition"
+  bulk_time_levels: ["Ctrl", "3h", "12h", "24h", "3D", "7D"]
+  bulk_conditions: ["MCAO", "Sham"]
 
-  # L2: Spatial transcriptomics (GSE233814 - 10x Visium)
-  spatial_dir: "data/external/GSE233814"
+  # L2: Spatial transcriptomics (5 10x Visium 样本, GPL24247)
+  # C1-control: 对照; B1-D1/D1-D3: 1天/3天缺血; C1-D7/D1-D7: 7天缺血
+  spatial_dir: "data/external/GSE233815/spatial"
   spatial_samples:
-    C1: "data/external/GSE233814/C1_control"        # 对照切片
-    D1: "data/external/GSE233814/D1_ischemia"       # 1天缺血
-    D3: "data/external/GSE233814/D3_ischemia"       # 3天缺血
-    D7: "data/external/GSE233814/D7_ischemia"       # 7天缺血
+    C1-control: "data/external/GSE233815/spatial/C1-control"
+    B1-D1: "data/external/GSE233815/spatial/B1-D1"
+    D1-D3: "data/external/GSE233815/spatial/D1-D3"
+    C1-D7: "data/external/GSE233815/spatial/C1-D7"
+    D1-D7: "data/external/GSE233815/spatial/D1-D7"
+  spatial_extras_dir: "data/external/GSE233815/spatial/extras"  # tif 图像 + json 配置
   spatial_condition_col: "condition"
 
-  # L3: Single-cell RNA-seq (GSE233518 / GSE233815)
-  sc_dir: "data/external/GSE233518"
+  # L3: Single-cell + Single-nucleus RNA-seq (8 10x 样本, GPL24247)
+  sc_dir: "data/external/GSE233815/sc"
   sc_samples:
-    Control: "data/external/GSE233518/control"
-    D1: "data/external/GSE233518/D1"
-    D3: "data/external/GSE233518/D3"
-    D7: "data/external/GSE233518/D7"
-  # 备选: 已处理的 Seurat 对象 (优先使用, 来自 GSE233815 snRNA-seq)
+    sham: "data/external/GSE233815/sc/sham"
+    D1: "data/external/GSE233815/sc/D1"
+    D3: "data/external/GSE233815/sc/D3"
+    D7: "data/external/GSE233815/sc/D7"
+  sn_dir: "data/external/GSE233815/sn"
+  sn_samples:
+    sham: "data/external/GSE233815/sn/sham"
+    D1: "data/external/GSE233815/sn/D1"
+    D3: "data/external/GSE233815/sn/D3"
+    D7: "data/external/GSE233815/sn/D7"
+  # 作者已 QC 过滤的 Seurat 对象 (优先使用, 包含 Celltypes 注释 + UMAP)
   sc_seurat_rds: "data/external/GSE233815/mendeley/Seurat_sn_MCAO_Zucha2023_QCFiltered.Rds"
+  sc_oligos_rds: "data/external/GSE233815/mendeley/Seurat_OLs_integrated_annotated.Rds"
+  sc_meta_summary_rds: "data/external/GSE233815/mendeley/sn_meta_data_summary.rds"
+  # 空间 Seurat 对象 (作者已处理)
+  spatial_seurat_1st_rds: "data/external/GSE233815/mendeley/seurat_1stSpatial.rds"
+  spatial_seurat_2nd_rds: "data/external/GSE233815/mendeley/seurat_2ndSpatial.rds"
+  spatial_seurat_1DP_rds: "data/external/GSE233815/mendeley/spatial_seurat_1DP_13_nygen.rds"
+
   sc_condition_col: "Condition"
-  sc_celltype_col: "Cell_Type"
+  sc_celltype_col: "Celltypes"
   sc_condition_levels: ["Ctrl", "1DPI", "3DPI", "7DPI"]
 
 # ----------------------------------------------------------------------------
@@ -132,7 +153,7 @@ gene_sets:
   infarct_core: ["Bax", "Casp3", "Aifm1"]
 
   # 铁衰老基因集 (项目自有 96 基因, 优先使用)
-  ferroaging_file: "L2/铁衰老基因.txt"
+  ferroaging_file: "铁衰老基因.txt"
 
 # ----------------------------------------------------------------------------
 # L1: Bulk RNA-seq 分析参数

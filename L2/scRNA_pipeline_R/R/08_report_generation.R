@@ -15,7 +15,7 @@ step08_report_generation <- function(seu, cfg) {
   add_line("")
   add_line("**生成时间**: ", format(Sys.time(), "%Y-%m-%d %H:%M:%S"))
   add_line("**R 版本**: ", R.version.string)
-  add_line("**数据集**: GSE233815 (Zucha et al. 2023, MCAO 小鼠脑单核 RNA-seq)")
+  add_line("**数据集**: GSE233815 (Zucha et al. 2024, MCAO 小鼠脑单核 RNA-seq + 空间转录组, PMID: 39499634)")
   add_line("")
 
   # 1. 数据描述
@@ -53,7 +53,7 @@ step08_report_generation <- function(seu, cfg) {
   # 3. QC
   add_line("## 3. 质量控制")
   add_line("")
-  add_line("- 数据已由原始文献 (Zucha et al. 2023) 完成 QC 过滤")
+  add_line("- 数据已由原始文献 (Zucha et al. 2024) 完成 QC 过滤")
   add_line("- 本 Pipeline 对已过滤数据进行二次验证")
   add_line(sprintf("- nFeature_RNA 范围: [%d, %d]",
                    min(seu$nFeature_RNA), max(seu$nFeature_RNA)))
@@ -128,8 +128,16 @@ step08_report_generation <- function(seu, cfg) {
     for (cn in names(cc_list)) {
       cc <- cc_list[[cn]]
       # CellChat v2: L-R pairs stored in @LR$LRsig
-      n_lr <- tryCatch(nrow(cc@LR$LRsig), error = function(e) NA)
-      n_pw <- tryCatch(length(cc@netP$pathways), error = function(e) NA)
+      n_lr <- tryCatch(nrow(cc@LR$LRsig), error = function(e) {
+        log_warn("[Step8] CellChat LR$LRsig access failed for ", cn,
+                 ": ", conditionMessage(e))
+        NA
+      })
+      n_pw <- tryCatch(length(cc@netP$pathways), error = function(e) {
+        log_warn("[Step8] CellChat netP$pathways access failed for ", cn,
+                 ": ", conditionMessage(e))
+        NA
+      })
       add_line(sprintf("  - %s: %s 显著 L-R 对, %s 通路",
                        cn,
                        ifelse(is.na(n_lr), "N/A", as.character(n_lr)),
@@ -186,33 +194,33 @@ step08_report_generation <- function(seu, cfg) {
   add_line("")
   add_line("| 步骤 | 方法 | 工具版本 | 关键参数 | 参考文献 |")
   add_line("|---|---|---|---|---|")
-  add_line("| 数据加载 | readRDS + Seurat 5 | 5.2.1 | - | Hao et al. 2024 Cell |")
-  add_line("| QC | violin + threshold | - | nFeat>=200, %mt<20% | Zucha et al. 2023 |")
-  add_line("| 聚类 | 文献既有 | SCT + Louvain | res=0.8 | Zucha et al. 2023 |")
+  add_line("| 数据加载 | readRDS + Seurat 5 | ", as.character(packageVersion("Seurat")), " | - | Hao et al. 2024 Nat Biotechnol |")
+  add_line("| QC | violin + threshold | - | nFeat>=200, %mt<20% | Zucha et al. 2024 |")
+  add_line("| 聚类 | 文献既有 | SCT + Louvain | res=0.8 | Zucha et al. 2024 |")
   add_line("| 评分 | UCell | 2.0+ | rank=5 | Andreatta & Carmona 2021 |")
   add_line("| DEG | Wilcoxon | Seurat 5 | log2FC>=0.58, adj.p<0.05 | Hao et al. 2024 |")
   add_line("| 通讯 | CellChat | 2.2.0 | nboot=100, pop=100 | Jin et al. 2021 Nat Commun |")
   add_line("| 富集 | enrichGO/enrichKEGG | clusterProfiler | p.adj<0.05 | Yu et al. 2012 OMICS |")
   add_line("| 重叠 | Fisher exact | stats | alternative=greater | - |")
   add_line("| 轨迹 | monocle3 | 1.3+ | learn_graph, order_cells | Qiu et al. 2017 Nat Methods |")
-  add_line("| Scissor | L1+stability | GitHub lxpsxx/LargeScissor | alpha=0.05-0.2 | Sun et al. 2021 Nat Biotechnol |")
+  add_line("| Scissor | L1+stability | GitHub sunduanchen/Scissor | alpha=0.05-0.2 | Sun et al. 2022 Nat Biotechnol |")
   add_line("")
 
   # 10. 关键文献
   add_line("## 10. 关键文献（PubMed 已核验）")
   add_line("")
   refs <- c(
-    "[1] Zucha et al. 2023. snRNA-seq MCAO mouse brain (GSE233815).",
+    "[1] Zucha D et al. 2024. Spatiotemporal transcriptomic map of glial cell response in a mouse model of acute brain ischemia. Proc Natl Acad Sci U S A 121:e2404203121. PMID: 39499634",
     "[2] Jin S et al. 2021. Inference and analysis of cell-cell communication using CellChat. Nat Commun 12:1088. PMID: 33597522",
-    "[3] Sun D et al. 2021. Identifying phenotype-associated subpopulations by integrating bulk and single-cell sequencing data. Nat Biotechnol 40:509-520. PMID: 33820837",
+    "[3] Sun D et al. 2022. Identifying phenotype-associated subpopulations by integrating bulk and single-cell sequencing data. Nat Biotechnol 40:527-538. PMID: 34764492",
     "[4] Andreatta M, Carmona SJ. 2021. UCell: robust and scalable single-cell gene signature scoring. bioRxiv.",
     "[5] Qiu X et al. 2017. Reversed graph embedding resolves complex single-cell developmental trajectories. Nat Methods 14:979-982. PMID: 28825705",
     "[6] Yu G et al. 2012. clusterProfiler: an R package for comparing biological themes among gene clusters. OMICS 16:284-287. PMID: 22455463",
-    "[7] Hao Y et al. 2024. Dictionary learning for integrative, multimodal and scalable single-cell analysis. Nat Biotechnol 42:293-304. PMID: 37128088",
-    "[8] Gu L et al. 2024. Single-cell and spatial transcriptomics reveals ferroptosis in hemorrhage stroke-induced oligodendrocyte white matter injury. Int J Biol Sci 20:4021-4041. PMID: 39113700",
+    "[7] Hao Y et al. 2024. Dictionary learning for integrative, multimodal and scalable single-cell analysis. Nat Biotechnol 42:293-304. PMID: 37231261",
+    "[8] Gu L et al. 2024. Single-cell and spatial transcriptomics reveals ferroptosis in hemorrhage stroke-induced oligodendrocyte white matter injury. Int J Biol Sci 20:3842-3862. PMID: 39113700",
     "[9] Li Y et al. 2022. scRNA-seq landscape of ferroptosis in retinal ischemia/reperfusion injury. J Neuroinflammation 19:261. PMID: 36289494",
     "[10] Dang Y et al. 2022. FTH1- and SAT1-induced astrocytic ferroptosis in Alzheimer's: single-cell transcriptomic evidence. Pharmaceuticals 15:1177. PMID: 36297287",
-    "[11] Wang S et al. 2025. Ferroptosis-related genes in microglia-induced neuroinflammation of SCI: integrated single-cell and spatial transcriptomic analysis. J Transl Med 23:34. PMID: 39799354",
+    "[11] Wang S et al. 2025. Ferroptosis-related genes in microglia-induced neuroinflammation of SCI: integrated single-cell and spatial transcriptomic analysis. J Transl Med 23:43. PMID: 39799354",
     "[12] Cai Z et al. 2025. Loss of ATG7 in microglia impairs UPR, triggers ferroptosis. J Exp Med 222:e20230173. PMID: 39945772"
   )
   for (r in refs) add_line("- ", r)
@@ -266,11 +274,8 @@ step08_report_generation <- function(seu, cfg) {
   report_path <- file.path(cfg$project$outputs_dir,
                            "analysis_report.md")
   writeLines(report_lines, report_path)
-  log_info("[Step8] Report saved: {report_path}")
-  log_info("[Step8] Report length: {length(report_lines)} lines")
+  log_info("[Step8] Report saved: ", report_path)
+  log_info("[Step8] Report length: ", length(report_lines), " lines")
 
   invisible(report_path)
 }
-
-report_path <- step08_report_generation(seu, cfg)
-cat("\n=== Pipeline complete. Report at:", report_path, "===\n")

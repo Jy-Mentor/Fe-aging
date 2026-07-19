@@ -29,7 +29,7 @@ step02_bulk_dea_timeseries <- function(dds, cfg) {
   # --------------------------------------------------------------------------
   time_col <- cfg$data$bulk_time_col
   time_levels <- cfg$data$bulk_time_levels
-  ref_level <- time_levels[1]   # "Control"
+  ref_level <- time_levels[1]   # "Ctrl" (config 第一个时间点作为参考)
   comparisons <- setdiff(time_levels, ref_level)
 
   dea_list <- list()

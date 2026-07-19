@@ -61,11 +61,10 @@ step12_integration_cmap <- function(bulk_dea_list, cfg) {
     de_df <- if (is.data.frame(de_res)) de_res else as.data.frame(de_res)
     lfc_col <- grep("^log2FoldChange$", colnames(de_df), value = TRUE)[1]
     padj_col <- grep("^padj$|^adj.P.Val$", colnames(de_df), value = TRUE)[1]
-    gene_col <- if ("gene" %in% colnames(de_df)) "gene" else "rownname"
-    if (gene_col == "rownname") {
+    if (!"gene" %in% colnames(de_df)) {
       de_df$gene <- rownames(de_df)
-      gene_col <- "gene"
     }
+    gene_col <- "gene"
 
     de_df <- de_df[!is.na(de_df[[lfc_col]]) & !is.na(de_df[[padj_col]]), ]
     log_info("[Step12] ", tp, ": ", nrow(de_df), " DE genes with valid LFC/padj")

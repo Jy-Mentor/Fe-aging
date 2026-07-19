@@ -2,10 +2,10 @@
 # ============================================================================
 # 四层递进"铁衰老"多组学证据链 - 主控脚本
 # ============================================================================
-# 数据集:
-#   L1 Bulk RNA-seq:    GSE233811 (MCAO 12h/D1/D3/D7 时间序列)
-#   L2 Spatial:         GSE233814 (10x Visium 空间切片)
-#   L3 Single-cell:     GSE233518 / GSE233815 (scRNA-seq MCAO)
+# 数据集 (全部来自 GSE233815, Zucha et al. 2024 PNAS, PMID:39499634):
+#   L1 Bulk RNA-seq:    GSE233815 bulk (48 featureCounts, MCAO 3h/12h/24h/3D/7D × Sham)
+#   L2 Spatial:         GSE233815 spatial (5 10x Visium 切片)
+#   L3 Single-cell:     GSE233815 scRNA/snRNA (8 10x 样本 + 作者 RDS)
 #   L4 Integration:     SPOTlight + CellChat spatial + CMap 反证
 #
 # 使用方法:
@@ -20,8 +20,37 @@
 # ============================================================================
 
 # 加入 Bioc 包备用安装路径 (与 scRNA_pipeline_R 共享)
-if (dir.exists("D:/R-library/4.5")) {
-  .libPaths(c("D:/R-library/4.5", .libPaths()))
+# 项目内 R-library/4.5 优先 (TRAE Sandbox 兼容), 然后 D:/R-library/4.5
+# 推断项目根目录: 从 cwd 或 script 路径向上查找含 R-library 的目录
+.detect_proj_root <- function() {
+  candidates <- character(0)
+  # 1. 当前工作目录
+  candidates <- c(candidates, getwd())
+  # 2. 脚本所在目录 (Rscript --file=) 的上两级 (pipeline 在 L2/multi_omics_pipeline)
+  arg_file <- grep("--file=", commandArgs(FALSE), value = TRUE, fixed = TRUE)
+  if (length(arg_file) > 0) {
+    script_path <- normalizePath(sub("--file=", "", arg_file[1]))
+    candidates <- c(candidates,
+                    dirname(dirname(dirname(script_path))),  # ../../
+                    dirname(dirname(script_path)))  # ../
+  }
+  # 3. 硬编码项目根 (兜底)
+  candidates <- c(candidates, "d:/铁衰老 绝不重蹈覆辙")
+  for (cand in candidates) {
+    if (nzchar(cand) && dir.exists(file.path(cand, "R-library"))) {
+      return(normalizePath(cand))
+    }
+  }
+  return(getwd())
+}
+
+proj_root <- .detect_proj_root()
+proj_lib <- file.path(proj_root, "R-library/4.5")
+.lib_paths_to_add <- character(0)
+if (dir.exists(proj_lib)) .lib_paths_to_add <- c(.lib_paths_to_add, proj_lib)
+if (dir.exists("D:/R-library/4.5")) .lib_paths_to_add <- c(.lib_paths_to_add, "D:/R-library/4.5")
+if (length(.lib_paths_to_add) > 0) {
+  .libPaths(c(.lib_paths_to_add, .libPaths()))
 }
 
 suppressPackageStartupMessages({
@@ -31,11 +60,27 @@ suppressPackageStartupMessages({
 # ----------------------------------------------------------------------------
 # 加载配置与工具函数
 # ----------------------------------------------------------------------------
-script_dir <- dirname(sys.frame(1)$ofile %||% ".")
+script_dir <- tryCatch({
+  arg_file <- grep("--file=", commandArgs(FALSE), value = TRUE, fixed = TRUE)
+  if (length(arg_file) > 0) {
+    dirname(normalizePath(sub("--file=", "", arg_file[1])))
+  } else {
+    cd <- getwd()
+    if (file.exists(file.path(cd, "config.yaml"))) cd else "."
+  }
+}, error = function(e) ".")
 
 # 兼容: 当直接 Rscript 调用时, script_dir 可能取不到
 if (is.null(script_dir) || script_dir == "." || !nzchar(script_dir)) {
   script_dir <- getwd()
+}
+
+# 如果当前目录不是 pipeline 目录, 尝试相对路径推断
+if (!dir.exists(file.path(script_dir, "utils")) && !dir.exists(file.path(script_dir, "R"))) {
+  # 尝试以 cwd 为 pipeline 目录
+  if (dir.exists(file.path(getwd(), "utils")) && dir.exists(file.path(getwd(), "R"))) {
+    script_dir <- getwd()
+  }
 }
 
 # 加载 utils
@@ -86,6 +131,8 @@ log_info("R 版本: ", R.version.string)
 log_info("随机种子: ", cfg$reproducibility$r_seed)
 log_info("步骤: ", paste(steps_to_run, collapse = ", "))
 log_info("============================================================")
+
+t0_global <- Sys.time()
 
 # 全局对象 (跨步骤传递)
 bulk_dds        <- NULL      # L1: DESeq2 对象
@@ -174,8 +221,7 @@ for (step in steps_to_run) {
 
 log_info("============================================================")
 log_info("Pipeline 完成. 总耗时: ",
-         round(as.numeric(difftime(Sys.time(), t0_global <- t0_global %||% Sys.time(),
-                                   units = "mins")), 2), " minutes")
+         round(as.numeric(difftime(Sys.time(), t0_global, units = "mins")), 2), " minutes")
 log_info("日志文件: ", log_file)
 log_info("============================================================")
 

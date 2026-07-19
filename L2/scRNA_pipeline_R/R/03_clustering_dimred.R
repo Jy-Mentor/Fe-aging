@@ -13,7 +13,7 @@ step03_clustering_dimred <- function(seu, cfg) {
   if (!"umap" %in% reductions) {
     stop("UMAP not found in Seurat object. Run preprocessing first.")
   }
-  log_info("[Step3] Existing reductions: {paste(reductions, collapse=', ')}")
+  log_info("[Step3] Existing reductions: ", paste(reductions, collapse = ", "))
 
   seu$Condition <- factor(seu[[cfg$analysis$condition_col, drop = TRUE]],
                           levels = cfg$analysis$condition_levels)
@@ -46,18 +46,20 @@ step03_clustering_dimred <- function(seu, cfg) {
   # 3.4 铁衰老基因集评分 (UCell) - 优先复用既有 FA_96_UCell
   fa_col <- cfg$data$ferroaging_col_ucell
   if (fa_col %in% colnames(seu@meta.data)) {
-    log_info("[Step3] Reusing existing ferroaging score column: {fa_col}")
+    log_info("[Step3] Reusing existing ferroaging score column: ", fa_col)
     seu$Ferroaging <- seu@meta.data[[fa_col]]
   } else {
     fa_genes <- load_ferroaging_genes(cfg)
     fa_mouse <- map_human_to_mouse(fa_genes)
-    log_info("[Step3] Ferroaging genes (human): {length(fa_genes)}; mapped to mouse: {length(fa_mouse)}")
+    log_info("[Step3] Ferroaging genes (human): ", length(fa_genes),
+             "; mapped to mouse: ", length(fa_mouse))
     gene_check <- intersect_with_seurat(fa_mouse, seu)
     fa_available <- gene_check$common
 
     if (requireNamespace("UCell", quietly = TRUE)) {
       library(UCell)
-      log_info("[Step3] Computing UCell ferroaging score with {length(fa_available)} genes...")
+      log_info("[Step3] Computing UCell ferroaging score with ",
+               length(fa_available), " genes...")
       seu <- UCell::AddModuleScore_UCell(
         seu, features = list(Ferroaging = fa_available),
         ncores = 2, BPPARAM = BiocParallel::SerialParam()
@@ -144,5 +146,3 @@ step03_clustering_dimred <- function(seu, cfg) {
   log_info("[Step3] Saved Seurat with ferroaging score.")
   invisible(seu)
 }
-
-seu <- step03_clustering_dimred(seu, cfg)

@@ -1,11 +1,11 @@
 # ============================================================================
 # STEP 07: L3 scRNA-seq 数据加载 + Harmony 多样本整合
-# - 优先加载已处理的 Seurat RDS (GSE233815, Zucha 2023)
-# - 否则从 10x 输出读取 GSE233518
+# - 优先加载已处理的 Seurat RDS (GSE233815, Zucha 2024, PMID:39499634)
+# - 否则从 10x 输出读取原始 GSE233815 scRNA/snRNA 文件
 # - QC: nFeature/percent.mt 过滤
 # - Normalize + HVG + PCA + Harmony 整合
 # 参考:
-#   - Hao Y et al. 2024 Nat Biotechnol (Seurat v5)
+#   - Hao Y et al. 2024 Nat Biotechnol 42:293-304 (Seurat v5, PMID:37231261)
 #   - Korsunsky I et al. 2019 Nat Methods (Harmony)
 # ============================================================================
 
@@ -32,7 +32,7 @@ step07_sc_load_integrate <- function(cfg) {
     seu <- readRDS(seu_rds)
     log_info("[Step07] Loaded: ", nrow(seu), " genes x ", ncol(seu), " cells")
   } else {
-    log_info("[Step07] Pre-built RDS not found, reading 10x outputs from GSE233518...")
+    log_info("[Step07] Pre-built RDS not found, reading 10x outputs from GSE233815...")
     seu_list <- list()
     for (sn in names(sc_samples)) {
       sample_dir <- sc_samples[[sn]]

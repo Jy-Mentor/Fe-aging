@@ -4,6 +4,10 @@
 # - 输入: 每个细胞类型的显著 DEGs
 # - 富集阈值: p.adj < 0.05
 # - 额外: GSVA 在每个细胞类型上计算铁衰老通路活性
+# 参考:
+#   - Yu et al. 2012 OMICS (clusterProfiler) PMID:22455463
+#   - Zhou & Bao 2020 Database (FerrDb) PMID:32219413
+#   - Hanzelmann et al. 2013 BMC Bioinformatics (GSVA) PMID:23323831
 # ============================================================================
 
 step06_ferroptosis_enrichment <- function(seu, cfg) {
@@ -27,9 +31,11 @@ step06_ferroptosis_enrichment <- function(seu, cfg) {
   sig_degs <- read.csv(deg_file, stringsAsFactors = FALSE)
 
   cell_types <- unique(sig_degs$cell_type)
-  log_info("[Step6] Cell types in DEG table: {length(cell_types)}")
+  log_info("[Step6] Cell types in DEG table: ", length(cell_types))
 
+  # --------------------------------------------------------------------------
   # 6.1 GO / KEGG 富集 - 每细胞类型 × 比较
+  # --------------------------------------------------------------------------
   go_results_all <- list()
   kegg_results_all <- list()
 
@@ -41,44 +47,72 @@ step06_ferroptosis_enrichment <- function(seu, cfg) {
       genes_up <- sub$gene[sub$direction == "up"]
       genes_dn <- sub$gene[sub$direction == "down"]
 
-      ego_up <- tryCatch({
+      # GO BP 富集 (up)
+      # enrichGO 在无基因可映射时会报错; 此处显式日志降级 (非静默吞错)
+      ego_up <- tryCatch(
         enrichGO(gene = genes_up, OrgDb = org.Mm.eg.db,
                  keyType = "SYMBOL", ont = "BP",
                  pvalueCutoff = cfg$enrichment$pvalue_cutoff,
                  qvalueCutoff = cfg$enrichment$qvalue_cutoff,
-                 pAdjustMethod = "BH")
-      }, error = function(e) NULL)
+                 pAdjustMethod = "BH"),
+        error = function(e) {
+          log_warn("[Step6] enrichGO up failed for ", ct, " ", cmp,
+                   ": ", conditionMessage(e))
+          NULL
+        }
+      )
       if (!is.null(ego_up) && nrow(as.data.frame(ego_up)) > 0) {
         df <- as.data.frame(ego_up)
         df$cell_type <- ct; df$comparison <- cmp; df$direction <- "up"
         go_results_all[[length(go_results_all) + 1]] <- df
       }
 
-      ego_dn <- tryCatch({
+      # GO BP 富集 (down)
+      ego_dn <- tryCatch(
         enrichGO(gene = genes_dn, OrgDb = org.Mm.eg.db,
                  keyType = "SYMBOL", ont = "BP",
                  pvalueCutoff = cfg$enrichment$pvalue_cutoff,
                  qvalueCutoff = cfg$enrichment$qvalue_cutoff,
-                 pAdjustMethod = "BH")
-      }, error = function(e) NULL)
+                 pAdjustMethod = "BH"),
+        error = function(e) {
+          log_warn("[Step6] enrichGO down failed for ", ct, " ", cmp,
+                   ": ", conditionMessage(e))
+          NULL
+        }
+      )
       if (!is.null(ego_dn) && nrow(as.data.frame(ego_dn)) > 0) {
         df <- as.data.frame(ego_dn)
         df$cell_type <- ct; df$comparison <- cmp; df$direction <- "down"
         go_results_all[[length(go_results_all) + 1]] <- df
       }
 
-      ekegg_up <- tryCatch({
-        enrichKEGG(gene = bitr(genes_up, fromType = "SYMBOL",
-                               toType = "ENTREZID",
-                               OrgDb = org.Mm.eg.db)$ENTREZID,
-                   organism = cfg$enrichment$kegg_organism,
-                   pvalueCutoff = cfg$enrichment$pvalue_cutoff,
-                   qvalueCutoff = cfg$enrichment$qvalue_cutoff)
-      }, error = function(e) NULL)
-      if (!is.null(ekegg_up) && nrow(as.data.frame(ekegg_up)) > 0) {
-        df <- as.data.frame(ekegg_up)
-        df$cell_type <- ct; df$comparison <- cmp; df$direction <- "up"
-        kegg_results_all[[length(kegg_results_all) + 1]] <- df
+      # KEGG 富集 (up): 需先 bitr 转 ENTREZID
+      bitr_up <- tryCatch(
+        bitr(genes_up, fromType = "SYMBOL", toType = "ENTREZID",
+             OrgDb = org.Mm.eg.db),
+        error = function(e) {
+          log_warn("[Step6] bitr up failed for ", ct, " ", cmp,
+                   ": ", conditionMessage(e))
+          NULL
+        }
+      )
+      if (!is.null(bitr_up) && nrow(bitr_up) > 0) {
+        ekegg_up <- tryCatch(
+          enrichKEGG(gene = bitr_up$ENTREZID,
+                     organism = cfg$enrichment$kegg_organism,
+                     pvalueCutoff = cfg$enrichment$pvalue_cutoff,
+                     qvalueCutoff = cfg$enrichment$qvalue_cutoff),
+          error = function(e) {
+            log_warn("[Step6] enrichKEGG up failed for ", ct, " ", cmp,
+                     ": ", conditionMessage(e), " (KEGG API 可能不可达)")
+            NULL
+          }
+        )
+        if (!is.null(ekegg_up) && nrow(as.data.frame(ekegg_up)) > 0) {
+          df <- as.data.frame(ekegg_up)
+          df$cell_type <- ct; df$comparison <- cmp; df$direction <- "up"
+          kegg_results_all[[length(kegg_results_all) + 1]] <- df
+        }
       }
     }
   }
@@ -86,9 +120,10 @@ step06_ferroptosis_enrichment <- function(seu, cfg) {
   if (length(go_results_all) > 0) {
     go_all <- do.call(rbind, go_results_all)
     save_table(go_all, "06_go_enrichment_all", cfg)
-    log_info("[Step6] GO results: {nrow(go_all)} terms across {length(unique(go_all$cell_type))} cell types")
+    log_info("[Step6] GO results: ", nrow(go_all), " terms across ",
+             length(unique(go_all$cell_type)), " cell types")
 
-    # 6.2 Top GO terms dotplot (top cell types)
+    # 6.2 Top GO terms dotplot
     top_go <- go_all[order(go_all$p.adjust), ]
     top_go <- top_go[!duplicated(top_go$Description), ]
     top_go <- head(top_go, 30)
@@ -101,35 +136,56 @@ step06_ferroptosis_enrichment <- function(seu, cfg) {
            color = "p.adjust", size = "Gene count") +
       theme_pub(base_size = 9)
     save_figure(p_go, "06_go_top_dotplot", cfg, width = 13, height = 9)
+  } else {
+    log_warn("[Step6] No GO enrichment results; skip dotplot.")
   }
 
   if (length(kegg_results_all) > 0) {
     kegg_all <- do.call(rbind, kegg_results_all)
     save_table(kegg_all, "06_kegg_enrichment_all", cfg)
-    log_info("[Step6] KEGG results: {nrow(kegg_all)} pathways")
+    log_info("[Step6] KEGG results: ", nrow(kegg_all), " pathways")
+  } else {
+    log_warn("[Step6] No KEGG enrichment results (KEGG API may be unreachable).")
   }
 
-  # 6.3 铁死亡特异性富集: FerrDb 基因集 markers + drivers + suppressors
-  # 基于文献 PMID: 33597951 (FerrDb) 整理的核心铁死亡基因
+  # --------------------------------------------------------------------------
+  # 6.3 铁死亡特异性基因集 (基于 FerrDb v1, Zhou & Bao 2020, PMID:32219413)
+  # --------------------------------------------------------------------------
+  # 来源: FerrDb 数据库 markers + drivers + suppressors (小鼠命名, 全首字母大写)
   ferroptosis_core_mouse <- c(
+    # Markers
     "Gpx4", "Slc7a11", "Acsl4", "Alox15", "Tp53", "Nfe2l2", "Keap1",
     "Hmox1", "Sat1", "Slc3a2", "Ncoa4", "Fth1", "Ftl1", "Tfrc",
-    "Steap3", "Bach1", "Pten", "Cd44", "Emt", "Mtor", "Hif1a",
+    "Steap3", "Bach1", "Pten", "Cd44", "Mtor", "Hif1a",
+    # Drivers
     "Cs", "Rpl8", "Rps3", "Ireb2", "Lpcat3", "Acsl3", "Yap1",
     "Taz", "Atg5", "Atg7", "Bap1", "Ptgs2", "Chac1", "Alox5",
     "Pebp1", "Prnp", "Dpp4", "Map1lc3a", "Map1lc3b", "Gls2",
-    "Slc1a5", "Cds2", "Pebp1", "Acox1", "Cpt1a", "Nrf2"
+    "Slc1a5", "Cds2", "Acox1", "Cpt1a"
+    # 注: 原代码中 "Nrf2" (人类) 已修正为 "Nfe2l2" (小鼠)
+    # 注: 原代码中 "Emt" 不是基因 (是表型), 已移除
+    # 注: 原代码中 "Pebp1" 重复出现, 已去重
   )
   fa_genes <- load_ferroaging_genes(cfg)
   fa_mouse <- map_human_to_mouse(fa_genes)
   ferroptosis_combined <- unique(c(ferroptosis_core_mouse, fa_mouse))
+  log_info("[Step6] Ferroptosis core: ", length(ferroptosis_core_mouse),
+           " | Ferroaging project: ", length(fa_mouse),
+           " | Combined: ", length(ferroptosis_combined))
 
+  # --------------------------------------------------------------------------
   # 6.4 DEGs 与铁死亡基因集重叠 (Fisher's exact)
-  all_degs <- read.csv(file.path(cfg$project$tables_dir, "04_all_degs.csv"),
-                       stringsAsFactors = FALSE)
+  # --------------------------------------------------------------------------
+  all_degs_file <- file.path(cfg$project$tables_dir, "04_all_degs.csv")
+  if (!file.exists(all_degs_file)) {
+    stop("All DEG table not found: ", all_degs_file,
+         ". Run step 4 (DE analysis) first.")
+  }
+  all_degs <- read.csv(all_degs_file, stringsAsFactors = FALSE)
   background_genes <- unique(rownames(Seurat::GetAssayData(seu, assay = "RNA", layer = "data")))
   ferroptosis_in_bg <- intersect(ferroptosis_combined, background_genes)
-  log_info("[Step6] Ferroptosis/ferroaging genes in expression matrix: {length(ferroptosis_in_bg)}/{length(ferroptosis_combined)}")
+  log_info("[Step6] Ferroptosis/ferroaging genes in expression matrix: ",
+           length(ferroptosis_in_bg), "/", length(ferroptosis_combined))
 
   overlap_results <- list()
   for (ct in unique(all_degs$cell_type)) {
@@ -164,52 +220,63 @@ step06_ferroptosis_enrichment <- function(seu, cfg) {
     overlap_df$padj <- p.adjust(overlap_df$p_value, method = "BH")
     overlap_df$signif <- ifelse(overlap_df$padj < 0.05, "yes", "no")
     save_table(overlap_df, "06_ferroptosis_overlap_fisher", cfg)
-    log_info("[Step6] Ferroptosis overlap: {sum(overlap_df$signif=='yes')} significant (FDR<0.05)")
+    log_info("[Step6] Ferroptosis overlap: ",
+             sum(overlap_df$signif == "yes"), " significant (FDR<0.05)")
 
-    if (nrow(overlap_df) > 0) {
-      overlap_df$comparison <- factor(overlap_df$comparison,
-                                      levels = c("1DPI_vs_Ctrl",
-                                                 "3DPI_vs_Ctrl",
-                                                 "7DPI_vs_Ctrl"))
-      p_overlap <- ggplot(overlap_df, aes(x = cell_type, y = fold_enrichment,
-                                          fill = comparison)) +
-        geom_col(position = position_dodge(width = 0.8)) +
-        geom_hline(yintercept = 1, linetype = "dashed", color = "grey50") +
-        scale_fill_manual(values = c("1DPI_vs_Ctrl" = "#E64B35",
-                                     "3DPI_vs_Ctrl" = "#F39B7F",
-                                     "7DPI_vs_Ctrl" = "#8491B4")) +
-        labs(title = "Ferroptosis gene overlap (Fisher's exact)",
-             x = "Cell type", y = "Fold enrichment") +
-        theme_pub(base_size = 10) +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))
-      save_figure(p_overlap, "06_ferroptosis_overlap_barplot", cfg,
-                  width = 12, height = 6)
-    }
+    overlap_df$comparison <- factor(overlap_df$comparison,
+                                    levels = c("1DPI_vs_Ctrl",
+                                               "3DPI_vs_Ctrl",
+                                               "7DPI_vs_Ctrl"))
+    p_overlap <- ggplot(overlap_df, aes(x = cell_type, y = fold_enrichment,
+                                        fill = comparison)) +
+      geom_col(position = position_dodge(width = 0.8)) +
+      geom_hline(yintercept = 1, linetype = "dashed", color = "grey50") +
+      scale_fill_manual(values = c("1DPI_vs_Ctrl" = "#E64B35",
+                                   "3DPI_vs_Ctrl" = "#F39B7F",
+                                   "7DPI_vs_Ctrl" = "#8491B4")) +
+      labs(title = "Ferroptosis gene overlap (Fisher's exact)",
+           x = "Cell type", y = "Fold enrichment") +
+      theme_pub(base_size = 10) +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    save_figure(p_overlap, "06_ferroptosis_overlap_barplot", cfg,
+                width = 12, height = 6)
+  } else {
+    log_warn("[Step6] No overlap results; skip Fisher barplot.")
   }
 
+  # --------------------------------------------------------------------------
   # 6.5 GSVA 铁衰老评分 - 按细胞类型 × 条件
-  # 兼容 GSVA 1.48 (旧 API: gsva(expr, geneSets, method)) 与 1.50+ (新 API: GSVAParam)
-  if (requireNamespace("GSVA", quietly = TRUE) &&
-      requireNamespace("GSEABase", quietly = TRUE)) {
-    log_info("[Step6] Computing GSVA ferroptosis/ferroaging activity per cell...")
+  # 兼容 GSVA 1.48 (旧 API) 与 1.50+ (新 API: GSVAParam)
+  # --------------------------------------------------------------------------
+  if (!requireNamespace("GSVA", quietly = TRUE) ||
+      !requireNamespace("GSEABase", quietly = TRUE)) {
+    log_warn("[Step6] GSVA/GSEABase not installed; skip GSVA scoring.")
+    log_info("[Step6] Enrichment analysis done (without GSVA).")
+    return(invisible(seu))
+  }
+
+  log_info("[Step6] Computing GSVA ferroptosis/ferroaging activity per cell...")
+  suppressPackageStartupMessages({
     library(GSVA)
     library(GSEABase)
-    expr_mat <- as.matrix(Seurat::GetAssayData(seu, assay = "RNA", layer = "data"))
-    fa_avail <- intersect(fa_mouse, rownames(expr_mat))
-    fp_avail <- intersect(ferroptosis_core_mouse, rownames(expr_mat))
+  })
+  expr_mat <- as.matrix(Seurat::GetAssayData(seu, assay = "RNA", layer = "data"))
+  fa_avail <- intersect(fa_mouse, rownames(expr_mat))
+  fp_avail <- intersect(ferroptosis_core_mouse, rownames(expr_mat))
 
-    gene_sets <- list(
-      Ferroaging = fa_avail,
-      Ferroptosis_core = fp_avail,
-      Ferroptosis_combined = unique(c(fa_avail, fp_avail))
-    )
+  gene_sets <- list(
+    Ferroaging = fa_avail,
+    Ferroptosis_core = fp_avail,
+    Ferroptosis_combined = unique(c(fa_avail, fp_avail))
+  )
 
-    # 抽样 2000 细胞以加速 GSVA
-    set.seed(cfg$analysis$random_seed)
-    n_sub <- min(ncol(expr_mat), 2000)
-    expr_sub <- expr_mat[, sample(seq_len(ncol(expr_mat)), n_sub)]
+  # 抽样 2000 细胞以加速 GSVA
+  set.seed(cfg$analysis$random_seed)
+  n_sub <- min(ncol(expr_mat), 2000)
+  expr_sub <- expr_mat[, sample(seq_len(ncol(expr_mat)), n_sub)]
 
-    gsva_mat <- tryCatch({
+  gsva_mat <- tryCatch(
+    {
       if ("GSVAParam" %in% getNamespaceExports("GSVA")) {
         gsva_params <- GSVA::GSVAParam(
           exprData = expr_sub,
@@ -221,47 +288,42 @@ step06_ferroptosis_enrichment <- function(seu, cfg) {
         GSVA::gsva(expr_sub, gene_sets, method = "gsva", kcdf = "Gaussian",
                    parallel.sz = 1)
       }
-    }, error = function(e) {
-      log_warn("[Step6] GSVA failed: {conditionMessage(e)}")
-      NULL
-    })
-
-    if (!is.null(gsva_mat)) {
-      seu_sub_meta <- seu@meta.data[colnames(expr_sub), , drop = FALSE]
-      seu_sub_meta$GSVA_Ferroaging <- gsva_mat["Ferroaging", ]
-      seu_sub_meta$GSVA_Ferroptosis_core <- gsva_mat["Ferroptosis_core", ]
-      seu_sub_meta$GSVA_Ferroptosis_combined <- gsva_mat["Ferroptosis_combined", ]
-
-      gsva_long <- data.frame(
-        Cell = colnames(expr_sub),
-        Condition = seu_sub_meta[[cfg$analysis$condition_col]],
-        CellType = seu_sub_meta[[cfg$analysis$celltype_col]],
-        GSVA_Ferroaging = gsva_mat["Ferroaging", ],
-        GSVA_Ferroptosis_core = gsva_mat["Ferroptosis_core", ],
-        GSVA_Ferroptosis_combined = gsva_mat["Ferroptosis_combined", ],
-        row.names = NULL,
-        stringsAsFactors = FALSE
-      )
-      save_table(gsva_long, "06_gsva_scores_per_cell", cfg)
-      log_info("[Step6] GSVA scores computed for {n_sub} cells (saved as table).")
-
-      p_gsva <- ggplot(gsva_long, aes(x = CellType, y = GSVA_Ferroaging,
-                                      fill = Condition)) +
-        geom_boxplot(outlier.size = 0.3, outlier.alpha = 0.3) +
-        scale_fill_manual(values = CONDITION_COLORS) +
-        labs(title = "GSVA Ferroaging score by cell type x condition",
-             x = "Cell type", y = "GSVA score") +
-        theme_pub(base_size = 10) +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))
-      save_figure(p_gsva, "06_gsva_ferroaging_boxplot", cfg,
-                  width = 13, height = 6)
+    },
+    error = function(e) {
+      log_error("[Step6] GSVA failed: ", conditionMessage(e))
+      stop("GSVA computation failed: ", conditionMessage(e))
     }
-  } else {
-    log_warn("[Step6] GSVA/GSEABase not installed; skip GSVA scoring.")
-  }
+  )
+
+  seu_sub_meta <- seu@meta.data[colnames(expr_sub), , drop = FALSE]
+  seu_sub_meta$GSVA_Ferroaging <- gsva_mat["Ferroaging", ]
+  seu_sub_meta$GSVA_Ferroptosis_core <- gsva_mat["Ferroptosis_core", ]
+  seu_sub_meta$GSVA_Ferroptosis_combined <- gsva_mat["Ferroptosis_combined", ]
+
+  gsva_long <- data.frame(
+    Cell = colnames(expr_sub),
+    Condition = seu_sub_meta[[cfg$analysis$condition_col]],
+    CellType = seu_sub_meta[[cfg$analysis$celltype_col]],
+    GSVA_Ferroaging = gsva_mat["Ferroaging", ],
+    GSVA_Ferroptosis_core = gsva_mat["Ferroptosis_core", ],
+    GSVA_Ferroptosis_combined = gsva_mat["Ferroptosis_combined", ],
+    row.names = NULL,
+    stringsAsFactors = FALSE
+  )
+  save_table(gsva_long, "06_gsva_scores_per_cell", cfg)
+  log_info("[Step6] GSVA scores computed for ", n_sub, " cells (saved as table).")
+
+  p_gsva <- ggplot(gsva_long, aes(x = CellType, y = GSVA_Ferroaging,
+                                  fill = Condition)) +
+    geom_boxplot(outlier.size = 0.3, outlier.alpha = 0.3) +
+    scale_fill_manual(values = CONDITION_COLORS) +
+    labs(title = "GSVA Ferroaging score by cell type x condition",
+         x = "Cell type", y = "GSVA score") +
+    theme_pub(base_size = 10) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  save_figure(p_gsva, "06_gsva_ferroaging_boxplot", cfg,
+              width = 13, height = 6)
 
   log_info("[Step6] Enrichment analysis done.")
   invisible(seu)
 }
-
-seu <- step06_ferroptosis_enrichment(seu, cfg)

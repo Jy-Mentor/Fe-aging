@@ -14,16 +14,16 @@ load_config <- function(config_path = "config.yaml") {
   }
   cfg <- yaml::read_yaml(config_path)
 
-  # 相对路径 → 绝对路径 (以 project$root 为基准)
+  # 相对路径 → 绝对路径 (以 project$root 为基准, 即项目顶层 d:/铁衰老 绝不重蹈覆辙/)
   root <- cfg$project$root
   if (is.null(root)) {
     stop("config.yaml 缺少 project$root 字段")
   }
   root <- normalizePath(root, winslash = "/", mustWork = FALSE)
 
-  # project 下的路径键
+  # project 下的路径键 (outputs/log/figures/tables/rds 都在 pipeline 子目录下)
   project_path_keys <- c("outputs_dir", "log_dir", "figures_dir", "tables_dir",
-                         "rds_dir")
+                         "rds_dir", "pipeline_dir")
   for (k in project_path_keys) {
     v <- cfg$project[[k]]
     if (!is.null(v) && is.character(v) && nchar(v) > 0 &&
@@ -33,26 +33,28 @@ load_config <- function(config_path = "config.yaml") {
     }
   }
 
-  # data 路径 (相对于 root 的父目录, 即项目根 d:/铁衰老 绝不重蹈覆辙/)
-  parent_root <- dirname(root)
+  # data 路径 (全部相对于 project$root, 即 d:/铁衰老 绝不重蹈覆辙/)
   data_keys <- c("bulk_dir", "bulk_counts", "bulk_pheno", "spatial_dir",
-                 "sc_dir", "sc_seurat_rds")
+                 "spatial_extras_dir", "sc_dir", "sn_dir",
+                 "sc_seurat_rds", "sc_oligos_rds", "sc_meta_summary_rds",
+                 "spatial_seurat_1st_rds", "spatial_seurat_2nd_rds",
+                 "spatial_seurat_1DP_rds")
   for (k in data_keys) {
     v <- cfg$data[[k]]
     if (!is.null(v) && is.character(v) && nchar(v) > 0 &&
         !startsWith(v, "/") && !(nchar(v) >= 2 && substr(v, 2, 2) == ":")) {
-      cfg$data[[k]] <- normalizePath(file.path(parent_root, v), winslash = "/",
+      cfg$data[[k]] <- normalizePath(file.path(root, v), winslash = "/",
                                       mustWork = FALSE)
     }
   }
-  # spatial_samples + sc_samples 路径
-  for (key in c("spatial_samples", "sc_samples")) {
+  # spatial_samples + sc_samples + sn_samples 路径
+  for (key in c("spatial_samples", "sc_samples", "sn_samples")) {
     if (!is.null(cfg$data[[key]])) {
       for (sn in names(cfg$data[[key]])) {
         v <- cfg$data[[key]][[sn]]
         if (is.character(v) && nchar(v) > 0 &&
             !startsWith(v, "/") && !(nchar(v) >= 2 && substr(v, 2, 2) == ":")) {
-          cfg$data[[key]][[sn]] <- normalizePath(file.path(parent_root, v),
+          cfg$data[[key]][[sn]] <- normalizePath(file.path(root, v),
                                                   winslash = "/", mustWork = FALSE)
         }
       }
@@ -61,12 +63,13 @@ load_config <- function(config_path = "config.yaml") {
   # ferroaging_file
   fa_file <- cfg$gene_sets$ferroaging_file
   if (!is.null(fa_file) && is.character(fa_file) && nchar(fa_file) > 0) {
-    cfg$gene_sets$ferroaging_file <- normalizePath(file.path(parent_root, fa_file),
+    cfg$gene_sets$ferroaging_file <- normalizePath(file.path(root, fa_file),
                                                     winslash = "/", mustWork = FALSE)
   }
 
-  # 确保输出目录存在
-  for (k in project_path_keys) {
+  # 确保输出目录存在 (不创建 pipeline_dir, 它是源代码目录)
+  dir_keys <- c("outputs_dir", "log_dir", "figures_dir", "tables_dir", "rds_dir")
+  for (k in dir_keys) {
     dir.create(cfg$project[[k]], recursive = TRUE, showWarnings = FALSE)
   }
 
@@ -143,7 +146,9 @@ save_rds <- function(obj, name, cfg) {
 set_seed_all <- function(seed) {
   set.seed(seed)
   if (requireNamespace("reticulate", quietly = TRUE)) {
-    tryCatch(reticulate::py_set_seed(seed), error = function(e) NULL)
+    tryCatch(reticulate::py_set_seed(seed),
+             error = function(e) log_debug("reticulate py_set_seed skipped: ",
+                                            conditionMessage(e)))
   }
   log_info("Random seed set: ", seed)
 }

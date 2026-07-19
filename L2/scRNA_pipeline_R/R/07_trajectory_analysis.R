@@ -22,23 +22,26 @@ step07_trajectory_analysis <- function(seu, cfg) {
 
   trajectory_results <- list()
   for (ct in target_types) {
-    log_info("[Step7] Processing: {ct}")
+    log_info("[Step7] Processing: ", ct)
     cells_ct <- Cells(seu)[seu[[celltype_col, drop = TRUE]] == ct]
     n_ct <- length(cells_ct)
     if (n_ct < 100) {
-      log_warn("[Step7] {ct}: too few cells ({n_ct}), skip")
+      log_warn("[Step7] ", ct, ": too few cells (", n_ct, "), skip")
       next
     }
     seu_sub <- subset(seu, cells = cells_ct)
     seu_sub$Condition <- factor(seu_sub$Condition,
                                 levels = cfg$analysis$condition_levels)
-    log_info("[Step7] {ct}: {ncol(seu_sub)} cells, conditions: {paste(levels(seu_sub$Condition), collapse=',')}")
+    log_info("[Step7] ", ct, ": ", ncol(seu_sub),
+             " cells, conditions: ",
+             paste(levels(seu_sub$Condition), collapse = ","))
 
     # 7.1 Convert to monocle3 CDS via SeuratWrappers
     cds <- tryCatch({
       SeuratWrappers::as.cell_data_set(seu_sub)
     }, error = function(e) {
-      log_warn("[Step7] as.cell_data_set failed for {ct}: {conditionMessage(e)}")
+      log_warn("[Step7] as.cell_data_set failed for ", ct,
+               ": ", conditionMessage(e))
       return(NULL)
     })
     if (is.null(cds)) next
@@ -56,12 +59,14 @@ step07_trajectory_analysis <- function(seu, cfg) {
         cds <- monocle3::order_cells(cds)
       }
     }, error = function(e) {
-      log_warn("[Step7] order_cells failed for {ct}: {conditionMessage(e)}")
+      log_warn("[Step7] order_cells failed for ", ct, ": ", conditionMessage(e))
     })
 
     pseudotime <- monocle3::pseudotime(cds)
     cds@colData$pseudotime <- pseudotime
-    log_info("[Step7] {ct}: pseudotime range [{round(min(pseudotime, na.rm=TRUE),2)}, {round(max(pseudotime, na.rm=TRUE),2)}]")
+    log_info("[Step7] ", ct, ": pseudotime range [",
+             round(min(pseudotime, na.rm = TRUE), 2), ", ",
+             round(max(pseudotime, na.rm = TRUE), 2), "]")
 
     # 7.4 轨迹可视化
     tryCatch({
@@ -74,7 +79,8 @@ step07_trajectory_analysis <- function(seu, cfg) {
       save_figure(p_traj, sprintf("07_trajectory_pseudotime_%s", ct), cfg,
                   width = 9, height = 7)
     }, error = function(e) {
-      log_warn("[Step7] plot_cells pseudotime failed for {ct}: {conditionMessage(e)}")
+      log_warn("[Step7] plot_cells pseudotime failed for ", ct,
+               ": ", conditionMessage(e))
     })
 
     tryCatch({
@@ -86,7 +92,8 @@ step07_trajectory_analysis <- function(seu, cfg) {
       save_figure(p_cond, sprintf("07_trajectory_condition_%s", ct), cfg,
                   width = 9, height = 7)
     }, error = function(e) {
-      log_warn("[Step7] plot_cells condition failed for {ct}: {conditionMessage(e)}")
+      log_warn("[Step7] plot_cells condition failed for ", ct,
+               ": ", conditionMessage(e))
     })
 
     # 7.5 铁衰老基因随伪时间变化
@@ -134,7 +141,8 @@ step07_trajectory_analysis <- function(seu, cfg) {
 
   saveRDS(trajectory_results,
           file.path(cfg$project$rds_dir, "trajectory_results.rds"))
-  log_info("[Step7] Trajectory analysis done. Types processed: {paste(names(trajectory_results), collapse=', ')}")
+  log_info("[Step7] Trajectory analysis done. Types processed: ",
+           paste(names(trajectory_results), collapse = ", "))
   invisible(trajectory_results)
 }
 
@@ -155,9 +163,7 @@ step07_trajectory_slingshot <- function(seu, cfg) {
     cluster_labels <- seu_sub$Condition
     sling <- slingshot(pca_emb, clusterLabels = cluster_labels,
                        start.clus = "Ctrl")
-    log_info("[Step7] {ct}: slingshot pseudotime computed.")
+    log_info("[Step7] ", ct, ": slingshot pseudotime computed.")
   }
   invisible(NULL)
 }
-
-trajectory_results <- step07_trajectory_analysis(seu, cfg)

@@ -19,9 +19,9 @@ step04_de_analysis <- function(seu, cfg) {
   for (ct in cell_types) {
     ct_cells <- Cells(seu)[seu$CellType == ct]
     n_ct <- length(ct_cells)
-    log_info("[Step4] Cell type: {ct} (n={n_ct})")
+    log_info("[Step4] Cell type: ", ct, " (n=", n_ct, ")")
     if (n_ct < 30) {
-      log_warn("[Step4]   Skipping {ct}: too few cells ({n_ct})")
+      log_warn("[Step4]   Skipping ", ct, ": too few cells (", n_ct, ")")
       next
     }
 
@@ -30,7 +30,7 @@ step04_de_analysis <- function(seu, cfg) {
     n_ctrl <- sum(seu_sub$Condition == "Ctrl")
 
     if (n_ctrl < 5) {
-      log_warn("[Step4]   Skipping {ct}: too few Ctrl cells ({n_ctrl})")
+      log_warn("[Step4]   Skipping ", ct, ": too few Ctrl cells (", n_ctrl, ")")
       next
     }
 
@@ -39,10 +39,11 @@ step04_de_analysis <- function(seu, cfg) {
     for (cond in dpi_conditions) {
       n_cond <- sum(seu_sub$Condition == cond)
       if (n_cond < 5) {
-        log_warn("[Step4]   Skip {ct} {cond} vs Ctrl (n_cond={n_cond})")
+        log_warn("[Step4]   Skip ", ct, " ", cond, " vs Ctrl (n_cond=", n_cond, ")")
         next
       }
-      log_info("[Step4]   {ct}: {cond} (n={n_cond}) vs Ctrl (n={n_ctrl})")
+      log_info("[Step4]   ", ct, ": ", cond, " (n=", n_cond,
+               ") vs Ctrl (n=", n_ctrl, ")")
 
       de_res <- tryCatch({
         Seurat::FindMarkers(
@@ -54,8 +55,10 @@ step04_de_analysis <- function(seu, cfg) {
           verbose = FALSE
         )
       }, error = function(e) {
-        log_error("[Step4]   FindMarkers failed for {ct} {cond}: {conditionMessage(e)}")
-        NULL
+        log_error("[Step4]   FindMarkers failed for ", ct, " ", cond,
+                  ": ", conditionMessage(e))
+        stop("FindMarkers failed for ", ct, " ", cond,
+             ": ", conditionMessage(e))
       })
 
       if (is.null(de_res) || nrow(de_res) == 0) next
@@ -82,7 +85,8 @@ step04_de_analysis <- function(seu, cfg) {
 
   sig_degs <- deg_all[deg_all$signif == "signif", ]
   save_table(sig_degs, "04_signif_degs", cfg)
-  log_info("[Step4] Total DEGs: {nrow(deg_all)} | Significant: {nrow(sig_degs)}")
+  log_info("[Step4] Total DEGs: ", nrow(deg_all),
+           " | Significant: ", nrow(sig_degs))
 
   # 4.1 DEG 数量条形图
   deg_summary <- aggregate(gene ~ cell_type + comparison + direction,
@@ -153,7 +157,7 @@ step04_de_analysis <- function(seu, cfg) {
   fa_in_deg <- sig_degs[sig_degs$gene %in% fa_mouse, ]
   if (nrow(fa_in_deg) > 0) {
     save_table(fa_in_deg, "04_ferroaging_degs", cfg)
-    log_info("[Step4] Ferroaging genes in DEGs: {nrow(fa_in_deg)}")
+    log_info("[Step4] Ferroaging genes in DEGs: ", nrow(fa_in_deg))
 
     p_fa_deg <- ggplot(fa_in_deg, aes(x = cell_type, y = avg_log2FC,
                                       fill = comparison)) +
@@ -173,5 +177,3 @@ step04_de_analysis <- function(seu, cfg) {
   log_info("[Step4] DE analysis done.")
   invisible(deg_all)
 }
-
-deg_all <- step04_de_analysis(seu, cfg)

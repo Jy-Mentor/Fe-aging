@@ -28,12 +28,12 @@ step05_cellchat_analysis <- function(seu, cfg) {
   expr_layers <- list()
 
   for (cond in conditions) {
-    log_info("[Step5] Building CellChat for condition: {cond}")
+    log_info("[Step5] Building CellChat for condition: ", cond)
     # 直接通过列名索引，避免 Seurat v5 subset 求值问题
     cells_cond <- colnames(seu)[seu@meta.data[[cfg$analysis$condition_col]] == cond]
-    log_info("[Step5] {cond}: found {length(cells_cond)} cells")
+    log_info("[Step5] ", cond, ": found ", length(cells_cond), " cells")
     if (length(cells_cond) < 10) {
-      log_warn("[Step5] {cond}: too few cells ({length(cells_cond)}), skip")
+      log_warn("[Step5] ", cond, ": too few cells (", length(cells_cond), "), skip")
       next
     }
     seu_cond <- seu[, cells_cond]
@@ -42,12 +42,13 @@ step05_cellchat_analysis <- function(seu, cfg) {
     ct_counts <- table(seu_cond@meta.data[[celltype_col]])
     keep_ct <- names(ct_counts)[ct_counts >= min_cells]
     if (length(keep_ct) < 2) {
-      log_warn("[Step5] {cond}: <2 cell types with >= {min_cells} cells, skip")
+      log_warn("[Step5] ", cond, ": <2 cell types with >= ", min_cells, " cells, skip")
       next
     }
     cells_keep <- colnames(seu_cond)[seu_cond@meta.data[[celltype_col]] %in% keep_ct]
     seu_cond <- seu_cond[, cells_keep]
-    log_info("[Step5] {cond}: {ncol(seu_cond)} cells, {length(keep_ct)} types")
+    log_info("[Step5] ", cond, ": ", ncol(seu_cond),
+             " cells, ", length(keep_ct), " types")
 
     # 关键: 清理未使用的因子水平, 否则 CellChat identifyOverExpressedGenes 会报错
     seu_cond@meta.data[[celltype_col]] <- factor(seu_cond@meta.data[[celltype_col]],
@@ -86,7 +87,8 @@ step05_cellchat_analysis <- function(seu, cfg) {
 
     cellchat_list[[cond]] <- cellchat
     rm(seu_cond, data_use, meta_use); gc(verbose = FALSE)
-    log_info("[Step5] {cond}: {nrow(cellchat@net$count)}x{ncol(cellchat@net$count)} net")
+    log_info("[Step5] ", cond, ": ", nrow(cellchat@net$count),
+             "x", ncol(cellchat@net$count), " net")
   }
 
   if (length(cellchat_list) < 2) {
@@ -119,7 +121,7 @@ step05_cellchat_analysis <- function(seu, cfg) {
       draw(h)
       dev.off()
     }, error = function(e) {
-      log_warn("[Step5] Heatmap failed for {cond}: {conditionMessage(e)}")
+      log_warn("[Step5] Heatmap failed for ", cond, ": ", conditionMessage(e))
       if (exists("dev.list")) try(dev.off(), silent = TRUE)
     })
 
@@ -130,7 +132,8 @@ step05_cellchat_analysis <- function(seu, cfg) {
         sig_df <- net_signaling$signalingContribution
       }
     }, error = function(e) {
-      log_warn("[Step5] signalingRole_scatter failed for {cond}: {conditionMessage(e)}")
+      log_warn("[Step5] signalingRole_scatter failed for ", cond,
+               ": ", conditionMessage(e))
     })
   }
 
@@ -150,7 +153,7 @@ step05_cellchat_analysis <- function(seu, cfg) {
     print(p1 + p2)
     dev.off()
   }, error = function(e) {
-    log_warn("[Step5] compareInteractions failed: {conditionMessage(e)}")
+    log_warn("[Step5] compareInteractions failed: ", conditionMessage(e))
     try(dev.off(), silent = TRUE)
   })
 
@@ -168,7 +171,7 @@ step05_cellchat_analysis <- function(seu, cfg) {
     }
     dev.off()
   }, error = function(e) {
-    log_warn("[Step5] netVisual_diffInteraction failed: {conditionMessage(e)}")
+    log_warn("[Step5] netVisual_diffInteraction failed: ", conditionMessage(e))
     try(dev.off(), silent = TRUE)
   })
 
@@ -180,7 +183,8 @@ step05_cellchat_analysis <- function(seu, cfg) {
                                  unique(unlist(lapply(cellchat_list, function(cc) {
                                    cc@netP$pathways
                                  }))))
-  log_info("[Step5] Ferroaging-related pathways available: {paste(fa_pathways_avail, collapse=', ')}")
+  log_info("[Step5] Ferroaging-related pathways available: ",
+           paste(fa_pathways_avail, collapse = ", "))
 
   if (length(fa_pathways_avail) > 0) {
     for (pw in fa_pathways_avail) {
@@ -206,7 +210,7 @@ step05_cellchat_analysis <- function(seu, cfg) {
         }
         dev.off()
       }, error = function(e) {
-        log_warn("[Step5] Pathway {pw} viz failed: {conditionMessage(e)}")
+        log_warn("[Step5] Pathway ", pw, " viz failed: ", conditionMessage(e))
         try(dev.off(), silent = TRUE)
       })
     }
@@ -223,16 +227,15 @@ step05_cellchat_analysis <- function(seu, cfg) {
       print(p_info)
       dev.off()
     }, error = function(e) {
-      log_warn("[Step5] Information flow plot failed: {conditionMessage(e)}")
+      log_warn("[Step5] Information flow plot failed: ", conditionMessage(e))
       try(dev.off(), silent = TRUE)
     })
   }
 
   saveRDS(cellchat_list, file.path(cfg$project$rds_dir, "cellchat_list.rds"))
   saveRDS(cellchat_merged, file.path(cfg$project$rds_dir, "cellchat_merged.rds"))
-  log_info("[Step5] CellChat analysis done. Conditions: {paste(names(cellchat_list), collapse=', ')}")
+  log_info("[Step5] CellChat analysis done. Conditions: ",
+           paste(names(cellchat_list), collapse = ", "))
 
   invisible(cellchat_list)
 }
-
-cellchat_list <- step05_cellchat_analysis(seu, cfg)

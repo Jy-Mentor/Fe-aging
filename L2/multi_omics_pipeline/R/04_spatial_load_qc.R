@@ -1,10 +1,15 @@
 # ============================================================================
 # STEP 04: L2 Spatial 空间转录组数据加载与 SCTransform
-# - 读取 GSE233814 的 10x Visium 数据 (C1/D1/D3/D7)
-# - SCTransform 标准化 (替代 LogNormalize, 适合 spot 差异大)
-# - PCA + UMAP 降维
+# - 优先使用作者已处理的 Seurat RDS (mendeley 数据集, 含空间坐标)
+# - 若 RDS 不可用, 回退到原始 10x 文件 (需手动构建, 因为 RAW.tar 未提供
+#   tissue_positions_list.csv, 此情况下仅能构建非空间 Seurat 对象)
+# - 数据来源: GSE233815 (Zucha et al. 2024 PNAS, PMID:39499634)
+#   - 5 个 10x Visium 样本: C1-control / B1-D1 / D1-D3 / C1-D7 / D1-D7
+#   - 作者 RDS: seurat_1stSpatial.rds (含 C1-control+B1-D1 整合),
+#               seurat_2ndSpatial.rds (含 D1-D3+C1-D7 整合),
+#               spatial_seurat_1DP_13_nygen.rds (D1-D7)
 # 参考:
-#   - Hao Y et al. 2024 Nat Biotechnol (Seurat v5)
+#   - Hao Y et al. 2024 Nat Biotechnol 42:293-304 (Seurat v5, PMID:37231261)
 #   - Stuart T et al. 2019 Cell (SCTransform)
 # ============================================================================
 
@@ -20,66 +25,166 @@ step04_spatial_load_qc <- function(cfg) {
     stop("No spatial samples configured in cfg$data$spatial_samples")
   }
 
+  # --------------------------------------------------------------------------
+  # 4.1 优先加载作者已处理的 Seurat RDS (含空间坐标 + QC)
+  # --------------------------------------------------------------------------
+  rds_1st <- cfg$data$spatial_seurat_1st_rds
+  rds_2nd <- cfg$data$spatial_seurat_2nd_rds
+  rds_1dp <- cfg$data$spatial_seurat_1DP_rds
+
   spatial_list <- list()
-  for (sn in names(spatial_samples)) {
-    sample_dir <- spatial_samples[[sn]]
-    log_info("[Step04] Loading spatial sample: ", sn, " from ", sample_dir)
+  used_rds <- FALSE
 
-    if (!dir.exists(sample_dir)) {
-      log_warn("[Step04] Sample dir not found: ", sample_dir, ". Skipping ", sn)
-      next
+  if (!is.null(rds_1st) && file.exists(rds_1st) &&
+      !is.null(rds_2nd) && file.exists(rds_2nd)) {
+    log_info("[Step04] Loading author-provided spatial Seurat RDS files...")
+    log_info("[Step04]   1st: ", rds_1st)
+    log_info("[Step04]   2nd: ", rds_2nd)
+
+    # RDS 可能是单个 Seurat 或 list of Seurat (作者按切片组织)
+    .load_rds_seurat_list <- function(rds_path, tag) {
+      obj <- readRDS(rds_path)
+      if (inherits(obj, "Seurat")) {
+        log_info("[Step04] ", tag, ": ", nrow(obj), " genes x ",
+                 ncol(obj), " spots (single Seurat)")
+        return(setNames(list(obj), tag))
+      }
+      if (is.list(obj)) {
+        out <- list()
+        for (i in seq_along(obj)) {
+          el <- obj[[i]]
+          if (inherits(el, "Seurat")) {
+            nm <- paste0(tag, "_", i)
+            # 优先用 Sample 列作为切片标识
+            if ("Sample" %in% colnames(el@meta.data)) {
+              smp <- unique(el$Sample)
+              if (length(smp) == 1) nm <- paste0(tag, "_", smp)
+            }
+            log_info("[Step04] ", nm, ": ", nrow(el), " genes x ",
+                     ncol(el), " spots")
+            out[[nm]] <- el
+          }
+        }
+        return(out)
+      }
+      log_warn("[Step04] ", tag, " is neither Seurat nor list of Seurat (class: ",
+               paste(class(obj), collapse = ","), "); skipping")
+      list()
     }
 
-    # 检查 spaceranger 输出结构
-    # 期望: filtered_feature_bc_matrix/ + spatial/ (含 tissue_positions_list.csv)
-    seu <- tryCatch({
-      Load10X_Spatial(data.dir = sample_dir)
-    }, error = function(e) {
-      log_error("[Step04] Load10X_Spatial failed for ", sn, ": ",
-                conditionMessage(e))
-      return(NULL)
-    })
-    if (is.null(seu)) next
+    spatial_list <- c(spatial_list, .load_rds_seurat_list(rds_1st, "1stSpatial"))
+    spatial_list <- c(spatial_list, .load_rds_seurat_list(rds_2nd, "2ndSpatial"))
 
-    # 添加样本元数据
-    seu$sample <- sn
-    seu$condition <- sn  # C1/D1/D3/D7
-
-    log_info("[Step04] ", sn, ": ", nrow(seu), " genes x ", ncol(seu), " spots")
-
-    # QC: 检查 nCount_Spatial, nFeature_Spatial
-    if (!"nCount_Spatial" %in% colnames(seu@meta.data)) {
-      seu$nCount_Spatial <- Matrix::colSums(GetAssayData(seu, assay = "Spatial", layer = "counts"))
-      seu$nFeature_Spatial <- Matrix::colSums(GetAssayData(seu, assay = "Spatial", layer = "counts") > 0)
+    if (!is.null(rds_1dp) && file.exists(rds_1dp)) {
+      spatial_list <- c(spatial_list, .load_rds_seurat_list(rds_1dp, "1DP"))
     }
 
-    log_info("[Step04] ", sn, " QC summary:")
-    log_info("  nCount_Spatial: [", min(seu$nCount_Spatial), ", ",
-             max(seu$nCount_Solar), "]")
-    log_info("  nFeature_Spatial: [", min(seu$nFeature_Spatial), ", ",
-             max(seu$nFeature_Spatial), "]")
-
-    # SCTransform 标准化 (替代 NormalizeData + ScaleData)
-    log_info("[Step04] SCTransform for ", sn)
-    seu <- SCTransform(seu, assay = "Spatial",
-                       verbose = FALSE,
-                       variable.features.n = cfg$spatial$sct_nfeatures)
-
-    # PCA + UMAP
-    seu <- RunPCA(seu, npcs = cfg$spatial$pca_npcs, verbose = FALSE)
-    seu <- RunUMAP(seu, dims = 1:cfg$spatial$pca_npcs, verbose = FALSE)
-
-    spatial_list[[sn]] <- seu
-    log_info("[Step04] ", sn, " processed: ", nrow(seu), " genes x ",
-             ncol(seu), " spots")
-  }
-
-  if (length(spatial_list) == 0) {
-    stop("No spatial samples loaded successfully. Check data paths.")
+    used_rds <- length(spatial_list) > 0
+  } else {
+    log_warn("[Step04] Author RDS files not all available; attempting raw 10x load")
+    log_warn("[Step04] Note: RAW.tar does not contain tissue_positions_list.csv;")
+    log_warn("[Step04] spatial coordinates will be unavailable if loading from raw.")
   }
 
   # --------------------------------------------------------------------------
-  # 4.1 合并多个切片 (Seurat v5 推荐使用 merge + IntegrateLayers)
+  # 4.2 回退: 从原始 10x 文件加载 (无空间坐标, 仅表达矩阵)
+  # --------------------------------------------------------------------------
+  if (!used_rds) {
+    for (sn in names(spatial_samples)) {
+      sample_dir <- spatial_samples[[sn]]
+      log_info("[Step04] Loading spatial sample from raw 10x: ", sn,
+               " from ", sample_dir)
+
+      if (!dir.exists(sample_dir)) {
+        log_warn("[Step04] Sample dir not found: ", sample_dir, ". Skipping ", sn)
+        next
+      }
+
+      # 查找 barcodes/features/matrix 文件 (文件名前缀含 GSM ID)
+      barcode_file <- list.files(sample_dir, pattern = "_barcodes\\.tsv\\.gz$",
+                                  full.names = TRUE)
+      feature_file <- list.files(sample_dir, pattern = "_features\\.tsv\\.gz$",
+                                  full.names = TRUE)
+      matrix_file <- list.files(sample_dir, pattern = "_matrix\\.mtx\\.gz$",
+                                 full.names = TRUE)
+
+      if (length(barcode_file) == 0 || length(feature_file) == 0 ||
+          length(matrix_file) == 0) {
+        log_error("[Step04] Missing 10x files for ", sn,
+                  ": barcodes=", length(barcode_file),
+                  ", features=", length(feature_file),
+                  ", matrix=", length(matrix_file))
+        next
+      }
+
+      seu <- tryCatch({
+        mat <- ReadMtx(mtx = matrix_file[1],
+                       cells = barcode_file[1],
+                       features = feature_file[1],
+                       feature.column = 2)
+        CreateSeuratObject(counts = mat, project = sn, assay = "Spatial")
+      }, error = function(e) {
+        log_error("[Step04] Raw 10x load failed for ", sn, ": ",
+                  conditionMessage(e))
+        NULL
+      })
+      if (is.null(seu)) next
+
+      seu$sample <- sn
+      seu$condition <- sn
+
+      # 计算 QC 指标
+      seu$nCount_Spatial <- Matrix::colSums(GetAssayData(seu, assay = "Spatial",
+                                                          layer = "counts"))
+      seu$nFeature_Spatial <- Matrix::colSums(GetAssayData(seu, assay = "Spatial",
+                                                            layer = "counts") > 0)
+
+      log_info("[Step04] ", sn, ": ", nrow(seu), " genes x ", ncol(seu), " spots")
+      spatial_list[[sn]] <- seu
+    }
+  }
+
+  if (length(spatial_list) == 0) {
+    stop("No spatial samples loaded successfully. Check data paths in config.")
+  }
+
+  # --------------------------------------------------------------------------
+  # 4.3 SCTransform 标准化 (若作者 RDS 未做)
+  # --------------------------------------------------------------------------
+  for (sn in names(spatial_list)) {
+    seu <- spatial_list[[sn]]
+    if (!"SCT" %in% Assays(seu)) {
+      log_info("[Step04] SCTransform for ", sn)
+      seu <- SCTransform(seu, assay = "Spatial",
+                         verbose = FALSE,
+                         variable.features.n = cfg$spatial$sct_nfeatures)
+      spatial_list[[sn]] <- seu
+    } else {
+      log_info("[Step04] ", sn, " already has SCT assay; skipping SCTransform")
+    }
+
+    # PCA + UMAP (若缺失)
+    if (!"pca" %in% Reductions(seu)) {
+      seu <- RunPCA(seu, npcs = cfg$spatial$pca_npcs, verbose = FALSE)
+      spatial_list[[sn]] <- seu
+    }
+    if (!"umap" %in% Reductions(seu)) {
+      seu <- RunUMAP(seu, dims = 1:cfg$spatial$pca_npcs, verbose = FALSE)
+      spatial_list[[sn]] <- seu
+    }
+
+    # QC 报告
+    if ("nCount_Spatial" %in% colnames(seu@meta.data)) {
+      log_info("[Step04] ", sn, " QC summary:")
+      log_info("  nCount_Spatial: [", min(seu$nCount_Spatial), ", ",
+               max(seu$nCount_Spatial), "]")
+      log_info("  nFeature_Spatial: [", min(seu$nFeature_Spatial), ", ",
+               max(seu$nFeature_Spatial), "]")
+    }
+  }
+
+  # --------------------------------------------------------------------------
+  # 4.4 合并多个切片 (Seurat v5 merge + IntegrateLayers)
   # --------------------------------------------------------------------------
   if (length(spatial_list) > 1) {
     log_info("[Step04] Merging ", length(spatial_list), " spatial samples...")
@@ -87,31 +192,41 @@ step04_spatial_load_qc <- function(cfg) {
       spatial_list[[1]],
       y = spatial_list[-1],
       add.cell.ids = names(spatial_list),
-      project = "GSE233814_spatial"
+      project = "GSE233815_spatial"
     )
     log_info("[Step04] Merged object: ", nrow(spatial_merged), " genes x ",
              ncol(spatial_merged), " spots")
 
     # v5 layer split by sample
-    spatial_merged[["Spatial"]] <- split(spatial_merged[["Spatial"]],
-                                          f = spatial_merged$sample)
+    if ("Spatial" %in% Assays(spatial_merged)) {
+      spatial_merged[["Spatial"]] <- split(spatial_merged[["Spatial"]],
+                                            f = spatial_merged$sample)
+    }
 
     # IntegrateLayers with Harmony (推荐用于空间样本整合)
-    if (requireNamespace("harmony", quietly = TRUE)) {
+    if (requireNamespace("harmony", quietly = TRUE) &&
+        "pca" %in% Reductions(spatial_merged)) {
       log_info("[Step04] IntegrateLayers (Harmony) for multi-sample...")
-      spatial_merged <- IntegrateLayers(
-        spatial_merged,
-        method = HarmonyIntegration,
-        orig.reduction = "pca",
-        new.reduction = "harmony",
-        verbose = FALSE
-      )
-      spatial_merged <- RunUMAP(spatial_merged, reduction = "harmony",
-                                 dims = 1:cfg$spatial$pca_npcs,
-                                 reduction.name = "umap.harmony",
-                                 verbose = FALSE)
+      spatial_merged <- tryCatch({
+        IntegrateLayers(
+          spatial_merged,
+          method = HarmonyIntegration,
+          orig.reduction = "pca",
+          new.reduction = "harmony",
+          verbose = FALSE
+        )
+      }, error = function(e) {
+        log_warn("[Step04] Harmony integration failed: ", conditionMessage(e))
+        spatial_merged
+      })
+      if ("harmony" %in% Reductions(spatial_merged)) {
+        spatial_merged <- RunUMAP(spatial_merged, reduction = "harmony",
+                                   dims = 1:cfg$spatial$pca_npcs,
+                                   reduction.name = "umap.harmony",
+                                   verbose = FALSE)
+      }
     } else {
-      log_warn("[Step04] harmony not installed; using merge without integration")
+      log_warn("[Step04] harmony not installed or PCA missing; using merge without integration")
     }
   } else {
     spatial_merged <- spatial_list[[1]]
@@ -121,10 +236,11 @@ step04_spatial_load_qc <- function(cfg) {
   save_rds(spatial_list, "04_spatial_list", cfg)
 
   # --------------------------------------------------------------------------
-  # 4.2 QC 可视化
+  # 4.5 QC 可视化
   # --------------------------------------------------------------------------
   qc_df <- do.call(rbind, lapply(names(spatial_list), function(sn) {
     seu <- spatial_list[[sn]]
+    if (!"nCount_Spatial" %in% colnames(seu@meta.data)) return(NULL)
     data.frame(
       sample = sn,
       spot_id = colnames(seu),
@@ -134,27 +250,31 @@ step04_spatial_load_qc <- function(cfg) {
     )
   }))
 
-  p1 <- ggplot(qc_df, aes(x = sample, y = log10(nCount), fill = sample)) +
-    geom_violin(trim = FALSE) +
-    geom_boxplot(width = 0.1, outlier.size = 0.3) +
-    scale_fill_manual(values = get_condition_colors(names(spatial_list))) +
-    labs(title = "Spatial QC: nCount (log10) by sample",
-         x = "Sample", y = "log10(nCount_Spatial)") +
-    theme_pub(base_size = 10) +
-    theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
-    guides(fill = "none")
-  save_figure(p1, "04_spatial_qc_violin_ncount", cfg, width = 8, height = 6)
+  if (!is.null(qc_df) && nrow(qc_df) > 0) {
+    p1 <- ggplot(qc_df, aes(x = sample, y = log10(nCount), fill = sample)) +
+      geom_violin(trim = FALSE) +
+      geom_boxplot(width = 0.1, outlier.size = 0.3) +
+      scale_fill_manual(values = get_condition_colors(names(spatial_list))) +
+      labs(title = "Spatial QC: nCount (log10) by sample",
+           x = "Sample", y = "log10(nCount_Spatial)") +
+      theme_pub(base_size = 10) +
+      theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+      guides(fill = "none")
+    save_figure(p1, "04_spatial_qc_violin_ncount", cfg, width = 8, height = 6)
 
-  p2 <- ggplot(qc_df, aes(x = sample, y = nFeature, fill = sample)) +
-    geom_violin(trim = FALSE) +
-    geom_boxplot(width = 0.1, outlier.size = 0.3) +
-    scale_fill_manual(values = get_condition_colors(names(spatial_list))) +
-    labs(title = "Spatial QC: nFeature by sample",
-         x = "Sample", y = "nFeature_Spatial") +
-    theme_pub(base_size = 10) +
-    theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
-    guides(fill = "none")
-  save_figure(p2, "04_spatial_qc_violin_nfeature", cfg, width = 8, height = 6)
+    p2 <- ggplot(qc_df, aes(x = sample, y = nFeature, fill = sample)) +
+      geom_violin(trim = FALSE) +
+      geom_boxplot(width = 0.1, outlier.size = 0.3) +
+      scale_fill_manual(values = get_condition_colors(names(spatial_list))) +
+      labs(title = "Spatial QC: nFeature by sample",
+           x = "Sample", y = "nFeature_Spatial") +
+      theme_pub(base_size = 10) +
+      theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+      guides(fill = "none")
+    save_figure(p2, "04_spatial_qc_violin_nfeature", cfg, width = 8, height = 6)
+  } else {
+    log_warn("[Step04] QC data frame empty; skipping violin plots")
+  }
 
   log_info("[Step04] Spatial loading & SCTransform done.")
   invisible(spatial_list)

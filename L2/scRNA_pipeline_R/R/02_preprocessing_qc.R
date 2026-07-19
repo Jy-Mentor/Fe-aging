@@ -1,6 +1,6 @@
 # ============================================================================
 # STEP 2: 预处理与质量控制可视化
-# 数据已由 Zucha et al. 2023 QC 过滤；本步骤展示 QC 指标分布
+# 数据已由 Zucha et al. 2024 (PNAS, PMID:39499634) QC 过滤；本步骤展示 QC 指标分布
 # 并执行项目硬约束的阈值核对
 # ============================================================================
 
@@ -79,13 +79,14 @@ step02_qc_visualization <- function(seu, cfg) {
 
   # 2.4 SCT 标准化数据是否已存在
   has_sct <- "SCT" %in% SeuratObject::Assays(seu)
-  log_info("[Step2] SCT assay present: {has_sct}")
+  log_info("[Step2] SCT assay present: ", has_sct)
 
   # 2.5 基因在细胞中表达比例
   expr_counts <- Seurat::GetAssayData(seu, assay = "RNA", layer = "counts")
   genes_expressed_in_20pct <- sum(Matrix::rowMeans(expr_counts > 0) >= 0.20)
   total_genes <- nrow(expr_counts)
-  log_info("[Step2] Genes expressed in >=20% cells: {genes_expressed_in_20pct}/{total_genes}")
+  log_info("[Step2] Genes expressed in >=20% cells: ",
+           genes_expressed_in_20pct, "/", total_genes)
 
   qc_summary <- list(
     n_cells = ncol(seu),
@@ -100,5 +101,3 @@ step02_qc_visualization <- function(seu, cfg) {
   log_info("[Step2] QC visualization done.")
   invisible(seu)
 }
-
-seu <- step02_qc_visualization(seu, cfg)

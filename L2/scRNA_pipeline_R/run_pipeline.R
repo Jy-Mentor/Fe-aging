@@ -2,12 +2,17 @@
 # ============================================================================
 # 主控脚本: GSE233815 单细胞铁衰老分析 Pipeline
 # R 4.5.2 + Seurat 5
-# 数据: Zucha et al. 2023 MCAO 小鼠脑单核 RNA-seq (7414 细胞)
+# 数据: Zucha et al. 2024 PNAS MCAO 小鼠脑单核 RNA-seq (7414 细胞, PMID:39499634)
 # ============================================================================
 
 # 加入 Bioc 包备用安装路径 (clusterProfiler, monocle3, GSVA, fgsea 等均在此)
-if (dir.exists("D:/R-library/4.5")) {
-  .libPaths(c("D:/R-library/4.5", .libPaths()))
+# 项目内 R-library/4.5 优先 (TRAE Sandbox 兼容), 然后 D:/R-library/4.5
+proj_lib <- file.path(getwd(), "R-library/4.5")
+.lib_paths_to_add <- character(0)
+if (dir.exists(proj_lib)) .lib_paths_to_add <- c(.lib_paths_to_add, proj_lib)
+if (dir.exists("D:/R-library/4.5")) .lib_paths_to_add <- c(.lib_paths_to_add, "D:/R-library/4.5")
+if (length(.lib_paths_to_add) > 0) {
+  .libPaths(c(.lib_paths_to_add, .libPaths()))
 }
 
 suppressPackageStartupMessages({

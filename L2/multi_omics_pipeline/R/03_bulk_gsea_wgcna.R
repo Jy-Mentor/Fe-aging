@@ -13,12 +13,17 @@ step03_bulk_gsea_wgcna <- function(dds, dea_list, cfg) {
 
   if (is.null(dea_list)) stop("DEA list is NULL. Run step 02 first.")
 
-  require_packages(c("clusterProfiler", "msigdbr"),
-                   install_hint = "BiocManager::install(c('clusterProfiler')); install.packages('msigdbr')")
+  require_packages(c("clusterProfiler", "msigdbr", "fgsea", "BiocParallel"),
+                   install_hint = "BiocManager::install(c('clusterProfiler','fgsea','BiocParallel')); install.packages('msigdbr')")
   suppressPackageStartupMessages({
     library(clusterProfiler)
     library(msigdbr)
+    library(fgsea)
+    library(BiocParallel)
   })
+  # 强制 fgsea 在主命名空间可见 (避免 BiocParallel 子进程找不到 fgseaMultilevelCpp)
+  # 使用串行参数避免 Snow/SOCK 子进程命名空间问题
+  gsea_bpparam <- BiocParallel::SerialParam()
 
   gene_sets <- build_gene_sets(cfg, organism = "mouse")
 
@@ -57,6 +62,8 @@ step03_bulk_gsea_wgcna <- function(dds, dea_list, cfg) {
            minGSSize = cfg$bulk$gsea_min_gssize,
            maxGSSize = cfg$bulk$gsea_max_gssize,
            seed = TRUE,
+           by = "fgsea",
+           BPPARAM = gsea_bpparam,
            verbose = FALSE)
     }, error = function(e) {
       log_warn("[Step03] GSEA failed for ", cmp, ": ", conditionMessage(e))
