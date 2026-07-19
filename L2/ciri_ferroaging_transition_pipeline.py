@@ -4,7 +4,10 @@ CIRI-Ferroaging Transition Window Analysis Pipeline
 三基因集 ssGSEA + 交错窗 + LASSO + 外部验证
 Pure numpy/matplotlib implementation (no scipy/sklearn needed)
 """
-import os, sys, warnings, csv, math
+import os
+import warnings
+import csv
+import math
 import numpy as np
 
 warnings.filterwarnings('ignore')
@@ -676,7 +679,7 @@ selected_genes = [fa_genes_in_data[i] for i in selected_indices]
 selected_freq = selection_counts[selected_indices]
 selected_genes_human = [mouse_to_human.get(g, g) for g in selected_genes]
 
-print(f"\n  LASSO结果:")
+print("\n  LASSO结果:")
 print(f"  平均内部CV AUC: {np.mean(auc_scores_internal):.4f} +/- {np.std(auc_scores_internal):.4f}")
 print(f"  入选频率>50%的基因: {len(selected_genes)}/{len(fa_genes_in_data)}")
 for g, f in sorted(zip(selected_genes_human, selected_freq), key=lambda x: -x[1]):
@@ -708,11 +711,11 @@ if len(selected_genes) >= 3:
     print(f"  模型AUC: {obs_auc:.4f} (C={best_c_perm}), 置换检验 p={perm_p:.4f} (500次置换)")
     print(f"  [NOTE] 训练集AUC有偏乐观, 参考内部CV AUC={np.mean(auc_scores_internal):.4f}")
 else:
-    print(f"  候选基因不足3个, 跳过置换检验")
+    print("  候选基因不足3个, 跳过置换检验")
 
 # Gene-level statistics: mean expression in high vs low groups
 if len(selected_genes) >= 1:
-    print(f"\n  候选基因表达统计 (高/低活性组均值):")
+    print("\n  候选基因表达统计 (高/低活性组均值):")
     print(f"    {'Gene':<12} {'High_Mean':<10} {'Low_Mean':<10} {'FC':<10} {'Cohens_d':<10}")
     gene_stats = []
     for gi, g in enumerate(selected_genes):
@@ -1170,18 +1173,18 @@ print(f"\n  最显著数据集: {best['Dataset']} ({best['Score']}), d={best['Co
 
 print("\n  科学严谨性清单:")
 print(f"  [OK] 3个基因集: 铁死亡({len(fer_driver_genes)}) + 细胞衰老({len(cell_sen_genes)}) + 铁衰老({len(fer_sen_genes)})")
-print(f"  [OK] 4个数据集独立ssGSEA，期内统计检验，效应量跨集比较")
-print(f"  [NOTE] Y标签 = 铁衰老高活性状态(>=中位数) vs 基线/低活性(<中位数+Sham)")
-print(f"  [NOTE] 非原设想的'铁死亡→衰老转变期'分类")
+print("  [OK] 4个数据集独立ssGSEA，期内统计检验，效应量跨集比较")
+print("  [NOTE] Y标签 = 铁衰老高活性状态(>=中位数) vs 基线/低活性(<中位数+Sham)")
+print("  [NOTE] 非原设想的'铁死亡→衰老转变期'分类")
 print(f"  [OK] LASSO: {n_folds}折CV×{n_repeats}次重抽样，>50%入选频率")
-print(f"  [OK] 外部验证: 模型预测 vs 铁衰老评分Spearman相关 + 高/低评分AUC")
-print(f"  [OK] Bootstrap 95%CI + 置换检验 p值 (500次)")
-print(f"  [OK] seed=42固定，全部可重现")
-print(f"  [OK] 基因集来源: FerrDb V2 + CellAge + 铁衰老签名")
+print("  [OK] 外部验证: 模型预测 vs 铁衰老评分Spearman相关 + 高/低评分AUC")
+print("  [OK] Bootstrap 95%CI + 置换检验 p值 (500次)")
+print("  [OK] seed=42固定，全部可重现")
+print("  [OK] 基因集来源: FerrDb V2 + CellAge + 铁衰老签名")
 print(f"  [LIMIT] 训练样本仅{n_pos+n_neg}例(n_pos={n_pos}, n_neg={n_neg})，6折CV每折仅1-3个验证样本")
-print(f"  [LIMIT] 衰老评分在GSE104036中随时间下降，经典交错窗假说未获支持")
-print(f"  [LIMIT] 铁衰老评分本身在疾病组中效应量最强，但缺乏时序交错证据")
-print(f"  [LIMIT] 小样本验证AUC=1.0(GSE61616/97537)因样本量极低(12-15), 不可过度解读")
+print("  [LIMIT] 衰老评分在GSE104036中随时间下降，经典交错窗假说未获支持")
+print("  [LIMIT] 铁衰老评分本身在疾病组中效应量最强，但缺乏时序交错证据")
+print("  [LIMIT] 小样本验证AUC=1.0(GSE61616/97537)因样本量极低(12-15), 不可过度解读")
 
 print("\n" + "=" * 70)
 print("  PIPELINE COMPLETED SUCCESSFULLY")

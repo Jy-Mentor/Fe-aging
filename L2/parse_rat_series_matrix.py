@@ -3,7 +3,9 @@
 Parse GSE97537 and GSE61616 GEO series matrix files, build expression matrices
 and sample metadata with probe-to-gene mapping via mygene.
 """
-import gzip, os, time, csv
+import gzip
+import os
+import time
 import numpy as np
 import pandas as pd
 import mygene

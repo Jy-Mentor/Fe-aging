@@ -26,7 +26,12 @@ Output:
   - L2/results/scissor_summary.json
 """
 
-import os, sys, json, logging, traceback, warnings
+import os
+import sys
+import json
+import logging
+import traceback
+import warnings
 import numpy as np
 import pandas as pd
 from scipy import stats

@@ -31,16 +31,13 @@ Usage:
 
 import os
 import sys
-import json
 import logging
 import traceback
 import warnings
 import time
-import gzip
 import numpy as np
 import pandas as pd
 import requests
-from io import StringIO
 
 warnings.filterwarnings('ignore')
 

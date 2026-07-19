@@ -5,17 +5,15 @@
 # 基因集: 铁衰老基因96个
 # ============================================================================
 
-import os, sys, warnings, json, itertools
+import os
+import warnings
 import numpy as np
 import pandas as pd
-from scipy import stats
-from scipy.stats import mannwhitneyu, ttest_ind, norm
+from scipy.stats import mannwhitneyu, ttest_ind
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
 import seaborn as sns
-from collections import OrderedDict
 
 warnings.filterwarnings('ignore')
 np.random.seed(42)
@@ -338,7 +336,7 @@ def compute_cohens_d(group1, group2):
 g1 = scores_104036[scores_104036['group'] == 'Ipsilateral']['Ferroaging_Score'].values
 g2 = scores_104036[scores_104036['group'] == 'Sham']['Ferroaging_Score'].values
 eff_104036 = compute_cohens_d(g1, g2)
-print(f"\n  GSE104036 Ipsilateral vs Sham:")
+print("\n  GSE104036 Ipsilateral vs Sham:")
 print(f"    Cohen's d = {eff_104036['d']:.3f}, Hedges' g = {eff_104036['hedges_g']:.3f}")
 print(f"    MWU p = {eff_104036['p']:.2e}")
 print(f"    Ipsi mean = {eff_104036['mean1']:.4f}, Sham mean = {eff_104036['mean2']:.4f}")
@@ -347,7 +345,7 @@ print(f"    Ipsi mean = {eff_104036['mean1']:.4f}, Sham mean = {eff_104036['mean
 g1c = scores_104036[scores_104036['group'] == 'Ipsilateral']['Ferroaging_Score'].values
 g2c = scores_104036[scores_104036['group'] == 'Contralateral']['Ferroaging_Score'].values
 eff_104036_ic = compute_cohens_d(g1c, g2c)
-print(f"\n  GSE104036 Ipsilateral vs Contralateral:")
+print("\n  GSE104036 Ipsilateral vs Contralateral:")
 print(f"    Cohen's d = {eff_104036_ic['d']:.3f}, Hedges' g = {eff_104036_ic['hedges_g']:.3f}")
 print(f"    MWU p = {eff_104036_ic['p']:.2e}")
 
@@ -355,7 +353,7 @@ print(f"    MWU p = {eff_104036_ic['p']:.2e}")
 g1s = scores_16561[scores_16561['group'] == 'Stroke']['Ferroaging_Score'].values
 g2s = scores_16561[scores_16561['group'] == 'Control']['Ferroaging_Score'].values
 eff_16561 = compute_cohens_d(g1s, g2s)
-print(f"\n  GSE16561 Stroke vs Control:")
+print("\n  GSE16561 Stroke vs Control:")
 print(f"    Cohen's d = {eff_16561['d']:.3f}, Hedges' g = {eff_16561['hedges_g']:.3f}")
 print(f"    MWU p = {eff_16561['p']:.2e}")
 print(f"    Stroke mean = {eff_16561['mean1']:.4f}, Control mean = {eff_16561['mean2']:.4f}")
@@ -567,7 +565,7 @@ ax.plot([0, 0, 1, 1], [ymax, ymax+0.01, ymax+0.01, ymax], 'k-', linewidth=0.8)
 ax.text(0.5, ymax+0.015, f'p = {p16561:.2e}', ha='center', va='bottom', fontsize=9)
 ax.set_xticks([0, 1])
 ax.set_xticklabels(['Control', 'Stroke'])
-ax.set_title(f'Iron-Aging ssGSEA Score (GSE16561, Human Blood)', fontsize=13, fontweight='bold')
+ax.set_title('Iron-Aging ssGSEA Score (GSE16561, Human Blood)', fontsize=13, fontweight='bold')
 ax.set_xlabel('')
 ax.set_ylabel('Ferroaging ssGSEA Score', fontsize=12)
 sns.despine()
@@ -649,15 +647,15 @@ if len(core_candidates) > 0:
 print("\n" + "=" * 60)
 print("  步骤8: 科学严谨性保障清单")
 print("=" * 60)
-print(f"  [OK] 批次效应：统计检验仅在单数据集内部进行，效应量(Cohen's d)用于跨数据集比较")
-print(f"  [OK] 重复性：随机种子np.random.seed(42)固定，所有参数可重现")
-print(f"  [OK] 多重假设校正：差异分析使用 Benjamini-Hochberg FDR 校正")
+print("  [OK] 批次效应：统计检验仅在单数据集内部进行，效应量(Cohen's d)用于跨数据集比较")
+print("  [OK] 重复性：随机种子np.random.seed(42)固定，所有参数可重现")
+print("  [OK] 多重假设校正：差异分析使用 Benjamini-Hochberg FDR 校正")
 print(f"  [OK] 基因集版本：铁衰老基因集来自 CIRI-Ferroaging signature, {len(fer_sen_genes)} genes")
-print(f"  [OK] 补充材料：所有评分、差异分析表格已输出")
+print("  [OK] 补充材料：所有评分、差异分析表格已输出")
 print(f"  [OK] 基因覆盖率: GSE104036 = {len(common_104036)/len(fa_mouse)*100:.1f}%, "
       f"GSE16561 = {len(common_16561)/len(fer_sen_genes)*100:.1f}% (>70%阈值)")
-print(f"  [OK] ssGSEA参数: alpha=0.25 (weight), normalize=True")
-print(f"  [INFO] 注: GSE61616和GSE97537无表达矩阵，仅能从DE结果推论，已排除出ssGSEA分析")
+print("  [OK] ssGSEA参数: alpha=0.25 (weight), normalize=True")
+print("  [INFO] 注: GSE61616和GSE97537无表达矩阵，仅能从DE结果推论，已排除出ssGSEA分析")
 
 print("\n" + "=" * 60)
 print("  PIPELINE COMPLETED")

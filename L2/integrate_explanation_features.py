@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 # Phase 2 - Multi-omics Integration for Posterior Explanation
-import os, sys, logging, traceback, warnings, json
-import numpy as np
+import os
+import sys
+import logging
+import traceback
+import warnings
 import pandas as pd
 
 warnings.filterwarnings('ignore')

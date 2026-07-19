@@ -1,0 +1,97 @@
+# ============================================================================
+# 铁衰老单细胞测序分析 Pipeline 配置
+# 数据集: GSE233815 (MCAO 小鼠脑单核 RNA-seq, Zucha et al. 2023)
+# 4 条件: Ctrl / 1DPI / 3DPI / 7DPI; 7414 细胞; 11 主细胞类型
+# ============================================================================
+
+project:
+  name: "GSE233815_MCAO_Ferroaging_scRNA"
+  root: "d:/铁衰老 绝不重蹈覆辙"
+  pipeline_dir: "L2/scRNA_pipeline_R"
+  outputs_dir: "L2/scRNA_pipeline_R/outputs"
+  log_dir: "L2/scRNA_pipeline_R/outputs/logs"
+  figures_dir: "L2/scRNA_pipeline_R/outputs/figures"
+  tables_dir: "L2/scRNA_pipeline_R/outputs/tables"
+  rds_dir: "L2/scRNA_pipeline_R/outputs/rds"
+
+data:
+  # 优先使用已带 ferroaging 评分的 Seurat 对象 (项目既有成果)
+  seurat_object: "L2/results/GSE233815_sn/Seurat_sn_MCAO_with_ferroaging_score.rds"
+  seurat_object_raw: "data/external/GSE233815/mendeley/Seurat_sn_MCAO_Zucha2023_QCFiltered.Rds"
+  ferroaging_col_ucell: "FA_96_UCell"
+  ferroaging_col_addmodule: "AddModuleScore_FA96"
+  bulk_expr: "L1/results/GSE104036_expression_matrix.csv"
+  bulk_pheno: "L2/results/ferroaging_ssgsea_scores_GSE104036.csv"
+  ferroaging_genes: "铁衰老基因.txt"
+  core_genes: "L2/results/final_core_gene_set.csv"
+
+analysis:
+  random_seed: 42
+  species: "mouse"
+  condition_col: "Condition"
+  condition_levels: ["Ctrl", "1DPI", "3DPI", "7DPI"]
+  celltype_col: "Celltypes"
+  celltype_detail_col: "CelltypesDetailed"
+  sample_col: "Sample"
+
+qc:
+  min_nFeature_RNA: 200
+  max_nFeature_RNA: 6000
+  max_percent_mt: 20
+  min_cells_per_gene: 20
+  data_already_filtered: true
+
+clustering:
+  pca_dims: 30
+  resolution: 0.8
+  use_existing: true
+
+de:
+  method: "wilcox"
+  logfc_threshold: 0.58
+  adj_pval_threshold: 0.05
+  min_pct: 0.1
+  test_use: "wilcox"
+
+cellchat:
+  nboot: 100
+  population_size: 100
+  min_cells_per_type: 10
+  ligand_receptor_db: "Secretome DB"
+  compute_pathways: ["GALECTIN", "MIF", "CCL", "CXCL", "TNF", "IL1", "IL6",
+                     "TGFb", "BMP", "WNT", "NOTCH", "EGF", "FGF", "VEGI",
+                     "PDGF", "CSF", "SPP1", "ANNEXIN", "MHC-I", "MHC-II",
+                     "CD40", "VISFATIN", "COMPLEMENT", "FASLG", "TRAIL",
+                     "BTLA", "BAG", "GRN", "GAS", "nAChR", "PROS", "GDF",
+                     "ncWNT", "LAMININ", "COLLAGEN", "FN1", "TENASCIN",
+                     "AGRN", "NCAM", "NEUREXIN", "Ephrin", "EPH", "SEMA4",
+                     "SEMA5", "SEMA6", "SEMA3", "SLIT", "ROBO", "TENASCIN",
+                     "THBS", "L1CAM", "JAM", "CDH", "NCAM1", "SELE", "SELL",
+                     "CD99", "ADGRE5", "CEACAM", "SELPLG", "MADCAM1", "VCAM",
+                     "ICAM", "PECAM1", "CDH5", "ESAM", "PECAM", "TIE",
+                     "ANGPT", "DLL", "JAGGED", "SEMaphorIN", "CNTN", "MBP",
+                     "MAG", "MOG", "OPC", "OLIG"]
+
+enrichment:
+  pvalue_cutoff: 0.05
+  qvalue_cutoff: 0.2
+  organism: "mmu"
+  keyType: "SYMBOL"
+  go_ontologies: ["BP", "MF", "CC"]
+  kegg_organism: "mmu"
+
+trajectory:
+  method: "monocle3"
+  cell_types_to_trajectory: ["Microglia", "OLs", "OPCs", "Astrocytes"]
+
+scissor:
+  alpha: [0.05, 0.2]
+  cutoff_fraction: 0.2
+  n_bootstrap: 100
+  lambda: "Nlambda"
+
+report:
+  figure_dpi: 300
+  figure_format: "png"
+  figure_width: 10
+  figure_height: 8

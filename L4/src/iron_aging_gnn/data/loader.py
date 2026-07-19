@@ -122,7 +122,7 @@ def load_kegg_pathways() -> dict[str, list[str]]:
 
 def load_tcm_pool() -> pd.DataFrame:
     """加载 TCM 候选池"""
-    tcm_path = _paths.l3_results / "tcm_compound_pool_tox_filtered.csv"
+    tcm_path = _paths.l3_results / "zhuangyao_only_pool.csv"
     if not tcm_path.exists():
         raise FileNotFoundError(f"TCM 候选池文件不存在: {tcm_path}")
     try:

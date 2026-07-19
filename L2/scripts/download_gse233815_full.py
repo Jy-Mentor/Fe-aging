@@ -18,9 +18,7 @@ Output structure under data/external/GSE233815/:
 """
 import argparse
 import hashlib
-import json
 import os
-import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 

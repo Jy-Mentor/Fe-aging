@@ -1,0 +1,303 @@
+# ============================================================================
+# 四层递进"铁衰老"多组学证据链 - 统一配置
+# 数据集:
+#   L1 Bulk RNA-seq:   GSE233811 (MCAO 时间序列 12h/D1/D3/D7)
+#   L2 Spatial:        GSE233814 (10x Visium 空间切片)
+#   L3 Single-cell:    GSE233518 / GSE233815 (scRNA-seq MCAO)
+#   L4 Integration:    SPOTlight + CellChat spatial + CMap 反证
+# ============================================================================
+
+project:
+  name: "ferrosenescence_multi_omics"
+  root: "d:/铁衰老 绝不重蹈覆辙/L2/multi_omics_pipeline"
+  outputs_dir: "outputs"
+  log_dir: "outputs/logs"
+  figures_dir: "outputs/figures"
+  tables_dir: "outputs/tables"
+  rds_dir: "outputs/rds"
+  random_seed: 42
+  n_threads: 4
+
+# ----------------------------------------------------------------------------
+# 数据路径 (按 GEO 数据集组织, 单细胞数据下载中)
+# ----------------------------------------------------------------------------
+data:
+  # L1: Bulk RNA-seq (GSE233811 - MCAO 时间序列)
+  bulk_dir: "data/external/GSE233811"
+  bulk_counts: "data/external/GSE233811/GSE233811_counts.csv"        # 基因×样本 count 矩阵
+  bulk_pheno: "data/external/GSE233811/GSE233811_pheno.csv"          # 样本元数据
+  bulk_time_col: "time"                                              # 时间点列名
+  bulk_time_levels: ["Control", "12h", "D1", "D3", "D7"]             # 时间点顺序
+
+  # L2: Spatial transcriptomics (GSE233814 - 10x Visium)
+  spatial_dir: "data/external/GSE233814"
+  spatial_samples:
+    C1: "data/external/GSE233814/C1_control"        # 对照切片
+    D1: "data/external/GSE233814/D1_ischemia"       # 1天缺血
+    D3: "data/external/GSE233814/D3_ischemia"       # 3天缺血
+    D7: "data/external/GSE233814/D7_ischemia"       # 7天缺血
+  spatial_condition_col: "condition"
+
+  # L3: Single-cell RNA-seq (GSE233518 / GSE233815)
+  sc_dir: "data/external/GSE233518"
+  sc_samples:
+    Control: "data/external/GSE233518/control"
+    D1: "data/external/GSE233518/D1"
+    D3: "data/external/GSE233518/D3"
+    D7: "data/external/GSE233518/D7"
+  # 备选: 已处理的 Seurat 对象 (优先使用, 来自 GSE233815 snRNA-seq)
+  sc_seurat_rds: "data/external/GSE233815/mendeley/Seurat_sn_MCAO_Zucha2023_QCFiltered.Rds"
+  sc_condition_col: "Condition"
+  sc_celltype_col: "Cell_Type"
+  sc_condition_levels: ["Ctrl", "1DPI", "3DPI", "7DPI"]
+
+# ----------------------------------------------------------------------------
+# 基因集 (基于 PubMed 真实文献提取, 不使用任何模拟数据)
+# ----------------------------------------------------------------------------
+gene_sets:
+  # 铁死亡核心基因 (Zheng & Conrad 2025 Physiol Rev PMID:39661331)
+  ferroptosis:
+    - "Gpx4"      # 谷胱甘肽过氧化物酶 4 (铁死亡核心执行者)
+    - "Acsl4"     # 脂酰辅酶 A 合成酶 4 (脂质过氧化)
+    - "Slc7a11"   # 胱氨酸/谷氨酸反向转运体 (System Xc-)
+    - "Tfrc"      # 转铁蛋白受体 (铁摄入)
+    - "Fth1"      # 铁蛋白重链 (铁储存)
+    - "Ftl1"      # 铁蛋白轻链
+    - "Hmox1"     # 血红素加氧酶 1 (HO-1, Nrf2 靶基因)
+    - "Nfe2l2"    # Nrf2 (主调节因子)
+    - "Keap1"     # Nrf2 抑制因子
+    - "Sat1"      # 多胺乙酰转移酶 1 (BCP 靶基因)
+    - "Alox15"    # 脂氧合酶 15
+    - "Ncoa4"     # 核受体共激活因子 4 (铁蛋白自噬)
+    - "Slc3a2"    # 4F2hc, System Xc- 辅助亚基
+    - "Steap3"    # 金属还原酶 3 (铁还原)
+    - "Bach1"     # Nrf2 拮抗因子
+    - "Ptgs2"     # COX-2 (铁死亡标志物)
+    - "Chac1"     # 谷胱甘肽降解
+    - "Nqo1"      # NAD(P)H 醌氧化还原酶 1 (Nrf2 靶)
+
+  # 细胞衰老基因 (基于 SASP 与经典 marker)
+  senescence:
+    - "Cdkn1a"    # p21 (衰老核心 marker)
+    - "Cdkn2a"    # p16 (衰老核心 marker)
+    - "Tp53"      # p53
+    - "Il6"       # SASP 因子
+    - "Il1b"      # SASP 因子
+    - "Tnf"       # SASP 因子
+    - "Mmp3"      # SASP 基质金属蛋白酶
+    - "H2ax"      # DNA 损伤 marker
+    - "Lmnb1"     # 核纤层蛋白 B1 (衰老下调)
+    - "Chek1"     # 检查点激酶 1
+    - "Glb1"      # β-半乳糖苷酶 (SA-β-gal)
+    - "Serpine1"  # PAI-1 (SASP)
+
+  # BCP (β-caryophyllene) 调控 signature
+  # 来源: Hu 2022 PMID:35550220 + Li 2024 PMID:39088660 + Wu 2022 PMID:36555694
+  #       + Rathod 2025 PMID:40410551 + Khan 2024 PMID:39062016
+  bcp_up:    # BCP 上调基因 (BCP 处理后升高)
+    - "Nfe2l2"    # Nrf2 (BCP 主激活靶点)
+    - "Hmox1"     # HO-1
+    - "Gpx4"      # 谷胱甘肽过氧化物酶 4
+    - "Slc7a11"   # System Xc-
+    - "Fth1"      # 铁蛋白重链
+    - "Nqo1"      # NAD(P)H 醌氧化还原酶
+    - "Sirt3"     # SIRT3 (BCP 上调, PMID 39062016)
+    - "Prkaa1"    # AMPK α1 (BCP 激活 AMPK)
+    - "Prkaa2"    # AMPK α2
+  bcp_down:  # BCP 下调基因 (BCP 处理后降低)
+    - "Sat1"      # 多胺乙酰转移酶 1 (铁死亡促进)
+    - "Acsl4"     # 脂酰辅酶 A 合成酶 4
+    - "Tfrc"      # 转铁蛋白受体
+    - "Il6"       # IL-6 (SASP)
+    - "Tnf"       # TNF (SASP)
+    - "Mmp3"      # MMP3 (SASP)
+    - "Nlrp3"     # NLRP3 炎症小体 (PMID 39062016)
+    - "Rela"      # NF-κB p65
+
+  # 神经元 marker
+  neuron: ["Rbfox3", "Map2", "Syp", "Tubb3"]
+  # 星形胶质细胞 marker
+  astrocyte: ["Gfap", "Aldh1l1", "Aqp4"]
+  # 小胶质细胞 marker
+  microglia: ["Cx3cr1", "Tmem119", "Itgam", "P2ry12"]
+  # 少突胶质细胞 marker
+  oligodendrocyte: ["Mbp", "Mog", "Plp1"]
+  # 内皮细胞 marker
+  endothelial: ["Cldn5", "Pecam1", "Flt1"]
+  # 周细胞 marker
+  pericyte: ["Pdgfrb", "Cspg4"]
+  # 应激 marker (半暗带)
+  stress: ["Hspa1a", "Hmox1", "Fos", "Jun"]
+  # 梗死核心 marker
+  infarct_core: ["Bax", "Casp3", "Aifm1"]
+
+  # 铁衰老基因集 (项目自有 96 基因, 优先使用)
+  ferroaging_file: "L2/铁衰老基因.txt"
+
+# ----------------------------------------------------------------------------
+# L1: Bulk RNA-seq 分析参数
+# ----------------------------------------------------------------------------
+bulk:
+  # DESeq2 参数
+  min_count: 10                    # rowSums(counts) >= 10 最低表达阈值
+  min_cells_expressing: 2          # 至少在 2 个样本中表达
+  lfc_threshold: 1.0               # |log2FC| > 1 显著阈值
+  padj_threshold: 0.05             # FDR 阈值
+  lfc_shrink_type: "apeglm"        # LFC shrinkage 方法 (apeglm 首选; ashr 多组比较)
+  # LRT (Likelihood Ratio Test) 时序整体效应
+  lrt_reduced_formula: "~ 1"       # reduced model (无时间效应)
+  # GSEA
+  gsea_pvalue_cutoff: 0.05
+  gsea_padj_cutoff: 0.20           # GSEA 通常用更宽松阈值
+  gsea_min_gssize: 5
+  gsea_max_gssize: 500
+  gsea_nperm: 1000                 # fgsea sample-by-permutation
+  # WGCNA
+  wgcna_n_top_var_genes: 5000
+  wgcna_soft_threshold_r2: 0.85    # pickSoftThreshold R² 目标
+  wgcna_network_type: "signed"     # signed 保留上下调信息
+  wgcna_cor_type: "bicor"          # robust correlation
+  wgcna_max_p_outliers: 0.1
+  wgcna_min_module_size: 30
+  wgcna_merge_cut_height: 0.25
+  wgcna_max_block_size: 25000
+
+# ----------------------------------------------------------------------------
+# L2: Spatial transcriptomics 分析参数
+# ----------------------------------------------------------------------------
+spatial:
+  # SCTransform
+  sct_nfeatures: 3000
+  # PCA
+  pca_npcs: 30
+  # 半暗带定义阈值 (基于经验与文献 Han 2024 PMID:38324639)
+  penumbra_neuron_score_min: 0.0      # 神经元 marker 评分下限 (保留部分神经元)
+  penumbra_stress_score_min: 0.5      # 应激 marker 评分下限 (有应激反应)
+  # 空间变量特征 (Moran's I)
+  moransi_nfeatures: 2000
+  moransi_r_metric: 5
+  moransi_x_cuts: 10
+  moransi_y_cuts: 10
+
+# ----------------------------------------------------------------------------
+# L3: Single-cell RNA-seq 分析参数
+# ----------------------------------------------------------------------------
+sc:
+  # QC
+  min_nfeature: 200
+  max_nfeature: 6000
+  max_percent_mt: 20
+  # Normalize + HVG
+  nhvg: 2000
+  # PCA
+  npcs: 30
+  # Harmony 整合
+  harmony_theta: 2.0
+  harmony_lambda: 1.0
+  harmony_max_iter: 50
+  # UMAP
+  umap_n_neighbors: 30
+  umap_min_dist: 0.3
+  # Cluster
+  cluster_resolution: 0.8
+  # UCell 评分 (maxRank 默认 1500)
+  ucell_max_rank: 1500
+  # 衰老+铁死亡双阳性阈值 (quantile)
+  ferrosenescence_quantile: 0.75
+  # monocle3 拟时序
+  pseudotime_n_dims: 50
+  pseudotime_resolution: 1e-5
+  # Augur
+  augur_n_threads: 4
+  augur_folds: 3
+  augur_features_percent: 0.5
+  augur_subsample_size: 20
+
+# ----------------------------------------------------------------------------
+# L4: Integration 分析参数
+# ----------------------------------------------------------------------------
+integration:
+  # SPOTlight 空间去卷积
+  spotlight_n_top_mgs: 100              # 每细胞类型 top N marker
+  spotlight_min_count: 0.001
+  spotlight_assay: "logcounts"
+  # CellChat 空间扩展
+  cellchat_spatial:
+    enabled: true
+    spot_size_um: 65                    # Visium spot 直径
+    interaction_range: 250              # 互作有效距离 (微米)
+    contact_range: 100                  # 接触依赖距离 (微米)
+    distance_use: true
+    contact_dependent: true
+    type: "truncatedMean"
+    trim: 0.1
+    nboot: 100
+    min_cells: 10
+    population_size: false
+  # CMap 反证
+  cmap:
+    bcp_signature_source_pmids:
+      - 35550220    # Hu 2022 Phytomedicine BCP-NRF2-CIR
+      - 39088660    # Li 2024 J Agric Food Chem BCP 心脏保护
+      - 36555694    # Wu 2022 IJMS BCP 结肠炎
+      - 40410551    # Rathod 2025 BCP-GSK3β-NRF2
+      - 39062016    # Khan 2024 BCP-NLRP3-Nrf2
+    reversal_score_threshold: 0.5       # 逆转比例 ≥ 50% 视为有效
+
+# ----------------------------------------------------------------------------
+# 富集分析 (L1, L3 共用)
+# ----------------------------------------------------------------------------
+enrichment:
+  go_ont: "BP"
+  go_pvalue_cutoff: 0.05
+  go_qvalue_cutoff: 0.20
+  kegg_organism: "mmu"                  # 小鼠
+  kegg_pvalue_cutoff: 0.05
+  p_adjust_method: "BH"
+  # MSigDB 类别 (通过 msigdbr)
+  msigdb_categories: ["H", "C2", "C5"]  # Hallmark / Curated / GO
+  msigdb_species: "Mus musculus"
+
+# ----------------------------------------------------------------------------
+# 绘图与可视化
+# ----------------------------------------------------------------------------
+viz:
+  # 条件配色 (Ctrl→7DPI 时间序列, 红→蓝渐变)
+  condition_colors:
+    Ctrl: "#2166AC"
+    Control: "#2166AC"
+    "12h": "#92C5DE"
+    D1: "#F4A582"
+    "1DPI": "#F4A582"
+    D3: "#D6604D"
+    "3DPI": "#D6604D"
+    D7: "#B2182B"
+    "7DPI": "#B2182B"
+  # 细胞类型配色 (10 色, 色盲友好)
+  celltype_palette:
+    - "#E64B35"   # 红
+    - "#4DBBD5"   # 青
+    - "#00A087"   # 绿
+    - "#3C5488"   # 蓝
+    - "#F39B7F"   # 桃
+    - "#8491B4"   # 灰蓝
+    - "#91D1C2"   # 浅绿
+    - "#DC0000"   # 深红
+    - "#7E6148"   # 棕
+    - "#B09C85"   # 米
+  # 发散配色 (用于铁衰老得分)
+  diverge_palette: ["#2166AC", "#F7F7F7", "#B2182B"]
+  # 连续配色 (用于热图)
+  sequential_palette: "viridis"
+  figure_dpi: 300
+  figure_width: 10
+  figure_height: 8
+
+# ----------------------------------------------------------------------------
+# 复现性
+# ----------------------------------------------------------------------------
+reproducibility:
+  r_seed: 42
+  python_seed: 42
+  log_session_info: true
+  save_rds: true

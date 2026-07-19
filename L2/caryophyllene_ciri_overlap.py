@@ -133,7 +133,7 @@ def main():
     N = len(cary_neighbors)
     k = len(ferro_neighbors)
     p_ferro = hypergeom_test(k, M, n, N)
-    print(f"\n  [超几何检验] 铁死亡基因在石竹烯靶点邻居中的富集:")
+    print("\n  [超几何检验] 铁死亡基因在石竹烯靶点邻居中的富集:")
     print(f"    总体背景基因(M)={M}, 铁死亡基因(n)={n}")
     print(f"    石竹烯邻居数(N)={N}, 其中铁死亡基因(k)={k}")
     print(f"    p-value={p_ferro:.2e}")
@@ -142,7 +142,7 @@ def main():
     n_ciri_bg = len(set(ciri_candidates) & ppi_nodes)
     k_ciri = len(ciri_neighbors)
     p_ciri = hypergeom_test(k_ciri, M, n_ciri_bg, N)
-    print(f"\n  [超几何检验] CIRI候选基因在石竹烯靶点邻居中的富集:")
+    print("\n  [超几何检验] CIRI候选基因在石竹烯靶点邻居中的富集:")
     print(f"    背景中CIRI候选(n)={n_ciri_bg}, 邻居中CIRI候选(k)={k_ciri}")
     print(f"    p-value={p_ciri:.2e}")
 

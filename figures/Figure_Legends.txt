@@ -156,12 +156,62 @@ category: Secreted Signaling (red), ECM-Receptor (cyan), Cell-Cell Contact
 the count of unique ligand-receptor pairs contributing to each pathway.
 
 
+Figure 7. SenePy-based single-cell senescence scoring and ferrosenescence
+dual-axis integration in ischemic stroke.
+
+(A) Spearman correlation scatter plot (hexagonal binning) between SenePy
+universal senescence scores and ferroaging AddModuleScore FA-96 across 7,414
+nuclei from the GSE233815 snRNA-seq dataset. The red regression line and
+annotated Spearman rho value indicate the modest correlation between the two
+orthogonal scoring dimensions. Hexagonal bin coloring represents local point
+density (n = 80 bins).
+
+(B) Violin plots of SenePy senescence scores stratified by MCAO condition
+(Ctrl, 1DPI, 3DPI, 7DPI) and coarse cell class (Neuron, Astrocyte, Microglia,
+Oligodendrocyte, Endothelial/Pericyte). Overlaid boxplots indicate median and
+interquartile range. Violin width is scaled to the cell count per group.
+Notable senescence elevation is observed in Microglia at 3DPI and
+Endothelial/Pericyte at 7DPI.
+
+(C) Violin plots of the ferrosenescence composite score (F = (zFA-96 + zSenePy)
+/ 2) by condition and cell class. The dual-axis composite captures shifts in
+Astrocytes at 3DPI that are not detected by either individual score alone.
+
+(D) Significance dot plot of SenePy score differences between each MCAO
+condition (1DPI, 3DPI, 7DPI) and Ctrl across five cell classes. Point size
+encodes -log10(p-value) from two-sided Wilcoxon rank-sum test. Point color
+gradient encodes the mean difference (condition minus Ctrl). Significance
+stars are overlaid: *** p_adj < 0.001, ** p_adj < 0.01, * p_adj < 0.05;
+ns, not significant. All p-values are Benjamini-Hochberg adjusted.
+
+(E) Significance dot plot of ferrosenescence composite score differences vs
+Ctrl, analogous to panel (D). The ferrosenescence score reveals additional
+significant shifts in Astrocytes at 3DPI not detected by either SenePy or
+FA-96 individually.
+
+(F) Multi-method comparison bar plot showing mean scores ± SEM for SenePy,
+FA-96, and ferrosenescence scores across five cell classes and four conditions.
+Error bars represent standard error of the mean. The distinct score profiles
+across methods confirm the orthogonal nature of the measured biological
+dimensions.
+
+(G) Spearman correlation heatmap of all four scoring methods (SenePy, FA-95,
+FA-96, Ferrosenescence). Tile fill color encodes Spearman rho from blue (-1)
+through white (0) to red (+1). Numerical values are displayed within each cell.
+The low correlation between SenePy and FA-96 (rho = 0.185) validates the
+complementary design of the dual-axis framework.
+
+
 METHODS SUMMARY
 ---------------
 Data processing and visualization were performed using R (version 4.3.3) with
 the following packages: ggplot2 (3.5.1), patchwork, ggrepel, ggsci, viridis,
 circlize, cowplot, dplyr, and readr. Single-cell analysis was conducted using
-Seurat (v5). Ferroaging scores were computed using AddModuleScore. Differential
+Seurat (v5). Ferroaging scores were computed using AddModuleScore. SenePy
+universal senescence scores were computed using the 635-gene mouse universal
+signature (Sanborn et al., Nature Communications, 2025; DOI: 10.1038/
+s41467-025-57047-7). The ferrosenescence composite score was defined as
+F = (z(FA-96 AddModuleScore) + z(SenePy_Score)) / 2. Differential
 expression analysis was performed using limma with Benjamini-Hochberg multiple
 testing correction. SCISSOR analysis was performed following Sun et al. (Nature
 Biotechnology, 2021). Cell-cell communication analysis was performed using the

@@ -7,21 +7,15 @@ GSE104036 (Mouse MCAO) 三项专项分析管线
 3. 免疫浸润分析 —— 免疫细胞丰度 + 铁衰老-炎症相关性
 """
 
-import csv
-import json
 import logging
-import math
-import os
 import sys
 import time
-from collections import defaultdict
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 import networkx as nx
-from scipy.stats import pearsonr, mannwhitneyu, combine_pvalues
-from scipy import stats
+from scipy.stats import pearsonr, mannwhitneyu
 
 ROOT = Path(r'd:\铁衰老 绝不重蹈覆辙')
 LOG_DIR = ROOT / 'logs'

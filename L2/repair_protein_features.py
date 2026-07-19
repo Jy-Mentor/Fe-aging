@@ -16,7 +16,6 @@
     logs/repair_protein_features.log
 """
 
-import os
 import sys
 import time
 import logging

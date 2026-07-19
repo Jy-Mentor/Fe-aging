@@ -11,7 +11,6 @@ import traceback
 import logging
 from pathlib import Path
 from Bio.SeqUtils.ProtParam import ProteinAnalysis
-from Bio.SeqUtils import molecular_weight
 
 # 设置日志
 logging.basicConfig(
@@ -227,7 +226,7 @@ def main():
     # 1. 读取数据
     genes_96 = pd.read_csv(GENES_96_PATH)
     all_genes = set(genes_96["gene_symbol"].unique())
-    logger.info(f"96个铁衰老基因已加载")
+    logger.info("96个铁衰老基因已加载")
     
     features_existing = pd.read_csv(EXISTING_FEATURES_PATH)
     existing_genes_in_96 = set(features_existing["gene_symbol"].unique()) & all_genes
@@ -348,7 +347,7 @@ def main():
     logger.info("\n" + "=" * 60)
     logger.info("统计报告")
     logger.info("=" * 60)
-    logger.info(f"铁衰老基因总数: 96")
+    logger.info("铁衰老基因总数: 96")
     logger.info(f"已有传统特征基因数: {len(existing_genes_in_96)}")
     logger.info(f"本次成功补充基因数: {success_count}")
     logger.info(f"补充失败基因数: {len(failed_genes)}")
@@ -356,7 +355,7 @@ def main():
     logger.info(f"仍缺失: {len(failed_genes)}")
     
     if failed_genes:
-        logger.info(f"\n仍缺失的基因列表:")
+        logger.info("\n仍缺失的基因列表:")
         for g in failed_genes:
             logger.info(f"  - {g}")
     
@@ -375,7 +374,7 @@ def main():
                             f"min={vals.min():.4f}, max={vals.max():.4f}")
     
     print(f"\n{'='*60}")
-    print(f"补充完成!")
+    print("补充完成!")
     print(f"成功: {success_count}/{len(missing_genes)} 基因")
     print(f"失败: {len(failed_genes)} 基因")
     print(f"输出文件: {OUTPUT_PATH}")

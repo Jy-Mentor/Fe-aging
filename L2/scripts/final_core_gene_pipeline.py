@@ -13,21 +13,17 @@
   6. WGCNA 共表达模块验证
 """
 
-import csv
 import json
 import logging
 import math
-import os
-import subprocess
 import sys
 import time
-from collections import defaultdict, deque
+from collections import defaultdict
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 import networkx as nx
-from scipy.stats import hypergeom
 
 ROOT = Path(r'd:\铁衰老 绝不重蹈覆辙')
 LOG_DIR = ROOT / 'logs'

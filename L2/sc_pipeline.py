@@ -655,7 +655,7 @@ def step9_pseudobulk_de(adata):
                     'mcao_mean': mcao_mean,
                     'pvalue': pval
                 })
-            except Exception as e:
+            except Exception:
                 continue
 
         logger.info("  %s: %d cells, %d genes tested", ct, ct_mask.sum(), len(genes))

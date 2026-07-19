@@ -249,31 +249,51 @@ gene_labels <- sapply(levels(plot_data$Gene), function(g) {
 })
 names(gene_labels) <- levels(plot_data$Gene)
 
-# 颜色方案
-tissue_colors <- c("Sham" = "#95A5A6", "Contralateral" = "#3498DB", "Ipsilateral" = "#E74C3C")
+# Nature-style publication theme
+theme_publication <- function(base_size = 8) {
+  theme_classic(base_size = base_size) %+replace%
+    theme(
+      panel.background = element_rect(fill = NA, color = "black", linewidth = 0.5),
+      panel.grid.major = element_line(color = "grey92", linewidth = 0.2),
+      panel.grid.minor = element_blank(),
+      axis.line = element_blank(),
+      axis.ticks = element_line(color = "black", linewidth = 0.3),
+      axis.ticks.length = unit(2, "pt"),
+      axis.text = element_text(color = "black", size = rel(0.9)),
+      axis.title = element_text(color = "black", size = rel(1.0)),
+      plot.title = element_text(size = rel(1.1), face = "bold", hjust = 0.5),
+      plot.subtitle = element_text(size = rel(0.9), hjust = 0.5, color = "grey40"),
+      legend.position = "bottom",
+      legend.justification = "left",
+      legend.box.spacing = unit(0, "pt"),
+      legend.key.size = unit(3, "mm"),
+      strip.text = element_text(size = rel(0.9), face = "bold"),
+      strip.background = element_rect(fill = "grey95", color = "black", linewidth = 0.3),
+      plot.margin = unit(c(5, 10, 5, 5), "pt")
+    )
+}
+
+# CB-friendly palette
+tissue_colors <- c("Sham" = "#4E79A7", "Contralateral" = "#F28E2B", "Ipsilateral" = "#E15759")
 
 # 小提琴图 + 箱线图面板
 p1 <- ggplot(plot_data, aes(x = Time, y = log2CPM, fill = Tissue)) +
-  geom_violin(alpha = 0.4, scale = "width") +
-  geom_boxplot(width = 0.25, outlier.size = 0.8, alpha = 0.7,
+  geom_violin(alpha = 0.5, scale = "width", color = NA) +
+  geom_boxplot(width = 0.2, outlier.size = 0.5, alpha = 0.85,
+               color = "grey30", linewidth = 0.2,
                position = position_dodge(0.9)) +
-  scale_fill_manual(values = tissue_colors,
-                    labels = c("Sham (基线)", "Contralateral (对侧)", "Ipsilateral (患侧)")) +
+  scale_fill_manual(values = tissue_colors) +
   facet_wrap(~ Gene, ncol = 4, scales = "free_y",
              labeller = labeller(Gene = gene_labels)) +
   labs(
-    title = "铁衰老基因在脑缺血后的时间表达趋势 (GSE104036, Mouse MCAO)",
-    subtitle = "Sham = 基线(0hr); Contralateral = 对侧半球; Ipsilateral = 患侧半球\n** raw p<0.01  * raw p<0.05  (Kruskal-Wallis test, n=3 per time point)",
-    x = "缺血后时间",
+    x = "Time post-ischemia",
     y = expression(log[2](CPM + 1)),
-    fill = "组织"
+    fill = "Tissue"
   ) +
-  theme_bw(base_size = 12) +
+  theme_publication(8) +
   theme(
-    axis.text.x = element_text(angle = 30, hjust = 1, size = 9),
-    strip.text = element_text(size = 9, face = "bold"),
-    legend.position = "bottom",
-    panel.grid.minor = element_blank()
+    axis.text.x = element_text(angle = 30, hjust = 1),
+    legend.position = "bottom"
   )
 
 ggsave(file.path(fig_dir, "ferroaging_timecourse_expression_panel.pdf"),
@@ -303,24 +323,17 @@ trend_data$SEM <- trend_data$SD / sqrt(trend_data$N)
 
 p2 <- ggplot(trend_data, aes(x = Time, y = Mean, color = Tissue, group = Tissue)) +
   geom_ribbon(aes(ymin = Mean - SEM, ymax = Mean + SEM, fill = Tissue),
-              alpha = 0.15, color = NA) +
-  geom_line(linewidth = 1.2) +
-  geom_point(size = 3) +
-  scale_color_manual(values = tissue_colors,
-                     labels = c("Sham (基线)", "Contralateral (对侧)", "Ipsilateral (患侧)")) +
+              alpha = 0.12, color = NA) +
+  geom_line(linewidth = 0.8) +
+  geom_point(size = 2.5) +
+  scale_color_manual(values = tissue_colors) +
   scale_fill_manual(values = tissue_colors, guide = "none") +
   labs(
-    title = "铁衰老基因群体平均表达趋势 (n=95 genes)",
-    subtitle = "Mean ± SEM; GSE104036 Mouse MCAO Model",
-    x = "缺血后时间",
-    y = expression(paste("平均 ", log[2], "(CPM + 1)")),
-    color = "组织"
+    x = "Time post-ischemia",
+    y = expression("Mean " * log[2] * "(CPM + 1)"),
+    color = "Tissue"
   ) +
-  theme_bw(base_size = 13) +
-  theme(
-    legend.position = "bottom",
-    panel.grid.minor = element_blank()
-  )
+  theme_publication(8)
 
 ggsave(file.path(fig_dir, "ferroaging_timecourse_mean_trend.pdf"), p2, width = 8, height = 6, dpi = 300)
 ggsave(file.path(fig_dir, "ferroaging_timecourse_mean_trend.png"), p2, width = 8, height = 6, dpi = 300)
@@ -367,26 +380,20 @@ if (length(top_sig) >= 4) {
   }
 
   p3 <- ggplot(ipsi_plot_data, aes(x = Time, y = log2CPM)) +
-    geom_violin(aes(fill = Time), alpha = 0.35, scale = "width") +
-    geom_boxplot(width = 0.3, outlier.size = 1, alpha = 0.8) +
-    geom_jitter(width = 0.15, alpha = 0.5, size = 1.5) +
+    geom_violin(aes(fill = Time), alpha = 0.4, scale = "width", color = NA) +
+    geom_boxplot(width = 0.2, outlier.size = 0.5, alpha = 0.8,
+                 color = "grey30", linewidth = 0.2) +
+    geom_jitter(width = 0.12, alpha = 0.4, size = 1.2) +
     facet_wrap(~ Gene, ncol = 4, scales = "free_y") +
-    scale_fill_manual(values = c("0hr" = "#95A5A6", "3hr" = "#F39C12",
-                                  "6hr" = "#E67E22", "12hr" = "#D35400",
-                                  "24hr" = "#C0392B")) +
+    scale_fill_manual(values = c("0hr" = "#4E79A7", "3hr" = "#F28E2B",
+                                  "6hr" = "#E15759", "12hr" = "#B07AA1",
+                                  "24hr" = "#76B7B2")) +
     labs(
-      title = "铁衰老基因在患侧(Ipsilateral)组织中的时间差异表达",
-      subtitle = paste0("Top ", length(top_sig), " 基因 (Kruskal-Wallis p < 0.05)"),
-      x = "缺血后时间",
+      x = "Time post-ischemia",
       y = expression(log[2](CPM + 1)),
-      fill = "时间"
+      fill = "Time"
     ) +
-    theme_bw(base_size = 12) +
-    theme(
-      strip.text = element_text(size = 10, face = "bold"),
-      legend.position = "bottom",
-      panel.grid.minor = element_blank()
-    )
+    theme_publication(8)
 
   if (nrow(stat_annotations) > 0) {
     p3 <- p3 +
@@ -446,20 +453,17 @@ for (i in seq_len(nrow(stat_results))) {
 
 p4 <- ggplot(heat_long, aes(x = Sample, y = GeneLabel, fill = Zscore)) +
   geom_tile() +
-  scale_fill_gradient2(low = "#2166AC", mid = "#F7F7F7", high = "#B2182B",
+  scale_fill_gradient2(low = "#377EB8", mid = "#F7F7F7", high = "#E41A1C",
                         midpoint = 0, name = "Z-score") +
   facet_grid(~ Time, scales = "free_x", space = "free_x") +
   labs(
-    title = "铁衰老基因在患侧(Ipsilateral)组织中的时间表达热图",
-    subtitle = paste0(length(heat_genes), " 基因 (Kruskal-Wallis p < 0.05)"),
     x = NULL,
     y = "Gene"
   ) +
-  theme_bw(base_size = 11) +
+  theme_publication(8) +
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1, size = 7),
-    axis.text.y = element_text(size = 9),
-    strip.text = element_text(size = 10, face = "bold"),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 6),
+    axis.text.y = element_text(size = 8),
     panel.grid = element_blank(),
     legend.position = "right"
   )
