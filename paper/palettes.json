@@ -1,0 +1,133 @@
+{
+  "_meta": {
+    "description": "Project-wide color palettes for publication-quality figures. Values sourced from Nature Cancer (WeChat article), ggsci journal palettes, and color-vision-deficiency-safe standards.",
+    "usage": "Import via paper/palettes.R (R) or paper/palettes.py (Python).",
+    "updated": "2026-07-19"
+  },
+  "nature_cancer": {
+    "source": "Nature Cancer, PubCNS 跟着顶刊学配色 57",
+    "paper": "Targeting cysteinyl leukotriene receptor 1 reprograms tumor-promoting myelopoiesis and overcomes immune checkpoint therapy resistance",
+    "doi": "https://doi.org/10.1038/s43018-026-01174-7",
+    "colors": [
+      "#7664D3",
+      "#E06699",
+      "#4EB8A3",
+      "#5BA8E8",
+      "#E8B44C",
+      "#A3AAD8",
+      "#88C37A",
+      "#E96655"
+    ]
+  },
+  "nature_npg": {
+    "source": "Nature Publishing Group palette (ggsci::npg)",
+    "colors": [
+      "#E64B35",
+      "#4DBBD5",
+      "#00A087",
+      "#3C5488",
+      "#F39B7F",
+      "#8491B4",
+      "#91D1C2",
+      "#DC0000",
+      "#7E6148",
+      "#B09C85"
+    ]
+  },
+  "science_aaas": {
+    "source": "Science / AAAS palette (ggsci::aaas)",
+    "colors": [
+      "#3A3A3A",
+      "#E5862C",
+      "#5D8AA8",
+      "#B40F20",
+      "#9FB4CC",
+      "#7C6F0F",
+      "#C5B358",
+      "#8C8C8C"
+    ]
+  },
+  "cell_press": {
+    "source": "Cell Press palette (ggsci::d3 category10 adaptation)",
+    "colors": [
+      "#1B9E77",
+      "#D95F02",
+      "#7570B3",
+      "#E7298A",
+      "#66A61E",
+      "#E6AB02",
+      "#A6761D",
+      "#666666"
+    ]
+  },
+  "lancet": {
+    "source": "The Lancet palette (ggsci::lancet)",
+    "colors": [
+      "#00468B",
+      "#ED0000",
+      "#42B540",
+      "#0099B4",
+      "#925E9F",
+      "#FDAF91",
+      "#AD002A",
+      "#ADB6B5"
+    ]
+  },
+  "nejm": {
+    "source": "New England Journal of Medicine palette (ggsci::nejm)",
+    "colors": [
+      "#BC3C29",
+      "#0072B5",
+      "#E18727",
+      "#20854E",
+      "#7876B1",
+      "#6F99AD",
+      "#FFDC91",
+      "#EE4C97"
+    ]
+  },
+  "jama": {
+    "source": "JAMA Network Open palette (ggsci::jama)",
+    "colors": [
+      "#374E55",
+      "#DF8F44",
+      "#00A1D5",
+      "#B24745",
+      "#79AF97",
+      "#6A6599",
+      "#80796B"
+    ]
+  },
+  "okabe_ito": {
+    "source": "Okabe-Ito color-vision-deficiency-safe palette",
+    "colors": [
+      "#E69F00",
+      "#56B4E9",
+      "#009E73",
+      "#F0E442",
+      "#0072B2",
+      "#D55E00",
+      "#CC79A7",
+      "#000000"
+    ]
+  },
+  "iron_aging": {
+    "source": "Project-specific semantic colors for iron-aging visualizations",
+    "colors": [
+      "#8B0000",
+      "#CD5C5C",
+      "#4682B4",
+      "#5F9EA0",
+      "#DAA520",
+      "#708090"
+    ],
+    "labels": [
+      "severe iron overload",
+      "mild iron overload",
+      "control",
+      "protective",
+      "senescence marker",
+      "neutral"
+    ]
+  }
+}
