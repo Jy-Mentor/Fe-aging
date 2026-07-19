@@ -9,13 +9,13 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import numpy as np
 
 from palettes import get_palette
 
 OUTDIR = Path(__file__).resolve().parent / "figures" / "demo"
 os.makedirs(OUTDIR, exist_ok=True)
 
-import numpy as np
 np.random.seed(42)
 
 
