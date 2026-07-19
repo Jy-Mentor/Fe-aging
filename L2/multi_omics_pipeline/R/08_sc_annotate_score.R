@@ -121,7 +121,8 @@ step08_sc_annotate_score <- function(seu, cfg) {
 
   p_violin <- ggplot(score_long, aes(x = .data[[celltype_col]],
                                       y = UCell_Score,
-                                      fill = .data[[celltype_col]])) +
+                                      fill = .data[[celltype_col]],
+                                      Signature = Signature)) +
     geom_violin(scale = "width", trim = TRUE, alpha = 0.7) +
     geom_boxplot(width = 0.15, outlier.size = 0.2, alpha = 0.6) +
     facet_wrap(~ Signature, scales = "free_y", ncol = 3) +
@@ -134,12 +135,16 @@ step08_sc_annotate_score <- function(seu, cfg) {
   save_figure(p_violin, "08_scores_by_celltype_violin", cfg,
               width = 13, height = 9)
 
-  # 按条件分面
-  p_violin_cond <- ggplot(score_long, aes(x = .data[[condition_col]],
-                                          y = UCell_Score,
-                                          fill = .data[[condition_col]])) +
+  # 按条件分面 (Signature 与 celltype_col 都需在 aes 中, ggplot2 3.5+ 要求)
+  score_long[[celltype_col]] <- as.factor(score_long[[celltype_col]])
+  p_violin_cond <- ggplot(score_long,
+                           aes(x = .data[[condition_col]],
+                               y = UCell_Score,
+                               fill = .data[[condition_col]],
+                               Signature = Signature)) +
     geom_violin(scale = "width", trim = TRUE, alpha = 0.7) +
-    facet_grid(Signature ~ .data[[celltype_col]], scales = "free_y") +
+    facet_grid(reformulate(celltype_col, response = "Signature"),
+               scales = "free_y") +
     scale_fill_manual(values = get_condition_colors(unique(score_df[[condition_col]]))) +
     labs(title = "UCell scores by cell type x condition",
          x = "Condition", y = "UCell score") +
@@ -200,7 +205,7 @@ step08_sc_annotate_score <- function(seu, cfg) {
       geom_vline(xintercept = fp_thr, linetype = "dashed", color = "grey50") +
       scale_color_manual(values = c("Ferrosenescence_High" = "#B2182B",
                                      "Low" = "grey70")) +
-      facet_wrap(~ .data[[condition_col]]) +
+      facet_wrap(reformulate(condition_col)) +
       labs(title = "Ferroptosis vs Senescence (UCell)",
            x = "Ferroptosis UCell", y = "Senescence UCell",
            color = "Status") +
@@ -231,7 +236,7 @@ step08_sc_annotate_score <- function(seu, cfg) {
                                             color = .data[[celltype_col]])) +
         geom_point(alpha = 0.4, size = 0.5) +
         geom_smooth(method = "lm", se = FALSE, linewidth = 0.6) +
-        facet_wrap(~ .data[[celltype_col]], scales = "free") +
+        facet_wrap(reformulate(celltype_col), scales = "free") +
         scale_color_manual(values = get_celltype_colors(unique(sat1_data[[celltype_col]]))) +
         labs(title = "Sat1 vs Ferroptosis score",
              x = "Sat1 expression", y = "Ferroptosis UCell") +

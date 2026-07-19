@@ -18,10 +18,11 @@ step09_sc_pseudotime_augur <- function(seu, cfg) {
     stop("step09: sc_seu is NULL. Run step07/08 first.")
   }
 
-  require_packages(c("monocle3"),
-                   install_hint = "BiocManager::install('monocle3')")
+  require_packages(c("monocle3", "SeuratWrappers"),
+                   install_hint = "BiocManager::install('monocle3'); remotes::install_github('satijalab/seurat-wrappers')")
   suppressPackageStartupMessages({
     library(monocle3)
+    library(SeuratWrappers)
     library(Seurat)
     library(ggplot2)
   })
@@ -47,7 +48,9 @@ step09_sc_pseudotime_augur <- function(seu, cfg) {
   if (length(neuron_in_data) > 0) {
     log_info("[Step09] Subsetting neurons for pseudotime: ",
              paste(neuron_in_data, collapse = ", "))
-    neuron_sub <- subset(seu, subset = .data[[celltype_col]] %in% neuron_in_data)
+    # Seurat v5 subset 不支持 .data[[]] 语法, 用 cells = 传递 cell index
+    keep <- seu@meta.data[[celltype_col]] %in% neuron_in_data
+    neuron_sub <- subset(seu, cells = colnames(seu)[keep])
     if (ncol(neuron_sub) < 50) {
       log_warn("[Step09] Too few neurons (n=", ncol(neuron_sub),
                "); skipping monocle3.")
@@ -63,7 +66,9 @@ step09_sc_pseudotime_augur <- function(seu, cfg) {
   # 9.2 Ferrosenescence_High 亚群拟时序 (若 step08 已标记)
   cds_fs <- NULL
   if ("ferrosenescence_status" %in% colnames(seu@meta.data)) {
-    fs_sub <- subset(seu, subset = ferrosenescence_status == "Ferrosenescence_High")
+    # 用 cells = 传递 cell index 避免 subset 变量解析问题
+    keep_fs <- seu@meta.data$ferrosenescence_status == "Ferrosenescence_High"
+    fs_sub <- subset(seu, cells = colnames(seu)[keep_fs])
     if (ncol(fs_sub) >= 50) {
       log_info("[Step09] Pseudotime on Ferrosenescence_High cells (n=",
                ncol(fs_sub), ")")
@@ -97,6 +102,32 @@ step09_sc_pseudotime_augur <- function(seu, cfg) {
 # ----------------------------------------------------------------------------
 # monocle3 拟时序子流程
 # ----------------------------------------------------------------------------
+.get_root_principal_node <- function(cds, ctrl_cells) {
+  # 基于官方推荐算法: 找到 control 细胞最多的 principal graph node
+  # 参考: https://cole-trapnell-lab.github.io/monocle3/docs/trajectories/
+  closest_vertex <- cds@principal_graph_aux[["UMAP"]]$pr_graph_cell_proj_closest_vertex
+  if (is.null(closest_vertex)) {
+    log_warn("[Step09] principal_graph_aux is NULL. Cannot find root node.")
+    return(NULL)
+  }
+  closest_vertex <- as.matrix(closest_vertex[colnames(cds), , drop = FALSE])
+  # 在 control 细胞中, 找到出现频率最高的 principal node
+  ctrl_idx <- match(ctrl_cells, rownames(closest_vertex))
+  ctrl_idx <- ctrl_idx[!is.na(ctrl_idx)]
+  if (length(ctrl_idx) == 0) return(NULL)
+
+  # closest_vertex 是 cell -> principal_node 的映射 (cell proj onto principal graph)
+  node_table <- table(closest_vertex[ctrl_idx, 1])
+  if (length(node_table) == 0) return(NULL)
+
+  top_node_idx <- as.integer(names(which.max(node_table)))
+  pr_graph <- monocle3::principal_graph(cds)[["UMAP"]]
+  if (is.null(pr_graph)) return(NULL)
+  root_pr_nodes <- igraph::V(pr_graph)$name[top_node_idx]
+  if (length(root_pr_nodes) == 0) root_pr_nodes <- names(top_node_idx)
+  root_pr_nodes
+}
+
 .run_monocle3 <- function(seu_sub, cfg, celltype_col, condition_col, tag = "neuron") {
   log_info("[Step09] Converting Seurat -> cell_data_set (tag=", tag, ")...")
 
@@ -105,26 +136,29 @@ step09_sc_pseudotime_augur <- function(seu, cfg) {
     seu_sub[["RNA"]] <- JoinLayers(seu_sub[["RNA"]])
   }
 
-  cds <- as.cell_data_set(seu_sub)
+  cds <- SeuratWrappers::as.cell_data_set(seu_sub, assay = "RNA")
   cds@colData@metadata$n_cells <- NULL  # 修正 Seurat→CDS 兼容性
+
+  # monocle3 要求 rowData 有 gene_short_name 列 (用于 plot_genes_in_pseudotime 等)
+  fData(cds)$gene_short_name <- rownames(fData(cds))
 
   # 聚类 + 主图
   cds <- cluster_cells(cds, reduction_method = "UMAP")
   cds <- learn_graph(cds, use_partition = TRUE)
 
-  # 选根细胞 (Control / Ctrl 条件)
+  # 选根细胞 (Control / Ctrl 条件) — 使用 control 细胞占多数的 principal node
   ctrl_cells <- colnames(cds)[colData(cds)[[condition_col]] %in% c("Control", "Ctrl")]
+  root_pr_nodes <- NULL
   if (length(ctrl_cells) == 0) {
-    log_warn("[Step09] No Control cells for root. Using graph principal node.")
-    root_node <- NULL
+    log_warn("[Step09] No Control cells for root. Using first principal node.")
   } else {
-    # 选择 control 细胞最多的聚类节点
-    root_node <- monocle3:::get_principal_node(cds, ctrl_cells)
-    log_info("[Step09] Root node selected from ", length(ctrl_cells), " control cells")
+    root_pr_nodes <- .get_root_principal_node(cds, ctrl_cells)
+    log_info("[Step09] Root node selected from ", length(ctrl_cells),
+             " control cells: ", paste(root_pr_nodes, collapse = ", "))
   }
 
-  if (!is.null(root_node)) {
-    cds <- order_cells(cds, root_pr_nodes = root_node)
+  if (!is.null(root_pr_nodes)) {
+    cds <- order_cells(cds, root_pr_nodes = root_pr_nodes)
   } else {
     cds <- order_cells(cds)
   }
@@ -178,7 +212,8 @@ step09_sc_pseudotime_augur <- function(seu, cfg) {
 
     p_pseudo_score <- ggplot(pseudo_long,
                               aes(x = pseudotime, y = UCell_Score,
-                                  color = .data[[condition_col]])) +
+                                  color = .data[[condition_col]],
+                                  Signature = Signature)) +
       geom_point(alpha = 0.4, size = 0.6) +
       geom_smooth(method = "loess", se = TRUE, alpha = 0.2) +
       facet_wrap(~ Signature, scales = "free_y", ncol = 2) +
@@ -241,17 +276,30 @@ step09_sc_pseudotime_augur <- function(seu, cfg) {
   cell_types <- seu_sub@meta.data[[celltype_col]]
   condition <- seu_sub$augur_condition
 
+  # Augur 1.0.3 API: input, meta, label_col, cell_type_col, feature_perc
+  augur_meta <- data.frame(
+    cell_type = cell_types,
+    label = condition,
+    row.names = colnames(expr_mat)
+  )
+
+  # Windows 上 parallel::mclapply 不支持 mc.cores > 1, 强制单线程
+  augur_threads <- cfg$sc$augur_n_threads
+  if (.Platform$OS.type == "windows" && augur_threads > 1) {
+    log_warn("[Step09] Windows does not support mc.cores > 1. Setting n_threads = 1.")
+    augur_threads <- 1
+  }
+
   augur_res <- tryCatch({
     Augur::calculate_auc(
       input = expr_mat,
-      cell_meta = data.frame(cell_type = cell_types,
-                              label = condition,
-                              row.names = colnames(expr_mat)),
-      type = "binary",
-      n_threads = cfg$sc$augur_n_threads,
+      meta = augur_meta,
+      label_col = "label",
+      cell_type_col = "cell_type",
+      n_threads = augur_threads,
       n_subsamples = cfg$sc$augur_subsample_size,
       folds = cfg$sc$augur_folds,
-      features_percent = cfg$sc$augur_features_percent
+      feature_perc = cfg$sc$augur_features_percent
     )
   }, error = function(e) {
     log_error("[Step09] Augur failed: ", conditionMessage(e))
@@ -260,28 +308,35 @@ step09_sc_pseudotime_augur <- function(seu, cfg) {
 
   if (is.null(augur_res)) return(NULL)
 
-  # AUC 排名
-  if (!is.null(augur_res$AUC)) {
-    auc_df <- augur_res$AUC
-    if (!is.data.frame(auc_df)) {
-      auc_df <- data.frame(cell_type = names(augur_res$AUC),
-                            AUC = unname(augur_res$AUC))
-    }
-    auc_df <- auc_df[order(-auc_df$AUC), ]
-    save_table(auc_df, "09_augur_auc_ranking", cfg)
-
-    p_auc <- ggplot(auc_df, aes(x = reorder(cell_type, AUC), y = AUC,
-                                  fill = AUC)) +
-      geom_col() +
-      geom_hline(yintercept = 0.5, linetype = "dashed", color = "grey50") +
-      scale_fill_gradient(low = "#2166AC", high = "#B2182B") +
-      coord_flip() +
-      labs(title = "Augur: cell-type perturbation priority",
-           x = "Cell type", y = "AUC (Control vs Ischemia)") +
-      theme_pub(base_size = 10) +
-      theme(legend.position = "right")
-    save_figure(p_auc, "09_augur_auc_barplot", cfg, width = 9, height = 7)
+  # AUC 排名 (Augur 1.0.3 返回 tibble, 列名为 cell_type, auc)
+  auc_df <- augur_res$AUC
+  if (is.null(auc_df)) {
+    log_warn("[Step09] Augur returned no AUC results.")
+    return(augur_res)
   }
+  if (!is.data.frame(auc_df)) {
+    auc_df <- data.frame(cell_type = names(augur_res$AUC),
+                          AUC = unname(augur_res$AUC))
+  } else {
+    # 统一列名: augur 1.0.3 用小写 'auc', 老版本用 'AUC'
+    if ("auc" %in% colnames(auc_df) && !("AUC" %in% colnames(auc_df))) {
+      colnames(auc_df)[colnames(auc_df) == "auc"] <- "AUC"
+    }
+  }
+  auc_df <- auc_df[order(-auc_df$AUC), ]
+  save_table(auc_df, "09_augur_auc_ranking", cfg)
+
+  p_auc <- ggplot(auc_df, aes(x = reorder(cell_type, AUC), y = AUC,
+                                fill = AUC)) +
+    geom_col() +
+    geom_hline(yintercept = 0.5, linetype = "dashed", color = "grey50") +
+    scale_fill_gradient(low = "#2166AC", high = "#B2182B") +
+    coord_flip() +
+    labs(title = "Augur: cell-type perturbation priority",
+         x = "Cell type", y = "AUC (Control vs Ischemia)") +
+    theme_pub(base_size = 10) +
+    theme(legend.position = "right")
+  save_figure(p_auc, "09_augur_auc_barplot", cfg, width = 9, height = 7)
 
   invisible(augur_res)
 }
