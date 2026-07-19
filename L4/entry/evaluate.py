@@ -19,7 +19,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SCRIPTS_DIR = PROJECT_ROOT / "scripts"
 sys.path.insert(0, str(SCRIPTS_DIR))
 
-from phase4_v10_minibatch import main as _phase4_main
+from phase4_v10_modular import main as _phase4_main
 
 logger = logging.getLogger(__name__)
 

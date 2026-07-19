@@ -194,7 +194,6 @@ def main():
     logger.info("")
 
     # 1. 尝试加载 HGT 模型进行诊断
-    hgt_model_path = PROJECT_ROOT / "results" / "hgt_best_v60.pt"
     try:
         from iron_aging_gnn.models.hgt import HGTLinkPredictor
         from torch_geometric.data import HeteroData

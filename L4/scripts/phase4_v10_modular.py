@@ -557,7 +557,8 @@ def load_residue_esm2_features(
 
 def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: bool = False,
          skip_simplehgn: bool = False,
-         global_overrides: dict | None = None, reevaluate: bool = False):
+         global_overrides: dict | None = None, reevaluate: bool = False,
+         build_graph_only: bool = False):
     """v27: Phase 4 主流程 — SAGE + HGT + SimpleHGN 三分支训练与 TCM 预测
 
     流程:
@@ -983,6 +984,10 @@ def main(decoder_type: str | None = None, skip_sage: bool = False, skip_hgt: boo
             logger.info(f"  图数据缓存已保存: {GRAPH_CACHE_PATH}")
         except Exception as _e:
             logger.warning(f"  保存图数据缓存失败: {_e}")
+
+    if build_graph_only:
+        logger.info(">>> build_graph_only=True，图构建与缓存完成后退出，跳过训练/评估/预测")
+        return
 
     # 加载残基级 ESM-2 特征（仅 residue_bilinear 解码器需要）
     residue_embeddings = None

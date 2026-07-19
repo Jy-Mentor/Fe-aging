@@ -116,22 +116,58 @@ cd L4\scripts
 # All checks passed!
 ```
 
-## 6. 已知问题
+## 6. 入口点修复
 
-`L4/pyproject.toml` 中注册的 console_scripts 入口点：
+### 6.1 问题
 
-```toml
-[project.scripts]
-iron-aging-train = "entry.train:main"
-iron-aging-evaluate = "entry.evaluate:main"
-iron-aging-predict = "entry.predict:main"
-iron-aging-build-graph = "entry.build_graph:main"
-```
+`L4/pyproject.toml` 中注册的 console_scripts 入口点无法运行：
 
-这些入口点指向 `entry/` 目录，但该目录缺少 `__init__.py`，且 `entry/train.py` 导入的是已被废弃的 `phase4_v10_minibatch.py`（项目记忆规定 `phase4_v10_modular.py` 为唯一有效入口）。因此入口点无法直接运行，属于项目配置层面的既有问题，不影响本次依赖安装。训练请继续使用：
+- `entry/` 目录缺少 `__init__.py`，安装后无法作为 Python 包导入
+- `entry/train.py`、`entry/evaluate.py`、`entry/build_graph.py` 导入的是已废弃的 `phase4_v10_minibatch.py`
+
+### 6.2 修复内容
+
+| 文件 | 修改 |
+|------|------|
+| `L4/entry/__init__.py` | 新建，使 `entry` 成为合法包 |
+| `L4/entry/train.py` | 改从 `phase4_v10_modular` 导入 `main` |
+| `L4/entry/evaluate.py` | 改从 `phase4_v10_modular` 导入 `main` |
+| `L4/entry/build_graph.py` | 重写为调用 `phase4_v10_modular.main(build_graph_only=True)`，支持 `--force-rebuild` |
+| `L4/entry/diagnose_hgt.py` | 删除未使用的 `hgt_model_path` 变量，消除 ruff F841 错误 |
+| `L4/scripts/phase4_v10_modular.py` | `main()` 新增 `build_graph_only` 参数，图构建完成后提前退出 |
+| `L4/pyproject.toml` | `setuptools.packages.find` 同时搜索 `.` 和 `src`，包含 `entry*` 与 `iron_aging_gnn*` |
+
+### 6.3 验证
+
+四个入口点均已可执行：
 
 ```powershell
-.venv\Scripts\python.exe L4\scripts\phase4_v10_modular.py
+.venv\Scripts\iron-aging-train.exe --help
+.venv\Scripts\iron-aging-evaluate.exe --help
+.venv\Scripts\iron-aging-build-graph.exe --help
+.venv\Scripts\iron-aging-predict.exe --help
+```
+
+运行示例：
+
+```powershell
+# 完整训练（三分支）
+.venv\Scripts\iron-aging-train.exe
+
+# 仅训练 SAGE
+.venv\Scripts\iron-aging-train.exe --model sage
+
+# 仅构建图缓存
+.venv\Scripts\iron-aging-build-graph.exe
+
+# 强制重建图缓存
+.venv\Scripts\iron-aging-build-graph.exe --force-rebuild
+
+# 重新评估
+.venv\Scripts\iron-aging-evaluate.exe --reevaluate
+
+# TCM 预测
+.venv\Scripts\iron-aging-predict.exe --checkpoint results_v10_minibatch/sage_best.pt
 ```
 
 ## 7. 关键命令汇总
