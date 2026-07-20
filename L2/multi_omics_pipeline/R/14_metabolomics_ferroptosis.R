@@ -360,27 +360,31 @@ run_metabolite_stats <- function(parsed, matched, group_var = "Age") {
         v1 <- met_data$abundance[met_data[[group_var]] == g1]
         v2 <- met_data$abundance[met_data[[group_var]] == g2]
 
+        v1 <- v1[!is.na(v1)]
+        v2 <- v2[!is.na(v2)]
+
         if (length(v1) < 3 || length(v2) < 3) next
 
         mean1 <- mean(v1, na.rm = TRUE)
         mean2 <- mean(v2, na.rm = TRUE)
 
-        if (mean1 > 0 && mean2 > 0) {
-          test_res <- tryCatch(t.test(v1, v2), error = function(e) NULL)
-          if (!is.null(test_res)) {
-            pairwise_results <- rbind(pairwise_results, data.frame(
-              metabolite   = met,
-              display_name = unique(met_data$display_name)[1],
-              category     = unique(met_data$category)[1],
-              group1       = g1,
-              group2       = g2,
-              fold_change  = mean2 / mean1,
-              log2FC       = log2(mean2 / mean1),
-              p_value      = test_res$p.value,
-              p_adj        = NA_real_,
-              stringsAsFactors = FALSE
-            ))
-          }
+        if (is.na(mean1) || is.na(mean2) || is.nan(mean1) || is.nan(mean2)) next
+        if (mean1 <= 0 || mean2 <= 0) next
+
+        test_res <- tryCatch(t.test(v1, v2), error = function(e) NULL)
+        if (!is.null(test_res) && !is.na(test_res$p.value)) {
+          pairwise_results <- rbind(pairwise_results, data.frame(
+            metabolite   = met,
+            display_name = unique(met_data$display_name)[1],
+            category     = unique(met_data$category)[1],
+            group1       = g1,
+            group2       = g2,
+            fold_change  = mean2 / mean1,
+            log2FC       = log2(mean2 / mean1),
+            p_value      = test_res$p.value,
+            p_adj        = NA_real_,
+            stringsAsFactors = FALSE
+          ))
         }
       }
     }
@@ -851,4 +855,9 @@ main <- function() {
 # ===========================================================================
 # 9. 执行
 # ===========================================================================
-results <- main()
+# 守卫: 仅在 Rscript 直接运行时执行 main(); source() 加载时跳过
+# 避免 run_pipeline.R source() 所有 R/*.R 时自动触发 main() 导致阻塞
+# (sys.nframe()==0 表示不在任何函数调用栈内, 即 Rscript 顶层执行)
+if (sys.nframe() == 0) {
+  results <- main()
+}
