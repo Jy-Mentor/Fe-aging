@@ -256,6 +256,10 @@ integration:
     nboot: 100
     min_cells: 10
     population_size: false
+    parallel_workers: 1                 # computeCommunProb future 并行 (CellChat v2 源码内置)
+                                        # 0/1=禁用; 4=官方推荐 (12 核机器保守值, ~25x 加速 bootstrap)
+                                        # 本机 15GB RAM, 当前空闲不足, 设为 1 避免多进程 OOM;
+                                        # 内存充足 (≥32GB) 时可调回 4
   # CMap 反证
   cmap:
     bcp_signature_source_pmids:

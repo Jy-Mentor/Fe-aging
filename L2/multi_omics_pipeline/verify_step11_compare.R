@@ -68,6 +68,19 @@ for (cond in names(cellchat_list)) {
 # ----------------------------------------------------------------------------
 log_info("Merging across ", length(cellchat_list), " conditions...")
 cc_merged <- mergeCellChat(cellchat_list, add.names = names(cellchat_list))
+
+# liftCellChat: 提升到统一细胞类型集, 否则 netVisual_diffInteraction / rankNet
+# 成对比较会因 condition 间细胞类型异质而报 "non-conformable arrays" 错误.
+# 必须显式传入 group.new (所有 condition 细胞类型并集), 否则源码会因缺失类型 stop().
+all_cell_types <- unique(unlist(lapply(cellchat_list, function(cc) levels(cc@idents))))
+log_info("liftCellChat with ", length(all_cell_types), " union cell types...")
+cc_merged <- tryCatch({
+  liftCellChat(cc_merged, group.new = all_cell_types)
+}, error = function(e) {
+  log_warn("liftCellChat failed: ", conditionMessage(e),
+           "; pairwise comparisons may fail.")
+  cc_merged
+})
 save_rds(cc_merged, "11_cellchat_spatial_merged", cfg)
 
 cond_names <- names(cellchat_list)
@@ -89,20 +102,71 @@ p_compare_weight <- compareInteractions(cc_merged, show.legend = FALSE,
 save_figure(p_compare_weight, "11_cellchat_compare_weight", cfg,
             width = 8, height = 5)
 
-# 3) 差异互作
-log_info("netVisual_diffInteraction...")
-p_diff <- netVisual_diffInteraction(cc_merged, weight.scale = TRUE,
-                                      measure = "count") +
-  ggtitle("Differential interactions (count)")
-save_figure(p_diff, "11_cellchat_diff_count", cfg, width = 9, height = 7)
+# 3) 差异互作 — 成对比较 (sham vs 每个疾病阶段)
+# CellChat v2 源码: netVisual_diffInteraction 默认 comparison=c(1,2), 5 条件下静默忽略 3-5
+log_info("netVisual_diffInteraction pairwise (sham vs disease)...")
+baseline_idx <- which(cond_names == "sham")
+if (length(baseline_idx) != 1) {
+  log_warn("'sham' not found; falling back to first condition as baseline.")
+  baseline_idx <- 1
+}
+disease_idxs <- setdiff(seq_along(cond_names), baseline_idx)
+for (di in disease_idxs) {
+  di_name <- cond_names[di]
+  bl_name <- cond_names[baseline_idx]
+  log_info("  netVisual_diffInteraction: ", bl_name, " vs ", di_name)
+  tryCatch({
+    p_diff <- netVisual_diffInteraction(
+      cc_merged,
+      comparison = c(baseline_idx, di),
+      weight.scale = TRUE,
+      measure = "count"
+    ) +
+      ggtitle(paste0("Differential interactions (count): ",
+                     bl_name, " vs ", di_name))
+    save_figure(p_diff,
+                paste0("11_cellchat_diff_count_", bl_name, "_vs_", di_name),
+                cfg, width = 9, height = 7)
+  }, error = function(e) {
+    log_warn("  diffInteraction failed for ", bl_name, " vs ", di_name,
+             ": ", conditionMessage(e))
+  })
+}
 
-# 4) 信息流排名
-log_info("rankNet...")
+# 4) 信息流排名 — 5 条件下 do.stat=FALSE, 另对 sham vs disease 成对 rankNet(do.stat=TRUE)
+# CellChat v2 源码: rankNet line 241 `if (do.stat & length(comparison) == 2)` 静默跳过
+log_info("rankNet overview (do.stat=FALSE for 5 conditions)...")
 p_rank <- rankNet(cc_merged, mode = "comparison",
-                   stacked = TRUE, do.stat = TRUE) +
+                   stacked = TRUE, do.stat = FALSE) +
   theme_pub(base_size = 9) +
   theme(axis.text.y = element_text(size = 7))
-save_figure(p_rank, "11_cellchat_pathway_rank", cfg, width = 9, height = 14)
+save_figure(p_rank, "11_cellchat_pathway_rank_overview", cfg,
+            width = 9, height = 14)
+
+log_info("rankNet pairwise (sham vs disease, do.stat=TRUE)...")
+for (di in disease_idxs) {
+  di_name <- cond_names[di]
+  bl_name <- cond_names[baseline_idx]
+  log_info("  rankNet pairwise: ", bl_name, " vs ", di_name)
+  tryCatch({
+    p_pw <- rankNet(
+      cc_merged,
+      mode = "comparison",
+      comparison = c(baseline_idx, di),
+      stacked = TRUE,
+      do.stat = TRUE
+    ) +
+      theme_pub(base_size = 9) +
+      theme(axis.text.y = element_text(size = 7)) +
+      labs(title = paste0("Information flow: ", bl_name, " vs ", di_name))
+    save_figure(p_pw,
+                paste0("11_cellchat_pathway_rank_", bl_name, "_vs_", di_name),
+                cfg, width = 9, height = 14)
+  }, error = function(e) {
+    log_warn("  rankNet pairwise failed for ", bl_name, " vs ", di_name,
+             ": ", conditionMessage(e))
+  })
+}
 
 # 5) 铁死亡/衰老相关通路 (与 Step 11 修复后代码一致, 37 通路)
 fa_pathways <- c(
