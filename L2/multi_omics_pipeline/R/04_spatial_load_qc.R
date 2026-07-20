@@ -188,6 +188,15 @@ step04_spatial_load_qc <- function(cfg) {
         seu$sample <- sn
       }
     }
+    # 统一添加 condition 列 (小写) 用于 Step 10/11/13 跨样本分组
+    # 作者 RDS 中是 Condition (大写), 此处统一为 condition (小写)
+    if (!"condition" %in% colnames(seu@meta.data)) {
+      if ("Condition" %in% colnames(seu@meta.data)) {
+        seu$condition <- seu$Condition
+      } else {
+        seu$condition <- sn
+      }
+    }
     spatial_list[[sn]] <- seu
   }
 

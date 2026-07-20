@@ -121,11 +121,10 @@ step08_sc_annotate_score <- function(seu, cfg) {
 
   p_violin <- ggplot(score_long, aes(x = .data[[celltype_col]],
                                       y = UCell_Score,
-                                      fill = .data[[celltype_col]],
-                                      Signature = Signature)) +
+                                      fill = .data[[celltype_col]])) +
     geom_violin(scale = "width", trim = TRUE, alpha = 0.7) +
     geom_boxplot(width = 0.15, outlier.size = 0.2, alpha = 0.6) +
-    facet_wrap(~ Signature, scales = "free_y", ncol = 3) +
+    facet_wrap(vars(Signature), scales = "free_y", ncol = 3) +
     scale_fill_manual(values = get_celltype_colors(unique(score_df[[celltype_col]]))) +
     labs(title = "UCell scores by cell type",
          x = "Cell type", y = "UCell score") +
@@ -135,15 +134,14 @@ step08_sc_annotate_score <- function(seu, cfg) {
   save_figure(p_violin, "08_scores_by_celltype_violin", cfg,
               width = 13, height = 9)
 
-  # 按条件分面 (Signature 与 celltype_col 都需在 aes 中, ggplot2 3.5+ 要求)
+  # 按条件分面 (ggplot2 3.5+: facet 变量必须用 vars() 显式传递, 避免 NSE 检查失败)
   score_long[[celltype_col]] <- as.factor(score_long[[celltype_col]])
   p_violin_cond <- ggplot(score_long,
                            aes(x = .data[[condition_col]],
                                y = UCell_Score,
-                               fill = .data[[condition_col]],
-                               Signature = Signature)) +
+                               fill = .data[[condition_col]])) +
     geom_violin(scale = "width", trim = TRUE, alpha = 0.7) +
-    facet_grid(reformulate(celltype_col, response = "Signature"),
+    facet_grid(rows = vars(Signature), cols = vars(!!sym(celltype_col)),
                scales = "free_y") +
     scale_fill_manual(values = get_condition_colors(unique(score_df[[condition_col]]))) +
     labs(title = "UCell scores by cell type x condition",
@@ -205,7 +203,7 @@ step08_sc_annotate_score <- function(seu, cfg) {
       geom_vline(xintercept = fp_thr, linetype = "dashed", color = "grey50") +
       scale_color_manual(values = c("Ferrosenescence_High" = "#B2182B",
                                      "Low" = "grey70")) +
-      facet_wrap(reformulate(condition_col)) +
+      facet_wrap(vars(!!sym(condition_col))) +
       labs(title = "Ferroptosis vs Senescence (UCell)",
            x = "Ferroptosis UCell", y = "Senescence UCell",
            color = "Status") +
@@ -236,7 +234,7 @@ step08_sc_annotate_score <- function(seu, cfg) {
                                             color = .data[[celltype_col]])) +
         geom_point(alpha = 0.4, size = 0.5) +
         geom_smooth(method = "lm", se = FALSE, linewidth = 0.6) +
-        facet_wrap(reformulate(celltype_col), scales = "free") +
+        facet_wrap(vars(!!sym(celltype_col)), scales = "free") +
         scale_color_manual(values = get_celltype_colors(unique(sat1_data[[celltype_col]]))) +
         labs(title = "Sat1 vs Ferroptosis score",
              x = "Sat1 expression", y = "Ferroptosis UCell") +
@@ -299,12 +297,30 @@ step08_sc_annotate_score <- function(seu, cfg) {
   if (requireNamespace("UCell", quietly = TRUE)) {
     log_info("[Step08] Using UCell for signature scoring (maxRank=",
              cfg$sc$ucell_max_rank, ")")
+    # UCell::AddModuleScore_UCell 的 name 参数是单个字符串后缀/前缀,
+    # 会被拼接到每个 feature set 名字后面/前面。
+    # name = "_UCell" -> 列名: Ferroptosis_UCell, Senescence_UCell, ...
+    # 错误用法: name = paste0(names(signature_sets), "_UCell") (向量)
+    #   会产生 FerroptosisFerroptosis_UCell 等错误列名
     seu <- UCell::AddModuleScore_UCell(
       seu, features = signature_sets,
-      name = paste0(names(signature_sets), "_UCell"),
+      name = "_UCell",
       maxRank = cfg$sc$ucell_max_rank,
       w_neg = 1
     )
+    # 验证 UCell 评分列已添加
+    expected_cols <- paste0(names(signature_sets), "_UCell")
+    missing_cols <- setdiff(expected_cols, colnames(seu@meta.data))
+    if (length(missing_cols) > 0) {
+      log_warn("[Step08] UCell missing score columns: ",
+               paste(missing_cols, collapse = ", "),
+               "; actual cols: ",
+               paste(grep("_UCell$", colnames(seu@meta.data), value = TRUE),
+                     collapse = ", "))
+    } else {
+      log_info("[Step08] UCell score columns added: ",
+               paste(expected_cols, collapse = ", "))
+    }
   } else {
     log_warn("[Step08] UCell not installed; falling back to AddModuleScore.")
     for (nm in names(signature_sets)) {

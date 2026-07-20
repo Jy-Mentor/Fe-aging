@@ -112,6 +112,7 @@ step02_bulk_dea_timeseries <- function(dds, cfg) {
   vsd <- vst(dds_lrt, blind = FALSE)
   log_info("[Step02] VST matrix: ", nrow(vsd), " genes x ", ncol(vsd), " samples")
   save_rds(vsd, "02_bulk_vsd", cfg)
+  save_rds(dea_list, "02_bulk_dea_list", cfg)
 
   # --------------------------------------------------------------------------
   # 2.5 可视化: 火山图 + DEG 数量条形图

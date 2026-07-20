@@ -27,6 +27,18 @@ step10_integration_spotlight <- function(sc_seu, spatial_merged, cfg) {
     stop("step10: sc_seu or spatial_merged is NULL. Run step07/08 and step04-06 first.")
   }
 
+  # 兼容性: 确保 spatial_merged 有 condition 列 (小写)
+  # 旧版 06_spatial_with_regions.rds 可能只有 Condition (大写)
+  if (!"condition" %in% colnames(spatial_merged@meta.data)) {
+    if ("Condition" %in% colnames(spatial_merged@meta.data)) {
+      spatial_merged$condition <- spatial_merged$Condition
+      log_info("[Step10] Created 'condition' column from 'Condition' (case compatibility)")
+    } else {
+      stop("step10: spatial_merged has neither 'condition' nor 'Condition' column. ",
+           "Run step04-06 first.")
+    }
+  }
+
   celltype_col <- cfg$data$sc_celltype_col
   if (!(celltype_col %in% colnames(sc_seu@meta.data))) {
     stop("step10: celltype column '", celltype_col, "' not in sc_seu meta.data")
@@ -35,6 +47,20 @@ step10_integration_spotlight <- function(sc_seu, spatial_merged, cfg) {
   # --------------------------------------------------------------------------
   # 10.1 准备单细胞 SCE 对象 (SPOTlight 要求 SCE)
   # --------------------------------------------------------------------------
+  # 必须显式将 Idents 设为细胞类型列, 否则:
+  #   - FindAllMarkers 会用默认 Idents (如 seurat_clusters, 18+ 聚类)
+  #   - as.SingleCellExperiment 会把 Idents 写入 colData$label (非 Celltypes)
+  # 导致 SPOTlight 用错误的分组。必须在 SCE 转换之前设置。
+  orig_idents <- Idents(sc_seu)
+  Idents(sc_seu) <- celltype_col
+  n_idents <- length(unique(Idents(sc_seu)))
+  log_info("[Step10] Idents set to '", celltype_col, "' (", n_idents, " levels)")
+  if (n_idents < 2) {
+    log_error("[Step10] Idents has < 2 levels; cannot FindAllMarkers. ",
+              "Check celltype column: ", celltype_col)
+    return(NULL)
+  }
+
   log_info("[Step10] Converting sc Seurat -> SingleCellExperiment...")
   if (inherits(sc_seu[["RNA"]], "Assay5")) {
     sc_seu[["RNA"]] <- JoinLayers(sc_seu[["RNA"]])
@@ -79,7 +105,9 @@ step10_integration_spotlight <- function(sc_seu, spatial_merged, cfg) {
 
   for (cond in spatial_conds) {
     log_info("[Step10] Deconvolving spatial sample: ", cond)
-    sp_sub <- subset(spatial_merged, subset = condition == cond)
+    # Seurat v5: 用 cells= 传递索引避免 .data[[]] 解析问题
+    keep_cond <- spatial_merged@meta.data$condition == cond
+    sp_sub <- subset(spatial_merged, cells = colnames(spatial_merged)[keep_cond])
     if (ncol(sp_sub) == 0) next
 
     # SPOTlight 输入: 空间数据 assay 矩阵
@@ -96,12 +124,23 @@ step10_integration_spotlight <- function(sc_seu, spatial_merged, cfg) {
     sc_sce_shared <- sc_sce[shared_genes, ]
     sp_mat_shared <- sp_mat[shared_genes, ]
 
+    # 确定分组列: 优先 celltype_col, 否则用 Seurat 转换写入的 label
+    if (celltype_col %in% colnames(colData(sc_sce_shared))) {
+      group_vec <- colData(sc_sce_shared)[[celltype_col]]
+    } else if ("label" %in% colnames(colData(sc_sce_shared))) {
+      group_vec <- colData(sc_sce_shared)[["label"]]
+      log_warn("[Step10] ", celltype_col, " not in colData; using 'label' column.")
+    } else {
+      log_error("[Step10] No celltype column in colData for ", cond, "; skipping.")
+      next
+    }
+
     set.seed(cfg$reproducibility$r_seed)
     spot_res <- tryCatch({
       SPOTlight(
         x = sc_sce_shared,
         y = sp_mat_shared,
-        groups = colData(sc_sce_shared)[[celltype_col]],
+        groups = group_vec,
         mgs = mgs_top[, c("cluster", "gene", "avg_log2FC",
                            "pct.1", "pct.2", "p_val_adj")],
         weight_id = "avg_log2FC",
@@ -127,10 +166,14 @@ step10_integration_spotlight <- function(sc_seu, spatial_merged, cfg) {
     for (ct in colnames(prop_mat)) {
       sp_sub@meta.data[[ct]] <- NA_real_
       sp_sub@meta.data[common_cells, ct] <- prop_mat[common_cells, ct]
+      # 同步写入原始 spatial_merged (保留 Spatial/SCT/integrated assays + images)
+      # 这样 Step 11 通过 RDS restore 加载 spatial_merged 时可直接使用
+      spatial_merged@meta.data[[ct]] <- if (ct %in% colnames(spatial_merged@meta.data))
+        spatial_merged@meta.data[[ct]] else NA_real_
+      spatial_merged@meta.data[common_cells, ct] <- prop_mat[common_cells, ct]
     }
 
     spotlight_results[[cond]] <- list(
-      sp_obj = sp_sub,
       prop_mat = prop_mat,
       nlm = spot_res$NMF_matrix
     )
@@ -154,21 +197,58 @@ step10_integration_spotlight <- function(sc_seu, spatial_merged, cfg) {
   }
 
   # --------------------------------------------------------------------------
-  # 10.4 合并所有切片 + 与铁衰老得分关联
+  # 10.4 保存含 prop_ 列的原始 spatial_merged
   # --------------------------------------------------------------------------
-  sp_combined <- merge(spotlight_results[[1]]$sp_obj,
-                        lapply(spotlight_results[-1], function(x) x$sp_obj))
-  save_rds(sp_combined, "10_spatial_with_proportions", cfg)
+  # 关键: 直接在原始 spatial_merged 上添加 prop_ 列, 保留所有原始 assay
+  # (Spatial/SCT/integrated) 和 images (VisiumV1/V2), 这样:
+  #   1) Step 11 通过 RDS restore 加载此文件, 可直接使用 Spatial/SCT assay
+  #      和 GetTissueCoordinates()
+  #   2) 避免使用 merge() 触发 Seurat v5 在混合 assay/image 结构上的
+  #      "no available method for coercing this S4 class to vector" 错误
+  #   3) prop_ 列已在上面的循环中同步写入 spatial_merged@meta.data
+  prop_in_merged <- grep("^prop_", colnames(spatial_merged@meta.data), value = TRUE)
+  log_info("[Step10] spatial_merged now has ", length(prop_in_merged),
+           " prop_ columns; total spots: ", ncol(spatial_merged))
 
-  # 神经元比例 vs Ferroptosis_UCell (若 step05 已计算)
-  if ("prop_Neuron" %in% colnames(sp_combined@meta.data) &&
-      "Ferroptosis_UCell" %in% colnames(sp_combined@meta.data)) {
+  # 清理 SCTModels: 旧版 Seurat 创建的 SCTModel 类缺少 'median_umi' 插槽,
+  # saveRDS 调用 containsOutOfMemoryData 时会报错。SCTModels 仅用于反向 SCT,
+  # 下游分析 (CellChat) 不需要, 可安全清除 @SCTModel.list
+  # 注意: SCTModel 对象存储在 SCTAssay@SCTModel.list (不是 @misc)
+  for (assay_name in names(spatial_merged@assays)) {
+    assay_obj <- spatial_merged@assays[[assay_name]]
+    if (inherits(assay_obj, "SCTAssay") &&
+        !is.null(assay_obj@SCTModel.list) &&
+        length(assay_obj@SCTModel.list) > 0) {
+      n_models <- length(assay_obj@SCTModel.list)
+      log_info("[Step10] Dropping ", n_models, " SCTModel(s) from '",
+               assay_name, "'@SCTModel.list to avoid saveRDS serialization ",
+               "issue (missing 'median_umi' slot in old SCTModel class)")
+      assay_obj@SCTModel.list <- list()
+      spatial_merged@assays[[assay_name]] <- assay_obj
+    }
+  }
+
+  save_rds(spatial_merged, "10_spatial_with_proportions", cfg)
+
+  # 神经元比例 vs Ferroptosis 得分 (若 step05 已计算)
+  # 兼容 Ferroptosis_UCell (新版 Step05) 和 Ferroptosis (旧版 Step05)
+  fp_col <- if ("Ferroptosis_UCell" %in% colnames(spatial_merged@meta.data)) {
+    "Ferroptosis_UCell"
+  } else if ("Ferroptosis" %in% colnames(spatial_merged@meta.data)) {
+    "Ferroptosis"
+  } else {
+    NA_character_
+  }
+  # 神经元比例列: SPOTlight 生成 prop_<celltype>, Celltypes 含 NeuronsGABA/NeuronsGLUT
+  neuron_prop_cols <- grep("^prop_Neuron", colnames(spatial_merged@meta.data), value = TRUE)
+  if (length(neuron_prop_cols) > 0 && !is.na(fp_col)) {
+    # 若有多个神经元亚型 (NeuronsGABA, NeuronsGLUT), 合并为总神经元比例
     cor_df <- data.frame(
-      neuron_prop = sp_combined$prop_Neuron,
-      fp_score = sp_combined$Ferroptosis_UCell,
-      condition = sp_combined$condition,
-      region = if ("region" %in% colnames(sp_combined@meta.data))
-        sp_combined$region else "NA"
+      neuron_prop = rowSums(spatial_merged@meta.data[, neuron_prop_cols, drop = FALSE]),
+      fp_score = spatial_merged@meta.data[[fp_col]],
+      condition = spatial_merged$condition,
+      region = if ("region" %in% colnames(spatial_merged@meta.data))
+        spatial_merged$region else "NA"
     )
     save_table(cor_df, "10_neuron_prop_vs_ferroptosis", cfg)
 
@@ -193,9 +273,9 @@ step10_integration_spotlight <- function(sc_seu, spatial_merged, cfg) {
   # --------------------------------------------------------------------------
   # 10.5 区域 × 细胞类型比例箱线图 (若 step06 已定义 region)
   # --------------------------------------------------------------------------
-  if ("region" %in% colnames(sp_combined@meta.data)) {
-    prop_cols <- grep("^prop_", colnames(sp_combined@meta.data), value = TRUE)
-    region_df <- reshape2::melt(sp_combined@meta.data[, c("region", "condition", prop_cols)],
+  if ("region" %in% colnames(spatial_merged@meta.data)) {
+    prop_cols <- grep("^prop_", colnames(spatial_merged@meta.data), value = TRUE)
+    region_df <- reshape2::melt(spatial_merged@meta.data[, c("region", "condition", prop_cols)],
                                   id.vars = c("region", "condition"),
                                   variable.name = "cell_type",
                                   value.name = "proportion")
@@ -216,7 +296,7 @@ step10_integration_spotlight <- function(sc_seu, spatial_merged, cfg) {
   log_info("[Step10] SPOTlight done. Samples processed: ",
            paste(names(spotlight_results), collapse = ", "))
   invisible(list(
-    sp_combined = sp_combined,
+    spatial_merged = spatial_merged,
     per_sample = spotlight_results
   ))
 }

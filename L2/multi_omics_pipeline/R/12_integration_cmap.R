@@ -17,10 +17,11 @@
 step12_integration_cmap <- function(bulk_dea_list, cfg) {
   log_info("[Step12-L4] CMap reversal analysis for BCP...")
 
-  require_packages(c("fgsea"),
-                   install_hint = "BiocManager::install('fgsea')")
+  require_packages(c("fgsea", "BiocParallel"),
+                   install_hint = "BiocManager::install(c('fgsea', 'BiocParallel'))")
   suppressPackageStartupMessages({
     library(fgsea)
+    library(BiocParallel)
     library(ggplot2)
   })
 
@@ -108,8 +109,12 @@ step12_integration_cmap <- function(bulk_dea_list, cfg) {
     )
 
     fgsea_res <- tryCatch({
+      # fgsea 1.36+: 默认使用 fgseaMultilevel (解析 p-value)
+      # Windows 上 BiocParallel 雪花 worker 找不到 C++ 函数 (fgseaMultilevelCpp/calcGseaStat)
+      # 强制 SerialParam 避免并行 worker 命名空间问题
       fgsea(pathways = pathways, stats = gene_list,
-            minSize = 5, maxSize = 500, nperm = cfg$bulk$gsea_nperm)
+            minSize = 5, maxSize = 500,
+            BPPARAM = BiocParallel::SerialParam())
     }, error = function(e) {
       log_warn("[Step12] fgsea failed for ", tp, ": ", conditionMessage(e))
       NULL
@@ -163,20 +168,36 @@ step12_integration_cmap <- function(bulk_dea_list, cfg) {
       correlation = cor_df
     )
 
-    # 详细方向表
-    direction_df <- data.frame(
-      gene = c(bcp_up_in_isch_dn, bcp_up_in_isch_up,
-                bcp_dn_in_isch_up, bcp_dn_in_isch_dn),
-      bcp_direction = c(rep("up", length(bcp_up_in_isch_dn) + length(bcp_up_in_isch_up)),
-                         rep("down", length(bcp_dn_in_isch_up) + length(bcp_dn_in_isch_dn))),
-      ischemia_direction = c(rep("down", length(bcp_up_in_isch_dn)),
-                              rep("up", length(bcp_up_in_isch_up)),
-                              rep("up", length(bcp_dn_in_isch_up)),
-                              rep("down", length(bcp_dn_in_isch_dn))),
-      reversal = c(rep("reversed", length(bcp_up_in_isch_dn) + length(bcp_dn_in_isch_up)),
-                    rep("same_direction", length(bcp_up_in_isch_up) + length(bcp_dn_in_isch_dn))),
-      comparison = tp
-    )
+    # 详细方向表 (当所有交集为空时, 仍能正确构造空 data.frame)
+    n_total_directions <- length(bcp_up_in_isch_dn) + length(bcp_up_in_isch_up) +
+                          length(bcp_dn_in_isch_up) + length(bcp_dn_in_isch_dn)
+    if (n_total_directions > 0) {
+      direction_df <- data.frame(
+        gene = c(bcp_up_in_isch_dn, bcp_up_in_isch_up,
+                  bcp_dn_in_isch_up, bcp_dn_in_isch_dn),
+        bcp_direction = c(rep("up", length(bcp_up_in_isch_dn) + length(bcp_up_in_isch_up)),
+                           rep("down", length(bcp_dn_in_isch_up) + length(bcp_dn_in_isch_dn))),
+        ischemia_direction = c(rep("down", length(bcp_up_in_isch_dn)),
+                                rep("up", length(bcp_up_in_isch_up)),
+                                rep("up", length(bcp_dn_in_isch_up)),
+                                rep("down", length(bcp_dn_in_isch_dn))),
+        reversal = c(rep("reversed", length(bcp_up_in_isch_dn) + length(bcp_dn_in_isch_up)),
+                      rep("same_direction", length(bcp_up_in_isch_up) + length(bcp_dn_in_isch_dn))),
+        comparison = tp,
+        stringsAsFactors = FALSE
+      )
+    } else {
+      # 没有交集时, 仍输出空表 (列名一致)
+      direction_df <- data.frame(
+        gene = character(0),
+        bcp_direction = character(0),
+        ischemia_direction = character(0),
+        reversal = character(0),
+        comparison = character(0),
+        stringsAsFactors = FALSE
+      )
+      log_warn("[Step12] ", tp, ": no BCP signature genes overlap with sig DE; empty direction table.")
+    }
     save_table(direction_df, paste0("12_bcp_reversal_detail_", tp), cfg)
   }
 

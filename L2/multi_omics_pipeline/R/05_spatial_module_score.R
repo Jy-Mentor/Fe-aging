@@ -58,13 +58,14 @@ step05_spatial_module_score <- function(spatial_list, cfg) {
       seu <- AddModuleScore_UCell(
         seu,
         features = signatures,
-        name = NULL,
+        name = "_UCell",
         w_neg = 1.0,
         maxRank = cfg$sc$ucell_max_rank,
         chunk.size = 100,
         ncores = 1
       )
-      # UCell 添加的列名即基因集名本身
+      # UCell name="_UCell" -> 列名: Ferroptosis_UCell, Senescence_UCell, ...
+      # 与 Step 08 保持一致, 便于 Step 10/11 跨模态关联
     } else {
       # AddModuleScore 添加后缀 _1, _2, ...
       seu <- AddModuleScore(seu, features = signatures, name = "ModuleScore_")
@@ -96,7 +97,8 @@ step05_spatial_module_score <- function(spatial_list, cfg) {
   # --------------------------------------------------------------------------
   # 5.3 SpatialFeaturePlot: 铁死亡/衰老得分空间分布
   # --------------------------------------------------------------------------
-  score_cols <- names(signatures)
+  # UCell name="_UCell" -> 列名带 _UCell 后缀; AddModuleScore 回退路径列名同 names(signatures)
+  score_cols <- if (use_ucell) paste0(names(signatures), "_UCell") else names(signatures)
 
   for (sn in sample_names) {
     seu <- spatial_list[[sn]]
