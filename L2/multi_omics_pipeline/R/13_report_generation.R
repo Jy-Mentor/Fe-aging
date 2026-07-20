@@ -18,6 +18,14 @@ step13_report_generation <- function(cfg,
                                       cmap_result = NULL) {
   log_info("[Step13] Generating comprehensive multi-omics report...")
 
+  # 加载报告所需的包 (colData 来自 SummarizedExperiment, DESeq2 重导出)
+  suppressPackageStartupMessages({
+    if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
+      stop("Step13 requires 'SummarizedExperiment' package.")
+    }
+    library(SummarizedExperiment)
+  })
+
   report_lines <- c()
   add_line <- function(...) report_lines <<- c(report_lines, paste0(...))
 
@@ -55,8 +63,23 @@ add_line("```")
   if (!is.null(bulk_dds)) {
     add_line("- **DESeq2 对象**: ", nrow(bulk_dds), " 基因 × ",
              ncol(bulk_dds), " 样本")
-    add_line("- **时间点**: ", paste(colData(bulk_dds)$time |> unique(),
-                                      collapse = ", "))
+    # 时间点列名从 config 读取 (bulk_time_col: "timepoint"), 不硬编码 "time"
+    time_col <- cfg$data$bulk_time_col
+    time_vals <- colData(bulk_dds)[[time_col]]
+    if (is.null(time_vals)) {
+      # 兼容: 若 config 列名不存在, 尝试常见备选
+      for (alt in c("time", "Timepoint", "Time")) {
+        if (alt %in% colnames(colData(bulk_dds))) {
+          time_vals <- colData(bulk_dds)[[alt]]
+          break
+        }
+      }
+    }
+    if (!is.null(time_vals)) {
+      add_line("- **时间点**: ", paste(unique(time_vals), collapse = ", "))
+    } else {
+      add_line("- **时间点**: (列名未识别)")
+    }
   } else {
     add_line("- DESeq2 对象未加载")
   }
@@ -94,13 +117,19 @@ add_line("```")
     add_line("")
     add_line("### 2.3 WGCNA 模块")
     add_line("")
-    add_line("- 模块数: ", length(unique(wgcna_modules$colors)))
+    # 字段名核实: step03 输出 module_colors (非 colors), top_module_genes (非 hub_genes),
+    # hub_fa_overlap (非 hub_ferrosenescence)
+    module_colors <- wgcna_modules$module_colors
+    if (is.null(module_colors)) module_colors <- wgcna_modules$colors
+    add_line("- 模块数: ", length(unique(module_colors)))
+    top_genes <- wgcna_modules$top_module_genes
+    if (is.null(top_genes)) top_genes <- wgcna_modules$hub_genes
     add_line("- 与时间点最强正相关模块的 hub 基因数: ",
-             if (!is.null(wgcna_modules$hub_genes))
-               length(wgcna_modules$hub_genes) else "NA")
+             if (!is.null(top_genes)) length(top_genes) else "NA")
+    hub_fa <- wgcna_modules$hub_fa_overlap
+    if (is.null(hub_fa)) hub_fa <- wgcna_modules$hub_ferrosenescence
     add_line("- 与铁衰老基因集交集: ",
-             if (!is.null(wgcna_modules$hub_ferrosenescence))
-               length(wgcna_modules$hub_ferrosenescence) else "NA")
+             if (!is.null(hub_fa)) length(hub_fa) else "NA")
   }
 
   add_line("")
@@ -359,14 +388,21 @@ add_line("```")
   add_line("")
 
   list_dir <- function(dir_path, pattern = ".*") {
+    # dir_path 可能为 NULL/character(0) (当 config 缺失对应键时)
+    if (is.null(dir_path) || length(dir_path) == 0 || !nzchar(dir_path[1])) {
+      return(character(0))
+    }
     if (!dir.exists(dir_path)) return(character(0))
     files <- list.files(dir_path, pattern = pattern, full.names = FALSE,
                          recursive = FALSE)
     return(files)
   }
 
-  for (d in c("figures", "tables", "rds", "logs")) {
-    dir_path <- file.path(cfg$project[[paste0(d, "_dir")]])
+  # config 键映射: config 中为 log_dir (非 logs_dir), 需显式映射避免 character(0)
+  dir_key_map <- c(figures = "figures_dir", tables = "tables_dir",
+                    rds = "rds_dir", logs = "log_dir")
+  for (d in names(dir_key_map)) {
+    dir_path <- cfg$project[[dir_key_map[d]]]
     files <- list_dir(dir_path)
     if (length(files) > 0) {
       add_line("### ", toupper(d), " (", length(files), " files)")

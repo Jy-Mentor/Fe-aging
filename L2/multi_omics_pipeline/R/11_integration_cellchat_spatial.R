@@ -1,13 +1,18 @@
 # ============================================================================
 # STEP 11: L4 CellChat 空间细胞通讯分析
-# - 用 CellChat v2 空间扩展 (create_spatial) 替代停更的 COMMOT
+# - 用 CellChat v2 空间扩展 (datatype = "spatial") 推断空间 L-R 互作
 # - 基于 SPOTlight 投影的细胞类型比例, 推断空间 L-R 互作
 # - 比较梗死核心 / 半暗带 / 健康区的通讯强度差异
 # - 鉴别铁死亡/衰老相关 L-R 通路在空间上的富集
 # 参考:
-#   - Jin S et al. 2021 Nat Commun (CellChat, PMID: 33597522)
-#   - Cang Z et al. 2023 (COMMOT 比较, 单细胞空间通讯 benchmark)
-#   - CellChat v2 spatial vignette: https://htmlpreview.github.io/...
+#   - Jin S et al. 2021 Nat Commun (CellChat v1, PMID: 33597522)
+#   - CellChat v2 protocol (bioRxiv 2023.11.05.565674)
+#   - 官方 vignette: tutorial/CellChat_analysis_of_spatial_transcriptomics_data.html
+# API 核实 (2026-07-20):
+#   - 函数名: createCellChat() (camelCase, 不是 create_cellchat)
+#   - 空间信息: 创建时通过 coordinates= + spatial.factors= + datatype="spatial" 传入
+#   - spatial.factors: data.frame(ratio=μm/pixel, tol=μm)
+#   - 不能通过 cellchat@images$spatial 或 cellchat@.spatial.distance 直接赋值
 # ============================================================================
 
 step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
@@ -15,7 +20,7 @@ step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
 
   require_packages(c("CellChat", "patchwork"),
                    install_hint = paste("remotes::install_github('jinworks/CellChat')",
-                                        "-> v2 spatial branch"))
+                                        "-> v2 (master branch includes spatial)"))
   suppressPackageStartupMessages({
     library(CellChat)
     library(Seurat)
@@ -25,6 +30,16 @@ step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
 
   if (is.null(spatial_merged)) {
     stop("step11: spatial_merged is NULL. Run step04-06 first.")
+  }
+
+  # 兼容性: 确保 spatial_merged 有 condition 列 (小写)
+  if (!"condition" %in% colnames(spatial_merged@meta.data)) {
+    if ("Condition" %in% colnames(spatial_merged@meta.data)) {
+      spatial_merged$condition <- spatial_merged$Condition
+      log_info("[Step11] Created 'condition' column from 'Condition' (case compatibility)")
+    } else {
+      stop("step11: spatial_merged has neither 'condition' nor 'Condition' column.")
+    }
   }
 
   sp_cfg <- cfg$integration$cellchat_spatial
@@ -52,7 +67,9 @@ step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
 
   for (cond in spatial_conds) {
     log_info("[Step11] Building spatial CellChat for condition: ", cond)
-    sp_sub <- subset(spatial_merged, subset = condition == cond)
+    # Seurat v5: 用 cells= 传递索引避免 .data[[]] 解析问题
+    keep_cond <- spatial_merged@meta.data$condition == cond
+    sp_sub <- subset(spatial_merged, cells = colnames(spatial_merged)[keep_cond])
     if (ncol(sp_sub) < 50) {
       log_warn("[Step11] Too few spots for ", cond, " (n=", ncol(sp_sub),
                "); skip.")
@@ -60,17 +77,21 @@ step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
     }
 
     # 提取细胞类型标签 (取每 spot 主导细胞类型作为该 spot 标签)
+    # 关键: 必须给 spot_labels 设置 names, 否则后续用字符向量索引会全部变 NA
     prop_mat <- as.matrix(sp_sub@meta.data[, prop_cols])
     spot_labels <- cell_types[max.col(prop_mat, ties.method = "first")]
+    names(spot_labels) <- rownames(prop_mat)
 
-    # 过滤 spot 数过少的细胞类型
+    # 过滤 spot 数过少的细胞类型 (用逻辑索引, 避免字符向量索引未命名向量)
     n_per_type <- table(spot_labels)
     keep_types <- names(n_per_type)[n_per_type >= sp_cfg$min_cells]
-    keep_spots <- rownames(prop_mat)[spot_labels %in% keep_types]
+    keep_idx <- spot_labels %in% keep_types
+    keep_spots <- names(spot_labels)[keep_idx]
     sp_sub <- sp_sub[, keep_spots]
-    spot_labels <- spot_labels[keep_spots]
+    spot_labels <- spot_labels[keep_idx]
     log_info("[Step11] ", cond, ": ", length(keep_spots), " spots, ",
-             length(unique(spot_labels)), " cell types")
+             length(unique(spot_labels)), " cell types; types=",
+             paste(unique(spot_labels), collapse = ","))
 
     # 表达矩阵 (SCT 优先)
     sp_assay <- "SCT" %in% names(sp_sub@assays)
@@ -80,37 +101,86 @@ step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
       as.matrix(GetAssayData(sp_sub, assay = "Spatial", layer = "data"))
     }
 
-    # 空间坐标
-    spatial_coords <- sp_sub@images[[1]]@coordinates[, c("imagerow", "imagecol")]
-    # Visium spot 之间间距换算成微米 (1 spot ≈ 100 μm center-to-center)
-    image_scale <- sp_sub@images[[1]]@scale.factors$lowres
-    spatial_coords_um <- spatial_coords * 100 / max(image_scale, 1e-6)
+    # ----------------------------------------------------------------------
+    # 空间坐标 + spatial.factors 计算
+    # CellChat v2 要求:
+    #   coordinates: 像素单位的 data.frame (imagerow, imagecol)
+    #   spatial.factors: data.frame(ratio = μm/pixel, tol = μm)
+    # ----------------------------------------------------------------------
+    # 用 Seurat::GetTissueCoordinates 获取坐标 (默认 lowres 像素)
+    spatial_coords <- tryCatch(
+      Seurat::GetTissueCoordinates(sp_sub, scale = NULL,
+                                    cols = c("imagerow", "imagecol")),
+      error = function(e) {
+        log_warn("[Step11] GetTissueCoordinates failed: ",
+                 conditionMessage(e), ". Falling back to @images[[1]]@coordinates.")
+        img <- sp_sub@images[[1]]
+        coords <- img@coordinates[, c("imagerow", "imagecol")]
+        coords$cell <- rownames(coords)
+        coords
+      }
+    )
+    # 仅保留坐标列 (cell 名作为 rownames)
+    coord_cols <- c("imagerow", "imagecol")
+    spatial_coords <- spatial_coords[, coord_cols, drop = FALSE]
+    # 对齐细胞名 (GetTissueCoordinates 可能含未在 expr_mat 中的 cell)
+    common_cells <- intersect(rownames(spatial_coords), colnames(expr_mat))
+    spatial_coords <- spatial_coords[common_cells, , drop = FALSE]
+    expr_mat <- expr_mat[, common_cells, drop = FALSE]
+    spot_labels <- spot_labels[common_cells]
 
-    # --------------------------------------------------------------------------
-    # 11.3 create_cellchat + 空间扩展
-    # --------------------------------------------------------------------------
-    cellchat <- create_cellchat(object = expr_mat,
-                                  meta = data.frame(labels = spot_labels,
-                                                    row.names = colnames(expr_mat)),
-                                  group.by = "labels")
+    # 计算 spatial.factors:
+    # ratio = μm / pixel (用最近邻 spot 间距估算; Visium 标准 ≈ 100 μm)
+    # tol   = spot 半径 (μm); Visium spot 直径 55 μm → tol = 27.5
+    spot_size_um <- sp_cfg$spot_size_um   # 65 (config), Visium 直径实际 55 μm
+    spot_diameter_um <- 55   # Visium 标准物理 spot 直径
+    # 用最近邻距离估算 pixel → μm 比例
+    if (nrow(spatial_coords) >= 2) {
+      dmat <- as.matrix(dist(spatial_coords[, coord_cols, drop = FALSE]))
+      diag(dmat) <- NA
+      nn_dist <- apply(dmat, 1, min, na.rm = TRUE)
+      median_nn_pixel <- median(nn_dist, na.rm = TRUE)
+      if (!is.finite(median_nn_pixel) || median_nn_pixel <= 0) {
+        log_warn("[Step11] Invalid NN distance for ", cond,
+                 "; using scale.factors$lowres fallback.")
+        img_sf <- sp_sub@images[[1]]@scale.factors$lowres
+        median_nn_pixel <- max(1 / max(img_sf, 1e-6), 1)
+      }
+    } else {
+      median_nn_pixel <- 1
+    }
+    # Visium spot 中心间距 = 100 μm
+    ratio_um_per_pixel <- 100 / median_nn_pixel
+    tol_um <- spot_diameter_um / 2
+    spatial_factors <- data.frame(ratio = ratio_um_per_pixel, tol = tol_um)
+    log_info(sprintf("[Step11] %s: %d spots, ratio=%.4f μm/pix, tol=%.1f μm",
+                     cond, nrow(spatial_coords), ratio_um_per_pixel, tol_um))
 
-    # 设置空间信息
-    cellchat@images$spatial <- spatial_coords_um
-    cellchat@.spatial.distance <- as.matrix(dist(spatial_coords_um))
+    # ----------------------------------------------------------------------
+    # 11.3 创建空间 CellChat 对象 (datatype = "spatial" 启用空间模式)
+    # ----------------------------------------------------------------------
+    cellchat <- createCellChat(
+      object = expr_mat,
+      meta = data.frame(labels = spot_labels,
+                        row.names = colnames(expr_mat)),
+      group.by = "labels",
+      datatype = "spatial",
+      coordinates = as.matrix(spatial_coords),
+      spatial.factors = spatial_factors
+    )
 
     # CellChat 数据库 (小鼠)
     cellchat@DB <- CellChatDB.mouse
     cellchat <- subsetData(cellchat)
 
     # 空间通讯推断
-    cellchat <- identifyOverExpressedGenes(cellchat)
+    # do.fast=TRUE 需要 presto 包; 若未安装 presto, 显式 do.fast=FALSE 使用 base Wilcoxon
+    has_presto <- requireNamespace("presto", quietly = TRUE)
+    cellchat <- identifyOverExpressedGenes(cellchat,
+                                           do.fast = has_presto)
     cellchat <- identifyOverExpressedInteractions(cellchat)
 
     # 空间感知的通讯概率计算
-    # 参数:
-    #   - distance.use: TRUE 使用空间距离衰减
-    #   - interaction.range: 互作有效距离 (微米)
-    #   - contact.dependent: 是否考虑接触依赖
     cellchat <- computeCommunProb(
       cellchat,
       type = sp_cfg$type,
@@ -119,7 +189,8 @@ step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
       interaction.range = sp_cfg$interaction_range,
       contact.dependent = sp_cfg$contact_dependent,
       contact.range = sp_cfg$contact_range,
-      population.size = sp_cfg$population_size
+      population.size = sp_cfg$population_size,
+      nboot = sp_cfg$nboot
     )
 
     cellchat <- filterCommunication(
@@ -129,6 +200,9 @@ step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
 
     cellchat <- computeCommunProbPathway(cellchat)
     cellchat <- aggregateNet(cellchat)
+    # 在 single-object 上计算 centrality scores (mergeCellChat 后再调用会失败)
+    # netAnalysis_signalingRole_heatmap/scatter 等均依赖 centrality
+    cellchat <- netAnalysis_computeCentrality(cellchat)
 
     cellchat_list[[cond]] <- cellchat
     save_rds(cellchat, paste0("11_cellchat_spatial_", cond), cfg)
@@ -165,7 +239,7 @@ step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
                      paste0("11_cellchat_circle_", cond, ".png")),
           width = 10, height = 10, units = "in", res = cfg$viz$figure_dpi)
       netVisual_circle(cc@net$count, vertex.weight = as.numeric(table(cc@idents)),
-                        weight.scale = TRUE, title.edge = paste(cond, "count"))
+                        weight.scale = TRUE, title.name = paste(cond, "count"))
       dev.off()
     }, error = function(e) {
       log_warn("[Step11] Circle plot failed for ", cond, ": ",
@@ -183,8 +257,11 @@ step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
     save_rds(cc_merged, "11_cellchat_spatial_merged", cfg)
 
     # 1) 总互作数比较
+    # group 参数需要与 condition 数量等长的向量 (每个 condition 一个 group label)
+    # CellChat v2 compareInteractions 用 group 来分组/着色, 不接受索引向量
+    cond_names <- names(cellchat_list)
     p_compare_count <- compareInteractions(cc_merged, show.legend = FALSE,
-                                            group = c(1, length(cellchat_list))) +
+                                            group = cond_names) +
       theme_pub(base_size = 10)
     save_figure(p_compare_count, "11_cellchat_compare_count", cfg,
                 width = 8, height = 5)
@@ -192,7 +269,7 @@ step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
     # 2) 互作强度比较
     p_compare_weight <- compareInteractions(cc_merged, show.legend = FALSE,
                                               measure = "weight",
-                                              group = c(1, length(cellchat_list))) +
+                                              group = cond_names) +
       theme_pub(base_size = 10)
     save_figure(p_compare_weight, "11_cellchat_compare_weight", cfg,
                 width = 8, height = 5)
@@ -211,57 +288,121 @@ step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
     save_figure(p_rank, "11_cellchat_pathway_rank", cfg, width = 9, height = 14)
 
     # 5) 铁死亡/衰老相关通路提取
-    fa_pathways <- c("SPP1", "TGFB", "CXCL", "CCL", "TNF", "IL6",
+    # CellChat v2 mergeCellChat 后, cc@LR 是按 condition 分组的 list
+    # 需要从每个 condition 的 LRsig$pathway_name 收集并集
+    # 通路名大小写敏感: CellChatDB.mouse 用 "TGFb" (不是 "TGFB"), 不含 "EPCAM"/"IFNII"
+    # centrality scores 已在每个 condition 循环中计算 (mergeCellChat 后无法计算)
+    fa_pathways <- c("SPP1", "TGFb", "CXCL", "CCL", "TNF", "IL6",
                       "GALECTIN", "MIF", "COMPLEMENT", "FLT3",
-                      "GRN", "VISFATIN", "NRXN", "NCAM", "EPCAM",
+                      "GRN", "VISFATIN", "NRXN", "NCAM",
                       "NOTCH", "WNT", "BMP", "FGF", "VEGF",
-                      "PDGF", "EGF", "IFNII", "IL1", "IL2",
+                      "PDGF", "EGF", "IL1", "IL2",
                       "IL4", "IL10", "IL12", "IL16", "IL17")
 
-    available_pathways <- cc_merged@LR$LRsig$pathway
-    available_pathways <- unique(available_pathways)
+    available_pathways <- character(0)
+    for (cn in names(cc_merged@LR)) {
+      pn <- unique(cc_merged@LR[[cn]]$LRsig$pathway_name)
+      available_pathways <- union(available_pathways, pn)
+    }
     fa_pathways_avail <- fa_pathways[fa_pathways %in% available_pathways]
-    log_info("[Step11] Available pathways of interest: ",
+    log_info("[Step11] Total pathways across conditions: ",
+             length(available_pathways),
+             "; Available pathways of interest: ",
              paste(fa_pathways_avail, collapse = ", "))
 
     if (length(fa_pathways_avail) > 0) {
-      p_fa_heatmap <- netAnalysis_signalingRole_heatmap(
-        cc_merged, pattern = "outgoing",
-        signaling = fa_pathways_avail,
-        width = 12, height = 8
-      )
-      save_figure(p_fa_heatmap, "11_cellchat_ferrosenescence_pathways_heatmap",
-                  cfg, width = 12, height = 8)
+      # netAnalysis_signalingRole_heatmap 只支持 single CellChat object
+      # CellChat v2: merged 对象的 netP 是 list, 函数检查 slot(object, "netP")$centr 会失败
+      # 必须对每个 condition 单独绘制, 然后用 ComplexHeatmap::draw 组合
+      log_info("[Step11] Drawing per-condition signalingRole_heatmap...")
+      ht_list <- list()
+      for (cond in names(cellchat_list)) {
+        tryCatch({
+          cc_single <- cellchat_list[[cond]]
+          pw_avail <- unique(cc_single@LR$LRsig$pathway_name)
+          pw_use <- fa_pathways_avail[fa_pathways_avail %in% pw_avail]
+          if (length(pw_use) == 0) next
+          ht_list[[cond]] <- netAnalysis_signalingRole_heatmap(
+            cc_single, pattern = "outgoing",
+            signaling = pw_use,
+            title = cond,
+            width = 10, height = 8
+          )
+        }, error = function(e) {
+          log_warn("[Step11] heatmap failed for ", cond, ": ",
+                   conditionMessage(e))
+        })
+      }
+      if (length(ht_list) > 0) {
+        tryCatch({
+          png(file.path(cfg$project$figures_dir,
+                         "11_cellchat_ferrosenescence_pathways_heatmap.png"),
+              width = 14, height = 3 * length(ht_list), units = "in",
+              res = cfg$viz$figure_dpi)
+          for (i in seq_along(ht_list)) {
+            draw(ht_list[[i]], column_title = names(ht_list)[i])
+          }
+          dev.off()
+          log_info("[Step11] Figure saved: 11_cellchat_ferrosenescence_pathways_heatmap.png")
+        }, error = function(e) {
+          log_warn("[Step11] heatmap combine failed: ",
+                   conditionMessage(e))
+          try(dev.off(), silent = TRUE)
+        })
+      }
 
       # 各通路 outgoing/incoming 得分
-      for (pw in fa_pathways_avail) {
-        tryCatch({
-          p_pw <- netVisual_aggregate(cc_merged, signaling = pw,
-                                       layout = "circle")
-          save_figure(p_pw, paste0("11_cellchat_pathway_", pw), cfg,
-                      width = 9, height = 7)
-        }, error = function(e) {
-          log_debug("[Step11] Pathway ", pw, " plot failed: ",
-                    conditionMessage(e))
-        })
+      # netVisual_aggregate 源码访问 object@LR$LRsig (single object 结构)
+      # merged 对象的 @LR 是按 condition 分组的 list, 无法直接调用
+      # 改为: 对每个 condition 的 single object 单独绘制 pathway circle plot
+      # 只绘制前 6 个 pathway (避免 28 个 pathway × 9 condition = 252 张图)
+      pw_to_plot <- head(fa_pathways_avail, 6)
+      for (pw in pw_to_plot) {
+        for (cond in names(cellchat_list)) {
+          tryCatch({
+            cc_single <- cellchat_list[[cond]]
+            pw_avail <- unique(cc_single@LR$LRsig$pathway_name)
+            if (!(pw %in% pw_avail)) next
+            png(file.path(cfg$project$figures_dir,
+                           paste0("11_cellchat_pathway_", pw, "_", cond, ".png")),
+                width = 8, height = 8, units = "in", res = cfg$viz$figure_dpi)
+            netVisual_aggregate(cc_single, signaling = pw, layout = "circle")
+            dev.off()
+            log_info("[Step11] Figure saved: 11_cellchat_pathway_", pw, "_", cond, ".png")
+          }, error = function(e) {
+            log_debug("[Step11] Pathway ", pw, " for ", cond, " failed: ",
+                      conditionMessage(e))
+            try(dev.off(), silent = TRUE)
+          })
+        }
       }
     }
 
     # 6) Outgoing / Incoming 通讯模式 (pathway-level)
-    tryCatch({
-      cc_merged <- computeNetVisual_Pairwise(cc_merged)
-      cc_merged <- netAnalysis_computeCentrality(cc_merged)
-      save_rds(cc_merged, "11_cellchat_spatial_merged_final", cfg)
+    # CellChat v2: netAnalysis_signalingRole_scatter 源码访问 slot(object, "netP")$centr
+    # merged 对象的 netP 是 list, 无法直接调用 - 改为 per-condition scatter + patchwork 组合
+    # CellChat v2 已移除 computeNetVisual_Pairwise; centrality 已在循环中计算
+    scatter_list <- list()
+    for (cond in names(cellchat_list)) {
+      tryCatch({
+        p <- netAnalysis_signalingRole_scatter(
+          cellchat_list[[cond]], slot.name = "netP") +
+          ggtitle(cond) +
+          theme_pub(base_size = 9)
+        scatter_list[[cond]] <- p
+      }, error = function(e) {
+        log_warn("[Step11] scatter failed for ", cond, ": ",
+                 conditionMessage(e))
+      })
+    }
+    if (length(scatter_list) > 0) {
+      p_combined <- wrap_plots(scatter_list, ncol = 3) +
+        plot_annotation(title = "Outgoing vs Incoming interaction strength")
+      save_figure(p_combined, "11_cellchat_outgoing_pattern", cfg,
+                  width = 14, height = 4 * ceiling(length(scatter_list) / 3))
+    }
 
-      p_outgoing <- netAnalysis_signalingRole_scatter(
-        cc_merged, slot.name = "netP", pattern = "outgoing") +
-        theme_pub(base_size = 9)
-      save_figure(p_outgoing, "11_cellchat_outgoing_pattern", cfg,
-                  width = 9, height = 7)
-    }, error = function(e) {
-      log_warn("[Step11] netAnalysis compute failed: ", conditionMessage(e))
-    })
-
+    save_rds(cc_merged, "11_cellchat_spatial_merged_final", cfg)
     invisible(cc_merged)
   } else {
     invisible(cellchat_list[[1]])

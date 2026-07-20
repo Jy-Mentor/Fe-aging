@@ -126,6 +126,19 @@ save_figure <- function(plot_obj, name, cfg, width = NULL, height = NULL,
 
 save_table <- function(df, name, cfg, ext = "csv") {
   path <- file.path(cfg$project$tables_dir, paste0(name, ".", ext))
+  # 处理 list 列 (如 fgsea 的 leadingEdge): 转换为分号分隔字符串
+  # 否则 write.csv 会报 "类型'list'目前没有在'EncodeElement'里实现"
+  if (is.data.frame(df)) {
+    list_cols <- vapply(df, is.list, logical(1))
+    if (any(list_cols)) {
+      for (cn in names(df)[list_cols]) {
+        df[[cn]] <- vapply(df[[cn]], function(x) {
+          if (is.null(x) || length(x) == 0) ""
+          else paste(x, collapse = ";")
+        }, character(1))
+      }
+    }
+  }
   if (ext == "csv") {
     write.csv(df, path, row.names = FALSE)
   } else if (ext == "tsv") {

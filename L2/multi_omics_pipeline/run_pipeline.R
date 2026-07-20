@@ -157,18 +157,24 @@ cmap_result     <- NULL      # L4: CMap 反证结果
     return(invisible(NULL))
   }
 
-  # 步骤 → (RDS 文件名, 目标全局变量名, 描述) 映射
+  # 步骤 → (RDS 文件名, 目标全局变量名) 映射
+  # 按步骤号降序排列: 同名变量优先加载最新版本 (如 spatial_merged 在 step5/6/10 都有输出,
+  # 应优先加载 step10 的 10_spatial_with_proportions.rds, 它包含 prop_* 列)
   rds_map <- list(
-    list(step = 1,  file = "01_bulk_dds_raw.rds",            var = "bulk_dds"),
-    list(step = 2,  file = "02_bulk_vsd.rds",                var = "bulk_vsd"),
-    list(step = 2,  file = "02_bulk_dea_list.rds",           var = "bulk_dea_list"),
-    list(step = 3,  file = "03_bulk_wgcna_result.rds",       var = "wgcna_modules"),
-    list(step = 4,  file = "04_spatial_list.rds",            var = "spatial_list"),
-    list(step = 5,  file = "05_spatial_merged_scored.rds",   var = "spatial_merged"),
-    list(step = 6,  file = "06_spatial_with_regions.rds",    var = "spatial_merged"),
-    list(step = 7,  file = "07_sc_seurat_integrated.rds",    var = "sc_seu"),
+    list(step = 12, file = "12_cmap_result.rds",                var = "cmap_result"),
+    list(step = 11, file = "11_cellchat_spatial_merged.rds",    var = "cellchat_spatial"),
+    list(step = 10, file = "10_spatial_with_proportions.rds",   var = "spatial_merged"),
+    list(step = 10, file = "10_spotlight_result.rds",           var = "spotlight_res"),
+    list(step = 9,  file = "09_augur_result.rds",               var = "sc_augur_res"),
     list(step = 8,  file = "08_sc_seurat_annotated_scored.rds", var = "sc_seu"),
-    list(step = 9,  file = "09_augur_result.rds",            var = "sc_augur_res")
+    list(step = 7,  file = "07_sc_seurat_integrated.rds",       var = "sc_seu"),
+    list(step = 6,  file = "06_spatial_with_regions.rds",       var = "spatial_merged"),
+    list(step = 5,  file = "05_spatial_merged_scored.rds",      var = "spatial_merged"),
+    list(step = 4,  file = "04_spatial_list.rds",               var = "spatial_list"),
+    list(step = 3,  file = "03_bulk_wgcna_result.rds",          var = "wgcna_modules"),
+    list(step = 2,  file = "02_bulk_vsd.rds",                   var = "bulk_vsd"),
+    list(step = 2,  file = "02_bulk_dea_list.rds",              var = "bulk_dea_list"),
+    list(step = 1,  file = "01_bulk_dds_raw.rds",               var = "bulk_dds")
   )
 
   for (entry in rds_map) {
@@ -177,7 +183,7 @@ cmap_result     <- NULL      # L4: CMap 反证结果
     rds_path <- file.path(rds_dir, entry$file)
     if (!file.exists(rds_path)) next
 
-    # 检查目标变量是否仍为 NULL
+    # 检查目标变量是否仍为 NULL (降序排列确保最新版本优先加载)
     current_val <- get(entry$var, envir = globalenv())
     if (!is.null(current_val)) next
 
