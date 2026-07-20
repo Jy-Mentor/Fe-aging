@@ -1,0 +1,11 @@
+"display_name","category","expected_direction","n_studies","mean_log2FC","min_padj"
+"LPC","lipid_signaling","DOWN",1,-1.42030785167762,1.20627307356851e-05
+"12-HETE","lipid_peroxidation","UP",1,0.617799615802745,0.000234253015945217
+"PA (16:0)","lipid_signaling","UP",1,1.53881820083511,0.000438999941153045
+"15-HETE","lipid_peroxidation","UP",1,0.83708420934295,0.00138932995638668
+"Succinate","tca_energy","UP",1,1.9404680314266,0.00598969553798915
+"AA","lipid_signaling","UP",1,2.85438511794244,0.00956401647927847
+"PE","lipid_signaling","DOWN",1,-0.722711028344364,0.0164071819712165
+"Ceramide","lipid_signaling","UP",1,2.23890130386447,0.0227766410438809
+"HDoHE","lipid_peroxidation","UP",1,4.35689130249213,0.0283208874036439
+"Lactate","tca_energy","UP",1,1.2276322521418,0.0298874627324921

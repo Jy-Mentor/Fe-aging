@@ -1,0 +1,458 @@
+﻿{
+    "1":  {
+              "study_id":  "ST002042",
+              "local_sample_id":  "1dM_1",
+              "sample_source":  "Blood (plasma)",
+              "factors":  "time point:1-day",
+              "mb_sample_id":  "SA196446",
+              "raw_data":  "1dM_1.raw"
+          },
+    "2":  {
+              "study_id":  "ST002042",
+              "local_sample_id":  "1dM_10",
+              "sample_source":  "Blood (plasma)",
+              "factors":  "time point:1-day",
+              "mb_sample_id":  "SA196461",
+              "raw_data":  "1dM_10.raw"
+          },
+    "3":  {
+              "study_id":  "ST002042",
+              "local_sample_id":  "1dM_11",
+              "sample_source":  "Blood (plasma)",
+              "factors":  "time point:1-day",
+              "mb_sample_id":  "SA196464",
+              "raw_data":  "1dM_11.raw"
+          },
+    "4":  {
+              "study_id":  "ST002042",
+              "local_sample_id":  "1dM_12",
+              "sample_source":  "Blood (plasma)",
+              "factors":  "time point:1-day",
+              "mb_sample_id":  "SA196465",
+              "raw_data":  "1dM_12.raw"
+          },
+    "5":  {
+              "study_id":  "ST002042",
+              "local_sample_id":  "1dM_13",
+              "sample_source":  "Blood (plasma)",
+              "factors":  "time point:1-day",
+              "mb_sample_id":  "SA196463",
+              "raw_data":  "1dM_13.raw"
+          },
+    "6":  {
+              "study_id":  "ST002042",
+              "local_sample_id":  "1dM_2",
+              "sample_source":  "Blood (plasma)",
+              "factors":  "time point:1-day",
+              "mb_sample_id":  "SA196459",
+              "raw_data":  "1dM_2.raw"
+          },
+    "7":  {
+              "study_id":  "ST002042",
+              "local_sample_id":  "1dM_3",
+              "sample_source":  "Blood (plasma)",
+              "factors":  "time point:1-day",
+              "mb_sample_id":  "SA196460",
+              "raw_data":  "1dM_3.raw"
+          },
+    "8":  {
+              "study_id":  "ST002042",
+              "local_sample_id":  "1dM_4",
+              "sample_source":  "Blood (plasma)",
+              "factors":  "time point:1-day",
+              "mb_sample_id":  "SA196458",
+              "raw_data":  "1dM_4.raw"
+          },
+    "9":  {
+              "study_id":  "ST002042",
+              "local_sample_id":  "1dM_5",
+              "sample_source":  "Blood (plasma)",
+              "factors":  "time point:1-day",
+              "mb_sample_id":  "SA196457",
+              "raw_data":  "1dM_5.raw"
+          },
+    "10":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "1dM_6",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-day",
+               "mb_sample_id":  "SA196454",
+               "raw_data":  "1dM_6.raw"
+           },
+    "11":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "1dM_7",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-day",
+               "mb_sample_id":  "SA196455",
+               "raw_data":  "1dM_7.raw"
+           },
+    "12":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "1dM_8",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-day",
+               "mb_sample_id":  "SA196462",
+               "raw_data":  "1dM_8.raw"
+           },
+    "13":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "1dM_9",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-day",
+               "mb_sample_id":  "SA196456",
+               "raw_data":  "1dM_9.raw"
+           },
+    "14":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "N_1",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-day",
+               "mb_sample_id":  "SA196447",
+               "raw_data":  "N_1.raw"
+           },
+    "15":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "N_2",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-day",
+               "mb_sample_id":  "SA196448",
+               "raw_data":  "N_2.raw"
+           },
+    "16":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "N_3",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-day",
+               "mb_sample_id":  "SA196452",
+               "raw_data":  "N_3.raw"
+           },
+    "17":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "N_4",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-day",
+               "mb_sample_id":  "SA196449",
+               "raw_data":  "N_4.raw"
+           },
+    "18":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "N_5",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-day",
+               "mb_sample_id":  "SA196450",
+               "raw_data":  "N_5.raw"
+           },
+    "19":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "N_6",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-day",
+               "mb_sample_id":  "SA196451",
+               "raw_data":  "N_6.raw"
+           },
+    "20":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "N_7",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-day",
+               "mb_sample_id":  "SA196441",
+               "raw_data":  "N_7.raw"
+           },
+    "21":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "N_8",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-day",
+               "mb_sample_id":  "SA196440",
+               "raw_data":  "N_8.raw"
+           },
+    "22":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "sham_1",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-day",
+               "mb_sample_id":  "SA196442",
+               "raw_data":  "sham_1.raw"
+           },
+    "23":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "sham_2",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-day",
+               "mb_sample_id":  "SA196443",
+               "raw_data":  "sham_2.raw"
+           },
+    "24":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "sham_3",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-day",
+               "mb_sample_id":  "SA196445",
+               "raw_data":  "sham_3.raw"
+           },
+    "25":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "sham_4",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-day",
+               "mb_sample_id":  "SA196444",
+               "raw_data":  "sham_4.raw"
+           },
+    "26":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "sham_5",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-day",
+               "mb_sample_id":  "SA196453",
+               "raw_data":  "sham_5.raw"
+           },
+    "27":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "1mM_1",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-month",
+               "mb_sample_id":  "SA196466",
+               "raw_data":  "1mM_1.raw"
+           },
+    "28":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "1mM_2",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-month",
+               "mb_sample_id":  "SA196467",
+               "raw_data":  "1mM_2.raw"
+           },
+    "29":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "1mM_3",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-month",
+               "mb_sample_id":  "SA196471",
+               "raw_data":  "1mM_3.raw"
+           },
+    "30":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "1mM_4",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-month",
+               "mb_sample_id":  "SA196468",
+               "raw_data":  "1mM_4.raw"
+           },
+    "31":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "1mM_5",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-month",
+               "mb_sample_id":  "SA196469",
+               "raw_data":  "1mM_5.raw"
+           },
+    "32":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "sham_10",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-month",
+               "mb_sample_id":  "SA196475",
+               "raw_data":  "sham_10.raw"
+           },
+    "33":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "sham_11",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-month",
+               "mb_sample_id":  "SA196470",
+               "raw_data":  "sham_11.raw"
+           },
+    "34":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "sham_12",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-month",
+               "mb_sample_id":  "SA196474",
+               "raw_data":  "sham_12.raw"
+           },
+    "35":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "sham_13",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-month",
+               "mb_sample_id":  "SA196473",
+               "raw_data":  "sham_13.raw"
+           },
+    "36":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "sham_14",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-month",
+               "mb_sample_id":  "SA196472",
+               "raw_data":  "sham_14.raw"
+           },
+    "37":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "1wM_1",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-week",
+               "mb_sample_id":  "SA196480",
+               "raw_data":  "1wM_1.raw"
+           },
+    "38":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "1wM_2",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-week",
+               "mb_sample_id":  "SA196479",
+               "raw_data":  "1wM_2.raw"
+           },
+    "39":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "1wM_3",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-week",
+               "mb_sample_id":  "SA196478",
+               "raw_data":  "1wM_3.raw"
+           },
+    "40":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "1wM_4",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-week",
+               "mb_sample_id":  "SA196477",
+               "raw_data":  "1wM_4.raw"
+           },
+    "41":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "1wM_5",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-week",
+               "mb_sample_id":  "SA196481",
+               "raw_data":  "1wM_5.raw"
+           },
+    "42":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "1wM_6",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-week",
+               "mb_sample_id":  "SA196476",
+               "raw_data":  "1wM_6.raw"
+           },
+    "43":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "1wM_7",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-week",
+               "mb_sample_id":  "SA196485",
+               "raw_data":  "1wM_7.raw"
+           },
+    "44":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "sham_6",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-week",
+               "mb_sample_id":  "SA196482",
+               "raw_data":  "sham_6.raw"
+           },
+    "45":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "sham_7",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-week",
+               "mb_sample_id":  "SA196486",
+               "raw_data":  "sham_7.raw"
+           },
+    "46":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "sham_8",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-week",
+               "mb_sample_id":  "SA196483",
+               "raw_data":  "sham_8.raw"
+           },
+    "47":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "sham_9",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:1-week",
+               "mb_sample_id":  "SA196484",
+               "raw_data":  "sham_9.raw"
+           },
+    "48":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "6mM_1",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:6-month",
+               "mb_sample_id":  "SA196490",
+               "raw_data":  "6mM_1.raw"
+           },
+    "49":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "6mM_2",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:6-month",
+               "mb_sample_id":  "SA196489",
+               "raw_data":  "6mM_2.raw"
+           },
+    "50":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "6mM_3",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:6-month",
+               "mb_sample_id":  "SA196488",
+               "raw_data":  "6mM_3.raw"
+           },
+    "51":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "6mM_4",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:6-month",
+               "mb_sample_id":  "SA196487",
+               "raw_data":  "6mM_4.raw"
+           },
+    "52":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "6mM_5",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:6-month",
+               "mb_sample_id":  "SA196491",
+               "raw_data":  "6mM_5.raw"
+           },
+    "53":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "6mM_6",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:6-month",
+               "mb_sample_id":  "SA196492",
+               "raw_data":  "6mM_6.raw"
+           },
+    "54":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "6mS_1",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:6-month",
+               "mb_sample_id":  "SA196495",
+               "raw_data":  "6mS_1.raw"
+           },
+    "55":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "6mS_2",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:6-month",
+               "mb_sample_id":  "SA196494",
+               "raw_data":  "6mS_2.raw"
+           },
+    "56":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "6mS_3",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:6-month",
+               "mb_sample_id":  "SA196493",
+               "raw_data":  "6mS_3.raw"
+           },
+    "57":  {
+               "study_id":  "ST002042",
+               "local_sample_id":  "6mS_4",
+               "sample_source":  "Blood (plasma)",
+               "factors":  "time point:6-month",
+               "mb_sample_id":  "SA196496",
+               "raw_data":  "6mS_4.raw"
+           }
+}
