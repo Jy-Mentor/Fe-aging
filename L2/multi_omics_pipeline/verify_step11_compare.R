@@ -2,8 +2,8 @@
 # ============================================================================
 # 验证 Step 11 多条件比较修复 (加载已保存的 CellChat RDS, 只跑比较部分)
 # 注意: 修复后仅 5 个 condition (排除 1DP 重复样本):
-#   1stSpatial_B1_D1, 1stSpatial_D1_D3, 1stSpatial_C1_D7,
-#   2ndSpatial_C1_mouse_control, 2ndSpatial_D1_mouse_D7
+#   D1 (1stSpatial_B1_D1), D3 (1stSpatial_D1_D3), D7 (1stSpatial_C1_D7),
+#   sham (2ndSpatial_C1_mouse_control), D7b (2ndSpatial_D1_mouse_D7)
 # ============================================================================
 .libPaths(c("d:/铁衰老 绝不重蹈覆辙/R-library/4.5",
             "D:/R-library/4.5", .libPaths()))
@@ -25,10 +25,12 @@ init_logger(file.path(cfg$project$log_dir,
 
 # ----------------------------------------------------------------------------
 # 加载 5 个 condition 的 CellChat 对象 (修复后, 排除 1DP 重复样本)
+# 注意: condition 名称核实自 spatial_merged$condition (短名, 不是样本 ID):
+#   D1 (1stSpatial_B1_D1), D3 (1stSpatial_D1_D3), D7 (1stSpatial_C1_D7),
+#   sham (2ndSpatial_C1_mouse_control), D7b (2ndSpatial_D1_mouse_D7)
 # ----------------------------------------------------------------------------
 rds_dir <- cfg$project$rds_dir
-cond_list <- c("1stSpatial_B1_D1", "1stSpatial_D1_D3", "1stSpatial_C1_D7",
-               "2ndSpatial_C1_mouse_control", "2ndSpatial_D1_mouse_D7")
+cond_list <- c("D1", "D3", "D7", "sham", "D7b")
 cellchat_list <- list()
 for (cond in cond_list) {
   rds_path <- file.path(rds_dir, paste0("11_cellchat_spatial_", cond, ".rds"))
