@@ -152,6 +152,7 @@ step10_integration_spotlight <- function(sc_seu, spatial_merged, cfg) {
     }
 
     set.seed(cfg$reproducibility$r_seed)
+    t_nmf_start <- Sys.time()
     spot_res <- tryCatch({
       SPOTlight(
         x = sc_sce_shared,
@@ -163,7 +164,9 @@ step10_integration_spotlight <- function(sc_seu, spatial_merged, cfg) {
         group_id = "cluster",
         gene_id = "gene",
         assay = "counts",
-        min_prop = cfg$integration$spotlight_min_prop
+        min_prop = cfg$integration$spotlight_min_prop,
+        tol = 1e-5,
+        maxit = 200
       )
     }, error = function(e) {
       log_error("[Step10] SPOTlight failed for ", cond, ": ",
@@ -172,6 +175,20 @@ step10_integration_spotlight <- function(sc_seu, spatial_merged, cfg) {
     })
 
     if (is.null(spot_res)) next
+
+    # NMF 收敛诊断 (官方 tol=1e-5 为 "publication quality")
+    # SPOTlight() 返回 list(mat, res_ss, NMF) - 核实自 R/SPOTlight.R 源码
+    nmf_mod <- spot_res$NMF
+    nmf_elapsed <- round(as.numeric(difftime(Sys.time(), t_nmf_start, units = "secs")), 1)
+    if (!is.null(nmf_mod)) {
+      log_info(sprintf("[Step10] %s: NMF trained in %.1fs; residual SS median=%.4f, max=%.4f",
+                       cond, nmf_elapsed,
+                       median(spot_res$res_ss, na.rm = TRUE),
+                       max(spot_res$res_ss, na.rm = TRUE)))
+    } else {
+      log_warn("[Step10] ", cond, ": NMF model is NULL (field name mismatch?). ",
+               "Check SPOTlight version compatibility.")
+    }
 
     # 提取细胞类型比例矩阵
     prop_mat <- spot_res$mat
@@ -191,7 +208,7 @@ step10_integration_spotlight <- function(sc_seu, spatial_merged, cfg) {
 
     spotlight_results[[cond]] <- list(
       prop_mat = prop_mat,
-      nlm = spot_res$NMF_matrix
+      nlm = spot_res$NMF
     )
     save_rds(spot_res, paste0("10_spotlight_result_", cond), cfg)
 
