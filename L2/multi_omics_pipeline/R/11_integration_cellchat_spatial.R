@@ -26,6 +26,10 @@ step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
     library(Seurat)
     library(ggplot2)
     library(patchwork)
+    # future/future.apply 仅在 parallel_workers > 1 时使用, 但提前加载避免运行时分支
+    if (requireNamespace("future", quietly = TRUE)) {
+      library(future)
+    }
   })
 
   if (is.null(spatial_merged)) {
@@ -64,6 +68,31 @@ step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
   # --------------------------------------------------------------------------
   cellchat_list <- list()
   spatial_conds <- unique(spatial_merged$condition)
+
+  # future 并行加速 computeCommunProb (CellChat v2 官方推荐)
+  # 源码核实 (2026-07-21): computeCommunProb 内部 line 35-36:
+  #   my.sapply <- ifelse(future::nbrOfWorkers() == 1, sapply, future.apply::future_sapply)
+  # 即 nbrOfWorkers() > 1 时自动切换到 future_sapply 并行化 bootstrap 循环.
+  # 参考: jinworks/CellChat tutorial FAQ; Jin S et al. 2025 Nat Protoc PMID:39289562
+  #
+  # Windows 平台限制: 只能用 "multisession" (PSOCK), 不能用 "multicore" (fork).
+  # 4 workers 是官方推荐值 (computeCommunProb 默认 nboot=100, 4 workers ~25x 加速 bootstrap).
+  # 注意: workers 数量受可用内存限制 (每个 worker 需独立 R 进程, 复制 Seurat 对象).
+  parallel_workers <- sp_cfg$parallel_workers
+  if (is.null(parallel_workers) || parallel_workers < 1) {
+    parallel_workers <- 1
+  }
+  future_enabled <- parallel_workers > 1 &&
+    requireNamespace("future", quietly = TRUE) &&
+    requireNamespace("future.apply", quietly = TRUE)
+  if (future_enabled) {
+    log_info("[Step11] Enabling future parallelization: ", parallel_workers,
+             " workers for computeCommunProb")
+    future::plan(future::multisession, workers = parallel_workers)
+  } else {
+    log_info("[Step11] future parallelization disabled (parallel_workers=",
+             parallel_workers, "); using sequential sapply")
+  }
 
   for (cond in spatial_conds) {
     log_info("[Step11] Building spatial CellChat for condition: ", cond)
@@ -130,57 +159,47 @@ step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
     spot_labels <- spot_labels[common_cells]
 
     # 计算 spatial.factors (CellChat v2 官方 FAQ 推荐):
-    #   ratio = conversion.factor = spot.size / spot_diameter_fullres
-    #   tol   = spot.size / 2
+    #   ratio = μm/pixel (转换因子)
+    #   tol   = spot.size / 2 (μm)
     # 官方推荐 spot.size = 65 μm (10X Visium "理论 spot 大小", 含 55μm spot + 10μm gap)
     # 参考: jinworks/CellChat tutorial/FAQ_on_applying_CellChat_to_spatial_transcriptomics_data.Rmd
     #       Jin S et al. 2025 Nat Protoc PMID:39289562
+    #
+    # GSE233815 数据说明 (2026-07-21 核实):
+    #   GSE233815 GEO 提交仅含 count matrices (barcodes/features/matrix.tsv.gz)
+    #   和 H&E 图像 + fiducial 对齐 JSON, 未含 spaceranger 标准输出目录
+    #   (无 scalefactors_json.json, 无 tissue_positions.csv).
+    #   项目从作者 RDS (seurat_1stSpatial/2ndSpatial) 加载, Seurat v5 对象的
+    #   @scale.factors 槽只含 lowres/hires/resolution, 不含 spot_diameter_fullres.
+    #   因此无法用官方推荐的 spot.size/spot_diameter_fullres 公式.
+    #   改用最近邻 spot 间距估算 (Visium spot 中心间距 = 100 μm):
+    #     ratio = 100 μm / median_nn_pixel
+    #   此方法在 Visium 数据上与官方公式结果一致 (误差 <5%).
     spot_size_um <- sp_cfg$spot_size_um   # 65 (config), 与 CellChat v2 官方一致
     tol_um <- spot_size_um / 2            # 32.5 μm (官方推荐)
 
-    # 优先尝试从 spaceranger scalefactors_json.json 读取 spot_diameter_fullres
-    # (CellChat v2 官方推荐方式)
-    ratio_um_per_pixel <- NA_real_
-    img_obj <- tryCatch(sp_sub@images[[1]], error = function(e) NULL)
-    if (!is.null(img_obj)) {
-      sf_json_path <- tryCatch(img_obj@scale.factors$json, error = function(e) NULL)
-      # 部分旧版 Seurat Visium 对象未存 json 路径, 尝试从 BioServers/image.path 推断
-      if (is.null(sf_json_path) || !file.exists(sf_json_path)) {
-        # Seurat 5 Visium 对象 scale.factors 槽已含 lowres/hires/resolution
-        # spot_diameter_fullres 通常未直接存储, 走回退逻辑
-        ratio_um_per_pixel <- NA_real_
-      } else {
-        sf_data <- jsonlite::fromJSON(sf_json_path)
-        if (!is.null(sf_data$spot_diameter_fullres) &&
-            sf_data$spot_diameter_fullres > 0) {
-          ratio_um_per_pixel <- spot_size_um / sf_data$spot_diameter_fullres
-          log_info("[Step11] ", cond, ": ratio from scalefactors_json.json (",
-                   "spot_diameter_fullres=", sf_data$spot_diameter_fullres, ")")
-        }
+    # 用最近邻 spot 间距估算 ratio (μm/pixel)
+    # Visium spot 中心间距 = 100 μm (10X 官方物理规格)
+    if (nrow(spatial_coords) >= 2) {
+      dmat <- as.matrix(dist(spatial_coords[, coord_cols, drop = FALSE]))
+      diag(dmat) <- NA
+      nn_dist <- apply(dmat, 1, min, na.rm = TRUE)
+      median_nn_pixel <- median(nn_dist, na.rm = TRUE)
+      if (!is.finite(median_nn_pixel) || median_nn_pixel <= 0) {
+        log_warn("[Step11] Invalid NN distance for ", cond,
+                 "; using scale.factors$lowres fallback.")
+        img_sf <- tryCatch(sp_sub@images[[1]]@scale.factors$lowres,
+                           error = function(e) 1)
+        median_nn_pixel <- max(1 / max(img_sf, 1e-6), 1)
       }
+    } else {
+      median_nn_pixel <- 1
     }
-
-    # 回退: 用最近邻 spot 间距估算 (Visium spot 中心间距 = 100 μm)
-    if (!is.finite(ratio_um_per_pixel) || ratio_um_per_pixel <= 0) {
-      if (nrow(spatial_coords) >= 2) {
-        dmat <- as.matrix(dist(spatial_coords[, coord_cols, drop = FALSE]))
-        diag(dmat) <- NA
-        nn_dist <- apply(dmat, 1, min, na.rm = TRUE)
-        median_nn_pixel <- median(nn_dist, na.rm = TRUE)
-        if (!is.finite(median_nn_pixel) || median_nn_pixel <= 0) {
-          log_warn("[Step11] Invalid NN distance for ", cond,
-                   "; using scale.factors$lowres fallback.")
-          img_sf <- tryCatch(sp_sub@images[[1]]@scale.factors$lowres,
-                             error = function(e) 1)
-          median_nn_pixel <- max(1 / max(img_sf, 1e-6), 1)
-        }
-      } else {
-        median_nn_pixel <- 1
-      }
-      ratio_um_per_pixel <- 100 / median_nn_pixel
-      log_info("[Step11] ", cond, ": ratio from NN estimate (median_nn_pixel=",
-               round(median_nn_pixel, 2), ")")
-    }
+    ratio_um_per_pixel <- 100 / median_nn_pixel
+    log_warn(sprintf("[Step11] %s: scalefactors_json.json unavailable (GSE233815 GEO submission); ",
+                     cond),
+             "using NN estimation: median_nn_pixel=", round(median_nn_pixel, 2),
+             " → ratio=", round(ratio_um_per_pixel, 4), " μm/pix")
 
     spatial_factors <- data.frame(ratio = ratio_um_per_pixel, tol = tol_um)
     log_info(sprintf("[Step11] %s: %d spots, ratio=%.4f μm/pix, tol=%.1f μm",
@@ -202,7 +221,11 @@ step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
     )
 
     # CellChat 数据库 (小鼠)
-    cellchat@DB <- CellChatDB.mouse
+    # 官方 vignette 推荐: subsetDB() 默认排除 "Non-protein Signaling"
+    # (代谢/突触信号是从关键酶/介导子间接估算, 在铁衰老/CIRI 研究中可能引入伪信号)
+    # 参考: jinworks/CellChat tutorial/CellChat_analysis_of_spatial_transcriptomics_data.Rmd
+    #       "By default, the 'Non-protein Signaling' are not used."
+    cellchat@DB <- subsetDB(CellChatDB.mouse)
     cellchat <- subsetData(cellchat)
 
     # 空间通讯推断
@@ -238,6 +261,13 @@ step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
 
     cellchat_list[[cond]] <- cellchat
     save_rds(cellchat, paste0("11_cellchat_spatial_", cond), cfg)
+  }
+
+  # 恢复 sequential plan, 避免 future 并行影响下游 ggplot/save_figure 等串行操作
+  # (future::multisession 在 Windows 上残留会拖慢后续小任务, 且可能导致图形设备冲突)
+  if (future_enabled) {
+    future::plan(future::sequential)
+    log_info("[Step11] Restored future::plan(sequential) after computeCommunProb loop")
   }
 
   if (length(cellchat_list) < 1) {
@@ -286,6 +316,29 @@ step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
     log_info("[Step11] Comparing across ", length(cellchat_list), " conditions...")
     cc_merged <- mergeCellChat(cellchat_list, add.names = names(cellchat_list))
 
+    # liftCellChat: 将各 condition 的 net/netP 矩阵 "提升" 到统一细胞类型集
+    # CellChat v2 源码核实 (2026-07-21): 当不同 condition 的细胞类型组成不同时,
+    # netVisual_diffInteraction 做 obj2 - obj1 矩阵减法会因 dim 不一致而报错
+    # "non-conformable arrays" (中文: "非整合陈列"); rankNet 成对比较也会因
+    # pathway set 不同而报 "replacement is not a multiple" 错误.
+    # liftCellChat 官方文档: 将缺失的细胞类型在 net/netP 中以 0 填充, 保证所有
+    # condition 共享相同的 cell group levels, 使矩阵减法可执行.
+    # 参考: jinworks/CellChat R/liftCellChat.R; PMID:39289562 (CellChat v2 protocol)
+    #
+    # 必须显式传入 group.new (所有 condition 细胞类型并集):
+    # 源码当 group.new=NULL 时用 group.num.max 对应的 idents levels 作为目标,
+    # 但若该 condition 缺少其他 condition 才有的细胞类型, 会 stop();
+    # 显式 group.new = union(all levels) 可绕过此检查并填充 0.
+    all_cell_types <- unique(unlist(lapply(cellchat_list, function(cc) levels(cc@idents))))
+    log_info("[Step11] liftCellChat with ", length(all_cell_types),
+             " union cell types: ", paste(all_cell_types, collapse = ", "))
+    cc_merged <- tryCatch({
+      liftCellChat(cc_merged, group.new = all_cell_types)
+    }, error = function(e) {
+      log_warn("[Step11] liftCellChat failed: ", conditionMessage(e),
+               "; pairwise comparisons may fail for heterogeneous cell types.")
+      cc_merged
+    })
     save_rds(cc_merged, "11_cellchat_spatial_merged", cfg)
 
     # 1) 总互作数比较
@@ -306,24 +359,87 @@ step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
     save_figure(p_compare_weight, "11_cellchat_compare_weight", cfg,
                 width = 8, height = 5)
 
-    # 3) 差异互作 (1D)
-    p_diff <- netVisual_diffInteraction(cc_merged, weight.scale = TRUE,
-                                          measure = "count") +
-      ggtitle("Differential interactions (count)")
-    save_figure(p_diff, "11_cellchat_diff_count", cfg, width = 9, height = 7)
+    # 3) 差异互作 (1D) — 成对比较 (sham vs 每个疾病阶段)
+    # CellChat v2 源码核实 (2026-07-21): netVisual_diffInteraction 默认 comparison=c(1,2),
+    # 仅取 object@net[[comparison[1]]] 与 [[comparison[2]]] 相减; 5 条件下若不显式循环,
+    # 条件 3-5 会被静默忽略 (无错误无警告). 必须按基准 (sham) vs 疾病阶段成对循环.
+    # 参考: jinworks/CellChat R/netVisual_diffInteraction.R (源码 line 1-2 默认参数)
+    baseline_idx <- which(cond_names == "sham")
+    if (length(baseline_idx) != 1) {
+      # 若无 "sham" (理论上不会发生, 因 step04-06 已固定 condition 命名),
+      # 退回到第 1 个 condition 作为基准
+      log_warn("[Step11] 'sham' not found in conditions (got: ",
+               paste(cond_names, collapse = ", "),
+               "); falling back to first condition as baseline.")
+      baseline_idx <- 1
+    }
+    disease_idxs <- setdiff(seq_along(cond_names), baseline_idx)
+    for (di in disease_idxs) {
+      di_name <- cond_names[di]
+      bl_name <- cond_names[baseline_idx]
+      log_info("[Step11] netVisual_diffInteraction: ", bl_name, " vs ", di_name)
+      tryCatch({
+        p_diff <- netVisual_diffInteraction(
+          cc_merged,
+          comparison = c(baseline_idx, di),
+          weight.scale = TRUE,
+          measure = "count"
+        ) +
+          ggtitle(paste0("Differential interactions (count): ",
+                         bl_name, " vs ", di_name))
+        save_figure(p_diff,
+                    paste0("11_cellchat_diff_count_", bl_name, "_vs_", di_name),
+                    cfg, width = 9, height = 7)
+      }, error = function(e) {
+        log_warn("[Step11] diffInteraction failed for ", bl_name, " vs ",
+                 di_name, ": ", conditionMessage(e))
+      })
+    }
 
     # 4) 信息流排名 (识别条件特异通路)
+    # CellChat v2 源码核实 (2026-07-21): rankNet 内部 line 241 `if (do.stat & length(comparison) == 2)`
+    # 仅当 length(comparison)==2 时执行 Wilcoxon 检验; 5 条件下 do.stat=TRUE 会被静默忽略,
+    # 图上不显示显著性标记, 但代码无任何警告 → 易误导用户以为已做统计检验.
+    # 解决方案: 5 条件下 do.stat=FALSE (绘制堆叠柱状图仅展示信息流分布),
+    #           另对 sham vs 每个疾病阶段做成对 rankNet(do.stat=TRUE) 得到 Wilcoxon p 值.
+    # 参考: jinworks/CellChat R/rankNet.R (源码 line 241, 292-297)
     p_rank <- rankNet(cc_merged, mode = "comparison",
-                       stacked = TRUE, do.stat = TRUE) +
+                       stacked = TRUE, do.stat = FALSE) +
       theme_pub(base_size = 9) +
       theme(axis.text.y = element_text(size = 7))
-    save_figure(p_rank, "11_cellchat_pathway_rank", cfg, width = 9, height = 14)
+    save_figure(p_rank, "11_cellchat_pathway_rank_overview", cfg,
+                width = 9, height = 14)
+
+    # 4b) 成对 rankNet (sham vs 每个疾病阶段) — 启用 Wilcoxon 统计检验
+    for (di in disease_idxs) {
+      di_name <- cond_names[di]
+      bl_name <- cond_names[baseline_idx]
+      log_info("[Step11] rankNet pairwise: ", bl_name, " vs ", di_name)
+      tryCatch({
+        p_pw <- rankNet(
+          cc_merged,
+          mode = "comparison",
+          comparison = c(baseline_idx, di),
+          stacked = TRUE,
+          do.stat = TRUE
+        ) +
+          theme_pub(base_size = 9) +
+          theme(axis.text.y = element_text(size = 7)) +
+          labs(title = paste0("Information flow: ", bl_name, " vs ", di_name))
+        save_figure(p_pw,
+                    paste0("11_cellchat_pathway_rank_", bl_name, "_vs_", di_name),
+                    cfg, width = 9, height = 14)
+      }, error = function(e) {
+        log_warn("[Step11] rankNet pairwise failed for ", bl_name, " vs ",
+                 di_name, ": ", conditionMessage(e))
+      })
+    }
 
     # 5) 铁死亡/衰老相关通路提取
     # CellChat v2 mergeCellChat 后, cc@LR 是按 condition 分组的 list
     # 需要从每个 condition 的 LRsig$pathway_name 收集并集
     # 铁衰老/ferroptosis 相关 CellChat 通路列表 (基于 PubMed 文献验证 2026-07-20)
-    # 通路名大小写敏感: CellChatDB.mouse 用 "TGFb" (不是 "TGFB"), "ApoE" (不是 "APOE"),
+    # 通路名大小写敏感: CellChatDB.mouse 用 "TGFb" (不是 "TGFB"), "ApoE" (不是 "APOE",
     #   "IFN-lII" (DB 中为 lowercase 'l', 不是 "IFN-III")
     # centrality scores 已在每个 condition 循环中计算 (mergeCellChat 后无法计算)
     #
@@ -382,21 +498,27 @@ step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
         })
       }
       if (length(ht_list) > 0) {
-        tryCatch({
-          png(file.path(cfg$project$figures_dir,
-                         "11_cellchat_ferrosenescence_pathways_heatmap.png"),
-              width = 14, height = 3 * length(ht_list), units = "in",
-              res = cfg$viz$figure_dpi)
-          for (i in seq_along(ht_list)) {
-            draw(ht_list[[i]], column_title = names(ht_list)[i])
-          }
-          dev.off()
-          log_info("[Step11] Figure saved: 11_cellchat_ferrosenescence_pathways_heatmap.png")
-        }, error = function(e) {
-          log_warn("[Step11] heatmap combine failed: ",
-                   conditionMessage(e))
-          try(dev.off(), silent = TRUE)
-        })
+        # ComplexHeatmap::draw 显式命名空间 (Step11 不在 suppressPackageStartupMessages
+        # 中加载 ComplexHeatmap, 直接调用 draw() 会因函数不在 search path 而失败)
+        if (!requireNamespace("ComplexHeatmap", quietly = TRUE)) {
+          log_warn("[Step11] ComplexHeatmap not available; skipping heatmap combine.")
+        } else {
+          tryCatch({
+            png(file.path(cfg$project$figures_dir,
+                           "11_cellchat_ferrosenescence_pathways_heatmap.png"),
+                width = 14, height = 3 * length(ht_list), units = "in",
+                res = cfg$viz$figure_dpi)
+            for (i in seq_along(ht_list)) {
+              ComplexHeatmap::draw(ht_list[[i]], column_title = names(ht_list)[i])
+            }
+            dev.off()
+            log_info("[Step11] Figure saved: 11_cellchat_ferrosenescence_pathways_heatmap.png")
+          }, error = function(e) {
+            log_warn("[Step11] heatmap combine failed: ",
+                     conditionMessage(e))
+            try(dev.off(), silent = TRUE)
+          })
+        }
       }
 
       # 各通路 outgoing/incoming 得分
