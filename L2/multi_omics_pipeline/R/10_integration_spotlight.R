@@ -16,6 +16,7 @@
 #     - Sang-Aram 2024 eLife (PMID: 38787371): 11 方法中 cell2location/RCTD 最佳
 #     - Li 2023 Nat Commun (PMID: 36941264): 18 方法中 CARD/Cell2location/Tangram 最佳
 #     - Slabowska 2024 (PMID: 38601476): CVD 样本中 RCTD 准确性最高
+#       (注: 仅比较 RCTD/Cell2location/spatialDWLS, 未含 SPOTlight)
 #   本项目选 SPOTlight (PMID: 33544846) 仅为工程性理由:
 #     1) Bioconductor 正式包, 与 SpatialExperiment/SingleCellExperiment 原生兼容
 #     2) seeded-NMF 提供可解释 topic profile
@@ -124,11 +125,13 @@ step10_integration_spotlight <- function(sc_seu, spatial_merged, cfg) {
     if (ncol(sp_sub) == 0) next
 
     # SPOTlight 输入: 空间数据 assay 矩阵
+    # 官方文档 (PMID:33544846) 推荐 raw counts 作为输入, SPOTlight 内部做 unit variance scaling
+    # 参考: https://marcelosua.github.io/SPOTlight/reference/SPOTlight.html
     sp_assay <- "SCT" %in% names(sp_sub@assays)
     sp_mat <- if (sp_assay) {
-      as.matrix(GetAssayData(sp_sub, assay = "SCT", layer = "data"))
+      as.matrix(GetAssayData(sp_sub, assay = "SCT", layer = "counts"))
     } else {
-      as.matrix(GetAssayData(sp_sub, assay = "Spatial", layer = "data"))
+      as.matrix(GetAssayData(sp_sub, assay = "Spatial", layer = "counts"))
     }
 
     # 共享基因
@@ -159,8 +162,8 @@ step10_integration_spotlight <- function(sc_seu, spatial_merged, cfg) {
         weight_id = "avg_log2FC",
         group_id = "cluster",
         gene_id = "gene",
-        assay = "logcounts",
-        min_cont = cfg$integration$spotlight_min_count
+        assay = "counts",
+        min_prop = cfg$integration$spotlight_min_prop
       )
     }, error = function(e) {
       log_error("[Step10] SPOTlight failed for ", cond, ": ",

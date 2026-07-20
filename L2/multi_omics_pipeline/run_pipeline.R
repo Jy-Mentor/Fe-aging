@@ -248,7 +248,9 @@ for (step in steps_to_run) {
       "8"  = sc_seu <- step08_sc_annotate_score(sc_seu, cfg),
       "9"  = { res <- step09_sc_pseudotime_augur(sc_seu, cfg)
                sc_augur_res <- res$augur },
-      "10" = spotlight_res <- step10_integration_spotlight(sc_seu, spatial_merged, cfg),
+      "10" = { res10 <- step10_integration_spotlight(sc_seu, spatial_merged, cfg)
+               spotlight_res <- res10$per_sample
+               spatial_merged <- res10$spatial_merged },
       "11" = cellchat_spatial <- step11_integration_cellchat_spatial(spatial_merged, cfg),
       "12" = cmap_result <- step12_integration_cmap(bulk_dea_list, cfg),
       "13" = step13_report_generation(cfg,

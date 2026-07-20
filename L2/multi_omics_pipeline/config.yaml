@@ -239,10 +239,10 @@ sc:
 # L4: Integration 分析参数
 # ----------------------------------------------------------------------------
 integration:
-  # SPOTlight 空间去卷积
-  spotlight_n_top_mgs: 100              # 每细胞类型 top N marker
-  spotlight_min_count: 0.001
-  spotlight_assay: "logcounts"
+  # SPOTlight 空间去卷积 (参数名核实自官方文档 PMID:33544846)
+  spotlight_n_top_mgs: 100              # 每细胞类型 top N marker (外部过滤, 非 SPOTlight() 参数)
+  spotlight_min_prop: 0.01              # SPOTlight() min_prop 参数 (官方默认 0.01)
+  spotlight_assay: "counts"             # SPOTlight() assay 参数 (官方默认 "counts", raw counts)
   # CellChat 空间扩展
   cellchat_spatial:
     enabled: true
