@@ -129,39 +129,71 @@ step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
     expr_mat <- expr_mat[, common_cells, drop = FALSE]
     spot_labels <- spot_labels[common_cells]
 
-    # 计算 spatial.factors:
-    # ratio = μm / pixel (用最近邻 spot 间距估算; Visium 标准 ≈ 100 μm)
-    # tol   = spot 半径 (μm); Visium spot 直径 55 μm → tol = 27.5
-    spot_size_um <- sp_cfg$spot_size_um   # 65 (config), Visium 直径实际 55 μm
-    spot_diameter_um <- 55   # Visium 标准物理 spot 直径
-    # 用最近邻距离估算 pixel → μm 比例
-    if (nrow(spatial_coords) >= 2) {
-      dmat <- as.matrix(dist(spatial_coords[, coord_cols, drop = FALSE]))
-      diag(dmat) <- NA
-      nn_dist <- apply(dmat, 1, min, na.rm = TRUE)
-      median_nn_pixel <- median(nn_dist, na.rm = TRUE)
-      if (!is.finite(median_nn_pixel) || median_nn_pixel <= 0) {
-        log_warn("[Step11] Invalid NN distance for ", cond,
-                 "; using scale.factors$lowres fallback.")
-        img_sf <- sp_sub@images[[1]]@scale.factors$lowres
-        median_nn_pixel <- max(1 / max(img_sf, 1e-6), 1)
+    # 计算 spatial.factors (CellChat v2 官方 FAQ 推荐):
+    #   ratio = conversion.factor = spot.size / spot_diameter_fullres
+    #   tol   = spot.size / 2
+    # 官方推荐 spot.size = 65 μm (10X Visium "理论 spot 大小", 含 55μm spot + 10μm gap)
+    # 参考: jinworks/CellChat tutorial/FAQ_on_applying_CellChat_to_spatial_transcriptomics_data.Rmd
+    #       Jin S et al. 2025 Nat Protoc PMID:39289562
+    spot_size_um <- sp_cfg$spot_size_um   # 65 (config), 与 CellChat v2 官方一致
+    tol_um <- spot_size_um / 2            # 32.5 μm (官方推荐)
+
+    # 优先尝试从 spaceranger scalefactors_json.json 读取 spot_diameter_fullres
+    # (CellChat v2 官方推荐方式)
+    ratio_um_per_pixel <- NA_real_
+    img_obj <- tryCatch(sp_sub@images[[1]], error = function(e) NULL)
+    if (!is.null(img_obj)) {
+      sf_json_path <- tryCatch(img_obj@scale.factors$json, error = function(e) NULL)
+      # 部分旧版 Seurat Visium 对象未存 json 路径, 尝试从 BioServers/image.path 推断
+      if (is.null(sf_json_path) || !file.exists(sf_json_path)) {
+        # Seurat 5 Visium 对象 scale.factors 槽已含 lowres/hires/resolution
+        # spot_diameter_fullres 通常未直接存储, 走回退逻辑
+        ratio_um_per_pixel <- NA_real_
+      } else {
+        sf_data <- jsonlite::fromJSON(sf_json_path)
+        if (!is.null(sf_data$spot_diameter_fullres) &&
+            sf_data$spot_diameter_fullres > 0) {
+          ratio_um_per_pixel <- spot_size_um / sf_data$spot_diameter_fullres
+          log_info("[Step11] ", cond, ": ratio from scalefactors_json.json (",
+                   "spot_diameter_fullres=", sf_data$spot_diameter_fullres, ")")
+        }
       }
-    } else {
-      median_nn_pixel <- 1
     }
-    # Visium spot 中心间距 = 100 μm
-    ratio_um_per_pixel <- 100 / median_nn_pixel
-    tol_um <- spot_diameter_um / 2
+
+    # 回退: 用最近邻 spot 间距估算 (Visium spot 中心间距 = 100 μm)
+    if (!is.finite(ratio_um_per_pixel) || ratio_um_per_pixel <= 0) {
+      if (nrow(spatial_coords) >= 2) {
+        dmat <- as.matrix(dist(spatial_coords[, coord_cols, drop = FALSE]))
+        diag(dmat) <- NA
+        nn_dist <- apply(dmat, 1, min, na.rm = TRUE)
+        median_nn_pixel <- median(nn_dist, na.rm = TRUE)
+        if (!is.finite(median_nn_pixel) || median_nn_pixel <= 0) {
+          log_warn("[Step11] Invalid NN distance for ", cond,
+                   "; using scale.factors$lowres fallback.")
+          img_sf <- tryCatch(sp_sub@images[[1]]@scale.factors$lowres,
+                             error = function(e) 1)
+          median_nn_pixel <- max(1 / max(img_sf, 1e-6), 1)
+        }
+      } else {
+        median_nn_pixel <- 1
+      }
+      ratio_um_per_pixel <- 100 / median_nn_pixel
+      log_info("[Step11] ", cond, ": ratio from NN estimate (median_nn_pixel=",
+               round(median_nn_pixel, 2), ")")
+    }
+
     spatial_factors <- data.frame(ratio = ratio_um_per_pixel, tol = tol_um)
     log_info(sprintf("[Step11] %s: %d spots, ratio=%.4f μm/pix, tol=%.1f μm",
                      cond, nrow(spatial_coords), ratio_um_per_pixel, tol_um))
 
     # ----------------------------------------------------------------------
     # 11.3 创建空间 CellChat 对象 (datatype = "spatial" 启用空间模式)
+    # 官方 FAQ: meta 应包含 samples 列以支持跨 replicate 聚合分析
     # ----------------------------------------------------------------------
     cellchat <- createCellChat(
       object = expr_mat,
       meta = data.frame(labels = spot_labels,
+                        samples = cond,
                         row.names = colnames(expr_mat)),
       group.by = "labels",
       datatype = "spatial",
@@ -290,14 +322,30 @@ step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
     # 5) 铁死亡/衰老相关通路提取
     # CellChat v2 mergeCellChat 后, cc@LR 是按 condition 分组的 list
     # 需要从每个 condition 的 LRsig$pathway_name 收集并集
-    # 通路名大小写敏感: CellChatDB.mouse 用 "TGFb" (不是 "TGFB"), 不含 "EPCAM"/"IFNII"
+    # 铁衰老/ferroptosis 相关 CellChat 通路列表 (基于 PubMed 文献验证 2026-07-20)
+    # 通路名大小写敏感: CellChatDB.mouse 用 "TGFb" (不是 "TGFB"), "ApoE" (不是 "APOE"),
+    #   "IFN-lII" (DB 中为 lowercase 'l', 不是 "IFN-III")
     # centrality scores 已在每个 condition 循环中计算 (mergeCellChat 后无法计算)
-    fa_pathways <- c("SPP1", "TGFb", "CXCL", "CCL", "TNF", "IL6",
-                      "GALECTIN", "MIF", "COMPLEMENT", "FLT3",
-                      "GRN", "VISFATIN", "NRXN", "NCAM",
-                      "NOTCH", "WNT", "BMP", "FGF", "VEGF",
-                      "PDGF", "EGF", "IL1", "IL2",
-                      "IL4", "IL10", "IL12", "IL16", "IL17")
+    #
+    # 证据等级 (详见 PubMed 查询报告):
+    # [A] 18 个强文献支持 (Jin 2021 PMID:33597522 CellChat 原文示例 + 铁死亡/SASP 文献)
+    # [B] 8 个探索性通路 (CellChatDB 收录但无直接铁死亡/衰老文献证据, 论文需谨慎解读)
+    # [C] 9 个文献支持补充 (TRAIL/FASLG 死亡受体-铁死亡交叉调控; IFN 干扰素-衰老;
+    #     IGF/IGFBP 胰岛素-衰老经典通路; TWEAK 纤维化; ADIPONECTIN 代谢衰老)
+    fa_pathways <- c(
+      # [A] 强文献支持
+      "SPP1", "TGFb", "CXCL", "CCL", "TNF", "IL6",
+      "GALECTIN", "MIF", "COMPLEMENT", "GRN",
+      "NOTCH", "WNT", "BMP", "FGF", "VEGF",
+      "PDGF", "EGF", "IL1",
+      # [B] 探索性通路 (CellChatDB 收录, 论文需标注为探索性)
+      "FLT3", "VISFATIN", "NRXN", "NCAM",
+      "IL2", "IL4", "IL10", "IL12", "IL16", "IL17",
+      # [C] 文献支持补充 (PubMed 验证 2026-07-20)
+      "TRAIL", "FASLG", "BTLA",
+      "IFN-I", "IFN-II", "IFN-lII",
+      "ApoE", "IGF", "IGFBP", "TWEAK", "ADIPONECTIN"
+    )
 
     available_pathways <- character(0)
     for (cn in names(cc_merged@LR)) {
@@ -355,7 +403,7 @@ step11_integration_cellchat_spatial <- function(spatial_merged, cfg) {
       # netVisual_aggregate 源码访问 object@LR$LRsig (single object 结构)
       # merged 对象的 @LR 是按 condition 分组的 list, 无法直接调用
       # 改为: 对每个 condition 的 single object 单独绘制 pathway circle plot
-      # 只绘制前 6 个 pathway (避免 28 个 pathway × 9 condition = 252 张图)
+      # 只绘制前 6 个 pathway (避免 37 通路 × 5 condition = 185 张图)
       pw_to_plot <- head(fa_pathways_avail, 6)
       for (pw in pw_to_plot) {
         for (cond in names(cellchat_list)) {

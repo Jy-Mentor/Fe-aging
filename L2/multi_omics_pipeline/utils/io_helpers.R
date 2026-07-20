@@ -34,11 +34,11 @@ load_config <- function(config_path = "config.yaml") {
   }
 
   # data 路径 (全部相对于 project$root, 即 d:/铁衰老 绝不重蹈覆辙/)
+  # 注意: spatial_seurat_1DP_rds 已永久排除 (与 1st/2nd 重复 4 个样本)
   data_keys <- c("bulk_dir", "bulk_counts", "bulk_pheno", "spatial_dir",
                  "spatial_extras_dir", "sc_dir", "sn_dir",
                  "sc_seurat_rds", "sc_oligos_rds", "sc_meta_summary_rds",
-                 "spatial_seurat_1st_rds", "spatial_seurat_2nd_rds",
-                 "spatial_seurat_1DP_rds")
+                 "spatial_seurat_1st_rds", "spatial_seurat_2nd_rds")
   for (k in data_keys) {
     v <- cfg$data[[k]]
     if (!is.null(v) && is.character(v) && nchar(v) > 0 &&

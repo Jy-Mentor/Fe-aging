@@ -1,6 +1,9 @@
 #!/usr/bin/env Rscript
 # ============================================================================
-# 验证 Step 11 多条件比较修复 (加载已保存的 9 个 CellChat RDS, 只跑比较部分)
+# 验证 Step 11 多条件比较修复 (加载已保存的 CellChat RDS, 只跑比较部分)
+# 注意: 修复后仅 5 个 condition (排除 1DP 重复样本):
+#   1stSpatial_B1_D1, 1stSpatial_D1_D3, 1stSpatial_C1_D7,
+#   2ndSpatial_C1_mouse_control, 2ndSpatial_D1_mouse_D7
 # ============================================================================
 .libPaths(c("d:/铁衰老 绝不重蹈覆辙/R-library/4.5",
             "D:/R-library/4.5", .libPaths()))
@@ -21,20 +24,26 @@ init_logger(file.path(cfg$project$log_dir,
                               format(Sys.time(), "%Y%m%d_%H%M%S"))), "INFO")
 
 # ----------------------------------------------------------------------------
-# 加载 9 个 condition 的 CellChat 对象
+# 加载 5 个 condition 的 CellChat 对象 (修复后, 排除 1DP 重复样本)
 # ----------------------------------------------------------------------------
 rds_dir <- cfg$project$rds_dir
-cond_list <- c("D1", "D3", "D7", "sham", "D7b", "1DPI", "3DPI", "7DPI", "Ctrl")
+cond_list <- c("1stSpatial_B1_D1", "1stSpatial_D1_D3", "1stSpatial_C1_D7",
+               "2ndSpatial_C1_mouse_control", "2ndSpatial_D1_mouse_D7")
 cellchat_list <- list()
 for (cond in cond_list) {
   rds_path <- file.path(rds_dir, paste0("11_cellchat_spatial_", cond, ".rds"))
   if (!file.exists(rds_path)) {
-    log_warn("Missing: ", rds_path); next
+    log_warn("Missing: ", rds_path, " (expected after Step 11 re-run)")
+    next
   }
   log_info("Loading ", basename(rds_path))
   cellchat_list[[cond]] <- readRDS(rds_path)
 }
 log_info("Loaded ", length(cellchat_list), " CellChat objects")
+if (length(cellchat_list) < 2) {
+  log_error("Need >= 2 conditions for comparison. Re-run Step 11 first.")
+  quit(status = 1)
+}
 
 # 先对每个 condition 计算 centrality scores (mergeCellChat 后无法计算)
 # 与 Step 11 修复后代码一致: netAnalysis_computeCentrality 在每个 condition 循环中调用
@@ -93,13 +102,21 @@ p_rank <- rankNet(cc_merged, mode = "comparison",
   theme(axis.text.y = element_text(size = 7))
 save_figure(p_rank, "11_cellchat_pathway_rank", cfg, width = 9, height = 14)
 
-# 5) 铁死亡/衰老相关通路 (与 Step 11 修复后代码一致)
-fa_pathways <- c("SPP1", "TGFb", "CXCL", "CCL", "TNF", "IL6",
-                  "GALECTIN", "MIF", "COMPLEMENT", "FLT3",
-                  "GRN", "VISFATIN", "NRXN", "NCAM",
-                  "NOTCH", "WNT", "BMP", "FGF", "VEGF",
-                  "PDGF", "EGF", "IL1", "IL2",
-                  "IL4", "IL10", "IL12", "IL16", "IL17")
+# 5) 铁死亡/衰老相关通路 (与 Step 11 修复后代码一致, 37 通路)
+fa_pathways <- c(
+  # [A] 强文献支持 (18 通路)
+  "SPP1", "TGFb", "CXCL", "CCL", "TNF", "IL6",
+  "GALECTIN", "MIF", "COMPLEMENT", "GRN",
+  "NOTCH", "WNT", "BMP", "FGF", "VEGF",
+  "PDGF", "EGF", "IL1",
+  # [B] 探索性通路 (CellChatDB 收录, 论文需谨慎解读)
+  "FLT3", "VISFATIN", "NRXN", "NCAM",
+  "IL2", "IL4", "IL10", "IL12", "IL16", "IL17",
+  # [C] 文献支持补充 (PubMed 验证 2026-07-20)
+  "TRAIL", "FASLG", "BTLA",
+  "IFN-I", "IFN-II", "IFN-lII",
+  "ApoE", "IGF", "IGFBP", "TWEAK", "ADIPONECTIN"
+)
 available_pathways <- character(0)
 for (cn in names(cc_merged@LR)) {
   pn <- unique(cc_merged@LR[[cn]]$LRsig$pathway_name)
@@ -149,7 +166,7 @@ if (length(fa_pathways_avail) > 0) {
   # merged 对象的 @LR 是按 condition 分组的 list, 无法直接调用
   # 改为: 对每个 condition 的 single object 单独绘制 pathway circle plot
   log_info("netVisual_aggregate per condition (top pathways)...")
-  # 只绘制前 6 个 pathway (避免 28 个 pathway × 9 condition = 252 张图)
+  # 只绘制前 6 个 pathway (避免 37 通路 × 5 condition = 185 张图)
   pw_to_plot <- head(fa_pathways_avail, 6)
   for (pw in pw_to_plot) {
     for (cond in names(cellchat_list)) {

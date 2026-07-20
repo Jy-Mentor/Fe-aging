@@ -8,6 +8,19 @@
 #   - Macosko EZ et al. 2015 (SPOTlight based on NMFreg, PMID: 26000488)
 #   - Moncada R et al. 2020 Nat Commun (SPOTlight, PMID: 31844000)
 #   - Diaz-Mejia JJ et al. 2019 Mol Syst Biol (BuildSimilarity)
+# ----------------------------------------------------------------------------
+# 方法学说明 (SPOTlight vs RCTD, PubMed 文献验证 2026-07-20):
+#   GSE233815 原论文 (Zucha et al. 2024 PNAS, PMID: 39499634) 使用 RCTD
+#   (Cable et al. 2022 Nat Biotechnol, PMID: 33603203) 进行空间去卷积.
+#   多项独立 benchmark 研究显示 RCTD 在 Visium 数据上表现为 top-performing:
+#     - Sang-Aram 2024 eLife (PMID: 38787371): 11 方法中 cell2location/RCTD 最佳
+#     - Li 2023 Nat Commun (PMID: 36941264): 18 方法中 CARD/Cell2location/Tangram 最佳
+#     - Slabowska 2024 (PMID: 38601476): CVD 样本中 RCTD 准确性最高
+#   本项目选 SPOTlight (PMID: 33544846) 仅为工程性理由:
+#     1) Bioconductor 正式包, 与 SpatialExperiment/SingleCellExperiment 原生兼容
+#     2) seeded-NMF 提供可解释 topic profile
+#     3) 对 shallowly sequenced scRNA-seq 参考稳健 (PMID: 33544846)
+#   承认此选择非方法学最优, 后续将补充 RCTD 复跑做敏感性分析.
 # ============================================================================
 
 step10_integration_spotlight <- function(sc_seu, spatial_merged, cfg) {

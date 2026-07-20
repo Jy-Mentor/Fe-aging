@@ -158,7 +158,7 @@ cmap_result     <- NULL      # L4: CMap 反证结果
   }
 
   # 步骤 → (RDS 文件名, 目标全局变量名) 映射
-  # 按步骤号降序排列: 同名变量优先加载最新版本 (如 spatial_merged 在 step5/6/10 都有输出,
+  # 按步骤号降序排列: 同名变量优先加载最新版本 (如 spatial_merged 在 step4/5/6/10 都有输出,
   # 应优先加载 step10 的 10_spatial_with_proportions.rds, 它包含 prop_* 列)
   rds_map <- list(
     list(step = 12, file = "12_cmap_result.rds",                var = "cmap_result"),
@@ -170,6 +170,7 @@ cmap_result     <- NULL      # L4: CMap 反证结果
     list(step = 7,  file = "07_sc_seurat_integrated.rds",       var = "sc_seu"),
     list(step = 6,  file = "06_spatial_with_regions.rds",       var = "spatial_merged"),
     list(step = 5,  file = "05_spatial_merged_scored.rds",      var = "spatial_merged"),
+    list(step = 4,  file = "04_spatial_merged.rds",             var = "spatial_merged"),
     list(step = 4,  file = "04_spatial_list.rds",               var = "spatial_list"),
     list(step = 3,  file = "03_bulk_wgcna_result.rds",          var = "wgcna_modules"),
     list(step = 2,  file = "02_bulk_vsd.rds",                   var = "bulk_vsd"),

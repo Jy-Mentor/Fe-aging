@@ -63,14 +63,15 @@ data:
   sc_seurat_rds: "data/external/GSE233815/mendeley/Seurat_sn_MCAO_Zucha2023_QCFiltered.Rds"
   sc_oligos_rds: "data/external/GSE233815/mendeley/Seurat_OLs_integrated_annotated.Rds"
   sc_meta_summary_rds: "data/external/GSE233815/mendeley/sn_meta_data_summary.rds"
-  # 空间 Seurat 对象 (作者已处理)
+  # 空间 Seurat 对象 (作者已处理, GSE233815 mendeley)
+  # 注意: spatial_seurat_1DP_13_nygen.rds 已永久排除 (与 1st/2nd 重复 4 个样本)
   spatial_seurat_1st_rds: "data/external/GSE233815/mendeley/seurat_1stSpatial.rds"
   spatial_seurat_2nd_rds: "data/external/GSE233815/mendeley/seurat_2ndSpatial.rds"
-  spatial_seurat_1DP_rds: "data/external/GSE233815/mendeley/spatial_seurat_1DP_13_nygen.rds"
 
   sc_condition_col: "Condition"
   sc_celltype_col: "Celltypes"
-  sc_condition_levels: ["Ctrl", "1DPI", "3DPI", "7DPI"]
+  # GSE233815 原论文 snRNA-seq 使用 sham/D1/D3/D7 命名 (Zucha 2024 PNAS)
+  sc_condition_levels: ["sham", "D1", "D3", "D7"]
 
 # ----------------------------------------------------------------------------
 # 基因集 (基于 PubMed 真实文献提取, 不使用任何模拟数据)
