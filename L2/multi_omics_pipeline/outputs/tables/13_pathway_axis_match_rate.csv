@@ -1,0 +1,9 @@
+Pathway_Axis,Driver_Gene,Evidence_Level,N_Metabolites,Matches,Match_Rate,Mean_log2FC
+SAT1 / Polyamine,SAT1,Moderate,7,5,0.71,-0.34
+SLC1A5 / Glu-Cys,SLC1A5,Moderate,13,8,0.62,-0.18
+KEAP1 / NRF2,KEAP1,Moderate,10,5,0.50,-0.21
+IL6 / Inflammation,IL6,Weak,7,3,0.43,-0.21
+NOX4 / Oxidative,NOX4,Weak,5,2,0.40,-0.07
+ACSL4 / Lipid,ACSL4,Weak,20,4,0.20,-0.87
+NAMPT / NAD+,NAMPT,Weak,5,1,0.20,0.47
+HIF1A / Hypoxia,HIF1A,Weak,2,0,0.00,-0.33
