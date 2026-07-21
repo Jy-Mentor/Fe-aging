@@ -380,7 +380,11 @@ run_pairwise_stats <- function(abundance, group_var) {
         if (mean1 > 0 && mean2 > 0) {
           test_res <- tryCatch(
             t.test(v1, v2),
-            error = function(e) NULL
+            error = function(e) {
+              message(sprintf("  t.test failed for %s (%s vs %s): %s",
+                              met, g1, g2, conditionMessage(e)))
+              NULL
+            }
           )
 
           if (!is.null(test_res)) {
