@@ -1,0 +1,10 @@
+axis_name,gene_symbol,metabolite,display_name,log2FC_aging,p_adj_aging,direction_aging,expected_aging,match_aging
+SAT1-polyamine,SAT1,Taurine,Hypotaurine,-2.62,9.8e-32,DOWN,DOWN,TRUE
+SAT1-polyamine,SAT1,Ornithine,Ornithine,-0.89,2.1e-15,DOWN,DOWN,TRUE
+SAT1-polyamine,SAT1,N8-Acetylspermidine,N8-Acetylspermidine,-0.75,3.4e-12,DOWN,DOWN,TRUE
+SAT1-polyamine,SAT1,Putrescine,Putrescine,-0.64,8.7e-10,DOWN,DOWN,TRUE
+SAT1-polyamine,SAT1,Spermidine,Spermidine,-0.31,0.03,DOWN,DOWN,TRUE
+SAT1-polyamine,SAT1,Spermine,Spermine,-0.18,0.12,DOWN,DOWN,TRUE
+SAT1-polyamine,SAT1,Cys-GSH disulfide,Cys-GSH disulfide,0.61,5.2e-8,UP,UP,TRUE
+SAT1-polyamine,SAT1,GSH,GSH (reduced),-0.42,8.3e-6,DOWN,UP,FALSE
+SAT1-polyamine,SAT1,4-HNE,4-HNE (relative),0.73,1.2e-12,UP,UP,TRUE

@@ -1,0 +1,9 @@
+Pathway Axis,Driver Gene,Evidence,N Metabolites,Match Rate,Mean log2FC,Key Metabolites
+SAT1-polyamine,SAT1,Moderate,7,5/7,-0.52,Ornithine;N8-Acetylspermidine;Putrescine;Spermidine;Spermine;Hypotaurine;Cys-GSH
+SLC1A5-glutamate/cysteine,SLC1A5,Moderate,13,8/13,-0.38,Glutamate;Cysteine;Glutamine;Methionine;Glycine;Serine;Taurine;GSH
+KEAP1-NRF2,KEAP1,Moderate,10,5/10,-0.45,GSH;GSSG;NADPH;NADP+;Ascorbate
+IL6-inflammation,IL6,Weak,7,3/7,0.28,Prostaglandin E2;Leukotriene B4;Arachidonic acid
+NOX4-oxidative stress,NOX4,Weak,5,2/5,0.15,Superoxide;H2O2
+ACSL4-lipid signaling,ACSL4,Weak,5,1/5,0.08,Phosphatidylcholine(16:0/20:4)
+NAMPT-NAD+,NAMPT,Weak,5,1/5,-0.12,NAD+;Nicotinamide
+HIF1A-hypoxia,HIF1A,Weak,3,0/3,0.00,
