@@ -501,7 +501,7 @@ plot_metabolite_heatmap <- function(stats, score_data, group_var = "Age") {
     fontsize_col      = 5,
     main              = "铁死亡/铁衰老代谢物表达热图 (Z-score归一化)",
     color             = colorRampPalette(
-      rev(brewer.pal(11, "RdBu"))(100)
+      rev(brewer.pal(11, "RdBu")))(100)
   )
   dev.off()
   message("热图已保存: ", file.path(FIG_DIR, "ferroptosis_metabolite_heatmap.pdf"))
