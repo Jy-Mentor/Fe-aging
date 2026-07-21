@@ -247,14 +247,11 @@ step09_sc_pseudotime_augur <- function(seu, cfg) {
     log_warn("[Step09] Need >=2 conditions for Augur. Skipping.")
     return(NULL)
   }
-  control_labels <- c("Ctrl", "Control")
+  control_labels <- c("Ctrl", "Control", "sham", "Sham")
   if (!any(conds %in% control_labels)) {
-    log_warn("[Step09] No control condition found (Ctrl/Control). Using first as ref.")
+    log_warn("[Step09] No control condition found (Ctrl/Control/sham). Using first as ref.")
     control_labels <- conds[1]
   }
-
-  seu$augur_condition <- ifelse(seu@meta.data[[condition_col]] %in% control_labels,
-                                 "ctrl", "stim")
 
   if (inherits(seu[["RNA"]], "Assay5")) {
     seu[["RNA"]] <- JoinLayers(seu[["RNA"]])
@@ -273,15 +270,6 @@ step09_sc_pseudotime_augur <- function(seu, cfg) {
   log_info("[Step09] Augur subsample: ", ncol(seu_sub), " cells (≤500/type)")
 
   expr_mat <- as.matrix(GetAssayData(seu_sub, assay = "RNA", layer = "data"))
-  cell_types <- seu_sub@meta.data[[celltype_col]]
-  condition <- seu_sub$augur_condition
-
-  # Augur 1.0.3 API: input, meta, label_col, cell_type_col, feature_perc
-  augur_meta <- data.frame(
-    cell_type = cell_types,
-    label = condition,
-    row.names = colnames(expr_mat)
-  )
 
   # Windows 上 parallel::mclapply 不支持 mc.cores > 1, 强制单线程
   augur_threads <- cfg$sc$augur_n_threads
@@ -290,53 +278,92 @@ step09_sc_pseudotime_augur <- function(seu, cfg) {
     augur_threads <- 1
   }
 
-  augur_res <- tryCatch({
-    Augur::calculate_auc(
-      input = expr_mat,
-      meta = augur_meta,
-      label_col = "label",
-      cell_type_col = "cell_type",
-      n_threads = augur_threads,
-      n_subsamples = cfg$sc$augur_subsample_size,
-      folds = cfg$sc$augur_folds,
-      feature_perc = cfg$sc$augur_features_percent
-    )
-  }, error = function(e) {
-    log_error("[Step09] Augur failed: ", conditionMessage(e))
-    return(NULL)
-  })
+  # 按时间点分层分析: 每个时间点 vs Ctrl 单独运行 Augur
+  # 不再合并所有非 Ctrl 为 "stim", 保留时间点特异差异 (参考 Augur Nat Protoc 2021)
+  stim_conds <- setdiff(conds, control_labels)
+  log_info("[Step09] Augur: ctrl=", paste(control_labels, collapse=","),
+           "; stim=", paste(stim_conds, collapse=","))
 
-  if (is.null(augur_res)) return(NULL)
+  all_auc <- list()
 
-  # AUC 排名 (Augur 1.0.3 返回 tibble, 列名为 cell_type, auc)
-  auc_df <- augur_res$AUC
-  if (is.null(auc_df)) {
-    log_warn("[Step09] Augur returned no AUC results.")
-    return(augur_res)
-  }
-  if (!is.data.frame(auc_df)) {
-    auc_df <- data.frame(cell_type = names(augur_res$AUC),
-                          AUC = unname(augur_res$AUC))
-  } else {
-    # 统一列名: augur 1.0.3 用小写 'auc', 老版本用 'AUC'
-    if ("auc" %in% colnames(auc_df) && !("AUC" %in% colnames(auc_df))) {
-      colnames(auc_df)[colnames(auc_df) == "auc"] <- "AUC"
+  for (stim in stim_conds) {
+    log_info("[Step09] Augur: ", stim, " vs Ctrl")
+
+    keep_cells <- seu_sub@meta.data[[condition_col]] %in% c(control_labels, stim)
+    if (sum(keep_cells) < 50) {
+      log_warn("[Step09] Too few cells for ", stim, " (n=", sum(keep_cells), "). Skipping.")
+      next
     }
-  }
-  auc_df <- auc_df[order(-auc_df$AUC), ]
-  save_table(auc_df, "09_augur_auc_ranking", cfg)
 
-  p_auc <- ggplot(auc_df, aes(x = reorder(cell_type, AUC), y = AUC,
+    expr_sub <- expr_mat[, keep_cells, drop = FALSE]
+    meta_sub <- data.frame(
+      cell_type = seu_sub@meta.data[[celltype_col]][keep_cells],
+      label = ifelse(seu_sub@meta.data[[condition_col]][keep_cells] %in% control_labels,
+                     "ctrl", "stim"),
+      row.names = colnames(expr_sub)
+    )
+
+    # 修正参数 (参考 Augur 官方 API calculate_auc):
+    #   n_subsamples = 50 (官方默认; 原错误传 20 导致 AUC 估计方差极大)
+    #   subsample_size = 20 (每次每条件抽样细胞数; 官方默认)
+    # 注: permute 模式 (augur_mode="permute") 在 Windows 单线程下 500 subsamples 极慢,
+    #     暂不启用; 如需 p-value 可后续单独运行
+    augur_res <- tryCatch({
+      Augur::calculate_auc(
+        input = expr_sub,
+        meta = meta_sub,
+        label_col = "label",
+        cell_type_col = "cell_type",
+        n_threads = augur_threads,
+        n_subsamples = 50,
+        subsample_size = cfg$sc$augur_subsample_size,
+        folds = cfg$sc$augur_folds,
+        feature_perc = cfg$sc$augur_features_percent
+      )
+    }, error = function(e) {
+      log_error("[Step09] Augur failed for ", stim, ": ", conditionMessage(e))
+      return(NULL)
+    })
+
+    if (is.null(augur_res)) next
+
+    auc_df <- augur_res$AUC
+    if (is.null(auc_df)) next
+    if (!is.data.frame(auc_df)) {
+      auc_df <- data.frame(cell_type = names(augur_res$AUC),
+                           AUC = unname(augur_res$AUC))
+    } else {
+      if ("auc" %in% colnames(auc_df) && !("AUC" %in% colnames(auc_df))) {
+        colnames(auc_df)[colnames(auc_df) == "auc"] <- "AUC"
+      }
+    }
+    auc_df$comparison <- stim
+    all_auc[[stim]] <- auc_df
+  }
+
+  if (length(all_auc) == 0) {
+    log_warn("[Step09] No Augur results generated. Skipping.")
+    return(NULL)
+  }
+
+  # 汇总所有时间点的 AUC
+  auc_all <- do.call(rbind, all_auc)
+  auc_all <- auc_all[order(auc_all$comparison, -auc_all$AUC), ]
+  save_table(auc_all, "09_augur_auc_ranking", cfg)
+
+  # 可视化: 分面 by comparison (每个时间点独立展示)
+  p_auc <- ggplot(auc_all, aes(x = reorder(cell_type, AUC), y = AUC,
                                 fill = AUC)) +
     geom_col() +
     geom_hline(yintercept = 0.5, linetype = "dashed", color = "grey50") +
     scale_fill_gradient(low = "#2166AC", high = "#B2182B") +
     coord_flip() +
-    labs(title = "Augur: cell-type perturbation priority",
+    facet_wrap(~ comparison, ncol = 1) +
+    labs(title = "Augur: cell-type perturbation priority (per timepoint)",
          x = "Cell type", y = "AUC (Control vs Ischemia)") +
     theme_pub(base_size = 10) +
     theme(legend.position = "right")
   save_figure(p_auc, "09_augur_auc_barplot", cfg, width = 9, height = 7)
 
-  invisible(augur_res)
+  invisible(list(AUC = auc_all, per_timepoint = all_auc))
 }
