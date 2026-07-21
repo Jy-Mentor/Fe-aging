@@ -371,7 +371,14 @@ run_metabolite_stats <- function(parsed, matched, group_var = "Age") {
         if (is.na(mean1) || is.na(mean2) || is.nan(mean1) || is.nan(mean2)) next
         if (mean1 <= 0 || mean2 <= 0) next
 
-        test_res <- tryCatch(t.test(v1, v2), error = function(e) NULL)
+        test_res <- tryCatch(
+          t.test(v1, v2),
+          error = function(e) {
+            message(sprintf("  t.test failed for %s (%s vs %s): %s",
+                            met, g1, g2, conditionMessage(e)))
+            NULL
+          }
+        )
         if (!is.null(test_res) && !is.na(test_res$p.value)) {
           pairwise_results <- rbind(pairwise_results, data.frame(
             metabolite   = met,
@@ -494,7 +501,7 @@ plot_metabolite_heatmap <- function(stats, score_data, group_var = "Age") {
     fontsize_col      = 5,
     main              = "铁死亡/铁衰老代谢物表达热图 (Z-score归一化)",
     color             = colorRampPalette(
-      rev(brewer.pal(11, "RdBu")))(100)
+      rev(brewer.pal(11, "RdBu"))(100)
   )
   dev.off()
   message("热图已保存: ", file.path(FIG_DIR, "ferroptosis_metabolite_heatmap.pdf"))
