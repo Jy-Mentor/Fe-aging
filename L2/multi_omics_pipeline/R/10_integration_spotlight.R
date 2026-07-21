@@ -8,6 +8,10 @@
 #   - Macosko EZ et al. 2015 (SPOTlight based on NMFreg, PMID: 26000488)
 #   - Moncada R et al. 2020 Nat Commun (SPOTlight, PMID: 31844000)
 #   - Diaz-Mejia JJ et al. 2019 Mol Syst Biol (BuildSimilarity)
+#   - Lun A 2016 scran (DOI: 10.18129/B9.bioc.scran, Bioconductor 3.22 v1.38.1)
+#     - scoreMarkers: AUC + Cohen's d effect sizes, no p-value dependency
+#     - 文档: https://bioconductor.org/packages/3.22/bioc/html/scran.html
+#     - OSCA.book 推荐 mean.AUC > 0.8 作为 marker 筛选阈值
 # ----------------------------------------------------------------------------
 # 方法学说明 (SPOTlight vs RCTD, PubMed 文献验证 2026-07-20):
 #   GSE233815 原论文 (Zucha et al. 2024 PNAS, PMID: 39499634) 使用 RCTD
@@ -22,6 +26,18 @@
 #     2) seeded-NMF 提供可解释 topic profile
 #     3) 对 shallowly sequenced scRNA-seq 参考稳健 (PMID: 33544846)
 #   承认此选择非方法学最优, 后续将补充 RCTD 复跑做敏感性分析.
+#
+# Marker 检测方法学说明 (2026-07-21 升级):
+#   原: Seurat::FindAllMarkers (Wilcoxon rank-sum test, p_val_adj < 0.05)
+#   新: scran::scoreMarkers (AUC + Cohen's d, mean.AUC > 0.8)
+#   理由 (scran GitHub MarioniLab/scran R/scoreMarkers.R 源码 + OSCA.book):
+#     1) p-value 在单细胞 marker 检测中 "largely meaningless" (Aaron Lun 原文),
+#        因单个细胞不是实验重复单元, 且 cluster 本身由数据定义
+#     2) AUC (area under ROC curve) 对分布形状鲁棒, 不假设正态, 不受异常值子群影响
+#     3) Cohen's d 考虑表达变化幅度, AUC 完美分离 (1.0) 后无法区分好/极好 marker
+#     4) OSCA.book 推荐使用 mean.AUC > 0.8 (非 min.AUC, 因过于严格)
+#     5) scoreMarkers 同时返回 mean/min/median/max/rank, 供多角度筛选
+#   保留 FindAllMarkers 作为 fallback (scran 不可用时)
 # ============================================================================
 
 step10_integration_spotlight <- function(sc_seu, spatial_merged, cfg) {
@@ -29,13 +45,23 @@ step10_integration_spotlight <- function(sc_seu, spatial_merged, cfg) {
 
   require_packages(c("SPOTlight", "SingleCellExperiment"),
                    install_hint = paste("BiocManager::install(c('SPOTlight',",
-                                        "'SingleCellExperiment'))"))
+                                        "'SingleCellExperiment', 'scran'))"))
   suppressPackageStartupMessages({
     library(Seurat)
     library(SPOTlight)
     library(SingleCellExperiment)
     library(ggplot2)
   })
+  scran_available <- requireNamespace("scran", quietly = TRUE)
+  if (scran_available) {
+    suppressPackageStartupMessages(library(scran))
+    log_info("[Step10] scran ", as.character(packageVersion("scran")),
+             " available; using scoreMarkers (AUC>0.8) for marker detection")
+  } else {
+    log_warn("[Step10] scran not available; falling back to Seurat::FindAllMarkers",
+             " (Wilcoxon). Install scran for improved marker detection: ",
+             "BiocManager::install('scran')")
+  }
 
   if (is.null(sc_seu) || is.null(spatial_merged)) {
     stop("step10: sc_seu or spatial_merged is NULL. Run step07/08 and step04-06 first.")
@@ -87,25 +113,95 @@ step10_integration_spotlight <- function(sc_seu, spatial_merged, cfg) {
   # --------------------------------------------------------------------------
   # 10.2 计算各细胞类型 marker 基因
   # --------------------------------------------------------------------------
-  log_info("[Step10] Finding cell-type markers (FindAllMarkers)...")
-  # Seurat v5: 默认使用 presto 加速; 若不可用则 Wilcoxon
-  all_markers <- tryCatch({
-    FindAllMarkers(sc_seu, only.pos = TRUE,
-                    min.pct = 0.25, logfc.threshold = 0.25,
-                    test.use = "wilcox")
-  }, error = function(e) {
-    log_warn("[Step10] FindAllMarkers wilcox failed: ", conditionMessage(e),
-             "; retrying with presto")
-    FindAllMarkers(sc_seu, only.pos = TRUE,
-                    min.pct = 0.25, logfc.threshold = 0.25)
-  })
-
-  # 过滤显著 marker (FDR<0.05), 取每细胞类型 top N
-  all_markers <- all_markers[all_markers$p_val_adj < 0.05, ]
+  # 优先使用 scran::scoreMarkers (AUC-based, OSCA.book 推荐)
+  # 回退到 Seurat::FindAllMarkers (Wilcoxon, 仅 scran 不可用时)
   top_n <- cfg$integration$spotlight_n_top_mgs
-  mgs_top <- do.call(rbind, lapply(split(all_markers, all_markers$cluster),
-                                     function(x) head(x[order(-x$avg_log2FC), ],
-                                                       n = top_n)))
+  mgs_top <- if (scran_available) {
+    log_info("[Step10] Scoring cell-type markers (scran::scoreMarkers, AUC>0.8)...")
+    # scoreMarkers 需要 logcounts + colLabels
+    # sc_sce 已含 logcounts (上面已 as.matrix); colLabels 用 celltype_col
+    colLabels(sc_sce) <- factor(colData(sc_sce)[[celltype_col]])
+
+    marker_scores <- tryCatch(
+      scoreMarkers(sc_sce, colLabels(sc_sce)),
+      error = function(e) {
+        log_error("[Step10] scoreMarkers failed: ", conditionMessage(e),
+                  "; falling back to FindAllMarkers")
+        NULL
+      }
+    )
+
+    if (is.null(marker_scores)) {
+      # scoreMarkers 失败, fallback 到 FindAllMarkers
+      log_warn("[Step10] Falling back to FindAllMarkers (Wilcoxon)")
+      all_markers <- FindAllMarkers(sc_seu, only.pos = TRUE,
+                                     min.pct = 0.25, logfc.threshold = 0.25)
+      all_markers <- all_markers[all_markers$p_val_adj < 0.05, ]
+      do.call(rbind, lapply(split(all_markers, all_markers$cluster),
+                              function(x) head(x[order(-x$avg_log2FC), ],
+                                                n = top_n)))
+    } else {
+      # scoreMarkers 成功: 用 mean.AUC > 0.8 筛选 (OSCA.book 推荐阈值)
+      # 输出格式: List of DataFrames, 每个 cluster 一个 DataFrame
+      # 列: self.average, other.average, self.detected, other.detected,
+      #     mean.AUC, min.AUC, median.AUC, max.AUC, rank.AUC,
+      #     mean.logFC.cohen, ..., mean.logFC.detected, ...
+      auc_threshold <- 0.8
+      log_info("[Step10] scoreMarkers returned ", length(marker_scores),
+               " clusters; filtering by mean.AUC > ", auc_threshold)
+
+      mgs_list <- lapply(names(marker_scores), function(cl) {
+        df <- as.data.frame(marker_scores[[cl]])
+        # 筛选: mean.AUC > 0.8 表示基因在该 cluster 上调 (OSCA.book)
+        df <- df[!is.na(df$mean.AUC) & df$mean.AUC > auc_threshold, ]
+        if (nrow(df) == 0) {
+          log_warn("[Step10] Cluster ", cl, ": 0 markers pass mean.AUC > ",
+                   auc_threshold, "; taking top ", top_n, " by mean.AUC")
+          df <- as.data.frame(marker_scores[[cl]])
+          df <- df[order(df$mean.AUC, decreasing = TRUE), ]
+        } else {
+          # 按 mean.AUC 降序排序
+          df <- df[order(df$mean.AUC, decreasing = TRUE), ]
+        }
+        # 取 top N
+        df <- head(df, n = top_n)
+        # 转换为 SPOTlight 兼容的格式:
+        #   cluster, gene, avg_log2FC, pct.1, pct.2, p_val_adj
+        data.frame(
+          cluster     = cl,
+          gene        = rownames(df),
+          avg_log2FC  = df$mean.logFC.cohen,  # Cohen's d 作为 effect size
+          pct.1       = df$self.detected,     # 该 cluster 中检测比例
+          pct.2       = df$other.detected,    # 其他 cluster 中检测比例
+          p_val_adj   = NA_real_,             # scoreMarkers 不返回 p-value
+          mean.AUC    = df$mean.AUC,
+          min.AUC     = df$min.AUC,
+          median.AUC  = df$median.AUC,
+          max.AUC     = df$max.AUC,
+          rank.AUC    = df$rank.AUC,
+          stringsAsFactors = FALSE
+        )
+      })
+      do.call(rbind, mgs_list)
+    }
+  } else {
+    log_info("[Step10] Finding cell-type markers (FindAllMarkers, Wilcoxon)...")
+    all_markers <- tryCatch({
+      FindAllMarkers(sc_seu, only.pos = TRUE,
+                      min.pct = 0.25, logfc.threshold = 0.25,
+                      test.use = "wilcox")
+    }, error = function(e) {
+      log_warn("[Step10] FindAllMarkers wilcox failed: ", conditionMessage(e),
+               "; retrying with presto")
+      FindAllMarkers(sc_seu, only.pos = TRUE,
+                      min.pct = 0.25, logfc.threshold = 0.25)
+    })
+
+    all_markers <- all_markers[all_markers$p_val_adj < 0.05, ]
+    do.call(rbind, lapply(split(all_markers, all_markers$cluster),
+                            function(x) head(x[order(-x$avg_log2FC), ],
+                                              n = top_n)))
+  }
   log_info("[Step10] Top markers per cell type: ", nrow(mgs_top),
            " (n=", top_n, " per type, ", length(unique(mgs_top$cluster)), " types)")
 
