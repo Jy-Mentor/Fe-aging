@@ -115,6 +115,24 @@ step10_integration_spotlight <- function(sc_seu, spatial_merged, cfg) {
   # --------------------------------------------------------------------------
   # 优先使用 scran::scoreMarkers (AUC-based, OSCA.book 推荐)
   # 回退到 Seurat::FindAllMarkers (Wilcoxon, 仅 scran 不可用时)
+  #
+  # block= 参数决策 (2026-07-21 第二轮审查):
+  #   scran::scoreMarkers 支持 block= 参数处理批次效应 (intra-batch 比较).
+  #   本项目不使用 block=, 原因:
+  #     1) sc_seu 的 "Sample" 列 (sn_D1/sn_D3/sn_D7/sn_sham) 是生物学条件
+  #        (MCAO 后 1/3/7 天 vs 假手术), 不是技术性 batch.
+  #     2) block= 会消除条件间真实生物学差异, 与研究目标 (铁衰老时序) 冲突.
+  #     3) 稀有细胞类型 (Neuroblasts 51 cells, VLMCs 87 cells) 在某些条件下
+  #        <10 cells, block= 会导致这些 cluster 对返回 NA (Aaron Lun:
+  #        "cells from two clusters never co-occur in the same batch,
+  #        the comparison will be impossible").
+  #     4) Step 07 已用 Harmony 整合 (基于 Condition), 但 Harmony 校正的是
+  #        PCA embeddings 用于聚类, logcounts 仍保留原始值供 DE 分析.
+  #        这是 OSCA 推荐做法 (batch correction for clustering, not for DE).
+  #   参考:
+  #     - simpleSingleCell vignette Section 2.1 (block= 用途与限制)
+  #     - OSCA.basic Chapter 6 (scoreMarkers 默认无 block)
+  #     - libscran scran_markers::score_markers_summary_blocked (C++ API)
   top_n <- cfg$integration$spotlight_n_top_mgs
   mgs_top <- if (scran_available) {
     log_info("[Step10] Scoring cell-type markers (scran::scoreMarkers, AUC>0.8)...")
@@ -204,6 +222,18 @@ step10_integration_spotlight <- function(sc_seu, spatial_merged, cfg) {
   }
   log_info("[Step10] Top markers per cell type: ", nrow(mgs_top),
            " (n=", top_n, " per type, ", length(unique(mgs_top$cluster)), " types)")
+
+  # 每 cluster 实际 marker 数报告 (用于诊断 marker 质量与 cluster 大小关系)
+  # scran 路径下: marker 数 = min(passed_AUC>0.8, top_n); 不足 top_n 表示
+  # 该 cluster 通过 AUC>0.8 的基因 < top_n (可能因 cluster 小或与其他 cluster 相似)
+  cluster_marker_counts <- table(mgs_top$cluster)
+  log_info("[Step10] Markers per cluster (actual vs requested top_n=", top_n, "):")
+  for (cl in names(cluster_marker_counts)) {
+    n_actual <- unname(cluster_marker_counts[cl])
+    status <- if (n_actual == top_n) "FULL" else
+      if (n_actual >= top_n / 2) "PARTIAL" else "LOW"
+    log_info(sprintf("  %-25s %4d/%d  [%s]", cl, n_actual, top_n, status))
+  }
 
   save_table(mgs_top, "10_spotlight_top_markers", cfg)
 
