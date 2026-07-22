@@ -855,4 +855,19 @@ main <- function() {
   message("=============================================")
 }
 
-main()
+# 仅在直接运行 (Rscript 20_grant_figures.R) 时才执行, source() 时不执行
+# 判断: sys.frames() 长度为 0 表示不在 source() 内, 且 commandArgs 有 --file 参数
+.is_running_as_script <- function() {
+  is_script <- FALSE
+  tryCatch({
+    cmds <- commandArgs(trailingOnly = FALSE)
+    is_script <- any(grepl("--file=", cmds)) &&
+                 length(sys.frames()) == 0 &&
+                 !interactive()
+  }, error = function(e) { is_script <- FALSE })
+  is_script
+}
+
+if (.is_running_as_script()) {
+  main()
+}

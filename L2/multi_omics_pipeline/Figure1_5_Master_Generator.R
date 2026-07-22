@@ -430,6 +430,8 @@ paths <- list(
   scrna_rds = "multi_omics_pipeline/outputs/rds/08_sc_seurat_annotated_scored.rds",
   sat1_vs_fp = "multi_omics_pipeline/outputs/tables/08_sat1_vs_ferroptosis_score.csv",
   augur_csv = "multi_omics_pipeline/outputs/tables/09_augur_auc_ranking.csv",
+  cds_neuron_rds = "multi_omics_pipeline/outputs/rds/09_cds_neuron.rds",
+  pseudotime_scores = "multi_omics_pipeline/outputs/tables/09_pseudotime_neuron_scores.csv",
   metab_long = "multi_omics_pipeline/data/metabolomics/ST001637_abundance_long.csv",
   metab_meta = "multi_omics_pipeline/data/metabolomics/ST001637_sample_meta.csv",
   fgsea_bcp = "multi_omics_pipeline/outputs/tables/12_fgsea_bcp_all_timepoints.csv",
@@ -1064,19 +1066,93 @@ p4_E <- ggplot(augur, aes(x = reorder(cell_type, AUC), y = AUC,
 
 p4_top <- p4_main + p4_ridge + plot_layout(nrow = 1, widths = c(1.5, 1))
 p4_bot <- wrap_elements(p4_D) + p4_E + plot_layout(widths = c(1.6, 0.8))
-p4_combined <- p4_top / p4_bot +
-  plot_annotation(
-    tag_levels = "A",
-    title = "Single-cell landscape of ferroaging and SAT1 expression",
-    caption = caption_text("sc", "Harmony-integrated snRNA-seq; UCell scoring")
-  )
+
+# Figure 4F: monocle3 神经元拟时序 - UMAP + pseudotime + 沿拟时序的铁衰老评分动态
+if (!file.exists(file.path(base_dir, paths$pseudotime_scores))) {
+  logger("[FIG4F] Pseudotime scores CSV not found. Skipping Figure 4F panel.")
+  p4_F <- NULL
+} else {
+pseudotime_df <- read.csv(paths$pseudotime_scores, stringsAsFactors = FALSE)
+# 过滤 Inf pseudotime (未连接到根节点的细胞)
+pseudotime_df <- pseudotime_df[is.finite(pseudotime_df$pseudotime), ]
+logger("[FIG4F] Pseudotime cells (finite): ", nrow(pseudotime_df),
+       "; range: [", round(min(pseudotime_df$pseudotime), 2), ", ",
+       round(max(pseudotime_df$pseudotime), 2), "]")
+
+# 4F-left: pseudotime 分布按条件 (密度图)
+cond_levels <- sort(unique(pseudotime_df$Condition))
+cond_pal <- pal_candy[seq_along(cond_levels)]
+names(cond_pal) <- cond_levels
+p4_F1 <- ggplot(pseudotime_df, aes(x = pseudotime, fill = Condition, color = Condition)) +
+  geom_density(alpha = 0.4, linewidth = 0.5, adjust = 1.2) +
+  scale_fill_manual(values = cond_pal) +
+  scale_color_manual(values = cond_pal) +
+  labs(x = "Pseudotime", y = "Density",
+       title = "Pseudotime distribution by condition") +
+  theme_nature(base_size = 8) +
+  theme(legend.position = "right",
+        legend.title = element_text(size = 7),
+        legend.text = element_text(size = 6),
+        plot.title = element_text(size = 9))
+
+# 4F-right: 沿拟时序的 Ferroaging_UCell 动态 (LOESS 拟合)
+pseudotime_long <- pseudotime_df %>%
+  tidyr::pivot_longer(cols = ends_with("_UCell"),
+                      names_to = "Signature", values_to = "Score") %>%
+  dplyr::mutate(Signature = gsub("_UCell$", "", Signature))
+
+p4_F2 <- ggplot(pseudotime_long,
+                aes(x = pseudotime, y = Score, color = Signature)) +
+  geom_point(size = 0.2, alpha = 0.15) +
+  geom_smooth(method = "loess", se = TRUE, alpha = 0.15, linewidth = 0.7,
+              span = 0.4) +
+  scale_color_manual(values = c("Ferroptosis" = "#B2182B",
+                                 "Senescence" = "#2166AC",
+                                 "Ferrosenescence" = "#7B3294",
+                                 "Ferroaging" = "#D6604D")) +
+  labs(x = "Pseudotime", y = "UCell score",
+       title = "Iron-aging signatures along pseudotime",
+       caption = caption_text("sc", "monocle3 neuron pseudotime; LOESS span=0.4")) +
+  theme_nature(base_size = 8) +
+  theme(legend.position = "right",
+        legend.title = element_text(size = 7),
+        legend.text = element_text(size = 6),
+        plot.title = element_text(size = 9),
+        plot.caption = element_text(size = 6))
+
+p4_F <- (p4_F1 + p4_F2) + plot_layout(widths = c(1, 1.4))
+}  # end if pseudotime scores exist
+
+if (is.null(p4_F)) {
+  p4_combined <- p4_top / p4_bot +
+    plot_annotation(
+      tag_levels = "A",
+      title = "Single-cell landscape of ferroaging and SAT1 expression",
+      caption = caption_text("sc", "Harmony-integrated snRNA-seq; UCell scoring")
+    )
+  fig4_height <- 6.5
+} else {
+  p4_combined <- p4_top / p4_bot / p4_F +
+    plot_annotation(
+      tag_levels = "A",
+      title = "Single-cell landscape of ferroaging and SAT1 expression",
+      caption = caption_text("sc", "Harmony snRNA-seq; UCell; monocle3 pseudotime; Augur RF")
+    )
+  fig4_height <- 8.0
+}
 
 export_figure_data(sc_meta, "Figure4D_sc_pairwise_correlation",
                    "Ferroptosis/Senescence/Sat1 pairwise scores per nucleus")
 export_figure_data(augur, "Figure4E_augur_priority",
                    "Augur cell-type perturbation priority AUC")
+if (!is.null(p4_F)) {
+  export_figure_data(pseudotime_df, "Figure4F_pseudotime_dynamics",
+                     "monocle3 neuron pseudotime with UCell signatures (finite pseudotime only)")
+}
 
-save_plot(p4_combined, "Figure4_singlecell", width = JOURNAL_DOUBLE_COL, height = 6.5)
+save_plot(p4_combined, "Figure4_singlecell", width = JOURNAL_DOUBLE_COL, height = fig4_height)
+
+
 
 # ----------------------------------------------------------------------------
 # 10. Figure 5: 代谢组 + KEGG
