@@ -625,6 +625,12 @@ generate_fig5 <- function() {
           plot.subtitle = element_text(hjust = 0, size = 9, face = "bold"))
 
   # ---- C: Augur棒棒糖图 ----
+  # 兼容新版 per-timepoint 结果: 取 1DPI (急性期最具代表性)
+  if ("comparison" %in% colnames(augur)) {
+    augur <- augur %>%
+      dplyr::filter(comparison == "1DPI") %>%
+      dplyr::arrange(dplyr::desc(AUC))
+  }
   augur_plot <- augur %>%
     mutate(cell_type = factor(cell_type, levels = rev(cell_type)))
 
