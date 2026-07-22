@@ -1,0 +1,354 @@
+﻿{
+    "1":  {
+              "study_id":  "ST002080",
+              "local_sample_id":  "Control_ 1",
+              "sample_source":  "Cultured cells",
+              "factors":  "Treatment:Control",
+              "mb_sample_id":  "SA196499",
+              "raw_data":  "C1_UNK-0010_7132021_10"
+          },
+    "2":  {
+              "study_id":  "ST002080",
+              "local_sample_id":  "Control_ 2",
+              "sample_source":  "Cultured cells",
+              "factors":  "Treatment:Control",
+              "mb_sample_id":  "SA196497",
+              "raw_data":  "C2_UNK-0030_7132021_30"
+          },
+    "3":  {
+              "study_id":  "ST002080",
+              "local_sample_id":  "Control_ 3",
+              "sample_source":  "Cultured cells",
+              "factors":  "Treatment:Control",
+              "mb_sample_id":  "SA196501",
+              "raw_data":  "C4_UNK-0021_7132021_21"
+          },
+    "4":  {
+              "study_id":  "ST002080",
+              "local_sample_id":  "Control_ 4",
+              "sample_source":  "Cultured cells",
+              "factors":  "Treatment:Control",
+              "mb_sample_id":  "SA196500",
+              "raw_data":  "C5_UNK-0017_7132021_17"
+          },
+    "5":  {
+              "study_id":  "ST002080",
+              "local_sample_id":  "Control_ 5",
+              "sample_source":  "Cultured cells",
+              "factors":  "Treatment:Control",
+              "mb_sample_id":  "SA196498",
+              "raw_data":  "C6_UNK-0041_7132021_41"
+          },
+    "6":  {
+              "study_id":  "ST002080",
+              "local_sample_id":  "Fer1-1",
+              "sample_source":  "Cultured cells",
+              "factors":  "Treatment:Ferrostatin-1",
+              "mb_sample_id":  "SA196505",
+              "raw_data":  "F1_UNK-0003_7132021_3"
+          },
+    "7":  {
+              "study_id":  "ST002080",
+              "local_sample_id":  "Fer1-2",
+              "sample_source":  "Cultured cells",
+              "factors":  "Treatment:Ferrostatin-1",
+              "mb_sample_id":  "SA196502",
+              "raw_data":  "F2_UNK-0036_7132021_36"
+          },
+    "8":  {
+              "study_id":  "ST002080",
+              "local_sample_id":  "Fer1-3",
+              "sample_source":  "Cultured cells",
+              "factors":  "Treatment:Ferrostatin-1",
+              "mb_sample_id":  "SA196503",
+              "raw_data":  "F4_UNK-0046_7132021_46"
+          },
+    "9":  {
+              "study_id":  "ST002080",
+              "local_sample_id":  "Fer1-4",
+              "sample_source":  "Cultured cells",
+              "factors":  "Treatment:Ferrostatin-1",
+              "mb_sample_id":  "SA196506",
+              "raw_data":  "F5_UNK-0020_7132021_20"
+          },
+    "10":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "Fer1-5",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:Ferrostatin-1",
+               "mb_sample_id":  "SA196507",
+               "raw_data":  "F6_UNK-0027_7132021_27"
+           },
+    "11":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "Fer1-6",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:Ferrostatin-1",
+               "mb_sample_id":  "SA196504",
+               "raw_data":  "F8_UNK-0011_7132021_11"
+           },
+    "12":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RSL3_1",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3",
+               "mb_sample_id":  "SA196509",
+               "raw_data":  "R1_UNK-0012_7132021_12"
+           },
+    "13":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RSL3_2",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3",
+               "mb_sample_id":  "SA196511",
+               "raw_data":  "R2_UNK-0043_7132021_43"
+           },
+    "14":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RSL3_3",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3",
+               "mb_sample_id":  "SA196510",
+               "raw_data":  "R4_UNK-0037_7132021_37"
+           },
+    "15":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RSL3_4",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3",
+               "mb_sample_id":  "SA196512",
+               "raw_data":  "R5_UNK-0009_7132021_9"
+           },
+    "16":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RSL3_5",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3",
+               "mb_sample_id":  "SA196513",
+               "raw_data":  "R6_UNK-0034_7132021_34"
+           },
+    "17":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RSL3_6",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3",
+               "mb_sample_id":  "SA196508",
+               "raw_data":  "R8_UNK-0040_7132021_40"
+           },
+    "18":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RF_1",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3 + Ferrostatin-1",
+               "mb_sample_id":  "SA196514",
+               "raw_data":  "RF1_UNK-0004_7132021_4"
+           },
+    "19":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RF_2",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3 + Ferrostatin-1",
+               "mb_sample_id":  "SA196515",
+               "raw_data":  "RF2_UNK-0014_7132021_14"
+           },
+    "20":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RF_3",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3 + Ferrostatin-1",
+               "mb_sample_id":  "SA196516",
+               "raw_data":  "RF4_UNK-0024_7132021_24"
+           },
+    "21":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RF_4",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3 + Ferrostatin-1",
+               "mb_sample_id":  "SA196518",
+               "raw_data":  "RF5_UNK-0044_7132021_44"
+           },
+    "22":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RF_5",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3 + Ferrostatin-1",
+               "mb_sample_id":  "SA196519",
+               "raw_data":  "RF6_UNK-0047_7132021_47"
+           },
+    "23":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RF_6",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3 + Ferrostatin-1",
+               "mb_sample_id":  "SA196517",
+               "raw_data":  "RF8_UNK-0029_7132021_29"
+           },
+    "24":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RT_1",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3 + TSM-1005-44",
+               "mb_sample_id":  "SA196524",
+               "raw_data":  "RT1_UNK-0042_7132021_42"
+           },
+    "25":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RT_2",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3 + TSM-1005-44",
+               "mb_sample_id":  "SA196520",
+               "raw_data":  "RT4_UNK-0022_7132021_22"
+           },
+    "26":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RT_3",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3 + TSM-1005-44",
+               "mb_sample_id":  "SA196523",
+               "raw_data":  "RT5_UNK-0039_7132021_39"
+           },
+    "27":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RT_4",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3 + TSM-1005-44",
+               "mb_sample_id":  "SA196521",
+               "raw_data":  "RT6_UNK-0001_7152021_1"
+           },
+    "28":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RT_5",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3 + TSM-1005-44",
+               "mb_sample_id":  "SA196522",
+               "raw_data":  "RT8_UNK-0045_7132021_45"
+           },
+    "29":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RX_1",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3 + XJB-5-131",
+               "mb_sample_id":  "SA196526",
+               "raw_data":  "RX1_UNK-0031_7132021_31"
+           },
+    "30":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RX_2",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3 + XJB-5-131",
+               "mb_sample_id":  "SA196525",
+               "raw_data":  "RX2_UNK-0007_7132021_7"
+           },
+    "31":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RX_3",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3 + XJB-5-131",
+               "mb_sample_id":  "SA196527",
+               "raw_data":  "RX4_UNK-0016_7132021_16"
+           },
+    "32":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RX_4",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3 + XJB-5-131",
+               "mb_sample_id":  "SA196530",
+               "raw_data":  "RX5_UNK-0026_7132021_26"
+           },
+    "33":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RX_5",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3 + XJB-5-131",
+               "mb_sample_id":  "SA196529",
+               "raw_data":  "RX6_UNK-0038_7132021_38"
+           },
+    "34":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "RX_6",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:RSL3 + XJB-5-131",
+               "mb_sample_id":  "SA196528",
+               "raw_data":  "RX8_UNK-0013_7132021_13"
+           },
+    "35":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "TSM_1",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:TSM-1005-44",
+               "mb_sample_id":  "SA196531",
+               "raw_data":  "T1_UNK-0023_7132021_23"
+           },
+    "36":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "TSM_3",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:TSM-1005-44",
+               "mb_sample_id":  "SA196533",
+               "raw_data":  "T4_UNK-0032_7132021_32"
+           },
+    "37":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "TSM_4",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:TSM-1005-44",
+               "mb_sample_id":  "SA196534",
+               "raw_data":  "T5_UNK-0035_7132021_35"
+           },
+    "38":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "TSM_5",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:TSM-1005-44",
+               "mb_sample_id":  "SA196535",
+               "raw_data":  "T6_UNK-0048_7132021_48"
+           },
+    "39":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "TSM_6",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:TSM-1005-44",
+               "mb_sample_id":  "SA196532",
+               "raw_data":  "T8_UNK-0008_7132021_8"
+           },
+    "40":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "XJB_1",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:XJB-5-131",
+               "mb_sample_id":  "SA196536",
+               "raw_data":  "X1_UNK-0025_7132021_25"
+           },
+    "41":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "XJB_2",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:XJB-5-131",
+               "mb_sample_id":  "SA196537",
+               "raw_data":  "X2_UNK-0015_7132021_15"
+           },
+    "42":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "XJB_3",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:XJB-5-131",
+               "mb_sample_id":  "SA196540",
+               "raw_data":  "X5_UNK-0019_7132021_19"
+           },
+    "43":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "XJB_4",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:XJB-5-131",
+               "mb_sample_id":  "SA196539",
+               "raw_data":  "X6_UNK-0006_7132021_6"
+           },
+    "44":  {
+               "study_id":  "ST002080",
+               "local_sample_id":  "XJB_5",
+               "sample_source":  "Cultured cells",
+               "factors":  "Treatment:XJB-5-131",
+               "mb_sample_id":  "SA196538",
+               "raw_data":  "X8_UNK-0028_7132021_28"
+           }
+}

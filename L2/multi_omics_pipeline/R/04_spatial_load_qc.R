@@ -5,9 +5,11 @@
 #   tissue_positions_list.csv, 此情况下仅能构建非空间 Seurat 对象)
 # - 数据来源: GSE233815 (Zucha et al. 2024 PNAS, PMID:39499634)
 #   - 5 个 10x Visium 样本: C1-control / B1-D1 / D1-D3 / C1-D7 / D1-D7
-#   - 作者 RDS: seurat_1stSpatial.rds (含 C1-control+B1-D1 整合),
-#               seurat_2ndSpatial.rds (含 D1-D3+C1-D7 整合),
-#               spatial_seurat_1DP_13_nygen.rds (D1-D7)
+#   - 作者 RDS: seurat_1stSpatial.rds (含 B1_D1 / D1_D3 / C1_D7),
+#               seurat_2ndSpatial.rds (含 C1_mouse_control / D1_mouse_D7)
+#   - 注意: spatial_seurat_1DP_13_nygen.rds 已确认包含与 1stSpatial/2ndSpatial
+#     完全相同的 4 个样本 (B1_D1/D1_D3/C1_D7/C1_mouse_control, spot 数完全一致),
+#     仅命名不同 (1DPI/3DPI/7DPI/Ctrl), 同时使用会导致样本重复 → 永久排除
 # 参考:
 #   - Hao Y et al. 2024 Nat Biotechnol 42:293-304 (Seurat v5, PMID:37231261)
 #   - Stuart T et al. 2019 Cell (SCTransform)
@@ -27,10 +29,11 @@ step04_spatial_load_qc <- function(cfg) {
 
   # --------------------------------------------------------------------------
   # 4.1 优先加载作者已处理的 Seurat RDS (含空间坐标 + QC)
+  # 注意: 仅加载 1stSpatial + 2ndSpatial (共 5 个独立样本)
+  # spatial_seurat_1DP_13_nygen.rds 已永久排除 (与 1st/2nd 重复 4 个样本)
   # --------------------------------------------------------------------------
   rds_1st <- cfg$data$spatial_seurat_1st_rds
   rds_2nd <- cfg$data$spatial_seurat_2nd_rds
-  rds_1dp <- cfg$data$spatial_seurat_1DP_rds
 
   spatial_list <- list()
   used_rds <- FALSE
@@ -103,10 +106,6 @@ step04_spatial_load_qc <- function(cfg) {
 
     spatial_list <- c(spatial_list, .load_rds_seurat_list(rds_1st, "1stSpatial"))
     spatial_list <- c(spatial_list, .load_rds_seurat_list(rds_2nd, "2ndSpatial"))
-
-    if (!is.null(rds_1dp) && file.exists(rds_1dp)) {
-      spatial_list <- c(spatial_list, .load_rds_seurat_list(rds_1dp, "1DP"))
-    }
 
     used_rds <- length(spatial_list) > 0
   } else {

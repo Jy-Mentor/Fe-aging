@@ -126,27 +126,72 @@ step12_integration_cmap <- function(bulk_dea_list, cfg) {
     }
 
     # --------------------------------------------------------------------------
-    # 12.5 反证 3: BCP signature 与时间序列 LFC 的 Spearman 相关
+    # 12.5 反证 3: BCP signature 在缺血中的 LFC 系统性偏移 (单样本 Wilcoxon)
     # --------------------------------------------------------------------------
+    # 原实现 (cor.test against rep(1, n) / rep(-1, n)) 在统计上无效:
+    #   Spearman 相关要求两个变量都有非零方差, 常数向量方差为 0 → rho = NA.
+    #   R 文档 ?cor.test: "y must have at least 2 unique values".
+    #   输出 12_bcp_ischemia_correlation.csv 全 NA 即为证据 (2026-07-21 审查发现).
+    #
+    # 修正: 使用单样本 Wilcoxon signed-rank test 检验 LFC 是否系统性偏离 0.
+    #   - BCP_Up: H0 median(LFC) = 0; reversal if median(LFC) < 0
+    #     (BCP 上调基因在缺血中下调 = 反相纠正)
+    #   - BCP_Down: H0 median(LFC) = 0; reversal if median(LFC) > 0
+    #     (BCP 下调基因在缺血中上调 = 反相纠正)
+    #   参考:
+    #     - CMap reversal 概念 (Lamb 2006 Science, PMID: 17008526)
+    #     - Wilcoxon signed-rank: 非参数, 不假设正态, 适用于 bulk RNA-seq LFC
     bcp_up_lfc <- de_df[de_df[[gene_col]] %in% bcp_up, ]
     bcp_dn_lfc <- de_df[de_df[[gene_col]] %in% bcp_down, ]
 
     cor_up <- if (nrow(bcp_up_lfc) >= 3) {
-      ct <- suppressWarnings(cor.test(bcp_up_lfc[[lfc_col]],
-                                       rep(1, nrow(bcp_up_lfc)),
-                                       method = "spearman"))
-      data.frame(comparison = tp, set = "BCP_Up_vs_Ischemia",
-                 n_genes = nrow(bcp_up_lfc),
-                 rho = unname(ct$estimate), p_value = ct$p.value)
+      lfc_vals <- bcp_up_lfc[[lfc_col]]
+      ct <- tryCatch(
+        wilcox.test(lfc_vals, mu = 0, alternative = "two.sided"),
+        error = function(e) {
+          log_warn("[Step12] ", tp, " BCP_Up wilcox.test failed: ",
+                   conditionMessage(e))
+          NULL
+        }
+      )
+      if (!is.null(ct)) {
+        median_lfc <- median(lfc_vals, na.rm = TRUE)
+        data.frame(
+          comparison = tp,
+          set = "BCP_Up_vs_Ischemia",
+          n_genes = nrow(bcp_up_lfc),
+          median_lfc = median_lfc,
+          statistic = unname(ct$statistic),
+          p_value = ct$p.value,
+          direction = if (median_lfc < 0) "reversal" else "same_direction",
+          stringsAsFactors = FALSE
+        )
+      } else NULL
     } else NULL
 
     cor_dn <- if (nrow(bcp_dn_lfc) >= 3) {
-      ct <- suppressWarnings(cor.test(bcp_dn_lfc[[lfc_col]],
-                                       rep(-1, nrow(bcp_dn_lfc)),
-                                       method = "spearman"))
-      data.frame(comparison = tp, set = "BCP_Down_vs_Ischemia",
-                 n_genes = nrow(bcp_dn_lfc),
-                 rho = unname(ct$estimate), p_value = ct$p.value)
+      lfc_vals <- bcp_dn_lfc[[lfc_col]]
+      ct <- tryCatch(
+        wilcox.test(lfc_vals, mu = 0, alternative = "two.sided"),
+        error = function(e) {
+          log_warn("[Step12] ", tp, " BCP_Down wilcox.test failed: ",
+                   conditionMessage(e))
+          NULL
+        }
+      )
+      if (!is.null(ct)) {
+        median_lfc <- median(lfc_vals, na.rm = TRUE)
+        data.frame(
+          comparison = tp,
+          set = "BCP_Down_vs_Ischemia",
+          n_genes = nrow(bcp_dn_lfc),
+          median_lfc = median_lfc,
+          statistic = unname(ct$statistic),
+          p_value = ct$p.value,
+          direction = if (median_lfc > 0) "reversal" else "same_direction",
+          stringsAsFactors = FALSE
+        )
+      } else NULL
     } else NULL
 
     cor_df <- do.call(rbind, list(cor_up, cor_dn))

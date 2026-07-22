@@ -1,0 +1,74 @@
+"study_id","display_name","category","group1","group2","log2FC","p_adj","expected_direction","direction_match"
+"ST002042","12-HETE","lipid_peroxidation","1-day","1-month",0.80751087109039,0.000550817726339948,"UP",TRUE
+"ST002042","12-HETE","lipid_peroxidation","1-day","1-week",0.73829042783881,0.0303561998387875,"UP",TRUE
+"ST002042","12-HETE","lipid_peroxidation","1-day","6-month",0.564923726483872,0.0130317779254701,"UP",TRUE
+"ST002042","12-HETE","lipid_peroxidation","1-day","Normal",0.46362712611242,0.0274760630279738,"UP",TRUE
+"ST002042","12-HETE","lipid_peroxidation","1-day","Sham",0.7980363347017,0.000234253015945217,"UP",TRUE
+"ST002042","12-HETE","lipid_peroxidation","1-month","Normal",-0.34388374497797,0.0199166258669702,"UP",FALSE
+"ST002042","12-HETE","lipid_peroxidation","Normal","Sham",0.33440920858928,0.00305977756591857,"UP",TRUE
+"ST002042","HOTrE","lipid_peroxidation","1-day","1-month",-1.16077626170107,0.0164071819712165,"UP",FALSE
+"ST002042","HOTrE","lipid_peroxidation","1-day","1-week",-1.35186007433833,0.0130317779254701,"UP",FALSE
+"ST002042","13-HODE","lipid_peroxidation","1-day","1-week",-0.696406703902492,0.0331491734204139,"UP",FALSE
+"ST002042","13-HODE","lipid_peroxidation","1-day","Normal",-0.902120283384988,0.00595918814804026,"UP",FALSE
+"ST002042","13-HODE","lipid_peroxidation","1-month","1-week",-0.95449065541677,0.0246510605914188,"UP",FALSE
+"ST002042","13-HODE","lipid_peroxidation","1-month","Normal",-1.16020423489927,0.0154292897816521,"UP",FALSE
+"ST002042","13-HODE","lipid_peroxidation","6-month","Normal",-1.4588099920313,0.0480239852605457,"UP",FALSE
+"ST002042","15-HETE","lipid_peroxidation","1-day","1-month",-1.2448456842788,0.000296491916281183,"UP",FALSE
+"ST002042","15-HETE","lipid_peroxidation","1-day","1-week",-0.891234344509104,0.014658435036424,"UP",FALSE
+"ST002042","15-HETE","lipid_peroxidation","1-day","6-month",-1.26990426574672,1.25323460805373e-06,"UP",FALSE
+"ST002042","15-HETE","lipid_peroxidation","1-day","Normal",-1.31005983674186,0.00120304897779154,"UP",FALSE
+"ST002042","15-HETE","lipid_peroxidation","1-day","Sham",-0.437852386246176,0.0180126902624475,"UP",FALSE
+"ST002042","15-HETE","lipid_peroxidation","1-month","Sham",0.806993298032623,0.0158392584584798,"UP",TRUE
+"ST002042","15-HETE","lipid_peroxidation","6-month","Sham",0.832051879500541,0.00138932995638668,"UP",TRUE
+"ST002042","15-HETE","lipid_peroxidation","Normal","Sham",0.872207450495687,0.0308953753197325,"UP",TRUE
+"ST002042","HDoHE","lipid_peroxidation","1-day","1-month",3.84586079656215,0.02894731125114,"UP",TRUE
+"ST002042","HDoHE","lipid_peroxidation","1-day","1-week",-2.66301614970346,0.00328527617537574,"UP",FALSE
+"ST002042","HDoHE","lipid_peroxidation","1-day","6-month",3.2808984806054,0.0398530170156973,"UP",TRUE
+"ST002042","HDoHE","lipid_peroxidation","1-day","Normal",-2.31561219243317,0.00471887076025871,"UP",FALSE
+"ST002042","HDoHE","lipid_peroxidation","1-month","1-week",-6.5088769462656,0.0259682214349263,"UP",FALSE
+"ST002042","HDoHE","lipid_peroxidation","1-month","Normal",-6.16147298899531,0.0259682214349263,"UP",FALSE
+"ST002042","HDoHE","lipid_peroxidation","1-week","6-month",5.94391463030885,0.0283208874036439,"UP",TRUE
+"ST002042","HDoHE","lipid_peroxidation","6-month","Normal",-5.59651067303856,0.0285692945736709,"UP",FALSE
+"ST002042","Ceramide","lipid_signaling","1-day","1-month",-1.06469450244715,0.00568801680628414,"UP",FALSE
+"ST002042","Ceramide","lipid_signaling","1-day","1-week",-0.834787282848493,0.014658435036424,"UP",FALSE
+"ST002042","Ceramide","lipid_signaling","1-day","6-month",-0.962202339496462,0.00809875635377272,"UP",FALSE
+"ST002042","Ceramide","lipid_signaling","1-day","Normal",-0.978329511461385,0.00763615676424832,"UP",FALSE
+"ST002042","Ceramide","lipid_signaling","1-day","Sham",-1.03421778014343,0.00595918814804026,"UP",FALSE
+"ST002042","DiHOME","lipid_peroxidation","1-day","1-month",-3.71957045710422,8.02876454284251e-05,"UP",FALSE
+"ST002042","DiHOME","lipid_peroxidation","1-day","1-week",-6.22563428919438,8.02876454284251e-05,"UP",FALSE
+"ST002042","DiHOME","lipid_peroxidation","1-day","6-month",-3.71159404734192,8.02876454284251e-05,"UP",FALSE
+"ST002042","DiHOME","lipid_peroxidation","1-day","Normal",-2.40082981163529,0.000241262801825372,"UP",FALSE
+"ST002042","DiHOME","lipid_peroxidation","1-day","Sham",-2.53100319009493,0.000212857865572108,"UP",FALSE
+"ST002042","Adrenic acid","lipid_signaling","1-day","1-month",-0.251149718664943,0.0303561998387875,"UP",FALSE
+"ST002042","Adrenic acid","lipid_signaling","1-day","6-month",-0.223056491252177,0.030503427682543,"UP",FALSE
+"ST002042","Adrenic acid","lipid_signaling","1-day","Sham",-0.372626754740027,0.00311338788623074,"UP",FALSE
+"ST002042","Adrenic acid","lipid_signaling","1-week","Sham",-0.286074584471214,0.0219229720074107,"UP",FALSE
+"ST002042","AA","lipid_signaling","1-day","Normal",3.21005059404331,0.00956401647927847,"UP",TRUE
+"ST002042","AA","lipid_signaling","1-month","Normal",3.21300253342979,0.00956401647927847,"UP",TRUE
+"ST002042","AA","lipid_signaling","1-week","Normal",2.14010222635423,0.0145909714637639,"UP",TRUE
+"ST002042","AA","lipid_signaling","Normal","Sham",-1.89584062167937,0.0180126902624475,"UP",FALSE
+"ST002042","Ceramide","lipid_signaling","1-day","1-month",2.85067516746802,0.0247981559559514,"UP",TRUE
+"ST002042","Ceramide","lipid_signaling","1-day","Sham",2.14969367504716,0.0227766410438809,"UP",TRUE
+"ST002042","Ceramide","lipid_signaling","1-month","1-week",-1.89298752394336,0.0259682214349263,"UP",FALSE
+"ST002042","Ceramide","lipid_signaling","1-month","6-month",-1.96087459153156,0.0259682214349263,"UP",FALSE
+"ST002042","Ceramide","lipid_signaling","1-month","Normal",-2.41731656149907,0.0219229720074107,"UP",FALSE
+"ST002042","Ceramide","lipid_signaling","Normal","Sham",1.71633506907822,0.0398530170156973,"UP",TRUE
+"ST002042","Lactate","tca_energy","1-day","1-month",-1.53769175768209,0.00388963794717249,"UP",FALSE
+"ST002042","Lactate","tca_energy","1-day","1-week",-1.08580445136585,0.0161232349553091,"UP",FALSE
+"ST002042","Lactate","tca_energy","1-month","Sham",1.2276322521418,0.0298874627324921,"UP",TRUE
+"ST002042","LPC","lipid_signaling","1-day","6-month",2.12996149808949,0.02894731125114,"DOWN",FALSE
+"ST002042","LPC","lipid_signaling","1-day","1-month",-1.37595701916818,1.20627307356851e-05,"DOWN",TRUE
+"ST002042","LPC","lipid_signaling","1-month","1-week",2.130921637349,0.0123674530912256,"DOWN",FALSE
+"ST002042","LPC","lipid_signaling","1-month","6-month",1.17677315803732,0.00571183838683441,"DOWN",FALSE
+"ST002042","LPC","lipid_signaling","1-month","Sham",1.53275088794757,0.00113648045053312,"DOWN",FALSE
+"ST002042","LPC","lipid_signaling","1-week","Normal",-1.46465868418707,0.0196638953839041,"DOWN",TRUE
+"ST002042","PA (16:0)","lipid_signaling","1-day","1-month",-2.19387093235683,1.09904834657878e-05,"UP",FALSE
+"ST002042","PA (16:0)","lipid_signaling","1-day","1-week",-2.16976134403199,1.20627307356851e-05,"UP",FALSE
+"ST002042","PA (16:0)","lipid_signaling","1-day","6-month",-2.82205699400099,2.76364660924417e-07,"UP",FALSE
+"ST002042","PA (16:0)","lipid_signaling","1-day","Normal",-2.79024813445235,5.02242064387952e-07,"UP",FALSE
+"ST002042","PA (16:0)","lipid_signaling","1-day","Sham",-1.26733436339156,7.62785452457361e-06,"UP",FALSE
+"ST002042","PA (16:0)","lipid_signaling","6-month","Sham",1.55472263060943,0.000438999941153045,"UP",TRUE
+"ST002042","PA (16:0)","lipid_signaling","Normal","Sham",1.5229137710608,0.0123674530912256,"UP",TRUE
+"ST002042","PE","lipid_signaling","1-month","6-month",-0.722711028344364,0.0164071819712165,"DOWN",TRUE
+"ST002080","Succinate","tca_energy","Ferrostatin-1","RSL3",-1.7962626895099,0.00598969553798915,"UP",FALSE
+"ST002080","Succinate","tca_energy","RSL3","TSM-1005-44",1.9404680314266,0.00598969553798915,"UP",TRUE

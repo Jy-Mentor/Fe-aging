@@ -1,0 +1,137 @@
+"metabolite","display_name","category","n_samples","mean_abundance","sd_abundance"
+"(2R)-3-Hydroxyisovaleroylcarnitine","Carnitine","aging_related",521,1189944.60076775,426228.079504973
+"1,7-Dimethyluric acid","Uric acid","aging_related",521,19083.5527831094,16013.6966059105
+"1-Methylnicotinamide","NAM","aging_related",521,1013782.61420345,828455.59918535
+"13,14-Dihydro-15-ketoprostaglandin E2","PGE2","lipid_signaling",521,10161.1919385797,6924.22771628251
+"2-Deoxyuridine","Uridine","aging_related",521,92499.1612284069,41207.8895373217
+"2-hydroxystearic acid","SA (18:0)","lipid_signaling",521,98090.0825335893,184955.754871284
+"2’-deoxyadenosine","Adenosine","aging_related",521,22363.9788867562,50779.9401878183
+"3-Dehydrocarnitine","Carnitine","aging_related",521,55677.1900191939,23894.0249599137
+"3-Hydroxybutyrylcarnitine","Carnitine","aging_related",521,986539.37428023,410697.604265029
+"4-Hydroxynonenal alkyne","4-HNE","lipid_peroxidation",521,131542.462571977,125581.949775861
+"5'-Deoxy-5'-methylthioadenosine","Adenosine","aging_related",521,584.487475915222,781.355504281274
+"5'-Methylthioadenosine","Adenosine","aging_related",521,3756079.23800384,1462622.79222464
+"5'-Methylthioadenosine isomer","Adenosine","aging_related",521,1439453.39539347,642075.538082266
+"6-trans-12-epi-Leukotriene B4","LTB4","lipid_signaling",521,12436.113243762,22165.7333746309
+"Acetyl-choline","Choline","lipid_signaling",521,8172940.59117083,6426511.11030747
+"Adenosine","Adenosine","aging_related",521,33882251.9904031,41635158.8234891
+"Adenosine 5'-diphosphoribose","Adenosine","aging_related",521,233346.389635317,220987.788536624
+"Adenosine isomer","Adenosine","aging_related",521,3291691.75047985,4117891.39179108
+"Adenosine monophosphate","Adenosine","aging_related",521,554543.58925144,321974.476028733
+"Adenosine-3-monophosphate","Adenosine","aging_related",521,2172166.50863724,1416549.61738701
+"Adenosine-5-monophosphate","Adenosine","aging_related",521,27714.5606936416,29822.6459507784
+"Arginine","Arginine","polyamine_metabolism",521,970708.77159309,467404.285332507
+"Arginine isomer","Arginine","polyamine_metabolism",521,439471.961612284,192182.64672793
+"Ascorbic acid (Vitamin C)","Vitamin C","antioxidant_defense",521,4460.02697495183,4166.89536789598
+"Butyrylcarnitine or Isobutyrylcarnitine","Carnitine","aging_related",521,1011025.15547025,677037.587725891
+"Carnitine","Carnitine","aging_related",521,88815959.8733205,28923336.8759232
+"Carnosine","Carnosine","antioxidant_defense",521,17546777.8234165,30498091.9642306
+"Carnosine isomer A","Carnosine","antioxidant_defense",521,18067.8464491363,38109.5054910521
+"Carnosine isomer B","Carnosine","antioxidant_defense",521,90936.9174664107,131915.30741773
+"Ceramide d32:1;","Ceramide","lipid_signaling",521,116251.404990403,113329.136627445
+"Ceramide d33:1;","Ceramide","lipid_signaling",521,92793.8598848369,64507.6225368094
+"Ceramide d34:0;","Ceramide","lipid_signaling",521,377959.172744722,553684.579616452
+"Ceramide d34:1;","Ceramide","lipid_signaling",521,6365166.95777351,4146390.22295376
+"Ceramide d34:2;","Ceramide","lipid_signaling",521,549897.984644914,531758.891532659
+"Ceramide d36:1;","Ceramide","lipid_signaling",521,183218580.191939,89919505.1567591
+"Ceramide d38:1;","Ceramide","lipid_signaling",521,28425841.950096,10904663.9846269
+"Ceramide d40:0;","Ceramide","lipid_signaling",521,638616.182341651,698312.476771596
+"Ceramide d40:1; A","Ceramide","lipid_signaling",521,2428725.15738964,1748867.55474223
+"Ceramide d40:1; B","Ceramide","lipid_signaling",521,15902.9462571977,37209.3166931373
+"Ceramide d40:2;","Ceramide","lipid_signaling",521,1008882.16314779,929721.405219651
+"Ceramide d41:1;","Ceramide","lipid_signaling",521,1910725.92322457,1326344.21483241
+"Ceramide d42:1; A","Ceramide","lipid_signaling",521,3402864.86948177,4539894.07564588
+"Ceramide d42:1; B","Ceramide","lipid_signaling",521,1511476.72168906,3095392.7139808
+"Ceramide d42:2;","Ceramide","lipid_signaling",521,21038244.925144,17990031.4270878
+"Choline","Choline","lipid_signaling",521,1109358527.78695,282293288.119854
+"Cysteine","Cysteine","antioxidant_defense",521,4954.45857418112,4327.28420874809
+"Cysteine-glutathione disulfide","GSSG","lipid_peroxidation",521,118098.765834933,76382.4830314445
+"Cytidine 5'-diphosphate ethanolamine","Ethanolamine","lipid_signaling",521,291872.009596929,83530.7199410786
+"Cytidine 5'-diphosphocholine","Choline","lipid_signaling",521,560186.731285988,174817.653601537
+"Dehydro-(+)-ascorbic acid dimer","Vitamin C","antioxidant_defense",521,325860.56621881,116538.919559783
+"Dehydroascorbic acid","Vitamin C","antioxidant_defense",521,289821.726396917,175016.863968502
+"Diethanolamine","Ethanolamine","lipid_signaling",521,289364.767754319,148239.688424413
+"Ergothioneine","Ergothioneine","antioxidant_defense",521,370432.984644914,265635.407273021
+"Erythro-Sphinganine","Sphinganine","lipid_signaling",521,73028.0268714011,35271.3051327635
+"Erythro-Sphinganine-1-phosphate","Sphinganine","lipid_signaling",521,48639.9001919386,48580.0652617529
+"Erythro-Sphingosine-1-phosphate","Sphingosine","lipid_signaling",521,183639.197696737,162537.44860039
+"Ethanolamine","Ethanolamine","lipid_signaling",521,98071.0481695568,45819.7232715673
+"Ethyldiethanolamine","Ethanolamine","lipid_signaling",521,286290.754318618,327511.424324952
+"FA 12:0; (lauric acid)","Uric acid","aging_related",521,54691990.2975048,19256888.9486964
+"FA 16:0 (Palmitic acid)","PA (16:0)","lipid_signaling",521,29781.5700575816,56371.3777809833
+"FA 16:1; (palmitoleic acid)","OA (18:1)","lipid_signaling",521,5725128.13243762,2451711.3569305
+"FA 18:0; (stearic acid)","SA (18:0)","lipid_signaling",521,520771436.007678,125041309.226848
+"FA 18:2; (linoleic acid)","LA (18:2)","lipid_signaling",521,8314558.0537428,5672188.94408636
+"FA 20:4; (arachidonic acid)","AA (20:4)","lipid_signaling",521,228302284.026871,69931438.6313632
+"FA 20:5; (eicosapentaenoic acid)","EPA (20:5)","lipid_signaling",521,720587.172744722,385848.3650737
+"FA 22:6; (docosahexaenoic acid)","DHA (22:6)","lipid_signaling",521,53979626.3358925,21266151.5626785
+"Glutathione","GSH (reduced)","antioxidant_defense",521,5852.18882466281,4548.06171398738
+"Glutathione (oxidized)","GSH (reduced)","antioxidant_defense",521,307695.184261036,129697.979968911
+"Glutathione (reduced)","GSH (reduced)","antioxidant_defense",521,14955913.5796545,7468313.13702036
+"Glycerophosphocholine isomer A","Choline","lipid_signaling",521,30277401.1151631,13324409.8447032
+"Glycerophosphocholine isomer B","Choline","lipid_signaling",521,184703.416506718,70999.6546687514
+"Guanidinosuccinate","Succinate","iron_metabolism",521,4542.75722543353,10845.015033821
+"Hexanoyl-carnitine","Carnitine","aging_related",521,18176.6545105566,31224.4103428284
+"Homoarginine","Arginine","polyamine_metabolism",521,62677.0134357006,42038.8244025894
+"Homocysteine","Cysteine","antioxidant_defense",521,537349.291746641,143538.68491801
+"Hydroxypalmitic acid","PA (16:0)","lipid_signaling",521,90194.7754318618,21128.4288239951
+"Hypotaurine","Taurine","antioxidant_defense",521,100982.39731286,113803.257691583
+"Hypoxanthine","Hypoxanthine","aging_related",521,25584503.8502879,11745291.679444
+"Inosine","Inosine","aging_related",521,26333546.6679463,7602537.69359665
+"Inosine 5'-monophosphate isomer","Inosine","aging_related",521,1010023.17274472,746764.736115823
+"Inosine-5'-monophosphate","Inosine","aging_related",521,13661.2138728324,13771.7166508785
+"Isovaleryl-carnitine","Carnitine","aging_related",521,595087.414587332,349821.801559551
+"Malonyl-carnitine","Carnitine","aging_related",521,250701.339731286,144230.319101821
+"Methacholine cation","Choline","lipid_signaling",521,10375584.024952,7304388.52269235
+"Methionine","Methionine","antioxidant_defense",521,1538160.17082534,515022.558813129
+"Methioninesulfoxide","Methionine","antioxidant_defense",521,38134.7888675624,23611.9063155718
+"N,N-Dimethylarginine","Arginine","polyamine_metabolism",521,975901.472168906,334195.9933486
+"N,N-Dimethylsphingosine","Sphingosine","lipid_signaling",521,12188.0499040307,18020.8365199364
+"N-Acetyl-carnosine","Carnosine","antioxidant_defense",521,57950.1420345489,50213.1139740998
+"N-Acetylcysteine","Cysteine","antioxidant_defense",521,154145.518234165,85014.2649947425
+"N-Acetylmethionine","Methionine","antioxidant_defense",521,74248.575815739,38537.2701255964
+"N-Formylmethionine","Methionine","antioxidant_defense",521,116998.861804223,118572.075663303
+"N-Oleoylethanolamine","Ethanolamine","lipid_signaling",521,125556.973128599,101839.307195242
+"N-α-Acetyl-ornithine","Ornithine","polyamine_metabolism",521,266867.262955854,116035.224925376
+"N5-(1-Imino-3-butenyl)-ornithine","Ornithine","polyamine_metabolism",521,111570.834932821,70645.5642940355
+"N6-Isopentenyladenosine","Adenosine","aging_related",521,13384.5854126679,135372.652111825
+"N8-Acetylspermidine","Spermidine","polyamine_metabolism",521,601164.355086372,305428.805162875
+"Nicotinamide","NAM","aging_related",521,279031829.057582,47708554.7679285
+"Nicotinamide riboside cation","NAM","aging_related",521,259195.915547025,209576.771739959
+"Octanoylcarnitine","Carnitine","aging_related",521,10843.443378119,30673.0416404078
+"Oleic acid","OA (18:1)","lipid_signaling",521,8871.74664107486,17611.0488805791
+"Ornithine","Ornithine","polyamine_metabolism",521,221610.80806142,135488.531998375
+"Phosphocholine","Choline","lipid_signaling",521,37917441.0575816,10164300.2438044
+"Phosphocholine isomer","Choline","lipid_signaling",521,797152.591170825,670052.452205477
+"Phosphoenolpyruvate","Pyruvate","iron_metabolism",521,2761.88053949904,1861.57254205443
+"Propionylcarnitine","Carnitine","aging_related",521,1877015.13435701,1426294.60994974
+"Pseudouridine","Uridine","aging_related",521,229861.186180422,69579.2301159529
+"Putrescine","Putrescine","polyamine_metabolism",521,525713.677543186,228255.84373286
+"Ricinoleic acid","OA (18:1)","lipid_signaling",521,85320.9424184261,160545.47275008
+"S-(2,3,4-Trihydroxybutyl)mercapturic acid","Uric acid","aging_related",521,5735.57197696737,22646.2937915113
+"S-Adenosyl-homocysteine","Cysteine","antioxidant_defense",521,1632207.79270633,546428.714244956
+"S-Adenosyl-methionine","Methionine","antioxidant_defense",521,541826.915547025,204125.999817243
+"S-Sulfocysteine","Cysteine","antioxidant_defense",521,2007.98656429942,3060.7258763574
+"Spermidine","Spermidine","polyamine_metabolism",521,359487.652591171,96510.6667495093
+"Spermine","Spermine","polyamine_metabolism",521,218.394990366089,253.415449437214
+"Sphinganine 18:0;","Sphinganine","lipid_signaling",521,620765.272552783,253429.560855179
+"Sphinganine 20:0;","Sphinganine","lipid_signaling",521,76870.9232245681,51878.8309559832
+"Sphinganine 24:0;","Sphinganine","lipid_signaling",521,10307.6679462572,34518.9436484228
+"Sphinganine 25:0;","Sphinganine","lipid_signaling",521,5323.48944337812,22750.6592208037
+"Sphingosine 18:1;","Sphingosine","lipid_signaling",521,1959463.04414587,656231.658252058
+"Sphingosine 20:1;","Sphingosine","lipid_signaling",521,497326.852207294,304693.229733687
+"Targinine","Arginine","polyamine_metabolism",521,563215.97696737,477454.880159303
+"Taurine","Taurine","antioxidant_defense",521,7735870.03262956,4373986.83056488
+"Triethanolamine","Ethanolamine","lipid_signaling",521,1432823.65259117,649214.344108925
+"Triethyl citrate","Citrate","iron_metabolism",521,722966.414587332,1705863.69251874
+"Uracil","Uracil","aging_related",521,2329907.94817658,1176520.02965774
+"Uridine","Uridine","aging_related",521,13733985.4203455,4478690.981386
+"Uridine 5'-monophosphate","Uridine","aging_related",521,456984.220729367,304386.888186405
+"Uridine diphosphate glucose","Uridine","aging_related",521,218794.769673704,82878.7501734445
+"Uridine-5-diphosphoacetylgalactosamine","Uridine","aging_related",521,246556.58925144,78973.7185803229
+"Uridine-5-diphosphoacetylglucosamine","Uridine","aging_related",521,536865.428023033,236135.398910348
+"Xanthine","Xanthine","aging_related",521,212889.856046065,186625.830498591
+"beta-Nicotinamide adenine dinucleotide","NAM","aging_related",521,19184.9289827255,23316.8233400253
+"cis-4,7,10,13,16,19-Docosahexaenoic acid","DHA (22:6)","lipid_signaling",521,139653.339731286,65792.1063463553
+"sn-Glycero-3-phosphocholine","Choline","lipid_signaling",521,266098906.737044,127039253.272768
+"β-Nicotinamide adenine dinucleotide","NAM","aging_related",521,73283.3474088292,83009.6626864807

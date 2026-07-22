@@ -63,14 +63,15 @@ data:
   sc_seurat_rds: "data/external/GSE233815/mendeley/Seurat_sn_MCAO_Zucha2023_QCFiltered.Rds"
   sc_oligos_rds: "data/external/GSE233815/mendeley/Seurat_OLs_integrated_annotated.Rds"
   sc_meta_summary_rds: "data/external/GSE233815/mendeley/sn_meta_data_summary.rds"
-  # 空间 Seurat 对象 (作者已处理)
+  # 空间 Seurat 对象 (作者已处理, GSE233815 mendeley)
+  # 注意: spatial_seurat_1DP_13_nygen.rds 已永久排除 (与 1st/2nd 重复 4 个样本)
   spatial_seurat_1st_rds: "data/external/GSE233815/mendeley/seurat_1stSpatial.rds"
   spatial_seurat_2nd_rds: "data/external/GSE233815/mendeley/seurat_2ndSpatial.rds"
-  spatial_seurat_1DP_rds: "data/external/GSE233815/mendeley/spatial_seurat_1DP_13_nygen.rds"
 
   sc_condition_col: "Condition"
   sc_celltype_col: "Celltypes"
-  sc_condition_levels: ["Ctrl", "1DPI", "3DPI", "7DPI"]
+  # GSE233815 原论文 snRNA-seq 使用 sham/D1/D3/D7 命名 (Zucha 2024 PNAS)
+  sc_condition_levels: ["sham", "D1", "D3", "D7"]
 
 # ----------------------------------------------------------------------------
 # 基因集 (基于 PubMed 真实文献提取, 不使用任何模拟数据)
@@ -238,10 +239,10 @@ sc:
 # L4: Integration 分析参数
 # ----------------------------------------------------------------------------
 integration:
-  # SPOTlight 空间去卷积
-  spotlight_n_top_mgs: 100              # 每细胞类型 top N marker
-  spotlight_min_count: 0.001
-  spotlight_assay: "logcounts"
+  # SPOTlight 空间去卷积 (参数名核实自官方文档 PMID:33544846)
+  spotlight_n_top_mgs: 100              # 每细胞类型 top N marker (外部过滤, 非 SPOTlight() 参数)
+  spotlight_min_prop: 0.01              # SPOTlight() min_prop 参数 (官方默认 0.01)
+  spotlight_assay: "counts"             # SPOTlight() assay 参数 (官方默认 "counts", raw counts)
   # CellChat 空间扩展
   cellchat_spatial:
     enabled: true
@@ -255,6 +256,10 @@ integration:
     nboot: 100
     min_cells: 10
     population_size: false
+    parallel_workers: 1                 # computeCommunProb future 并行 (CellChat v2 源码内置)
+                                        # 0/1=禁用; 4=官方推荐 (12 核机器保守值, ~25x 加速 bootstrap)
+                                        # 本机 15GB RAM, 当前空闲不足, 设为 1 避免多进程 OOM;
+                                        # 内存充足 (≥32GB) 时可调回 4
   # CMap 反证
   cmap:
     bcp_signature_source_pmids:
