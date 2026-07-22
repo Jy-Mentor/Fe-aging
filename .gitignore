@@ -62,6 +62,8 @@ cache/
 参考论文/
 paper_texts/
 *.pdf
+# Exception: publication-grade figure outputs in advanced/
+!advanced/*.pdf
 
 # ============================================================
 # 第三方代码
